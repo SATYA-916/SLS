@@ -29,6 +29,50 @@ const clients = [
   { name: 'PETRON', full: 'Petron Engineering' },
 ];
 
+const clientLogos = {
+  'L&T': (
+    <svg viewBox="0 0 120 40" className="h-7 w-auto fill-current">
+      <circle cx="16" cy="20" r="13" fill="none" stroke="currentColor" strokeWidth="2" />
+      <text x="16" y="24" textAnchor="middle" fontSize="9" fontWeight="900" fill="currentColor">L&T</text>
+      <text x="35" y="23" fontSize="8" fontWeight="900" fill="currentColor" letterSpacing="0.3">LARSEN & TOUBRO</text>
+    </svg>
+  ),
+  'BHEL': (
+    <svg viewBox="0 0 120 40" className="h-7 w-auto fill-current">
+      <rect x="2" y="6" width="30" height="28" rx="2" fill="currentColor" />
+      <text x="17" y="23" textAnchor="middle" fontSize="9" fontWeight="900" fill="white">BHEL</text>
+      <text x="38" y="23" fontSize="9" fontWeight="900" fill="currentColor" letterSpacing="0.8">बीएचईएल</text>
+    </svg>
+  ),
+  'HPCL': (
+    <svg viewBox="0 0 120 40" className="h-7 w-auto">
+      <circle cx="16" cy="20" r="13" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="16" cy="20" r="9" fill="currentColor" className="text-blue-600 opacity-60 group-hover:opacity-100" />
+      <text x="16" y="23" textAnchor="middle" fontSize="8" fontWeight="900" fill="white">HP</text>
+      <text x="35" y="24" fontSize="10" fontWeight="900" fill="currentColor" letterSpacing="0.8">HPCL</text>
+    </svg>
+  ),
+  'DOOSAN': (
+    <svg viewBox="0 0 120 40" className="h-6 w-auto fill-current">
+      <text x="0" y="25" fontSize="16" fontWeight="900" fontStyle="italic" fill="currentColor" letterSpacing="-0.5">DOOSAN</text>
+    </svg>
+  ),
+  'Air Liquide': (
+    <svg viewBox="0 0 120 40" className="h-7 w-auto">
+      <path d="M 5 30 L 18 8 L 31 30 Z" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="18" cy="19" r="2" fill="currentColor" />
+      <text x="37" y="19" fontSize="8" fontWeight="900" fill="currentColor" letterSpacing="0.3">AIR LIQUIDE</text>
+      <text x="37" y="27" fontSize="5" fontWeight="500" fill="currentColor" className="opacity-60">Creative Oxygen</text>
+    </svg>
+  ),
+  'PETRON': (
+    <svg viewBox="0 0 120 40" className="h-7 w-auto">
+      <path d="M 4 10 L 16 30 L 28 10" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <text x="35" y="23" fontSize="10" fontWeight="900" fill="currentColor" letterSpacing="1">PETRON</text>
+    </svg>
+  ),
+};
+
 const softwareTools = ['STAAD.Pro', 'ANSYS', 'Tekla Structures', 'AutoCAD', 'CATIA'];
 
 const industries = [
@@ -244,11 +288,13 @@ export default function Home() {
               {clients.map((client) => (
                 <div
                   key={client.name}
-                  className="border border-gray-200 px-6 py-4 min-w-[110px] text-center hover:border-blue-700 hover:shadow-sm transition-all duration-200 group"
+                  className="border border-gray-200 px-6 py-3 min-w-[160px] h-14 flex items-center justify-center hover:border-blue-700 hover:shadow-sm transition-all duration-200 group bg-gray-50/50 hover:bg-white"
                 >
-                  <span className="text-sm font-bold text-gray-400 group-hover:text-[#0a1628] transition-colors tracking-wide">
-                    {client.name}
-                  </span>
+                  <div className="text-gray-400 group-hover:text-[#0a1628] transition-colors flex items-center justify-center w-full">
+                    {clientLogos[client.name] || (
+                      <span className="text-sm font-bold tracking-wide">{client.name}</span>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
