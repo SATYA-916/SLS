@@ -7,6 +7,11 @@ import { logger } from './lib/logger.js';
 
 const app = express();
 
+const isProd = process.env.NODE_ENV === 'production';
+if (isProd) {
+  app.set('trust proxy', 1);
+}
+
 app.use(
   pinoHttp({
     logger,
@@ -30,7 +35,12 @@ app.use(
     secret: process.env.SESSION_SECRET ?? 'sls-fallback-secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { httpOnly: true, maxAge: 1000 * 60 * 60 * 8 },
+    cookie: {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 8,
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax',
+    },
   })
 );
 

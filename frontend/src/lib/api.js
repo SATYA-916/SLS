@@ -1,5 +1,8 @@
+const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+
 async function apiFetch(path, options = {}) {
-  const res = await fetch(path, {
+  const url = path.startsWith('http') ? path : `${API_URL}${path}`;
+  const res = await fetch(url, {
     credentials: 'include',
     ...options,
     headers: {
