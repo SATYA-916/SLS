@@ -11,7 +11,7 @@ const projects = [
     category: 'Special Structures',
     client: 'HPCL',
     year: 2002,
-    image: '/projects/hpcl_retail_outlet.jpeg'
+    image: '/projects/proj1.jpeg'
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ const projects = [
     category: 'Special Structures',
     client: 'ShipBuilding Center',
     year: 2003,
-    image: '/projects/environmental_shelter.png'
+    image: '/projects/proj2.png'
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ const projects = [
     category: 'Special Structures',
     client: 'SVC Projects Pvt. Ltd.',
     year: 2003,
-    image: '/projects/industrial_shed.png'
+    image: '/projects/proj3.png'
   },
   {
     id: 4,
@@ -38,7 +38,7 @@ const projects = [
     category: 'Special Structures',
     client: 'Larsen & Toubro Ltd.',
     year: 2003,
-    image: '/projects/c_seam_rt_shield.jpeg'
+    image: '/projects/proj4.jpeg'
   },
   {
     id: 5,
@@ -47,7 +47,7 @@ const projects = [
     category: 'Special Structures',
     client: 'Larsen & Toubro Ltd.',
     year: 2003,
-    image: '/projects/c_seam_rt_shield.jpeg'
+    image: '/projects/proj5.jpeg'
   },
   {
     id: 6,
@@ -56,7 +56,7 @@ const projects = [
     category: 'Special Structures',
     client: 'Larsen & Toubro Ltd.',
     year: 2003,
-    image: '/projects/c_seam_rt_shield.jpeg'
+    image: '/projects/proj6.jpeg'
   },
   {
     id: 7,
@@ -65,7 +65,7 @@ const projects = [
     category: 'Special Structures',
     client: 'Larsen & Toubro Ltd.',
     year: 2003,
-    image: '/projects/industrial_piping_heaters.png'
+    image: '/projects/proj7.png'
   },
   {
     id: 8,
@@ -74,7 +74,7 @@ const projects = [
     category: 'Special Structures',
     client: 'Larsen & Toubro Ltd.',
     year: 2003,
-    image: '/projects/c_seam_rt_shield.jpeg'
+    image: '/projects/proj8.jpeg'
   },
   {
     id: 9,
@@ -83,7 +83,7 @@ const projects = [
     category: 'Special Structures',
     client: 'AB Constructions',
     year: 2004,
-    image: '/projects/residential_apartments.png'
+    image: '/projects/proj9.png'
   },
   {
     id: 10,
@@ -92,7 +92,7 @@ const projects = [
     category: 'Special Structures',
     client: 'HPCL',
     year: 2004,
-    image: '/projects/heavy_industry.png'
+    image: '/projects/proj10.png'
   },
   {
     id: 11,
@@ -101,7 +101,7 @@ const projects = [
     category: 'Special Structures',
     client: 'Larsen & Toubro Ltd.',
     year: 2004,
-    image: '/projects/evaporation_plant.jpeg'
+    image: '/projects/proj11.jpeg'
   },
   {
     id: 12,
@@ -110,7 +110,7 @@ const projects = [
     category: 'Special Structures',
     client: 'Larsen & Toubro Ltd.',
     year: 2004,
-    image: '/projects/industrial_piping_heaters.png'
+    image: '/projects/proj12.png'
   },
 
   // BUILDINGS
@@ -121,7 +121,7 @@ const projects = [
     category: 'Buildings',
     client: 'APHMHIDC',
     year: 2004,
-    image: '/projects/college_building.png'
+    image: '/projects/proj13.png'
   },
   {
     id: 14,
@@ -130,7 +130,7 @@ const projects = [
     category: 'Buildings',
     client: 'ITDA',
     year: 2005,
-    image: '/projects/college_building.png'
+    image: '/projects/proj14.png'
   },
   {
     id: 15,
@@ -139,7 +139,7 @@ const projects = [
     category: 'Buildings',
     client: 'Bhaskar Residency',
     year: 2005,
-    image: '/projects/residential_apartments.png'
+    image: '/projects/proj15.png'
   },
   {
     id: 16,
@@ -148,7 +148,7 @@ const projects = [
     category: 'Buildings',
     client: 'Sri Ramshankar Constructions (P) Ltd.',
     year: 2005,
-    image: '/projects/commercial_building.png'
+    image: '/projects/proj16.png'
   },
   {
     id: 17,
@@ -157,7 +157,7 @@ const projects = [
     category: 'Buildings',
     client: 'SVC Projects Pvt. Ltd.',
     year: 2006,
-    image: '/projects/residential_apartments.png'
+    image: '/projects/proj17.png'
   },
   {
     id: 18,
@@ -166,7 +166,7 @@ const projects = [
     category: 'Buildings',
     client: 'Private Owner',
     year: 2006,
-    image: '/projects/bungalow_luxury.png'
+    image: '/projects/proj18.png'
   },
   {
     id: 19,
@@ -175,7 +175,7 @@ const projects = [
     category: 'Buildings',
     client: 'MR College',
     year: 2007,
-    image: '/projects/college_building.png'
+    image: '/projects/proj19.png'
   },
   {
     id: 20,
@@ -184,7 +184,7 @@ const projects = [
     category: 'Buildings',
     client: 'SVC Projects Pvt. Ltd.',
     year: 2009,
-    image: '/projects/residential_apartments.png'
+    image: '/projects/proj20.png'
   },
 
   // CRYOGENIC PLANTS
@@ -195,7 +195,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India / France',
     year: 2003,
-    image: '/projects/air_compressor_foundation.png'
+    image: '/projects/proj21.png'
   },
   {
     id: 22,
@@ -204,7 +204,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2004,
-    image: '/projects/machinery_foundation.png'
+    image: '/projects/proj22.png'
   },
   {
     id: 23,
@@ -213,7 +213,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide North India Ltd.',
     year: 2004,
-    image: '/projects/machinery_foundation.png'
+    image: '/projects/proj23.png'
   },
   {
     id: 24,
@@ -222,7 +222,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2005,
-    image: '/projects/compressor_house_pipe_rack.png'
+    image: '/projects/proj24.png'
   },
   {
     id: 25,
@@ -231,7 +231,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2006,
-    image: '/projects/machinery_foundation.png'
+    image: '/projects/proj25.png'
   },
   {
     id: 26,
@@ -240,7 +240,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2007,
-    image: '/projects/compressor_house_pipe_rack.png'
+    image: '/projects/proj26.png'
   },
   {
     id: 27,
@@ -249,7 +249,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2008,
-    image: '/projects/machinery_foundation.png'
+    image: '/projects/proj27.png'
   },
   {
     id: 28,
@@ -258,7 +258,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2010,
-    image: '/projects/machinery_foundation.png'
+    image: '/projects/proj28.png'
   },
   {
     id: 29,
@@ -267,7 +267,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2010,
-    image: '/projects/machinery_foundation.png'
+    image: '/projects/proj29.png'
   },
 
   // BOILERS, FLUES & DUCTS and CHIMNEYS
@@ -278,7 +278,7 @@ const projects = [
     category: 'Boilers & Chimneys',
     client: 'Kochi Refineries Ltd.',
     year: 2003,
-    image: '/projects/boiler_plant_bagasse.jpeg'
+    image: '/projects/proj30.jpeg'
   },
   {
     id: 31,
@@ -287,7 +287,7 @@ const projects = [
     category: 'Boilers & Chimneys',
     client: 'ALSTOM POWER',
     year: 2005,
-    image: '/projects/heavy_industry.png'
+    image: '/projects/proj31.png'
   },
   {
     id: 32,
@@ -296,7 +296,7 @@ const projects = [
     category: 'Boilers & Chimneys',
     client: 'ITC Bhadrachalam',
     year: 2006,
-    image: '/projects/steel_chimney.png'
+    image: '/projects/proj32.png'
   },
   {
     id: 33,
@@ -305,7 +305,7 @@ const projects = [
     category: 'Boilers & Chimneys',
     client: 'Doosan Babcock / Sutherland USA',
     year: 2008,
-    image: '/projects/air_heater_modules_1.png'
+    image: '/projects/proj33.png'
   },
   {
     id: 34,
@@ -314,7 +314,16 @@ const projects = [
     category: 'Boilers & Chimneys',
     client: 'BHPV / HPCL Mumbai',
     year: 2010,
-    image: '/projects/box_heaters.jpeg'
+    image: '/projects/proj34.jpeg'
+  },
+  {
+    id: 10,
+    title: 'TANDA Thermal Power Project – Back End Duct',
+    description: 'Detailing of back end duct support structure for Tanda Thermal Power Project Stage-II (2x660 MW) for L&T MHPS Boilers. Shop and erection drawings using Tekla Structures.',
+    category: 'Boilers & Chimneys', // Merged from "Power Boilers"
+    client: 'L&T MHPS Boilers',
+    year: 2015,
+    image: '/projects/proj10.png'
   },
 
   // FIRED HEATERS
@@ -325,7 +334,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'BHPV / HPCL',
     year: 2006,
-    image: '/projects/box_heaters.jpeg'
+    image: '/projects/proj35.jpeg'
   },
   {
     id: 36,
@@ -334,7 +343,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'BHPV / BORL-Bina',
     year: 2008,
-    image: '/projects/fired_heater_cylindrical.jpeg'
+    image: '/projects/proj36.jpeg'
   },
   {
     id: 37,
@@ -343,7 +352,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'Bridge & Roof / CPCL',
     year: 2009,
-    image: '/projects/dhdt_heater.jpeg'
+    image: '/projects/proj37.jpeg'
   },
   {
     id: 38,
@@ -352,7 +361,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'Jubilant Organics / Esteem Projects',
     year: 2010,
-    image: '/projects/ketene_furnace.jpeg'
+    image: '/projects/proj38.jpeg'
   },
   {
     id: 39,
@@ -361,7 +370,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'IOL Chemicals / Esteem Projects',
     year: 2011,
-    image: '/projects/ketene_furnace.jpeg'
+    image: '/projects/proj39.jpeg'
   },
   {
     id: 40,
@@ -370,7 +379,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'Nagarjuna / Esteem Projects',
     year: 2012,
-    image: '/projects/refinery_heaters.png'
+    image: '/projects/proj40.png'
   },
   {
     id: 41,
@@ -379,7 +388,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'Technip-KTI / BPCL',
     year: 2013,
-    image: '/projects/dhdt_heater.jpeg'
+    image: '/projects/proj41.jpeg'
   },
   {
     id: 42,
@@ -388,7 +397,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'Heurtey Petrochem / BPCL',
     year: 2014,
-    image: '/projects/dhdt_heater.jpeg'
+    image: '/projects/proj42.jpeg'
   },
 
   // INDUSTRIAL STRUCTURES
@@ -399,7 +408,7 @@ const projects = [
     category: 'Industrial Structures',
     client: 'Larsen & Toubro Ltd.',
     year: 2006,
-    image: '/projects/industrial_shed.png'
+    image: '/projects/proj43.png'
   },
   {
     id: 44,
@@ -408,7 +417,7 @@ const projects = [
     category: 'Industrial Structures',
     client: 'BHAVINI / NPCIL Kalpakkam',
     year: 2007,
-    image: '/projects/safety_vessel_cover.jpeg'
+    image: '/projects/proj44.jpeg'
   },
   {
     id: 45,
@@ -417,7 +426,7 @@ const projects = [
     category: 'Industrial Structures',
     client: 'BHAVINI / NPCIL Kalpakkam',
     year: 2007,
-    image: '/projects/safety_vessel_cover.jpeg'
+    image: '/projects/proj45.jpeg'
   },
 
   // PROJECT CONSULTANTS & SHIPPING
@@ -428,7 +437,7 @@ const projects = [
     category: 'Structures',
     client: 'TERN Distilleries (UB Group)',
     year: 2006,
-    image: '/projects/refinery_heaters.png'
+    image: '/projects/proj46.png'
   },
   {
     id: 47,
@@ -437,7 +446,7 @@ const projects = [
     category: 'Structures',
     client: 'Brij Associates / Reliance',
     year: 2006,
-    image: '/projects/pipeline_survey_field.png'
+    image: '/projects/proj47.png'
   }
 ];
 

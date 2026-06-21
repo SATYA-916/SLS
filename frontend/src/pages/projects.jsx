@@ -13,7 +13,6 @@ const categories = [
   'Fired Heaters',
   'Structures',
   'Industrial Structures',
-  'Power Boilers',
 ];
 
 export default function Projects() {
