@@ -284,8 +284,24 @@ export default function Home() {
                   transition={{ duration: 0.35, delay: i * 0.07 }}
                   className="border border-gray-200 hover:shadow-md transition-shadow duration-200 group"
                 >
-                  <div className="w-full h-28 bg-gray-100 flex items-center justify-center border-b border-gray-200 group-hover:bg-gray-50 transition-colors">
-                    <Building2 className="w-8 h-8 text-gray-200" />
+                  <div className="w-full h-36 bg-gray-50 overflow-hidden flex items-center justify-center border-b border-gray-200 group-hover:bg-gray-100 transition-colors relative">
+                    {proj.image ? (
+                      <img
+                        src={proj.image}
+                        alt={proj.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.parentNode.querySelector('.fallback-icon').style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    <div
+                      className="fallback-icon absolute inset-0 items-center justify-center bg-gray-100"
+                      style={{ display: proj.image ? 'none' : 'flex' }}
+                    >
+                      <Building2 className="w-8 h-8 text-gray-200" />
+                    </div>
                   </div>
                   <div className="p-4">
                     <h3 className="font-bold text-[#0a1628] text-xs leading-snug mb-2">{proj.title}</h3>

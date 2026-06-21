@@ -88,8 +88,24 @@ export default function Projects() {
                   className="bg-white p-8 flex flex-col cursor-pointer hover:shadow-lg transition-shadow group"
                   onClick={() => setSelectedProject(proj)}
                 >
-                  <div className="w-full h-32 bg-gray-100 mb-5 flex items-center justify-center border border-gray-200 group-hover:border-[#0a1628]/20 transition-colors">
-                    <Building2 className="w-10 h-10 text-gray-200 group-hover:text-[#43648e]/40 transition-colors" />
+                  <div className="w-full h-44 bg-gray-50 mb-5 overflow-hidden border border-gray-200 group-hover:border-[#0a1628]/20 transition-colors relative flex items-center justify-center">
+                    {proj.image ? (
+                      <img
+                        src={proj.image}
+                        alt={proj.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.parentNode.querySelector('.fallback-icon').style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    <div
+                      className="fallback-icon absolute inset-0 items-center justify-center bg-gray-100"
+                      style={{ display: proj.image ? 'none' : 'flex' }}
+                    >
+                      <Building2 className="w-10 h-10 text-gray-200 group-hover:text-[#43648e]/40 transition-colors" />
+                    </div>
                   </div>
                   <span className="text-[10px] font-bold tracking-widest text-[#43648e] uppercase mb-2">
                     {proj.category}
@@ -123,33 +139,44 @@ export default function Projects() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.25 }}
-              className="bg-white max-w-lg w-full p-8 relative"
+              className="bg-white max-w-lg w-full overflow-hidden relative"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-700"
+                className="absolute top-4 right-4 text-white hover:text-gray-200 z-10 bg-black/40 hover:bg-black/60 rounded-full p-1 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
-              <span className="text-[10px] font-bold tracking-widest text-[#43648e] uppercase mb-3 block">
-                {selectedProject.category}
-              </span>
-              <h2 className="text-2xl font-bold text-[#0a1628] mb-4">{selectedProject.title}</h2>
-              <p className="text-sm text-gray-500 leading-relaxed mb-6">{selectedProject.description}</p>
-              <div className="flex items-center gap-6 text-sm border-t border-gray-200 pt-4">
-                {selectedProject.client && (
-                  <div>
-                    <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">Client</span>
-                    <span className="font-semibold text-[#0a1628]">{selectedProject.client}</span>
-                  </div>
-                )}
-                {selectedProject.year && (
-                  <div>
-                    <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">Year</span>
-                    <span className="font-semibold text-[#0a1628]">{selectedProject.year}</span>
-                  </div>
-                )}
+              {selectedProject.image && (
+                <div className="w-full h-56 bg-gray-100 relative">
+                  <img
+                    src={selectedProject.image}
+                    alt={selectedProject.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="p-8">
+                <span className="text-[10px] font-bold tracking-widest text-[#43648e] uppercase mb-3 block">
+                  {selectedProject.category}
+                </span>
+                <h2 className="text-2xl font-bold text-[#0a1628] mb-4">{selectedProject.title}</h2>
+                <p className="text-sm text-gray-500 leading-relaxed mb-6">{selectedProject.description}</p>
+                <div className="flex items-center gap-6 text-sm border-t border-gray-200 pt-4">
+                  {selectedProject.client && (
+                    <div>
+                      <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">Client</span>
+                      <span className="font-semibold text-[#0a1628]">{selectedProject.client}</span>
+                    </div>
+                  )}
+                  {selectedProject.year && (
+                    <div>
+                      <span className="text-xs text-gray-400 uppercase tracking-wider block mb-1">Year</span>
+                      <span className="font-semibold text-[#0a1628]">{selectedProject.year}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </motion.div>
           </motion.div>

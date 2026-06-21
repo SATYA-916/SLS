@@ -11,6 +11,7 @@ const projects = [
     category: 'Special Structures',
     client: 'HPCL',
     year: 2003,
+    image: '/projects/hpcl_retail_outlet.jpeg',
   },
   {
     id: 2,
@@ -20,6 +21,7 @@ const projects = [
     category: 'Special Structures',
     client: 'Larsen & Toubro',
     year: 2003,
+    image: '/projects/c_seam_rt_shield.jpeg',
   },
   {
     id: 3,
@@ -29,6 +31,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2003,
+    image: '/projects/air_compressor_foundation.png',
   },
   {
     id: 4,
@@ -38,6 +41,7 @@ const projects = [
     category: 'Structures',
     client: 'Yemen LNG',
     year: 2013,
+    image: '/projects/evaporation_plant.jpeg',
   },
   {
     id: 5,
@@ -47,6 +51,7 @@ const projects = [
     category: 'Boilers & Chimneys',
     client: 'BHPV / HPCL',
     year: 2010,
+    image: '/projects/box_heaters.jpeg',
   },
   {
     id: 6,
@@ -56,6 +61,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'Technip-KTI / BPCL',
     year: 2013,
+    image: '/projects/dhdt_heater.jpeg',
   },
   {
     id: 7,
@@ -65,6 +71,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2005,
+    image: '/projects/compressor_house_pipe_rack.png',
   },
   {
     id: 8,
@@ -74,6 +81,7 @@ const projects = [
     category: 'Industrial Structures',
     client: 'BHAVINI / Nuclear Power Corporation',
     year: 2007,
+    image: '/projects/safety_vessel_cover.jpeg',
   },
   {
     id: 9,
@@ -83,6 +91,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'Jubilant Organics / Esteem Projects',
     year: 2009,
+    image: '/projects/ketene_furnace.jpeg',
   },
   {
     id: 10,
@@ -92,6 +101,7 @@ const projects = [
     category: 'Power Boilers',
     client: 'L&T MHPS Boilers',
     year: 2015,
+    image: '/projects/tanda_thermal_project_1.png',
   },
 ];
 
