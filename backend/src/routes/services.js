@@ -12,7 +12,7 @@ const services = [
   {
     id: 2,
     title: 'Industrial Design and Support',
-    description: 'Specialised design of industrial structures, fired heaters, pressure vessels, and remaining life assessments (RLA).',
+    description: 'Specialised design of industrial structures, fired heaters, pressure vessels, and structural steel components.',
     icon: 'factory',
   },
   {
@@ -32,6 +32,12 @@ const services = [
     title: 'Municipality Relation Services',
     description: 'Liaisoning with government departments and municipal bodies for building approvals, NOCs, and regulatory compliance.',
     icon: 'activity',
+  },
+  {
+    id: 6,
+    title: 'Remaining Life Assessment (RLA)',
+    description: 'Fitness-for-service evaluations, remaining life assessments, and NDT studies for ageing industrial chimneys, stacks, and boiler structures.',
+    icon: 'grid',
   },
 ];
 
