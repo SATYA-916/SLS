@@ -20,7 +20,7 @@ const projects = [
     category: 'Special Structures',
     client: 'ShipBuilding Center',
     year: 2003,
-    image: '/projects/heavy_industry.png'
+    image: '/projects/environmental_shelter.png'
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ const projects = [
     category: 'Special Structures',
     client: 'SVC Projects Pvt. Ltd.',
     year: 2003,
-    image: '/projects/heavy_industry.png'
+    image: '/projects/industrial_shed.png'
   },
   {
     id: 4,
@@ -83,7 +83,7 @@ const projects = [
     category: 'Special Structures',
     client: 'AB Constructions',
     year: 2004,
-    image: '/projects/commercial_building.png'
+    image: '/projects/residential_apartments.png'
   },
   {
     id: 10,
@@ -121,7 +121,7 @@ const projects = [
     category: 'Buildings',
     client: 'APHMHIDC',
     year: 2004,
-    image: '/projects/commercial_building.png'
+    image: '/projects/college_building.png'
   },
   {
     id: 14,
@@ -130,7 +130,7 @@ const projects = [
     category: 'Buildings',
     client: 'ITDA',
     year: 2005,
-    image: '/projects/commercial_building.png'
+    image: '/projects/college_building.png'
   },
   {
     id: 15,
@@ -139,7 +139,7 @@ const projects = [
     category: 'Buildings',
     client: 'Bhaskar Residency',
     year: 2005,
-    image: '/projects/commercial_building.png'
+    image: '/projects/residential_apartments.png'
   },
   {
     id: 16,
@@ -157,7 +157,7 @@ const projects = [
     category: 'Buildings',
     client: 'SVC Projects Pvt. Ltd.',
     year: 2006,
-    image: '/projects/commercial_building.png'
+    image: '/projects/residential_apartments.png'
   },
   {
     id: 18,
@@ -166,7 +166,7 @@ const projects = [
     category: 'Buildings',
     client: 'Private Owner',
     year: 2006,
-    image: '/projects/commercial_building.png'
+    image: '/projects/bungalow_luxury.png'
   },
   {
     id: 19,
@@ -175,7 +175,7 @@ const projects = [
     category: 'Buildings',
     client: 'MR College',
     year: 2007,
-    image: '/projects/commercial_building.png'
+    image: '/projects/college_building.png'
   },
   {
     id: 20,
@@ -184,7 +184,7 @@ const projects = [
     category: 'Buildings',
     client: 'SVC Projects Pvt. Ltd.',
     year: 2009,
-    image: '/projects/commercial_building.png'
+    image: '/projects/residential_apartments.png'
   },
 
   // CRYOGENIC PLANTS
@@ -204,7 +204,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2004,
-    image: '/projects/cryogenic_foundations.png'
+    image: '/projects/machinery_foundation.png'
   },
   {
     id: 23,
@@ -213,7 +213,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide North India Ltd.',
     year: 2004,
-    image: '/projects/cryogenic_foundations.png'
+    image: '/projects/machinery_foundation.png'
   },
   {
     id: 24,
@@ -231,7 +231,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2006,
-    image: '/projects/cryogenic_foundations.png'
+    image: '/projects/machinery_foundation.png'
   },
   {
     id: 26,
@@ -249,7 +249,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2008,
-    image: '/projects/cryogenic_foundations.png'
+    image: '/projects/machinery_foundation.png'
   },
   {
     id: 28,
@@ -258,7 +258,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2010,
-    image: '/projects/cryogenic_foundations.png'
+    image: '/projects/machinery_foundation.png'
   },
   {
     id: 29,
@@ -267,7 +267,7 @@ const projects = [
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2010,
-    image: '/projects/cryogenic_foundations.png'
+    image: '/projects/machinery_foundation.png'
   },
 
   // BOILERS, FLUES & DUCTS and CHIMNEYS
@@ -296,7 +296,7 @@ const projects = [
     category: 'Boilers & Chimneys',
     client: 'ITC Bhadrachalam',
     year: 2006,
-    image: '/projects/heavy_industry.png'
+    image: '/projects/steel_chimney.png'
   },
   {
     id: 33,
@@ -370,7 +370,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'Nagarjuna / Esteem Projects',
     year: 2012,
-    image: '/projects/industrial_piping_heaters.png'
+    image: '/projects/refinery_heaters.png'
   },
   {
     id: 41,
@@ -399,7 +399,7 @@ const projects = [
     category: 'Industrial Structures',
     client: 'Larsen & Toubro Ltd.',
     year: 2006,
-    image: '/projects/heavy_industry.png'
+    image: '/projects/industrial_shed.png'
   },
   {
     id: 44,
@@ -428,7 +428,7 @@ const projects = [
     category: 'Structures',
     client: 'TERN Distilleries (UB Group)',
     year: 2006,
-    image: '/projects/heavy_industry.png'
+    image: '/projects/refinery_heaters.png'
   },
   {
     id: 47,
@@ -437,7 +437,7 @@ const projects = [
     category: 'Structures',
     client: 'Brij Associates / Reliance',
     year: 2006,
-    image: '/projects/industrial_piping_heaters.png'
+    image: '/projects/pipeline_survey_field.png'
   }
 ];
 
