@@ -5,45 +5,33 @@ const router = Router();
 const services = [
   {
     id: 1,
-    title: 'Structural Engineering',
-    description:
-      'Design, analysis and consulting for safe and economical steel and RCC structures including buildings, warehouses, and industrial facilities.',
-    icon: 'building',
+    title: 'Blueprint Design',
+    description: 'Comprehensive 2D drafting and blueprint creation using AutoCAD for layouts, piping, and mechanical components.',
+    icon: 'layers',
   },
   {
     id: 2,
-    title: 'Industrial Projects',
-    description:
-      'Industrial structures, piping supports, platforms and equipment structures for boilers, fired heaters, storage vessels and heat exchangers.',
+    title: 'Industrial Design and Support',
+    description: 'Specialised design of industrial structures, fired heaters, pressure vessels, and remaining life assessments (RLA).',
     icon: 'factory',
   },
   {
     id: 3,
-    title: 'FEM Analysis',
-    description:
-      'Advanced finite element analysis using industry-standard FEM tools for accurate and reliable structural assessment results.',
-    icon: 'grid',
+    title: 'Engineering and Architecture Design',
+    description: 'Full-scale architectural planning, structural design, and multi-disciplinary engineering for residential and commercial buildings.',
+    icon: 'building',
   },
   {
     id: 4,
-    title: 'RLA Studies',
-    description:
-      'Remaining Life Assessment (RLA) studies for fitness-for-service evaluation of ageing plant and equipment including chimneys and pressure vessels.',
-    icon: 'activity',
-  },
-  {
-    id: 5,
-    title: 'Project Consultancy',
-    description:
-      'Concept to commissioning project consultancy support for industrial and infrastructure projects, including tendering, inspection and vendor evaluation.',
+    title: 'Construction Supervision',
+    description: 'On-site technical support, quality control, progress monitoring, and safety supervision from excavation to commissioning.',
     icon: 'clipboard',
   },
   {
-    id: 6,
-    title: 'Steel Detailing (Tekla)',
-    description:
-      '3D modeling and comprehensive steel detailing using Tekla Structures for shop and erection drawings.',
-    icon: 'layers',
+    id: 5,
+    title: 'Municipality Relation Services',
+    description: 'Liaisoning with government departments and municipal bodies for building approvals, NOCs, and regulatory compliance.',
+    icon: 'activity',
   },
 ];
 

@@ -344,6 +344,51 @@ export default function Home() {
         </div>
       </section>
 
+      {/* TESTIMONIALS */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <div className="text-center mb-14">
+              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Client Appreciation</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628]">What Our Clients Say</h2>
+            </div>
+          </AnimatedSection>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="bg-white p-8 border border-gray-200 shadow-sm flex flex-col justify-between"
+            >
+              <p className="text-sm text-gray-500 italic leading-relaxed mb-6">
+                "The work SLS had provided for the project 'Radiography Solutions For Vizag Vessel Project - L&T' is commendable. They supported us in each and every step from conceptual stage till the project was executed."
+              </p>
+              <div>
+                <h4 className="font-bold text-sm text-[#0a1628]">HN Somani</h4>
+                <p className="text-xs text-blue-700 font-semibold">Sr DGM — Larsen & Toubro (L&T)</p>
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="bg-white p-8 border border-gray-200 shadow-sm flex flex-col justify-between"
+            >
+              <p className="text-sm text-gray-500 italic leading-relaxed mb-6">
+                "We used SLS services for one of our Multistoried Residential Building Project at Visakhapatnam. The scope of their services included Architectural Planning, Structural Design, Rain Water Harvesting and Solar Water Heating Installation. We recommend their services."
+              </p>
+              <div>
+                <h4 className="font-bold text-sm text-[#0a1628]">P Vishnu Kumar Raju</h4>
+                <p className="text-xs text-blue-700 font-semibold">MD — SVC Projects Pvt. Ltd.</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA BANNER */}
       <section className="py-20 bg-white border-y border-gray-200">
         <div className="container mx-auto px-4 text-center">
