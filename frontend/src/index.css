@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    border-color: hsl(214, 32%, 91%);
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: hsl(210, 20%, 98%);
+    color: hsl(222, 47%, 11%);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
