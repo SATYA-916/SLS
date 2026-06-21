@@ -184,8 +184,12 @@ export default function Home() {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-6">
-                <div className="bg-gray-100 border border-gray-200 flex items-center justify-center aspect-square">
-                  <Users className="w-14 h-14 text-gray-300" />
+                <div className="bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center aspect-square">
+                  <img
+                    src="/founder_portrait.png"
+                    alt="Mr. C. Subrahmanyam"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className="flex flex-col justify-center">
                   <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Founder</p>

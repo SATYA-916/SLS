@@ -59,8 +59,12 @@ export default function About() {
           <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             <div className="bg-[#0a1628] text-white p-10">
               <div className="flex items-start gap-6 mb-8">
-                <div className="w-20 h-20 bg-white/10 flex items-center justify-center shrink-0">
-                  <Users className="w-10 h-10 text-white/50" />
+                <div className="w-20 h-20 bg-white/10 overflow-hidden shrink-0 flex items-center justify-center">
+                  <img
+                    src="/founder_portrait.png"
+                    alt="Mr. C. Subrahmanyam"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold mb-1">Mr. C. Subrahmanyam</h3>
