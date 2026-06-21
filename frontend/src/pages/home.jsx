@@ -104,23 +104,17 @@ export default function Home() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, scale: 1.02 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="bg-gray-100 border-l border-gray-200 flex items-center justify-center p-10 min-h-[300px]"
+          className="relative min-h-[350px] md:min-h-[480px] overflow-hidden bg-gray-900 border-l border-gray-800"
         >
-          <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" className="w-full max-w-xs opacity-25">
-            <rect x="20" y="20" width="360" height="280" fill="none" stroke="#334155" strokeWidth="1.5" />
-            <line x1="200" y1="20" x2="200" y2="300" stroke="#334155" strokeWidth="1" strokeDasharray="4,4" />
-            <line x1="20" y1="160" x2="380" y2="160" stroke="#334155" strokeWidth="1" strokeDasharray="4,4" />
-            <rect x="60" y="80" width="120" height="160" fill="none" stroke="#334155" strokeWidth="1.5" />
-            <rect x="220" y="110" width="120" height="130" fill="none" stroke="#334155" strokeWidth="1.5" />
-            <polygon points="120,40 200,20 280,40 280,80 120,80" fill="none" stroke="#334155" strokeWidth="1.5" />
-            <line x1="60" y1="240" x2="380" y2="240" stroke="#334155" strokeWidth="2" />
-            <circle cx="120" cy="80" r="3" fill="#334155" />
-            <circle cx="200" cy="20" r="3" fill="#334155" />
-            <circle cx="280" cy="80" r="3" fill="#334155" />
-          </svg>
+          <img
+            src="/hero_industrial_plant.png"
+            alt="SLS Engineering Hero"
+            className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700 hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/10 pointer-events-none" />
         </motion.div>
       </section>
 
