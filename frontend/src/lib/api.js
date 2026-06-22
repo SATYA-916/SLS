@@ -50,3 +50,10 @@ export function adminLogout() {
 export function getAdminContacts() {
   return apiFetch('/api/admin/contacts');
 }
+
+export function adminForgotPassword(email) {
+  return apiFetch('/api/admin/forgot-password', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}
