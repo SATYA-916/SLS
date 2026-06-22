@@ -47,7 +47,7 @@ const projects = [
     category: 'Special Structures',
     client: 'Larsen & Toubro Ltd.',
     year: 2003,
-    image: '/projects/proj5.jpeg'
+    image: '/projects/proj5.png'
   },
   {
     id: 6,
@@ -56,7 +56,7 @@ const projects = [
     category: 'Special Structures',
     client: 'Larsen & Toubro Ltd.',
     year: 2003,
-    image: '/projects/proj6.jpeg'
+    image: '/projects/proj6.png'
   },
   {
     id: 7,
@@ -74,7 +74,7 @@ const projects = [
     category: 'Special Structures',
     client: 'Larsen & Toubro Ltd.',
     year: 2003,
-    image: '/projects/proj8.jpeg'
+    image: '/projects/proj8.png'
   },
   {
     id: 9,
@@ -317,13 +317,13 @@ const projects = [
     image: '/projects/proj34.jpeg'
   },
   {
-    id: 10,
+    id: 48,
     title: 'TANDA Thermal Power Project – Back End Duct',
     description: 'Detailing of back end duct support structure for Tanda Thermal Power Project Stage-II (2x660 MW) for L&T MHPS Boilers. Shop and erection drawings using Tekla Structures.',
     category: 'Boilers & Chimneys', // Merged from "Power Boilers"
     client: 'L&T MHPS Boilers',
     year: 2015,
-    image: '/projects/proj10.png'
+    image: '/projects/tanda_thermal_project_1.png'
   },
 
   // FIRED HEATERS
@@ -334,7 +334,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'BHPV / HPCL',
     year: 2006,
-    image: '/projects/proj35.jpeg'
+    image: '/projects/proj35.png'
   },
   {
     id: 36,
@@ -370,7 +370,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'IOL Chemicals / Esteem Projects',
     year: 2011,
-    image: '/projects/proj39.jpeg'
+    image: '/projects/proj39.png'
   },
   {
     id: 40,
@@ -388,7 +388,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'Technip-KTI / BPCL',
     year: 2013,
-    image: '/projects/proj41.jpeg'
+    image: '/projects/air_heater_modules_2.png'
   },
   {
     id: 42,
@@ -397,7 +397,7 @@ const projects = [
     category: 'Fired Heaters',
     client: 'Heurtey Petrochem / BPCL',
     year: 2014,
-    image: '/projects/proj42.jpeg'
+    image: '/projects/tanda_thermal_project_2.jpeg'
   },
 
   // INDUSTRIAL STRUCTURES
