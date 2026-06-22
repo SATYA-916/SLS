@@ -1,6 +1,6 @@
-# SLS – Structomech Consultants Website
+# SLS Consultants Website
 
-A modern full-stack website developed for **SLS Structomech Consultants** to establish a strong digital presence and streamline client interactions.
+A modern full-stack website developed for **SLS Consultants** to establish a strong digital presence and streamline client interactions.
 
 ---
 

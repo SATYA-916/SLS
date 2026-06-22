@@ -9,7 +9,7 @@ const values = [
 ];
 
 const milestones = [
-  { year: '2002', event: 'SLS Structo-Mech Consultants founded by Mr. C. Subrahmanyam in Visakhapatnam.' },
+  { year: '2002', event: 'SLS Consultants founded by Mr. C. Subrahmanyam in Visakhapatnam.' },
   { year: '2003', event: 'Completed first major projects for Larsen & Toubro and HPCL. Entered cryogenic plant engineering through Air Liquide.' },
   { year: '2005-2007', event: 'Expanded into boiler structures, chimneys, and nuclear power plant work (BHAVINI Kalpakkam).' },
   { year: '2008-2012', event: 'Delivered major fired heater packages for HPCL, BPCL, Nagarjuna, and global clients through Doosan Babcock and Technip-KTI.' },
@@ -46,7 +46,7 @@ export default function About() {
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             <h2 className="text-3xl font-bold text-[#0a1628] mb-6">Our Story</h2>
             <p className="text-gray-500 mb-4 leading-relaxed">
-              SLS Structo-Mech Consultants was established in 2002 by Mr. C. Subrahmanyam in Visakhapatnam, Andhra Pradesh, following 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
+              SLS Consultants was established in 2002 by Mr. C. Subrahmanyam in Visakhapatnam, Andhra Pradesh, following 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
             </p>
             <p className="text-gray-500 mb-4 leading-relaxed">
               From its inception, SLS has been driven by a singular vision: to deliver cost-effective, quality engineering solutions that meet or exceed client expectations. The firm specialises in structural engineering, industrial project consultancy, FEM analysis, remaining life assessments (RLA), and comprehensive steel detailing.
@@ -82,7 +82,7 @@ export default function About() {
                 </div>
                 <div className="flex items-center gap-2 text-white/70">
                   <Clock className="w-4 h-4 text-[#43648e] shrink-0" />
-                  <span>20+ Years heading SLS Structo-Mech Consultants</span>
+                  <span>20+ Years heading SLS Consultants</span>
                 </div>
               </div>
               <div className="border-t border-white/10 pt-6">

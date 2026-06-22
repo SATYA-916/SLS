@@ -18,7 +18,7 @@ export function Footer() {
               <Mail className="w-4 h-4" />
             </a>
             <a
-              href="https://www.slsvizag.com"
+              href="https://www.slsnexus.com"
               target="_blank"
               rel="noreferrer"
               className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors"
@@ -77,14 +77,11 @@ export function Footer() {
             </li>
             <li className="flex items-start gap-2.5">
               <Mail className="w-4 h-4 shrink-0 mt-0.5 text-[#43648e]" />
-              <div>
-                <div>slsind@gmail.com</div>
-                <div>slsvizag@gmail.com</div>
-              </div>
+              <span>slsind@gmail.com</span>
             </li>
             <li className="flex items-start gap-2.5">
               <Globe className="w-4 h-4 shrink-0 mt-0.5 text-[#43648e]" />
-              <span>www.slsvizag.com</span>
+              <span>www.slsnexus.com</span>
             </li>
             <li className="flex items-start gap-2.5">
               <MapPin className="w-4 h-4 shrink-0 mt-0.5 text-[#43648e]" />
@@ -96,7 +93,7 @@ export function Footer() {
 
       <div className="border-t border-white/10 py-5">
         <p className="text-center text-xs text-white/30">
-          © 2025 SLS Structo-Mech Consultants. All Rights Reserved.
+          © 2025 SLS Consultants. All Rights Reserved.
         </p>
       </div>
     </footer>

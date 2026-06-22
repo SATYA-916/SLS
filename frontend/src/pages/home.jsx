@@ -207,7 +207,7 @@ export default function Home() {
                 </h2>
                 <div className="w-10 h-0.5 bg-blue-700 mb-6" />
                 <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                  SLS Structo-Mech Consultants was established in 2002 by Mr. C. Subrahmanyam after 18 years of rich experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (Doosan Babcock).
+                  SLS Consultants was established in 2002 by Mr. C. Subrahmanyam after 18 years of rich experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (Doosan Babcock).
                 </p>
                 <p className="text-gray-600 text-sm leading-relaxed mb-6">
                   We provide comprehensive engineering, design and project consultancy services for industrial and infrastructure projects with commitment to quality, safety and client satisfaction.
@@ -497,8 +497,8 @@ export default function Home() {
             <div className="space-y-3">
               {[
                 { icon: <Phone className="w-4 h-4 text-blue-400 shrink-0" />, text: '+91 98495 98424' },
-                { icon: <Mail className="w-4 h-4 text-blue-400 shrink-0" />, text: 'slsind@gmail.com, slsvizag@gmail.com' },
-                { icon: <Globe className="w-4 h-4 text-blue-400 shrink-0" />, text: 'www.slsvizag.com' },
+                { icon: <Mail className="w-4 h-4 text-blue-400 shrink-0" />, text: 'slsind@gmail.com' },
+                { icon: <Globe className="w-4 h-4 text-blue-400 shrink-0" />, text: 'www.slsnexus.com' },
                 { icon: <MapPin className="w-4 h-4 text-blue-400 shrink-0" />, text: 'Visakhapatnam, Andhra Pradesh, India' },
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-3 text-sm text-white/60">

@@ -98,8 +98,8 @@ export default function Contact() {
             <div className="space-y-5 mb-10">
               {[
                 { icon: <Phone className="w-5 h-5 text-[#43648e] mt-0.5 shrink-0" />, label: 'Phone', value: '+91 98495 98424' },
-                { icon: <Mail className="w-5 h-5 text-[#43648e] mt-0.5 shrink-0" />, label: 'Email', value: 'slsind@gmail.com\nslsvizag@gmail.com' },
-                { icon: <Globe className="w-5 h-5 text-[#43648e] mt-0.5 shrink-0" />, label: 'Website', value: 'www.slsvizag.com' },
+                { icon: <Mail className="w-5 h-5 text-[#43648e] mt-0.5 shrink-0" />, label: 'Email', value: 'slsind@gmail.com' },
+                { icon: <Globe className="w-5 h-5 text-[#43648e] mt-0.5 shrink-0" />, label: 'Website', value: 'www.slsnexus.com' },
                 { icon: <MapPin className="w-5 h-5 text-[#43648e] mt-0.5 shrink-0" />, label: 'Address', value: 'Visakhapatnam, Andhra Pradesh, India' },
               ].map((item) => (
                 <div key={item.label} className="flex items-start gap-4">

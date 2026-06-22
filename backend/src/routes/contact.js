@@ -38,7 +38,7 @@ function customerEmailHtml({ name, service }) {
   return `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#333">
       <div style="background:#0a1628;padding:24px 28px">
-        <h2 style="color:white;margin:0;font-size:20px">SLS Structo-Mech Consultants</h2>
+        <h2 style="color:white;margin:0;font-size:20px">SLS Consultants</h2>
         <p style="color:rgba(255,255,255,0.5);margin:4px 0 0;font-size:12px;letter-spacing:0.1em;text-transform:uppercase">Engineering. Structures. Industrial Solutions.</p>
       </div>
       <div style="padding:32px 28px;background:#ffffff;border:1px solid #e5e7eb;border-top:none">
@@ -53,11 +53,11 @@ function customerEmailHtml({ name, service }) {
           <p style="margin:0 0 8px;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:0.08em;color:#888">Contact Us Directly</p>
           <p style="margin:0 0 4px;font-size:13px;color:#333">📞 +91 98495 98424</p>
           <p style="margin:0 0 4px;font-size:13px;color:#333">✉️ slsind@gmail.com</p>
-          <p style="margin:0;font-size:13px;color:#333">🌐 www.slsvizag.com</p>
+          <p style="margin:0;font-size:13px;color:#333">🌐 www.slsnexus.com</p>
         </div>
         <p style="font-size:13px;color:#888;margin:0">
           Warm regards,<br />
-          <strong style="color:#0a1628">SLS Structo-Mech Consultants</strong><br />
+          <strong style="color:#0a1628">SLS Consultants</strong><br />
           Visakhapatnam, Andhra Pradesh, India
         </p>
       </div>
