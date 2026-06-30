@@ -39,6 +39,12 @@ const services = [
     description: 'Fitness-for-service evaluations, remaining life assessments, and NDT studies for ageing industrial chimneys, stacks, and boiler structures.',
     icon: 'grid',
   },
+  {
+    id: 7,
+    title: 'Software & AI Solutions',
+    description: 'Custom software engineering, industrial automation tools, BIM integration, and AI-driven solutions tailored for engineering design workflows.',
+    icon: 'monitor',
+  },
 ];
 
 router.get('/', (_req, res) => {

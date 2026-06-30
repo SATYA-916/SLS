@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Building2, Factory, Grid3X3, Activity, ClipboardList, Layers } from 'lucide-react';
+import { Building2, Factory, Grid3X3, Activity, ClipboardList, Layers, Monitor } from 'lucide-react';
 import { getServices } from '@/lib/api';
 
 const serviceIcons = {
@@ -12,6 +12,7 @@ const serviceIcons = {
   activity: <Activity className="w-10 h-10" />,
   clipboard: <ClipboardList className="w-10 h-10" />,
   layers: <Layers className="w-10 h-10" />,
+  monitor: <Monitor className="w-10 h-10" />,
 };
 
 const activities = [

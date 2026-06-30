@@ -18,6 +18,7 @@ const serviceIcons = {
   activity: <Activity className="w-8 h-8" />,
   clipboard: <ClipboardList className="w-8 h-8" />,
   layers: <Layers className="w-8 h-8" />,
+  monitor: <Monitor className="w-8 h-8" />,
 };
 
 const clients = [
