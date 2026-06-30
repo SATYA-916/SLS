@@ -40,7 +40,7 @@ export function Footer() {
             {[
               { href: '/', label: 'Home' },
               { href: '/about', label: 'About Us' },
-              { href: '/expertise', label: 'Expertise' },
+              { href: '/services', label: 'Services' },
               { href: '/projects', label: 'Projects' },
               { href: '/vision', label: 'Vision' },
               { href: '/contact', label: 'Contact' },

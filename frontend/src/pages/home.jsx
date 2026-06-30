@@ -243,13 +243,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* EXPERTISE */}
+      {/* SERVICES */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <AnimatedSection>
             <div className="text-center mb-12">
-              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Our Expertise</p>
-              <h2 className="text-3xl font-bold text-[#0a1628]">End-to-End Engineering Solutions</h2>
+              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Our Services</p>
+              <h2 className="text-3xl font-bold text-[#0a1628]">Engineering & Design Services</h2>
             </div>
           </AnimatedSection>
           {servicesLoading ? (
@@ -265,13 +265,20 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: i * 0.06 }}
-                  className="bg-white border border-gray-200 p-6 hover:border-blue-700 hover:shadow-md transition-all duration-200 group"
+                  className="bg-white border border-gray-200 p-6 hover:border-blue-700 hover:shadow-md transition-all duration-200 group flex flex-col"
                 >
                   <div className="text-gray-300 group-hover:text-blue-700 mb-4 transition-colors">
                     {serviceIcons[svc.icon] || <Building2 className="w-8 h-8" />}
                   </div>
                   <h3 className="font-bold text-[#0a1628] text-sm mb-2">{svc.title}</h3>
-                  <p className="text-xs text-gray-500 leading-relaxed">{svc.description}</p>
+                  <p className="text-xs text-gray-500 leading-relaxed mb-4 flex-grow">{svc.description}</p>
+                  <div>
+                    <Link href={`/contact?service=${encodeURIComponent(svc.title)}`}>
+                      <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-blue-700 cursor-pointer border-b border-transparent hover:border-blue-700 pb-0.5">
+                        Book Service &rarr;
+                      </span>
+                    </Link>
+                  </div>
                 </motion.div>
               ))}
             </div>

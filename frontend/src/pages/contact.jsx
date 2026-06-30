@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Phone, Mail, Globe, MapPin, CheckCircle2, Clock, ShieldCheck, Zap } from 'lucide-react';
-import { submitContact } from '@/lib/api';
+import { submitContact, getServices } from '@/lib/api';
 
-const services = [
+const fallbackServices = [
   'Structural Engineering',
   'Industrial Projects',
   'FEM Analysis',
@@ -27,8 +27,23 @@ function validate(data) {
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', service: '', message: '' });
+  
+  // Parse URL query parameter for service pre-selection
+  const queryParams = new URLSearchParams(window.location.search);
+  const initialService = queryParams.get('service') || '';
+
+  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', service: initialService, message: '' });
   const [errors, setErrors] = useState({});
+
+  // Query database services dynamically
+  const { data: dbServices } = useQuery({
+    queryKey: ['services'],
+    queryFn: getServices,
+  });
+
+  const dropdownServices = dbServices 
+    ? [...dbServices.map((s) => s.title), 'Other'] 
+    : fallbackServices;
 
   const mutation = useMutation({
     mutationFn: submitContact,
@@ -199,7 +214,7 @@ export default function Contact() {
                     className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors bg-white"
                   >
                     <option value="">Select a service</option>
-                    {services.map((s) => <option key={s} value={s}>{s}</option>)}
+                    {dropdownServices.map((s) => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
                 <div>

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'wouter';
 import { motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Building2, Factory, Grid3X3, Activity, ClipboardList, Layers } from 'lucide-react';
@@ -57,9 +58,9 @@ export default function Expertise() {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Our Expertise</p>
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Our Services</p>
             <h1 className="text-5xl md:text-6xl font-bold max-w-2xl leading-tight">
-              End-to-End Engineering Solutions
+              Engineering & Design Services
             </h1>
           </motion.div>
         </div>
@@ -83,13 +84,20 @@ export default function Expertise() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.07 }}
-                  className="bg-white p-10 hover:bg-[#0a1628] hover:text-white group transition-colors duration-300"
+                  className="bg-white p-10 hover:bg-[#0a1628] hover:text-white group transition-colors duration-300 flex flex-col"
                 >
                   <div className="text-[#43648e] group-hover:text-white/60 mb-6 transition-colors">
                     {serviceIcons[svc.icon] || <Building2 className="w-10 h-10" />}
                   </div>
                   <h3 className="text-xl font-bold text-[#0a1628] group-hover:text-white mb-4 transition-colors">{svc.title}</h3>
-                  <p className="text-sm text-gray-500 group-hover:text-white/70 leading-relaxed transition-colors">{svc.description}</p>
+                  <p className="text-sm text-gray-500 group-hover:text-white/70 leading-relaxed transition-colors mb-6 flex-grow">{svc.description}</p>
+                  <div>
+                    <Link href={`/contact?service=${encodeURIComponent(svc.title)}`}>
+                      <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#43648e] group-hover:text-white transition-colors cursor-pointer border-b border-transparent hover:border-current pb-0.5">
+                        Book Service &rarr;
+                      </span>
+                    </Link>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -146,6 +154,32 @@ export default function Expertise() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* BOOK CONSULTATION CTA */}
+      <section className="py-20 bg-gradient-to-br from-[#0a1628] to-[#12233c] text-white border-t border-white/10 text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]">
+          <svg width="100%" height="100%">
+            <defs>
+              <pattern id="grid_cta" width="60" height="60" patternUnits="userSpaceOnUse">
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="1" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid_cta)" />
+          </svg>
+        </div>
+        <div className="container mx-auto px-4 relative z-10 max-w-2xl">
+          <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Start Your Project Today</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Need Professional Engineering Services?</h2>
+          <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8">
+            Whether you need a structural analysis, blueprint design, or construction supervision, our engineering team is ready to deliver cost-effective and quality solutions.
+          </p>
+          <Link href="/contact">
+            <button className="bg-white text-[#0a1628] px-8 py-4 text-sm font-bold uppercase tracking-wider hover:bg-white/90 transition-colors shadow-lg">
+              Book a Free Consultation Now &rarr;
+            </button>
+          </Link>
         </div>
       </section>
     </div>

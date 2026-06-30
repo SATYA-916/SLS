@@ -38,7 +38,7 @@ function Router() {
         <Route path="/about">
           <Layout><About /></Layout>
         </Route>
-        <Route path="/expertise">
+        <Route path="/services">
           <Layout><Expertise /></Layout>
         </Route>
         <Route path="/projects">
