@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, ChevronDown, Building2, Factory, Grid3X3, Activity, Layers, Monitor, Briefcase, Star, Trophy, ShieldCheck, DollarSign } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ChevronDown, ChevronRight, Building2, Factory, Grid3X3, Activity, Layers, Monitor, Briefcase, Star, Trophy, ShieldCheck, DollarSign } from 'lucide-react';
 import { getProjects } from '@/lib/api';
 import { Skeleton } from '@/components/ui/skeleton';
 
