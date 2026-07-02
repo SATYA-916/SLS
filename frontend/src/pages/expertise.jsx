@@ -2,185 +2,161 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Building2, Factory, Grid3X3, Activity, ClipboardList, Layers, Monitor } from 'lucide-react';
+import { Building2, Factory, Grid3X3, Activity, ClipboardList, Layers, Monitor, Briefcase, ChevronRight, Cpu, Compass, Landmark } from 'lucide-react';
 import { getServices } from '@/lib/api';
 
 const serviceIcons = {
-  building: <Building2 className="w-10 h-10" />,
-  factory: <Factory className="w-10 h-10" />,
-  grid: <Grid3X3 className="w-10 h-10" />,
-  activity: <Activity className="w-10 h-10" />,
-  clipboard: <ClipboardList className="w-10 h-10" />,
-  layers: <Layers className="w-10 h-10" />,
-  monitor: <Monitor className="w-10 h-10" />,
+  layers: <Layers className="w-8 h-8 text-blue-700" />,
+  factory: <Factory className="w-8 h-8 text-blue-700" />,
+  building: <Building2 className="w-8 h-8 text-blue-700" />,
+  clipboard: <ClipboardList className="w-8 h-8 text-blue-700" />,
+  activity: <Activity className="w-8 h-8 text-blue-700" />,
+  grid: <Grid3X3 className="w-8 h-8 text-blue-700" />,
+  monitor: <Monitor className="w-8 h-8 text-blue-700" />,
+  briefcase: <Briefcase className="w-8 h-8 text-blue-700" />
 };
 
-const activities = [
-  'Process and Thermal Design Review (API 530)',
-  'Finite Element Method (FEM) & Fatigue Analysis',
-  'STAAD.Pro 3D Structural Frame Analysis',
-  'Refractory Insulation Anchor & Hook Layout Design',
-  'Tekla 3D Detailing & NC DSTV File Export',
-  'Piping stress analysis and nozzle loading checking',
-  'Preparation of Approved for Construction (AFC) Shop Drawings',
-  'Erection Staging & Rigging Crane Support Engineering',
-];
-
-const specialisms = [
-  'Hydrotreater (DHDT) & Hydrodesulfurization (HDS) Fired Heaters',
-  'Vertical Cylindrical & Box Fired Heater Casing structures',
-  'Finned Convection Sections & Intermediate Tube Support Plates',
-  'Refinery Piping Isometric & Nozzle orientaton layouts',
-  'Self-Supporting Stack Chimneys with Helical Wind Strakes',
-  'High-Temperature Header Boxes & Quick-Access swing doors',
-  'Refining Cold Box and Compressor Dynamic Concrete Foundations',
-  'Heavy Industrial Warehouse Sheds & Crane Runway Girders',
-  'Multi-tier Circular Platforms & Staircase Access support towers',
+// Fallback services if database call fails
+const fallbackServices = [
+  { id: 1, title: 'Blueprint Design', description: 'Comprehensive 2D/3D plant layouts, piping isometrics, and mechanical drawings.', icon: 'layers' },
+  { id: 2, title: 'Industrial Design & Support', description: 'Casing detailing, coil layout, and fabrication drawings for fired heaters and vessels.', icon: 'factory' },
+  { id: 3, title: 'Engineering & Architecture Design', description: 'Civil and structural design, pile foundations, and load calculations under IS codes.', icon: 'building' },
+  { id: 4, title: 'Construction Supervision', description: 'On-site technical inspection, bolt alignments, structural plumb audits, and safety checks.', icon: 'clipboard' },
+  { id: 5, title: 'Municipality Relation Services', description: 'Liaisoning, municipal drawings, structural stability certificates, and regulatory approvals.', icon: 'activity' },
+  { id: 6, title: 'Remaining Life Assessment (RLA)', description: 'Ultrasonic inspections, non-destructive testing (NDT), and structural integrity assessments.', icon: 'grid' },
+  { id: 7, title: 'Software & AI Solutions', description: 'Tekla detailing macros, custom structural analysis plugins, and automated drawing tools.', icon: 'monitor' },
+  { id: 8, title: "Project Management & Owner's Engineering", description: "Project scheduling, vendor coordination, procurement vetting, and quality control audits.", icon: 'briefcase' }
 ];
 
 export default function Expertise() {
-  const { data: services, isLoading } = useQuery({
-    queryKey: ['services'],
+  const { data: apiServices, isLoading } = useQuery({
+    queryKey: ['/api/services'],
     queryFn: getServices,
   });
 
+  const services = apiServices || fallbackServices;
+
+  // Group services into categories
+  const categories = [
+    {
+      name: "Engineering Design",
+      desc: "Detailed drafting, layout planning, and civil-structural modeling.",
+      services: services.filter(s => [1, 3].includes(s.id))
+    },
+    {
+      name: "Industrial Engineering",
+      desc: "Specialized thermodynamic design and high-temperature mechanical detailing.",
+      services: services.filter(s => [2, 7].includes(s.id))
+    },
+    {
+      name: "Consultancy",
+      desc: "Technical site supervision, regulatory approvals, and owner's engineering.",
+      services: services.filter(s => [4, 5, 8].includes(s.id))
+    },
+    {
+      name: "Digital Engineering",
+      desc: "Non-destructive health assessment and structural integrity analysis.",
+      services: services.filter(s => [6].includes(s.id))
+    }
+  ];
+
   return (
-    <div className="w-full">
+    <div className="w-full bg-white">
+      {/* HEADER */}
       <section className="bg-[#0a1628] text-white py-20 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <svg width="100%" height="100%">
             <defs>
-              <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <pattern id="services_grid" width="60" height="60" patternUnits="userSpaceOnUse">
                 <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="1" />
               </pattern>
             </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
+            <rect width="100%" height="100%" fill="url(#services_grid)" />
           </svg>
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Our Services</p>
-            <h1 className="text-5xl md:text-6xl font-bold max-w-2xl leading-tight">
-              Engineering & Design Services
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight max-w-2xl">
+              Engineering & Detailing Services
             </h1>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      {/* CATEGORIZED SERVICES GRID */}
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-[#0a1628]">Core Engineering Services</h2>
-          </motion.div>
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[...Array(6)].map((_, i) => <Skeleton key={i} className="h-40" />)}
+              {[...Array(6)].map((_, i) => <Skeleton key={i} className="h-44" />)}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200">
-              {services?.map((svc, i) => (
-                <motion.div
-                  key={svc.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.07 }}
-                  className="bg-white p-10 hover:bg-[#0a1628] hover:text-white group transition-colors duration-300 flex flex-col"
-                >
-                  <div className="text-[#43648e] group-hover:text-white/60 mb-6 transition-colors">
-                    {serviceIcons[svc.icon] || <Building2 className="w-10 h-10" />}
+            <div className="space-y-16">
+              {categories.map((cat, idx) => (
+                <div key={idx} className="border-b border-gray-200 pb-12 last:border-0 last:pb-0">
+                  <div className="mb-8">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#43648e] block mb-1">Category 0{idx+1}</span>
+                    <h2 className="text-2xl font-bold text-[#0a1628] mb-2">{cat.name}</h2>
+                    <p className="text-xs text-gray-400">{cat.desc}</p>
                   </div>
-                  <h3 className="text-xl font-bold text-[#0a1628] group-hover:text-white mb-4 transition-colors">{svc.title}</h3>
-                  <p className="text-sm text-gray-500 group-hover:text-white/70 leading-relaxed transition-colors mb-6 flex-grow">{svc.description}</p>
-                  <div>
-                    <Link href={`/contact?service=${encodeURIComponent(svc.title)}`}>
-                      <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#43648e] group-hover:text-white transition-colors cursor-pointer border-b border-transparent hover:border-current pb-0.5">
-                        Book Service &rarr;
-                      </span>
-                    </Link>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {cat.services.map((svc) => (
+                      <motion.div
+                        key={svc.id}
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.35 }}
+                        className="bg-white p-8 border border-gray-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow duration-200 group"
+                      >
+                        <div>
+                          <div className="w-12 h-12 bg-blue-50 text-blue-700 flex items-center justify-center rounded-sm mb-6 group-hover:bg-[#0a1628] group-hover:text-white transition-colors duration-300">
+                            {serviceIcons[svc.icon] || <Cpu className="w-6 h-6" />}
+                          </div>
+                          <h3 className="text-base font-bold text-[#0a1628] mb-3 leading-snug">{svc.title}</h3>
+                          <p className="text-xs text-gray-500 leading-relaxed mb-6">{svc.description}</p>
+                        </div>
+                        <Link href={`/contact?service=${encodeURIComponent(svc.title)}`}>
+                          <span className="text-[10px] font-bold uppercase text-gray-400 group-hover:text-blue-700 transition-colors cursor-pointer flex items-center gap-1">
+                            Book Service &rarr;
+                          </span>
+                        </Link>
+                      </motion.div>
+                    ))}
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           )}
         </div>
       </section>
 
+      {/* CORE SPECIALISMS (What we design) */}
       <section className="py-20 bg-[#0a1628] text-white">
-        <div className="container mx-auto px-4 grid md:grid-cols-2 gap-16">
-          <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/40 mb-6">Engineering Activities</p>
-            <h2 className="text-3xl font-bold mb-8">What We Do</h2>
-            <div className="space-y-3">
-              {activities.map((act) => (
-                <div key={act} className="flex items-start gap-3 text-sm text-white/70">
-                  <div className="w-1 h-1 rounded-full bg-[#43648e] mt-2 shrink-0" />
-                  <span>{act}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/40 mb-6">Engineering Specialisms</p>
-            <h2 className="text-3xl font-bold mb-8">What We Design</h2>
-            <div className="space-y-3">
-              {specialisms.map((spec) => (
-                <div key={spec} className="flex items-start gap-3 text-sm text-white/70">
-                  <div className="w-1 h-1 rounded-full bg-[#43648e] mt-2 shrink-0" />
-                  <span>{spec}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-center mb-12">
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-[#43648e] mb-3">Software Expertise</p>
-            <h2 className="text-3xl font-bold text-[#0a1628]">Industry-Leading Tools</h2>
-          </motion.div>
-          <div className="flex flex-wrap items-center justify-center gap-10">
-            {['STAAD.Pro', 'ANSYS', 'Tekla Structures', 'AutoCAD', 'CATIA'].map((tool, i) => (
-              <motion.div
-                key={tool}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: i * 0.07 }}
-                className="text-2xl font-bold text-[#0a1628]/30 hover:text-[#0a1628] transition-colors cursor-default"
-              >
-                {tool}
-              </motion.div>
-            ))}
+        <div className="container mx-auto px-4 grid md:grid-cols-3 gap-12">
+          <div>
+            <div className="mb-4 text-blue-400"><Compass className="w-8 h-8" /></div>
+            <h3 className="text-lg font-bold mb-3">Mechanical Detailing</h3>
+            <p className="text-xs text-white/50 leading-relaxed">
+              High-temperature radiant casing sizing, horizontal finned convection section modules, quick-access header boxes, and stack draft dampers engineered under ASME/API standards.
+            </p>
           </div>
-        </div>
-      </section>
-
-      {/* BOOK CONSULTATION CTA */}
-      <section className="py-20 bg-gradient-to-br from-[#0a1628] to-[#12233c] text-white border-t border-white/10 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03]">
-          <svg width="100%" height="100%">
-            <defs>
-              <pattern id="grid_cta" width="60" height="60" patternUnits="userSpaceOnUse">
-                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="1" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid_cta)" />
-          </svg>
-        </div>
-        <div className="container mx-auto px-4 relative z-10 max-w-2xl">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Start Your Project Today</p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Need Professional Engineering Services?</h2>
-          <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8">
-            Whether you need a structural analysis, blueprint design, or construction supervision, our engineering team is ready to deliver cost-effective and quality solutions.
-          </p>
-          <Link href="/contact">
-            <button className="bg-white text-[#0a1628] px-8 py-4 text-sm font-bold uppercase tracking-wider hover:bg-white/90 transition-colors shadow-lg">
-              Book a Free Consultation Now &rarr;
-            </button>
-          </Link>
+          <div>
+            <div className="mb-4 text-blue-400"><Landmark className="w-8 h-8" /></div>
+            <h3 className="text-lg font-bold mb-3">Structural Detailing</h3>
+            <p className="text-xs text-white/50 leading-relaxed">
+              Complete Tekla modeling for refinery portal frames, stair tower stringers, platforms, handrails, and dynamic dynamic concrete pile foundations for compressors.
+            </p>
+          </div>
+          <div>
+            <div className="mb-4 text-blue-400"><Layers className="w-8 h-8" /></div>
+            <h3 className="text-lg font-bold mb-3">Engineering Drawings</h3>
+            <p className="text-xs text-white/50 leading-relaxed">
+              Delivering Approved-for-Construction (AFC) packages containing piping isometrics, base load schedules, member part files, and structural erection guides.
+            </p>
+          </div>
         </div>
       </section>
     </div>

@@ -45,6 +45,12 @@ const services = [
     description: 'Developing custom automation scripts for structural analysis, drafting plugins, Tekla macros, and BIM model coordination using Autodesk Navisworks to automate steel detailing, detect spatial clashes, and optimize part lists.',
     icon: 'monitor',
   },
+  {
+    id: 8,
+    title: "Project Management & Owner's Engineering",
+    description: "Providing comprehensive owner's engineering support, procurement package vetting, project schedules (MSP/Primavera), vendor QA/QC coordination, and third-party inspection alignment for refinery and industrial power projects.",
+    icon: 'briefcase',
+  }
 ];
 
 router.get('/', (_req, res) => {
