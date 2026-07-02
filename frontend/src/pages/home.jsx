@@ -128,10 +128,10 @@ export default function Home() {
               Engineering Excellence Since 2002
             </span>
             <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-6">
-              Engineering the Future with Strength and Innovation.
+              Industrial Fired Heaters & Structural Engineering Solutions
             </h1>
             <p className="text-white/60 text-sm leading-relaxed mb-8 max-w-sm">
-              Structural, Industrial & Project Engineering Solutions that deliver Safety, Quality and Value.
+              Providing full-scale mechanical and structural engineering consultancy—from thermal design and FEA to complete shop detailing drawing packages.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/contact">
@@ -307,6 +307,85 @@ export default function Home() {
               ))}
             </div>
             <p className="text-center text-xs text-gray-400 italic">and many more...</p>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* FEATURED CASE STUDY */}
+      <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]">
+          <svg width="100%" height="100%">
+            <defs>
+              <pattern id="case_grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="1" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#case_grid)" />
+          </svg>
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <AnimatedSection>
+            <div className="grid lg:grid-cols-12 gap-12 items-center">
+              <div className="lg:col-span-7">
+                <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-blue-400 mb-4">
+                  Refinery Fired Heater Case Study
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-6">
+                  EIL-Specified Hydrotreater (DHDT) & Hydrodesulfurization (HDS) Fired Heater Detailing
+                </h2>
+                <div className="w-10 h-0.5 bg-blue-500 mb-6" />
+                <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                  SLS delivered complete structural steel and mechanical piping detailing for the DHDT and HDS Fired Heaters at the CPCL refinery project. Detailing complied with stringent API 530, ASME Sec VIII, and Engineers India Limited (EIL) standard design guidelines.
+                </p>
+                <div className="grid md:grid-cols-2 gap-6 mb-8 text-xs text-gray-400">
+                  <div className="border-l-2 border-blue-500 pl-4">
+                    <h4 className="font-bold text-white mb-1">Thermal & Structural Criteria</h4>
+                    <p>Designed to withstand 750°C operating temperatures, high wind vortices, and seismic dynamic reactions using finite element analysis (FEA).</p>
+                  </div>
+                  <div className="border-l-2 border-blue-500 pl-4">
+                    <h4 className="font-bold text-white mb-1">Refinery Delivery Package</h4>
+                    <p>Complete Approved-for-Construction (AFC) drawings including casing plate details, platform structures, and DSTV NC numerical data for steel fabrication.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <Link href="/gallery">
+                    <span className="bg-blue-600 text-white px-6 py-3 text-xs font-bold uppercase tracking-wider hover:bg-blue-700 transition-colors shadow-md cursor-pointer">
+                      Explore Technical Drawings &rarr;
+                    </span>
+                  </Link>
+                  <Link href="/contact">
+                    <span className="border border-white/20 text-white px-6 py-3 text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-colors cursor-pointer">
+                      Discuss Fired Heater Project
+                    </span>
+                  </Link>
+                </div>
+              </div>
+              <div className="lg:col-span-5 bg-white/5 border border-white/10 p-6 rounded-sm">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-blue-400 block mb-4">Engineering Scope & Deliverables</span>
+                <ul className="space-y-3.5 text-xs text-gray-300">
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                    <span>Vertical Cylindrical Radiant Casing & Floor Panels (6700mm Casing Dia)</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                    <span>Convection Section Modules & Intermediate Support Plate detailing</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                    <span>60M Tall Exhaust Chimney Stack with wind strakes detailing</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                    <span>Circular Platforms & Staircase support steel towers (IS 800)</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                    <span>Tube Header Boxes with quick-open hinges and safety access doors</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </AnimatedSection>
         </div>
       </section>

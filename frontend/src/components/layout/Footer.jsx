@@ -42,6 +42,7 @@ export function Footer() {
               { href: '/about', label: 'About Us' },
               { href: '/services', label: 'Services' },
               { href: '/projects', label: 'Projects' },
+              { href: '/gallery', label: 'Gallery' },
               { href: '/vision', label: 'Vision' },
               { href: '/contact', label: 'Contact' },
               { href: '/admin', label: 'Admin Portal' },

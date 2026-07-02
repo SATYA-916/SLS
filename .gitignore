@@ -29,3 +29,7 @@ Thumbs.db
 # Misc
 coverage/
 .cache/
+
+# Proprietary Client Drawings
+proprietary client/
+*.pdf

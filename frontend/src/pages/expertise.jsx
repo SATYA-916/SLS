@@ -16,26 +16,26 @@ const serviceIcons = {
 };
 
 const activities = [
-  'Conceptualisation & Feasibility Studies',
-  'Analysis & Structural Design',
-  'Preparation of Bill of Quantities',
-  'Schedule of Items',
-  'Tender Specifications with Technical Specifications',
-  'Construction & Manufacturing Drawings',
-  'Site Inspection & Supervision',
-  'Evaluation of Sub-Vendor Offers & Recommendations',
+  'Process and Thermal Design Review (API 530)',
+  'Finite Element Method (FEM) & Fatigue Analysis',
+  'STAAD.Pro 3D Structural Frame Analysis',
+  'Refractory Insulation Anchor & Hook Layout Design',
+  'Tekla 3D Detailing & NC DSTV File Export',
+  'Piping stress analysis and nozzle loading checking',
+  'Preparation of Approved for Construction (AFC) Shop Drawings',
+  'Erection Staging & Rigging Crane Support Engineering',
 ];
 
 const specialisms = [
-  'Buildings (Steel & RCC)',
-  'Warehouses & Industrial Sheds',
-  'Boilers & Pressure Vessels',
-  'Fired Heaters',
-  'Storage Vessels & Heat Exchangers',
-  'FEM Analysis',
-  'Foundations & Civil Works',
-  'Compressor Houses',
-  'Steel & RCC Chimneys',
+  'Hydrotreater (DHDT) & Hydrodesulfurization (HDS) Fired Heaters',
+  'Vertical Cylindrical & Box Fired Heater Casing structures',
+  'Finned Convection Sections & Intermediate Tube Support Plates',
+  'Refinery Piping Isometric & Nozzle orientaton layouts',
+  'Self-Supporting Stack Chimneys with Helical Wind Strakes',
+  'High-Temperature Header Boxes & Quick-Access swing doors',
+  'Refining Cold Box and Compressor Dynamic Concrete Foundations',
+  'Heavy Industrial Warehouse Sheds & Crane Runway Girders',
+  'Multi-tier Circular Platforms & Staircase Access support towers',
 ];
 
 export default function Expertise() {

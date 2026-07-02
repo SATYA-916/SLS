@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -111,7 +112,7 @@ export default function Projects() {
                   </span>
                   <h3 className="text-base font-bold text-[#0a1628] mb-2 leading-snug">{proj.title}</h3>
                   <p className="text-xs text-gray-500 leading-relaxed flex-grow mb-4">
-                    {proj.description.substring(0, 100)}...
+                    {proj.description.substring(0, 140)}...
                   </p>
                   <div className="flex items-center justify-between text-xs">
                     {proj.client && <span className="text-[#43648e] font-medium">{proj.client}</span>}
@@ -121,6 +122,27 @@ export default function Projects() {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* GALLERY REDIRECT BANNER */}
+      <section className="py-16 bg-[#0a1628] text-white border-t border-white/10 text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]">
+          <svg width="100%" height="100%">
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+        </div>
+        <div className="container mx-auto px-4 relative z-10 max-w-xl">
+          <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/50 mb-3 block">Engineering Drawing Office</span>
+          <h3 className="text-2xl font-bold mb-4">Explore Our Fired Heater Drawings Gallery</h3>
+          <p className="text-white/60 text-xs leading-relaxed mb-6">
+            Review detailed drawings of convection section assemblies, radiant sections, stack vortex strakes, platform layout details, and structural support frames.
+          </p>
+          <Link href="/gallery">
+            <span className="bg-white text-[#0a1628] px-6 py-3 text-xs font-bold uppercase tracking-wider hover:bg-white/90 transition-colors shadow-md cursor-pointer inline-block">
+              View Drawings & Schematics Gallery &rarr;
+            </span>
+          </Link>
         </div>
       </section>
 

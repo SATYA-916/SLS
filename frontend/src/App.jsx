@@ -10,6 +10,7 @@ import Projects from '@/pages/projects';
 import Software from '@/pages/software';
 import Vision from '@/pages/vision';
 import Contact from '@/pages/contact';
+import Gallery from '@/pages/gallery';
 import AdminLogin from '@/pages/admin-login';
 import AdminDashboard from '@/pages/admin-dashboard';
 import NotFound from '@/pages/not-found';
@@ -43,6 +44,9 @@ function Router() {
         </Route>
         <Route path="/projects">
           <Layout><Projects /></Layout>
+        </Route>
+        <Route path="/gallery">
+          <Layout><Gallery /></Layout>
         </Route>
         <Route path="/software">
           <Layout><Software /></Layout>
