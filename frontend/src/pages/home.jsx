@@ -29,12 +29,12 @@ const serviceIcons = {
 };
 
 const clients = [
-  { name: 'L&T', logo: '/logo_lnt_1782066190911.png' },
-  { name: 'BHEL', logo: '/logo_bhel_1782066215811.png' },
-  { name: 'HPCL', logo: '/logo_lnt_1782066190911.png' }, // Fallbacks
-  { name: 'DOOSAN', logo: '/logo_bhel_1782066215811.png' },
-  { name: 'Air Liquide', logo: '/logo_lnt_1782066190911.png' },
-  { name: 'PETRON', logo: '/logo_bhel_1782066215811.png' }
+  { name: 'L&T', logo: '/logo_lnt.png' },
+  { name: 'BHEL', logo: '/logo_bhel.png' },
+  { name: 'HPCL', logo: '/logo_lnt.png' }, // Fallbacks
+  { name: 'DOOSAN', logo: '/logo_bhel.png' },
+  { name: 'Air Liquide', logo: '/logo_lnt.png' },
+  { name: 'PETRON', logo: '/logo_bhel.png' }
 ];
 
 export default function Home() {
@@ -137,7 +137,7 @@ export default function Home() {
         
         <div className="relative bg-[#f8f9fa] hidden md:block overflow-hidden">
           <img
-            src="/hero_industrial_plant_1782063816277.png"
+            src="/hero_industrial_plant.png"
             alt="Refinery Plant"
             className="w-full h-full object-cover object-center opacity-95"
           />
