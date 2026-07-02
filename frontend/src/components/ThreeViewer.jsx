@@ -113,7 +113,7 @@ export default function ThreeViewer({ type }) {
           modelGroup.add(transMesh);
 
           // Convection section (rectangular top)
-          const convGeo = new THREE.BoxGeometry(3.8, 5, 3.8);
+          const convGeo = new THREE.BoxGeometry(3.2, 5, 3.2);
           const convMesh = new THREE.Mesh(convGeo, blueprintMat);
           convMesh.position.y = 5.5;
           modelGroup.add(convMesh);
@@ -123,10 +123,26 @@ export default function ThreeViewer({ type }) {
           convWire.scale.setScalar(1.01);
           modelGroup.add(convWire);
 
+          // Header Boxes on the sides of the Convection Section (Left & Right)
+          const hBoxGeo = new THREE.BoxGeometry(0.6, 4.8, 3.2);
+          const hBoxLeft = new THREE.Mesh(hBoxGeo, blueprintMat);
+          hBoxLeft.position.set(-1.9, 5.5, 0);
+          modelGroup.add(hBoxLeft);
+
+          const hBoxRight = new THREE.Mesh(hBoxGeo, blueprintMat);
+          hBoxRight.position.set(1.9, 5.5, 0);
+          modelGroup.add(hBoxRight);
+
+          // Off-take duct connecting Convection Section to Stack
+          const ductGeo = new THREE.CylinderGeometry(1.0, 1.4, 1.5, 16);
+          const ductMesh = new THREE.Mesh(ductGeo, stackMat);
+          ductMesh.position.y = 8.55;
+          modelGroup.add(ductMesh);
+
           // Stack chimney (thin tall tube)
           const stackGeo = new THREE.CylinderGeometry(0.8, 1, 9, 16);
           const stackMesh = new THREE.Mesh(stackGeo, stackMat);
-          stackMesh.position.y = 12.5;
+          stackMesh.position.y = 13.8;
           modelGroup.add(stackMesh);
 
           // Circular Platforms
@@ -219,8 +235,21 @@ export default function ThreeViewer({ type }) {
           }
           break;
 
-        case 'roof': // Refinery Roof Structure
-          // Center opening ring
+        case 'roof': // Refinery Roof Structure (Conical Shell & Rafters)
+          // Conical shell
+          const coneGeo = new THREE.CylinderGeometry(1.5, 5, 2, 32, 1, true);
+          const coneMesh = new THREE.Mesh(coneGeo, new THREE.MeshStandardMaterial({
+            color: 0x43648e,
+            roughness: 0.5,
+            metalness: 0.7,
+            transparent: true,
+            opacity: 0.75,
+            side: THREE.DoubleSide
+          }));
+          coneMesh.position.y = -1;
+          modelGroup.add(coneMesh);
+
+          // Center opening ring (collar)
           const ringGeo = new THREE.CylinderGeometry(1.5, 1.5, 0.5, 32);
           const centerRing = new THREE.Mesh(ringGeo, blueprintMat);
           modelGroup.add(centerRing);
@@ -306,33 +335,94 @@ export default function ThreeViewer({ type }) {
           }
           break;
 
-        case 'staircase': // Stair Tower Assembly
-          // 4 Main legs of the tower
-          const legGeo = new THREE.BoxGeometry(0.15, 12, 0.15);
-          for (let x of [-2, 2]) {
-            for (let z of [-2, 2]) {
-              const leg = new THREE.Mesh(legGeo, blueprintMat);
-              leg.position.set(x, 0, z);
-              modelGroup.add(leg);
+        case 'staircase': // Stair Tower Assembly (Rectangular Structural Stair Tower - CORRECTED)
+          // 4 Main columns of the rectangular tower
+          const tColGeo = new THREE.BoxGeometry(0.2, 12, 0.2);
+          for (let x of [-1.5, 1.5]) {
+            for (let z of [-1.5, 1.5]) {
+              const col = new THREE.Mesh(tColGeo, blueprintMat);
+              col.position.set(x, 0, z);
+              modelGroup.add(col);
             }
           }
 
-          // Dynamic stair steps climbing up
-          const stepGeo = new THREE.BoxGeometry(0.8, 0.05, 0.25);
-          for (let i = 0; i < 24; i++) {
-            const h = -5.5 + (i * 0.48);
-            const angle = (i / 8) * Math.PI * 2;
-            const step = new THREE.Mesh(stepGeo, stackMat);
+          // Horizontal framing and diagonal bracing on tower faces
+          for (let h of [-3.5, 0, 3.5]) {
+            const hBeamGeo = new THREE.BoxGeometry(3.0, 0.15, 0.15);
             
-            // Spiral distribution around center
-            const r = 1.2;
-            step.position.set(Math.cos(angle) * r, h, Math.sin(angle) * r);
-            step.rotation.y = -angle;
-            modelGroup.add(step);
+            // X-direction beams
+            const hb1 = new THREE.Mesh(hBeamGeo, blueprintMat);
+            hb1.position.set(0, h, -1.5);
+            modelGroup.add(hb1);
+            const hb2 = new THREE.Mesh(hBeamGeo, blueprintMat);
+            hb2.position.set(0, h, 1.5);
+            modelGroup.add(hb2);
+
+            // Z-direction beams
+            const hb3 = new THREE.Mesh(hBeamGeo, blueprintMat);
+            hb3.position.set(-1.5, h, 0);
+            hb3.rotation.y = Math.PI / 2;
+            modelGroup.add(hb3);
+            const hb4 = new THREE.Mesh(hBeamGeo, blueprintMat);
+            hb4.position.set(1.5, h, 0);
+            hb4.rotation.y = Math.PI / 2;
+            modelGroup.add(hb4);
           }
+
+          // Landing platforms (rectangular plates) at levels
+          const landingGeo = new THREE.BoxGeometry(1.5, 0.08, 1.5);
+          const landings = [
+            { x: -0.75, y: -3.5, z: -0.75 },
+            { x: 0.75, y: 0, z: 0.75 },
+            { x: -0.75, y: 3.5, z: -0.75 }
+          ];
+
+          landings.forEach(l => {
+            const platform = new THREE.Mesh(landingGeo, stackMat);
+            platform.position.set(l.x, l.y, l.z);
+            modelGroup.add(platform);
+          });
+
+          // Straight stair runs connecting the platforms in a zig-zag configuration
+          const createStairRun = (yStart, yEnd, xStart, xEnd, zPos) => {
+            const length = Math.sqrt((yEnd - yStart)**2 + (xEnd - xStart)**2);
+            const angle = Math.atan2(yEnd - yStart, xEnd - xStart);
+            
+            // Stringers
+            const stringerGeo = new THREE.BoxGeometry(length, 0.2, 0.05);
+            const stringer1 = new THREE.Mesh(stringerGeo, blueprintMat);
+            stringer1.position.set((xStart + xEnd)/2, (yStart + yEnd)/2, zPos - 0.35);
+            stringer1.rotation.z = angle;
+            modelGroup.add(stringer1);
+
+            const stringer2 = stringer1.clone();
+            stringer2.position.z = zPos + 0.35;
+            modelGroup.add(stringer2);
+
+            // Steps
+            const numSteps = 10;
+            const stepBox = new THREE.BoxGeometry(0.7, 0.03, 0.2);
+            for (let i = 0; i <= numSteps; i++) {
+              const t = i / numSteps;
+              const step = new THREE.Mesh(stepBox, stackMat);
+              step.position.set(
+                xStart + (xEnd - xStart) * t,
+                yStart + (yEnd - yStart) * t + 0.05,
+                zPos
+              );
+              modelGroup.add(step);
+            }
+          };
+
+          // Run 1: Base to Mid Landing
+          createStairRun(-5.5, -3.5, 0.8, -0.8, -0.75);
+          // Run 2: Mid Landing to Upper Landing
+          createStairRun(-3.5, 0, -0.8, 0.8, 0.0);
+          // Run 3: Upper Landing to Top Platform
+          createStairRun(0, 3.5, 0.8, -0.8, 0.75);
           break;
 
-        case 'headerbox': // Tube Header Box
+        case 'headerbox': // Tube Header Box (Corrected alignment)
           // Casing box
           const boxGeo = new THREE.BoxGeometry(4, 5, 2);
           const boxMesh = new THREE.Mesh(boxGeo, new THREE.MeshStandardMaterial({
@@ -348,20 +438,32 @@ export default function ThreeViewer({ type }) {
           const boxFrame2 = new THREE.BoxHelper(boxMesh, 0x58c4ff);
           modelGroup.add(boxFrame2);
 
-          // U-bends connecting horizontal coils (pipes coming out and looping back)
+          // Horizontal tube sheets with tube ends sticking out
+          const sheetGeo = new THREE.BoxGeometry(3.6, 0.1, 1.8);
+          for (let y of [-2.0, 2.0]) {
+            const sheet = new THREE.Mesh(sheetGeo, stackMat);
+            sheet.position.y = y;
+            modelGroup.add(sheet);
+          }
+
+          // Horizontal tubes and return U-bends (ASME specifications)
           const bendMat = new THREE.MeshStandardMaterial({ color: 0xe63946, roughness: 0.3 });
           for (let y = -1.8; y <= 1.8; y += 1.2) {
-            // Torus / half ring loops representing pipe U-bends
-            const torusGeo = new THREE.TorusGeometry(0.5, 0.18, 12, 24, Math.PI);
-            const torusMesh = new THREE.Mesh(torusGeo, bendMat);
-            torusMesh.position.set(-0.6, y, 0.4);
-            torusMesh.rotation.y = Math.PI / 2;
-            modelGroup.add(torusMesh);
+            // Tubes protruding
+            const tube1 = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.8, 16), coilMat);
+            tube1.rotation.x = Math.PI / 2;
+            tube1.position.set(-0.8, y, -0.6);
+            modelGroup.add(tube1);
 
-            const torusMesh2 = new THREE.Mesh(torusGeo, bendMat);
-            torusMesh2.position.set(0.6, y, 0.4);
-            torusMesh2.rotation.y = -Math.PI / 2;
-            modelGroup.add(torusMesh2);
+            const tube2 = tube1.clone();
+            tube2.position.set(0.8, y, -0.6);
+            modelGroup.add(tube2);
+
+            // Torus loop representing the return U-bend connecting the two tube runs
+            const torusGeo = new THREE.TorusGeometry(0.8, 0.18, 12, 24, Math.PI);
+            const torusMesh = new THREE.Mesh(torusGeo, bendMat);
+            torusMesh.position.set(0, y, -0.2);
+            modelGroup.add(torusMesh);
           }
 
           // Door hinges detailing on sides
@@ -375,36 +477,36 @@ export default function ThreeViewer({ type }) {
           modelGroup.add(door2);
           break;
 
-        case 'framing': // Main Support Steelwork
-          // Base support frame
-          const baseGeo = new THREE.BoxGeometry(6, 0.15, 6);
-          const basePlate = new THREE.Mesh(baseGeo, blueprintMat);
-          basePlate.position.y = -4.9;
+        case 'framing': // Main Support Steelwork (Corrected Portal Frame Configuration)
+          // Heavy bottom concrete base plate foundation
+          const baseGeo = new THREE.BoxGeometry(6.5, 0.4, 6.5);
+          const basePlate = new THREE.Mesh(baseGeo, stackMat);
+          basePlate.position.y = -4.8;
           modelGroup.add(basePlate);
 
-          // 4 Heavy H-columns (boxes)
-          const colGeo = new THREE.BoxGeometry(0.4, 10, 0.4);
+          // 4 Heavy H-columns (boxes) arranged as a portal frame supporting the radiant chamber load
+          const colGeo = new THREE.BoxGeometry(0.4, 9, 0.4);
           const cols = [];
           for (let x of [-2.4, 2.4]) {
             for (let z of [-2.4, 2.4]) {
               const col = new THREE.Mesh(colGeo, blueprintMat);
-              col.position.set(x, 0, z);
+              col.position.set(x, -0.3, z);
               modelGroup.add(col);
               cols.push(col);
             }
           }
 
-          // Horizontal portal beams connecting columns
-          const beamGeo = new THREE.BoxGeometry(4.8, 0.3, 0.25);
+          // Top portal framing beams
+          const beamGeo = new THREE.BoxGeometry(4.8, 0.4, 0.25);
           const crossBeams = [
-            { x: 0, y: 4.8, z: -2.4, rotY: 0 },
-            { x: 0, y: 4.8, z: 2.4, rotY: 0 },
-            { x: -2.4, y: 4.8, z: 0, rotY: Math.PI / 2 },
-            { x: 2.4, y: 4.8, z: 0, rotY: Math.PI / 2 },
-            { x: 0, y: 0, z: -2.4, rotY: 0 },
-            { x: 0, y: 0, z: 2.4, rotY: 0 },
-            { x: -2.4, y: 0, z: 0, rotY: Math.PI / 2 },
-            { x: 2.4, y: 0, z: 0, rotY: Math.PI / 2 },
+            { x: 0, y: 4.2, z: -2.4, rotY: 0 },
+            { x: 0, y: 4.2, z: 2.4, rotY: 0 },
+            { x: -2.4, y: 4.2, z: 0, rotY: Math.PI / 2 },
+            { x: 2.4, y: 4.2, z: 0, rotY: Math.PI / 2 },
+            { x: 0, y: -0.2, z: -2.4, rotY: 0 },
+            { x: 0, y: -0.2, z: 2.4, rotY: 0 },
+            { x: -2.4, y: -0.2, z: 0, rotY: Math.PI / 2 },
+            { x: 2.4, y: -0.2, z: 0, rotY: Math.PI / 2 },
           ];
 
           crossBeams.forEach(b => {
@@ -414,17 +516,17 @@ export default function ThreeViewer({ type }) {
             modelGroup.add(beam);
           });
 
-          // Diagonal structural steel bracing members (lines/thin bars)
-          const braceGeo = new THREE.BoxGeometry(0.08, 6.8, 0.08);
+          // Diagonal structural steel bracing members
+          const braceGeo = new THREE.BoxGeometry(0.08, 6.2, 0.08);
           const braces = [
-            { x: 0, y: 2.4, z: -2.4, rotY: 0, rotZ: 0.65 },
-            { x: 0, y: 2.4, z: -2.4, rotY: 0, rotZ: -0.65 },
-            { x: 0, y: 2.4, z: 2.4, rotY: 0, rotZ: 0.65 },
-            { x: 0, y: 2.4, z: 2.4, rotY: 0, rotZ: -0.65 },
-            { x: -2.4, y: 2.4, z: 0, rotY: Math.PI / 2, rotZ: 0.65 },
-            { x: -2.4, y: 2.4, z: 0, rotY: Math.PI / 2, rotZ: -0.65 },
-            { x: 2.4, y: 2.4, z: 0, rotY: Math.PI / 2, rotZ: 0.65 },
-            { x: 2.4, y: 2.4, z: 0, rotY: Math.PI / 2, rotZ: -0.65 },
+            { x: 0, y: 2.0, z: -2.4, rotY: 0, rotZ: 0.65 },
+            { x: 0, y: 2.0, z: -2.4, rotY: 0, rotZ: -0.65 },
+            { x: 0, y: 2.0, z: 2.4, rotY: 0, rotZ: 0.65 },
+            { x: 0, y: 2.0, z: 2.4, rotY: 0, rotZ: -0.65 },
+            { x: -2.4, y: 2.0, z: 0, rotY: Math.PI / 2, rotZ: 0.65 },
+            { x: -2.4, y: 2.0, z: 0, rotY: Math.PI / 2, rotZ: -0.65 },
+            { x: 2.4, y: 2.0, z: 0, rotY: Math.PI / 2, rotZ: 0.65 },
+            { x: 2.4, y: 2.0, z: 0, rotY: Math.PI / 2, rotZ: -0.65 },
           ];
 
           braces.forEach(b => {
@@ -476,10 +578,10 @@ export default function ThreeViewer({ type }) {
         default:
           // Fully compiled refinery structural steel tower skeleton
           // Columns
-          const tColGeo = new THREE.BoxGeometry(0.2, 14, 0.2);
+          const frameColGeo = new THREE.BoxGeometry(0.2, 14, 0.2);
           for (let x of [-1.8, 1.8]) {
             for (let z of [-1.8, 1.8]) {
-              const col = new THREE.Mesh(tColGeo, blueprintMat);
+              const col = new THREE.Mesh(frameColGeo, blueprintMat);
               col.position.set(x, -1, z);
               modelGroup.add(col);
             }
