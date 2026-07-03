@@ -1,90 +1,80 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLocation } from 'wouter';
-import { Eye, FileText, ChevronRight, Settings, Shield, Activity, BarChart3, Wrench, Layers, Tag, Calendar, ZoomIn } from 'lucide-react';
+import { Link, useLocation } from 'wouter';
+import { Eye, FileText, ChevronRight, Settings, Shield, Activity, BarChart3, Wrench, Layers, Calendar } from 'lucide-react';
 import ThreeViewer from '@/components/ThreeViewer';
 
-// 1. Technical drawings (cropped screenshots with structural categories)
+// 1. Technical drawings (cropped screenshots)
 const drawings = [
   { 
     title: "General Arrangement Section", 
     file: "general_arrangement.png", 
     desc: "Cross-sectional elevation of the fired heater showing radiant and convection chambers, platform elevations, and foundation connections.", 
     code: "API STD 530 / EIL Specs",
-    service: "Industrial Design & Support",
-    category: "EIL Reference"
+    service: "Industrial Design & Support"
   },
   { 
     title: "Radiant Section Layout", 
     file: "radiant_section_layout.png", 
     desc: "Detailed structural framing and casing plate arrangement of the bottom radiant combustion zone.", 
     code: "ASME Sec VIII / IS 800",
-    service: "Industrial Design & Support",
-    category: "DHDT Heater"
+    service: "Industrial Design & Support"
   },
   { 
     title: "Convection Section Modules", 
     file: "convection_section_layout.png", 
     desc: "Arrangement of tube bundles, structural tube sheets, and intermediate support plates within the convection bank.", 
     code: "ASME Sec II & VIII",
-    service: "Industrial Design & Support",
-    category: "DHDT Heater"
+    service: "Industrial Design & Support"
   },
   { 
     title: "Structural Steel Support", 
     file: "structural_steel_support.png", 
     desc: "Heavy portal frames, column bracing systems, and anchor bolt details designed to stabilize the 60-meter high assembly.", 
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design",
-    category: "DHDT Heater"
+    service: "Engineering & Architecture Design"
   },
   { 
     title: "Stack Section Layout", 
     file: "stack_layout.png", 
     desc: "Exhaust stack detailing including helical strakes for wind vortex shedding, damper controls, and platform hangers.", 
     code: "IS 6533 (Steel Chimneys)",
-    service: "Industrial Design & Support",
-    category: "DHDT Heater"
+    service: "Industrial Design & Support"
   },
   { 
     title: "Header Box Details", 
     file: "header_box_detail.png", 
     desc: "Detailed structural enclosure for pipe return bends, including quick-acting access doors and heat seal plates.", 
     code: "ASME Sec VIII / Refinery Standard",
-    service: "Industrial Design & Support",
-    category: "DHDT Heater"
+    service: "Industrial Design & Support"
   },
   { 
     title: "Heater Platforms Arrangement", 
     file: "heater_platforms.png", 
     desc: "Layout and detailing of circular maintenance platforms at various elevations, incorporating anti-slip gratings.", 
     code: "OSHA / IS 800",
-    service: "Blueprint Design",
-    category: "DHDT Heater"
+    service: "Blueprint Design"
   },
   { 
     title: "Stair Case Detailing", 
     file: "stair_structure.png", 
     desc: "Isometric and elevation drawings of the structural stair tower detailing stringers, treads, and handrail mounts.", 
     code: "IS 800 / OSHA Guidelines",
-    service: "Blueprint Design",
-    category: "DHDT Heater"
+    service: "Blueprint Design"
   },
   { 
     title: "Pressure Parts Detail", 
     file: "pressure_parts_detail.png", 
     desc: "Piping layouts, nozzle schedules, and weld joint detailing for high-pressure hydrocarbon and steam tubes.", 
     code: "ASME B31.3 / API 530",
-    service: "Industrial Design & Support",
-    category: "HDS Heater"
+    service: "Industrial Design & Support"
   },
   { 
     title: "Arch Plate Details", 
     file: "arch_plate_details.png", 
     desc: "Monolithic refractory arch plate lining and retaining anchors designed to withstand high operating temperatures.", 
     code: "ASME Sec VIII / Refractory Spec",
-    service: "Industrial Design & Support",
-    category: "HDS Heater"
+    service: "Industrial Design & Support"
   }
 ];
 
@@ -192,7 +182,7 @@ const illustrations = [
   }
 ];
 
-// 3. Workflow lifecycles
+// 3. Workflow lifecycles (Interactive step data - EXPANDED & HIGHLY DETAILED)
 const workflows = [
   {
     title: "Project Lifecycle",
@@ -377,7 +367,7 @@ const workflows = [
       },
       { 
         name: "Erection Staging", 
-        desc: "Coordinate erection sequence drawings, detailing steel column assembly splits, temporary bracing coordinates, and dynamic lift profiles." 
+        desc: "Coordinate erection sequence drawings, detailing steel column assembly splits, dynamic crane lifting configurations, and temporary guy-wire bracing coordinates." 
       },
       { 
         name: "Steel Assembly", 
@@ -486,33 +476,21 @@ const workflows = [
   }
 ];
 
-const drawingCategories = ['All', 'DHDT Heater', 'HDS Heater', 'EIL Reference'];
-
 export default function Gallery() {
   const [activeTab, setActiveTab] = useState('drawings');
   const [selectedImg, setSelectedImg] = useState(null);
   const [selectedIll, setSelectedIll] = useState(illustrations[0]);
   const [activeWf, setActiveWf] = useState(workflows[0]);
   const [activeWfStep, setActiveWfStep] = useState(0);
-  const [selectedDrawingFilter, setSelectedDrawingFilter] = useState('All');
   const [_, setLocation] = useLocation();
-
-  // Scroll reset: when activeTab changes, scroll back smoothly to the top of the tab container area
-  useEffect(() => {
-    const element = document.getElementById('gallery-tab-section');
-    if (element) {
-      const topOffset = element.getBoundingClientRect().top + window.scrollY - 100;
-      window.scrollTo({ top: topOffset, behavior: 'smooth' });
-    }
-  }, [activeTab]);
 
   const handleBookRedirect = (serviceName) => {
     setLocation('/contact?service=' + encodeURIComponent(serviceName));
   };
 
-  const filteredDrawings = selectedDrawingFilter === 'All'
-    ? drawings
-    : drawings.filter(d => d.category === selectedDrawingFilter);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [activeTab, selectedIll, activeWf]);
 
   return (
     <div className="w-full bg-white">
@@ -542,7 +520,7 @@ export default function Gallery() {
       </section>
 
       {/* TABS CONTROLLER */}
-      <section id="gallery-tab-section" className="border-b border-gray-200 sticky top-16 bg-white z-40 shadow-sm">
+      <section className="border-b border-gray-200 sticky top-16 bg-white z-40 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex gap-8">
             {[
@@ -570,93 +548,68 @@ export default function Gallery() {
       </section>
 
       {/* TAB CONTENT PANEL */}
-      <section className="py-16 bg-gray-50 min-h-[600px]">
+      <section className="py-20 bg-gray-50 min-h-[600px]">
         <div className="container mx-auto px-4">
           
-          {/* TAB 1: TECHNICAL DRAWINGS (MASONRY GRID & FILTERS) */}
+          {/* TAB 1: TECHNICAL DRAWINGS */}
           {activeTab === 'drawings' && (
             <div>
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-10 pb-4 border-b border-gray-200">
-                <div className="max-w-md">
-                  <h2 className="text-xl font-bold text-[#0a1628]">Drawing Office Sheet Archive</h2>
-                  <p className="text-[11px] text-gray-400 mt-1 leading-relaxed">
-                    Crop-secured engineering schematics for DHDT casing structures, HDS tubes, and EIL standards.
-                  </p>
-                </div>
-                {/* Category Filters */}
-                <div className="flex flex-wrap gap-1.5">
-                  {drawingCategories.map(cat => (
-                    <button
-                      key={cat}
-                      onClick={() => setSelectedDrawingFilter(cat)}
-                      className={`px-3.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border transition-all rounded-sm ${
-                        selectedDrawingFilter === cat
-                          ? 'bg-[#0a1628] text-white border-[#0a1628]'
-                          : 'bg-white text-gray-400 border-gray-200 hover:border-gray-400 hover:text-gray-700'
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
+              <div className="mb-10 max-w-xl">
+                <h2 className="text-2xl font-bold text-[#0a1628] mb-3">Cropped Structural Drawing Database</h2>
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  These layouts demonstrate the structural and mechanical detailing capacity of SLS. In compliance with confidentiality guidelines, all drawings are cropped to remove specific dimensions, drawing titles, sheets numbers, and approval signatures.
+                </p>
               </div>
-
-              {/* Masonry-like Grid layout */}
-              <motion.div layout className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-                <AnimatePresence mode="popLayout">
-                  {filteredDrawings.map((draw, idx) => (
-                    <motion.div
-                      layout
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.28 }}
-                      key={draw.title}
-                      className="break-inside-avoid bg-white border border-gray-200 shadow-sm flex flex-col hover:shadow-md transition-shadow group cursor-pointer"
-                      onClick={() => setSelectedImg(draw)}
-                    >
-                      <div className="relative bg-slate-900 overflow-hidden flex items-center justify-center border-b border-gray-100 aspect-[4/3]">
-                        <img
-                          src={`/gallery/${draw.file}`}
-                          alt={draw.title}
-                          className="w-full h-full object-cover opacity-90 group-hover:scale-101 transition-all duration-300"
-                        />
-                        <div className="absolute inset-0 bg-black/15 group-hover:bg-black/0 transition-colors" />
-                        <div className="absolute top-3 right-3 w-7 h-7 bg-white/95 text-[#0a1628] flex items-center justify-center shadow-sm rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ZoomIn className="w-3.5 h-3.5" />
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {drawings.map((draw, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.35, delay: idx * 0.05 }}
+                    className="bg-white border border-gray-200 overflow-hidden shadow-sm flex flex-col hover:shadow-md transition-shadow group cursor-pointer"
+                    onClick={() => setSelectedImg(draw)}
+                  >
+                    <div className="aspect-[4/3] bg-slate-900 overflow-hidden relative flex items-center justify-center border-b border-gray-100">
+                      <img
+                        src={`/gallery/${draw.file}`}
+                        alt={draw.title}
+                        className="w-full h-full object-cover opacity-90 group-hover:scale-102 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
+                      <div className="absolute top-3 right-3 w-8 h-8 bg-white/95 text-[#0a1628] flex items-center justify-center shadow-sm">
+                        <Eye className="w-4 h-4" />
+                      </div>
+                    </div>
+                    <div className="p-6 flex-grow flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-1.5">
+                          <span className="text-[9px] font-bold uppercase tracking-wider text-blue-700">{draw.code}</span>
+                          <span className="text-[9px] font-semibold text-gray-400">{draw.service}</span>
                         </div>
-                        <span className="absolute bottom-3 left-3 bg-[#0a1628] text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded-sm">
-                          {draw.category}
+                        <h3 className="font-bold text-sm text-[#0a1628] mb-2">{draw.title}</h3>
+                        <p className="text-xs text-gray-500 leading-relaxed mb-4">{draw.desc}</p>
+                      </div>
+                      <div className="flex items-center justify-between gap-4 mt-2">
+                        <span className="text-[10px] font-bold uppercase text-[#0a1628] hover:text-[#43648e] transition-colors flex items-center gap-1">
+                          Open Sheet &rarr;
                         </span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleBookRedirect(draw.service);
+                          }}
+                          className="bg-[#0a1628] text-white hover:bg-[#43648e] transition-colors px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider rounded-sm"
+                        >
+                          Book Service
+                        </button>
                       </div>
-
-                      <div className="p-5 flex-grow flex flex-col justify-between">
-                        <div>
-                          <div className="flex items-center justify-between gap-2 mb-1">
-                            <span className="text-[9px] font-bold uppercase tracking-wider text-blue-700">{draw.code}</span>
-                          </div>
-                          <h3 className="font-bold text-sm text-[#0a1628] mb-1.5">{draw.title}</h3>
-                          <p className="text-xs text-gray-500 leading-relaxed mb-4">{draw.desc}</p>
-                        </div>
-                        <div className="flex items-center justify-between gap-4 mt-2 pt-3 border-t border-gray-50">
-                          <span className="text-[10px] font-bold uppercase text-[#0a1628] hover:text-[#43648e] transition-colors flex items-center gap-1">
-                            View Sheet &rarr;
-                          </span>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleBookRedirect(draw.service);
-                            }}
-                            className="bg-[#0a1628] text-white hover:bg-blue-600 transition-colors px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider rounded-sm"
-                          >
-                            Book Service
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </motion.div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           )}
 
@@ -714,7 +667,7 @@ export default function Gallery() {
                       onClick={() => handleBookRedirect(selectedIll.service)}
                       className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-widest px-5 py-3 rounded-sm shadow-md transition-colors"
                     >
-                      Book Service &rarr;
+                      Book Service: {selectedIll.service} &rarr;
                     </button>
                   </div>
                   
@@ -849,7 +802,7 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* DRAWING LIGHTBOX (Scale-in zoom animations) */}
+      {/* DRAWING LIGHTBOX */}
       <AnimatePresence>
         {selectedImg && (
           <motion.div
@@ -859,14 +812,7 @@ export default function Gallery() {
             className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 md:p-8"
             onClick={() => setSelectedImg(null)}
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.93, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.93, y: 15 }}
-              transition={{ duration: 0.25 }}
-              className="max-w-5xl w-full flex flex-col items-stretch relative" 
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="max-w-5xl w-full flex flex-col items-stretch relative" onClick={(e) => e.stopPropagation()}>
               <button
                 className="absolute -top-12 right-0 text-white text-xs font-bold uppercase tracking-wider hover:text-gray-300 transition-colors"
                 onClick={() => setSelectedImg(null)}
@@ -904,7 +850,7 @@ export default function Gallery() {
                   </span>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

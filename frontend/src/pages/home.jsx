@@ -1,100 +1,119 @@
-import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
-import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, ChevronDown, ChevronRight, Building2, Factory, Grid3X3, Activity, Layers, Monitor, Briefcase, Star, Trophy, ShieldCheck, DollarSign } from 'lucide-react';
-import { getProjects } from '@/lib/api';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-
-// Helper components for animation
-const AnimatedSection = ({ children, className }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-100px" }}
-    transition={{ duration: 0.6 }}
-    className={className}
-  >
-    {children}
-  </motion.div>
-);
+import { getStats, getProjects, getServices } from '@/lib/api';
+import {
+  Building2, Factory, Grid3X3, Activity, ClipboardList, Layers,
+  Phone, Mail, Globe, MapPin, ArrowRight, CheckCircle2,
+  Fuel, Zap, FlaskConical, Landmark, Wrench,
+  Clock, Briefcase, Users, Monitor,
+} from 'lucide-react';
 
 const serviceIcons = {
   building: <Building2 className="w-8 h-8" />,
   factory: <Factory className="w-8 h-8" />,
   grid: <Grid3X3 className="w-8 h-8" />,
   activity: <Activity className="w-8 h-8" />,
+  clipboard: <ClipboardList className="w-8 h-8" />,
   layers: <Layers className="w-8 h-8" />,
   monitor: <Monitor className="w-8 h-8" />,
-  briefcase: <Briefcase className="w-8 h-8" />
 };
 
 const clients = [
-  { name: 'L&T', logo: '/logo_lnt.png' },
-  { name: 'BHEL', logo: '/logo_bhel.png' },
-  { name: 'HPCL', logo: '/logo_lnt.png' }, // Fallbacks
-  { name: 'DOOSAN', logo: '/logo_bhel.png' },
-  { name: 'Air Liquide', logo: '/logo_lnt.png' },
-  { name: 'PETRON', logo: '/logo_bhel.png' }
+  { name: 'L&T', full: 'Larsen & Toubro' },
+  { name: 'BHEL', full: 'BHEL' },
+  { name: 'HPCL', full: 'HPCL' },
+  { name: 'DOOSAN', full: 'Doosan Babcock' },
+  { name: 'Air Liquide', full: 'Air Liquide' },
+  { name: 'PETRON', full: 'Petron Engineering' },
 ];
 
+const clientLogos = {
+  'L&T': (
+    <svg viewBox="0 0 120 40" className="h-7 w-auto fill-current">
+      <circle cx="16" cy="20" r="13" fill="none" stroke="currentColor" strokeWidth="2" />
+      <text x="16" y="24" textAnchor="middle" fontSize="9" fontWeight="900" fill="currentColor">L&T</text>
+      <text x="35" y="23" fontSize="8" fontWeight="900" fill="currentColor" letterSpacing="0.3">LARSEN & TOUBRO</text>
+    </svg>
+  ),
+  'BHEL': (
+    <svg viewBox="0 0 120 40" className="h-7 w-auto fill-current">
+      <rect x="2" y="6" width="30" height="28" rx="2" fill="currentColor" />
+      <text x="17" y="23" textAnchor="middle" fontSize="9" fontWeight="900" fill="white">BHEL</text>
+      <text x="38" y="23" fontSize="9" fontWeight="900" fill="currentColor" letterSpacing="0.8">बीएचईएल</text>
+    </svg>
+  ),
+  'HPCL': (
+    <svg viewBox="0 0 120 40" className="h-7 w-auto">
+      <circle cx="16" cy="20" r="13" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="16" cy="20" r="9" fill="currentColor" className="text-blue-600 opacity-60 group-hover:opacity-100" />
+      <text x="16" y="23" textAnchor="middle" fontSize="8" fontWeight="900" fill="white">HP</text>
+      <text x="35" y="24" fontSize="10" fontWeight="900" fill="currentColor" letterSpacing="0.8">HPCL</text>
+    </svg>
+  ),
+  'DOOSAN': (
+    <svg viewBox="0 0 120 40" className="h-6 w-auto fill-current">
+      <text x="0" y="25" fontSize="16" fontWeight="900" fontStyle="italic" fill="currentColor" letterSpacing="-0.5">DOOSAN</text>
+    </svg>
+  ),
+  'Air Liquide': (
+    <svg viewBox="0 0 120 40" className="h-7 w-auto">
+      <path d="M 5 30 L 18 8 L 31 30 Z" fill="none" stroke="currentColor" strokeWidth="2" />
+      <circle cx="18" cy="19" r="2" fill="currentColor" />
+      <text x="37" y="19" fontSize="8" fontWeight="900" fill="currentColor" letterSpacing="0.3">AIR LIQUIDE</text>
+      <text x="37" y="27" fontSize="5" fontWeight="500" fill="currentColor" className="opacity-60">Creative Oxygen</text>
+    </svg>
+  ),
+  'PETRON': (
+    <svg viewBox="0 0 120 40" className="h-7 w-auto">
+      <path d="M 4 10 L 16 30 L 28 10" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      <text x="35" y="23" fontSize="10" fontWeight="900" fill="currentColor" letterSpacing="1">PETRON</text>
+    </svg>
+  ),
+};
+
+const softwareTools = ['STAAD.Pro', 'ANSYS', 'Tekla Structures', 'AutoCAD', 'CATIA'];
+
+const industries = [
+  { name: 'Oil & Gas', icon: <Fuel className="w-6 h-6" /> },
+  { name: 'Power', icon: <Zap className="w-6 h-6" /> },
+  { name: 'Petrochemical', icon: <FlaskConical className="w-6 h-6" /> },
+  { name: 'Infrastructure', icon: <Landmark className="w-6 h-6" /> },
+  { name: 'Industrial', icon: <Wrench className="w-6 h-6" /> },
+];
+
+function AnimatedSection({ children, className = '' }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-60px' });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 28 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.55, ease: 'easeOut' }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export default function Home() {
-  const { data: allProjects, isLoading: projectsLoading } = useQuery({
-    queryKey: ['/api/projects'],
-    queryFn: getProjects,
-  });
+  const { data: stats, isLoading: statsLoading } = useQuery({ queryKey: ['stats'], queryFn: getStats });
+  const { data: projects, isLoading: projectsLoading } = useQuery({ queryKey: ['projects'], queryFn: getProjects });
+  const { data: services, isLoading: servicesLoading } = useQuery({ queryKey: ['services'], queryFn: getServices });
 
-  // Limit to 3 projects for the homepage
-  const featuredProjects = allProjects ? allProjects.slice(0, 3) : [];
-
-  // Static list of 4 featured services
-  const featuredServices = [
-    {
-      title: 'Structural Engineering',
-      desc: 'High-grade civil & structural calculations, foundations, concrete frames, and seismic analysis under global codes.',
-      icon: <Building2 className="w-6 h-6 text-blue-500" />,
-      link: '/services'
-    },
-    {
-      title: 'Industrial Design',
-      desc: 'Mechanical detailing and casing layouts for heavy refinery equipment, pressure vessels, and steel fabrications.',
-      icon: <Factory className="w-6 h-6 text-blue-500" />,
-      link: '/services'
-    },
-    {
-      title: 'Fired Heater Engineering',
-      desc: 'Technical detailing, convection/radiant coils layout, and stack design complying with API 530 standards.',
-      icon: <Layers className="w-6 h-6 text-blue-500" />,
-      link: '/services'
-    },
-    {
-      title: 'Remaining Life Assessment (RLA)',
-      desc: 'Ultrasonic inspections, non-destructive testing (NDT), and structural integrity modeling for aging plant structures.',
-      icon: <Grid3X3 className="w-6 h-6 text-blue-500" />,
-      link: '/services'
-    }
-  ];
+  const featuredProjects = projects?.slice(0, 4);
 
   return (
-    <div className="w-full bg-white overflow-hidden">
-      <style>{`
-        @keyframes scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .marquee-track {
-          display: flex;
-          width: max-content;
-          animation: scroll 20s linear infinite;
-        }
-        .marquee-track:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
+    <div className="w-full bg-white">
 
-      {/* 1. HERO SECTION (Reduced Height to ~75-80vh) */}
-      <section className="grid md:grid-cols-2 min-h-[75vh] md:h-[78vh] relative items-stretch border-b border-gray-100">
-        <div className="bg-[#0a1628] text-white px-8 md:px-16 py-12 md:py-16 flex flex-col justify-center relative overflow-hidden">
-          <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
+      {/* HERO */}
+      <section className="grid md:grid-cols-2 min-h-[480px]">
+        <div className="bg-[#0a1628] text-white px-10 md:px-16 py-16 md:py-20 flex flex-col justify-center relative overflow-hidden">
+          <div className="absolute inset-0 opacity-[0.04]">
             <svg width="100%" height="100%">
               <defs>
                 <pattern id="herogrid" width="50" height="50" patternUnits="userSpaceOnUse">
@@ -104,169 +123,320 @@ export default function Home() {
               <rect width="100%" height="100%" fill="url(#herogrid)" />
             </svg>
           </div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative z-10">
-            <span className="inline-block text-[9px] font-bold tracking-[0.25em] uppercase text-white/40 mb-4">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }} className="relative z-10">
+            <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-white/50 mb-5">
               Engineering Excellence Since 2002
             </span>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] mb-5 tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-6">
               Industrial Fired Heaters & Structural Engineering Solutions
             </h1>
-            <p className="text-white/60 text-xs md:text-sm leading-relaxed mb-8 max-w-md">
+            <p className="text-white/60 text-sm leading-relaxed mb-8 max-w-sm">
               Providing full-scale mechanical and structural engineering consultancy—from thermal design and FEA to complete shop detailing drawing packages.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/contact">
-                <span className="flex items-center gap-2 bg-white text-[#0a1628] px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-white/95 transition-all cursor-pointer shadow-sm">
-                  Request Consultation &rarr;
-                </span>
+                <button className="flex items-center gap-2 bg-white text-[#0a1628] px-6 py-3 text-sm font-semibold hover:bg-white/90 transition-colors">
+                  Request a Consultation <ArrowRight className="w-4 h-4" />
+                </button>
               </Link>
               <Link href="/projects">
-                <span className="flex items-center gap-2 border border-white/20 text-white px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-all cursor-pointer">
-                  View Portfolio
-                </span>
+                <button className="flex items-center gap-2 border border-white/30 text-white px-6 py-3 text-sm font-semibold hover:bg-white/10 transition-colors">
+                  View Our Projects <ArrowRight className="w-4 h-4" />
+                </button>
               </Link>
             </div>
           </motion.div>
-
-          {/* Subtle scroll indicator */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center opacity-40 text-white animate-bounce pointer-events-none">
-            <span className="text-[8px] uppercase tracking-widest mb-1.5">Scroll</span>
-            <ChevronDown className="w-4 h-4" />
-          </div>
         </div>
-        
-        <div className="relative bg-[#f8f9fa] hidden md:block overflow-hidden">
+
+        <motion.div
+          initial={{ opacity: 0, scale: 1.02 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="relative min-h-[350px] md:min-h-[480px] overflow-hidden bg-gray-900 border-l border-gray-800"
+        >
           <img
             src="/hero_industrial_plant.png"
-            alt="Refinery Plant"
-            className="w-full h-full object-cover object-center opacity-95"
+            alt="SLS Engineering Hero"
+            className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700 hover:scale-105"
           />
-        </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/10 pointer-events-none" />
+        </motion.div>
       </section>
 
-      {/* 2. STATISTICS SECTION (Reduced Spacing & Height) */}
-      <section className="py-10 bg-gray-50 border-b border-gray-200">
+      {/* STATS BAR */}
+      <section className="bg-white border-y border-gray-200">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            {[
-              { num: '20+', label: 'Years Experience' },
-              { num: '500+', label: 'Projects Delivered' },
-              { num: '50+', label: 'Refinery & Power Clients' },
-              { num: '5+', label: 'Engineering Software Platforms' }
-            ].map((stat, idx) => (
-              <div key={idx} className="p-2 border-r border-gray-200 last:border-0">
-                <div className="text-3xl font-extrabold text-[#0a1628] tracking-tight">{stat.num}</div>
-                <div className="text-[10px] uppercase font-bold tracking-wider text-gray-400 mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+          {statsLoading ? (
+            <div className="grid grid-cols-2 md:grid-cols-4 py-10 gap-6">
+              {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-20" />)}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-200">
+              {[
+                { icon: <Clock className="w-7 h-7" />, value: `${stats?.yearsExperience}+`, label: 'Years of Experience', sub: 'Since 2002' },
+                { icon: <Briefcase className="w-7 h-7" />, value: `${stats?.projectsCompleted}+`, label: 'Projects Completed', sub: 'Across India & Abroad' },
+                { icon: <Users className="w-7 h-7" />, value: `${stats?.clientsServed}+`, label: 'Satisfied Clients', sub: 'In Diverse Industries' },
+                { icon: <Monitor className="w-7 h-7" />, value: `${stats?.softwarePlatforms}+`, label: 'Engineering Software', sub: 'Platforms' },
+              ].map((stat, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 + i * 0.08 }}
+                  className="flex flex-col items-center text-center py-10 px-4"
+                >
+                  <div className="text-gray-400 mb-3">{stat.icon}</div>
+                  <div className="text-3xl font-bold text-[#0a1628] mb-1">{stat.value}</div>
+                  <div className="text-xs font-semibold text-gray-700">{stat.label}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">{stat.sub}</div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* 3. ABOUT PREVIEW SECTION (Short & Concise Preview) */}
-      <section className="py-16 bg-white border-b border-gray-100">
-        <div className="container mx-auto px-4 max-w-4xl text-center">
+      {/* ABOUT SLS */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
           <AnimatedSection>
-            <span className="inline-block text-[9px] font-bold tracking-[0.2em] uppercase text-blue-700 mb-3">About SLS Consultants</span>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#0a1628] mb-5 tracking-tight">Two Decades of High-Precision Engineering</h2>
-            <p className="text-xs md:text-sm text-gray-500 leading-relaxed mb-8 max-w-2xl mx-auto">
-              Founded in 2002 by Mr. C. Subrahmanyam (ex-BHEL), SLS Consultants has delivered over 500+ design projects across India and internationally. We combine decades of structural steel expertise with dynamic thermodynamic detailing to engineer safe, compliant, and cost-effective industrial solutions.
-            </p>
-            <Link href="/about">
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#0a1628] hover:text-blue-700 transition-colors cursor-pointer">
-                Learn More About Us <ArrowRight className="w-4 h-4" />
-              </span>
-            </Link>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* 4. SERVICES PREVIEW (4 Featured Services) */}
-      <section className="py-20 bg-gray-50 border-b border-gray-200">
-        <div className="container mx-auto px-4">
-          <AnimatedSection className="text-center mb-12">
-            <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-gray-400 block mb-2">Capabilities</span>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#0a1628] tracking-tight">Our Core Services</h2>
-          </AnimatedSection>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            {featuredServices.map((svc, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: i * 0.05 }}
-                className="bg-white p-6 border border-gray-200 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow group"
-              >
-                <div>
-                  <div className="w-12 h-12 bg-blue-50 text-[#0a1628] flex items-center justify-center rounded-sm mb-5 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                    {svc.icon}
-                  </div>
-                  <h3 className="font-bold text-sm text-[#0a1628] mb-3">{svc.title}</h3>
-                  <p className="text-xs text-gray-400 leading-relaxed mb-5">{svc.desc}</p>
+            <div className="grid md:grid-cols-2 gap-14 items-start">
+              <div>
+                <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-4">About SLS Consultants</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] leading-tight mb-6">
+                  Engineering Excellence.<br />Driven by Innovation.
+                </h2>
+                <div className="w-10 h-0.5 bg-blue-700 mb-6" />
+                <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                  SLS Consultants was established in 2002 by Mr. C. Subrahmanyam after 18 years of rich experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (Doosan Babcock).
+                </p>
+                <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                  We provide comprehensive engineering, design and project consultancy services for industrial and infrastructure projects with commitment to quality, safety and client satisfaction.
+                </p>
+                <div className="space-y-2.5">
+                  {['Cost effective quality solutions', 'Products and services shall meet or exceed client expectations'].map((item) => (
+                    <div key={item} className="flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-blue-700 mt-0.5 shrink-0" />
+                      <span className="text-sm text-gray-600">{item}</span>
+                    </div>
+                  ))}
                 </div>
-                <Link href={svc.link}>
-                  <span className="text-[10px] font-bold uppercase text-gray-400 group-hover:text-blue-700 transition-colors cursor-pointer flex items-center gap-1">
-                    Learn More <ChevronRight className="w-3.5 h-3.5" />
-                  </span>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <Link href="/services">
-              <span className="bg-[#0a1628] text-white hover:bg-[#43648e] transition-colors px-6 py-3.5 text-xs font-bold uppercase tracking-wider inline-block cursor-pointer">
-                View All Services
-              </span>
-            </Link>
-          </div>
+              </div>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center aspect-square">
+                  <img
+                    src="/founder_portrait.png"
+                    alt="Mr. C. Subrahmanyam"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Founder</p>
+                  <h3 className="text-xl font-bold text-[#0a1628] mb-1">Mr. C. Subrahmanyam</h3>
+                  <p className="text-xs text-blue-700 font-semibold mb-3">Ex-BHEL (18 Years)<br />Ex-Doosan Babcock</p>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    With deep industry knowledge and engineering excellence, he laid the foundation of SLS in 2002.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
-      {/* 5. FEATURED PROJECTS (Only 3 Projects, Large Cards) */}
-      <section className="py-20 bg-white border-b border-gray-100">
+      {/* SERVICES */}
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <AnimatedSection className="text-center mb-12">
-            <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-gray-400 block mb-2">Featured Portfolios</span>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#0a1628] tracking-tight">Recent Projects</h2>
+          <AnimatedSection>
+            <div className="text-center mb-12">
+              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Our Services</p>
+              <h2 className="text-3xl font-bold text-[#0a1628]">Engineering & Design Services</h2>
+            </div>
+          </AnimatedSection>
+          {servicesLoading ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {[...Array(6)].map((_, i) => <Skeleton key={i} className="h-44" />)}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {services?.map((svc, i) => (
+                <motion.div
+                  key={svc.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: i * 0.06 }}
+                  className="bg-white border border-gray-200 p-6 hover:border-blue-700 hover:shadow-md transition-all duration-200 group flex flex-col"
+                >
+                  <div className="text-gray-300 group-hover:text-blue-700 mb-4 transition-colors">
+                    {serviceIcons[svc.icon] || <Building2 className="w-8 h-8" />}
+                  </div>
+                  <h3 className="font-bold text-[#0a1628] text-sm mb-2">{svc.title}</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed mb-4 flex-grow">{svc.description}</p>
+                  <div>
+                    <Link href={`/contact?service=${encodeURIComponent(svc.title)}`}>
+                      <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-blue-700 cursor-pointer border-b border-transparent hover:border-blue-700 pb-0.5">
+                        Book Service &rarr;
+                      </span>
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* CLIENTS */}
+      <section className="py-16 bg-white border-y border-gray-200">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 text-center mb-10">Our Clients</p>
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-5">
+              {clients.map((client) => (
+                <div
+                  key={client.name}
+                  className="border border-gray-200 px-6 py-3 min-w-[160px] h-14 flex items-center justify-center hover:border-blue-700 hover:shadow-sm transition-all duration-200 group bg-gray-50/50 hover:bg-white"
+                >
+                  <div className="text-gray-400 group-hover:text-[#0a1628] transition-colors flex items-center justify-center w-full">
+                    {clientLogos[client.name] || (
+                      <span className="text-sm font-bold tracking-wide">{client.name}</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-center text-xs text-gray-400 italic">and many more...</p>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* FEATURED CASE STUDY */}
+      <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]">
+          <svg width="100%" height="100%">
+            <defs>
+              <pattern id="case_grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="1" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#case_grid)" />
+          </svg>
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <AnimatedSection>
+            <div className="grid lg:grid-cols-12 gap-12 items-center">
+              <div className="lg:col-span-7">
+                <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-blue-400 mb-4">
+                  Refinery Fired Heater Case Study
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold leading-tight mb-6">
+                  EIL-Specified Hydrotreater (DHDT) & Hydrodesulfurization (HDS) Fired Heater Detailing
+                </h2>
+                <div className="w-10 h-0.5 bg-blue-500 mb-6" />
+                <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                  SLS delivered complete structural steel and mechanical piping detailing for the DHDT and HDS Fired Heaters at the CPCL refinery project. Detailing complied with stringent API 530, ASME Sec VIII, and Engineers India Limited (EIL) standard design guidelines.
+                </p>
+                <div className="grid md:grid-cols-2 gap-6 mb-8 text-xs text-gray-400">
+                  <div className="border-l-2 border-blue-500 pl-4">
+                    <h4 className="font-bold text-white mb-1">Thermal & Structural Criteria</h4>
+                    <p>Designed to withstand 750°C operating temperatures, high wind vortices, and seismic dynamic reactions using finite element analysis (FEA).</p>
+                  </div>
+                  <div className="border-l-2 border-blue-500 pl-4">
+                    <h4 className="font-bold text-white mb-1">Refinery Delivery Package</h4>
+                    <p>Complete Approved-for-Construction (AFC) drawings including casing plate details, platform structures, and DSTV NC numerical data for steel fabrication.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <Link href="/gallery">
+                    <span className="bg-blue-600 text-white px-6 py-3 text-xs font-bold uppercase tracking-wider hover:bg-blue-700 transition-colors shadow-md cursor-pointer">
+                      Explore Technical Drawings &rarr;
+                    </span>
+                  </Link>
+                  <Link href="/contact">
+                    <span className="border border-white/20 text-white px-6 py-3 text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-colors cursor-pointer">
+                      Discuss Fired Heater Project
+                    </span>
+                  </Link>
+                </div>
+              </div>
+              <div className="lg:col-span-5 bg-white/5 border border-white/10 p-6 rounded-sm">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-blue-400 block mb-4">Engineering Scope & Deliverables</span>
+                <ul className="space-y-3.5 text-xs text-gray-300">
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                    <span>Vertical Cylindrical Radiant Casing & Floor Panels (6700mm Casing Dia)</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                    <span>Convection Section Modules & Intermediate Support Plate detailing</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                    <span>60M Tall Exhaust Chimney Stack with wind strakes detailing</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                    <span>Circular Platforms & Staircase support steel towers (IS 800)</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                    <span>Tube Header Boxes with quick-open hinges and safety access doors</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* FEATURED PROJECTS */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <div className="text-center mb-12">
+              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Featured Projects</p>
+              <h2 className="text-3xl font-bold text-[#0a1628]">Some of Our Significant Projects</h2>
+            </div>
           </AnimatedSection>
 
           {projectsLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-              {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-64" />)}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
+              {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-56" />)}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              {featuredProjects.map((proj, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+              {featuredProjects?.map((proj, i) => (
                 <motion.div
                   key={proj.id}
-                  initial={{ opacity: 0, y: 15 }}
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.08 }}
-                  className="bg-white border border-gray-200 overflow-hidden shadow-sm flex flex-col hover:shadow-md transition-shadow group cursor-pointer"
+                  transition={{ duration: 0.35, delay: i * 0.07 }}
+                  className="border border-gray-200 hover:shadow-md transition-shadow duration-200 group"
                 >
-                  <div className="aspect-[16/10] bg-slate-900 overflow-hidden relative flex items-center justify-center border-b border-gray-100">
-                    <img
-                      src={proj.image}
-                      alt={proj.title}
-                      className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
+                  <div className="w-full h-36 bg-gray-50 overflow-hidden flex items-center justify-center border-b border-gray-200 group-hover:bg-gray-100 transition-colors relative">
+                    {proj.image ? (
+                      <img
+                        src={proj.image}
+                        alt={proj.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.parentNode.querySelector('.fallback-icon').style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    <div
+                      className="fallback-icon absolute inset-0 items-center justify-center bg-gray-100"
+                      style={{ display: proj.image ? 'none' : 'flex' }}
+                    >
+                      <Building2 className="w-8 h-8 text-gray-200" />
+                    </div>
                   </div>
-                  <div className="p-6 flex-grow flex flex-col justify-between">
-                    <div>
-                      <span className="text-[9px] font-bold uppercase tracking-wider text-blue-700 block mb-1">{proj.category}</span>
-                      <h3 className="font-bold text-sm text-[#0a1628] mb-2">{proj.title}</h3>
-                      <p className="text-xs text-gray-400 leading-relaxed mb-4">{proj.description.substring(0, 110)}...</p>
-                    </div>
-                    <div className="text-[10px] font-bold text-gray-400 group-hover:text-blue-700 flex items-center gap-1.5 transition-colors">
-                      {proj.client && <span>{proj.client}</span>}
-                      <span>•</span>
-                      <span>{proj.year}</span>
-                    </div>
+                  <div className="p-4">
+                    <h3 className="font-bold text-[#0a1628] text-xs leading-snug mb-2">{proj.title}</h3>
+                    <p className="text-xs text-gray-500 leading-relaxed">{proj.description.substring(0, 90)}...</p>
                   </div>
                 </motion.div>
               ))}
@@ -275,92 +445,156 @@ export default function Home() {
 
           <div className="text-center">
             <Link href="/projects">
-              <span className="bg-transparent border border-[#0a1628] text-[#0a1628] hover:bg-[#0a1628] hover:text-white transition-all px-6 py-3 text-xs font-bold uppercase tracking-wider inline-block cursor-pointer">
-                View Complete Portfolio
-              </span>
+              <button className="inline-flex items-center gap-2 border border-gray-300 text-[#0a1628] px-8 py-3 text-sm font-semibold hover:bg-[#0a1628] hover:text-white hover:border-[#0a1628] transition-colors">
+                View All Projects <ArrowRight className="w-4 h-4" />
+              </button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 6. CLIENT LOGOS CAROUSEL (Scrolling Logo Marquee) */}
-      <section className="py-12 bg-gray-50 border-b border-gray-200 overflow-hidden">
-        <div className="container mx-auto px-4 mb-4 text-center">
-          <span className="text-[8px] font-bold tracking-[0.2em] uppercase text-gray-400">Trusted By Industry Leaders</span>
+      {/* SOFTWARE EXPERTISE */}
+      <section className="py-14 bg-gray-50 border-y border-gray-200">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 text-center mb-8">Software Expertise</p>
+            <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10">
+              {softwareTools.map((tool, i) => (
+                <motion.div
+                  key={tool}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.06 }}
+                  className="flex items-center gap-3 border border-gray-200 bg-white px-5 py-3 hover:border-blue-700 hover:shadow-sm transition-all"
+                >
+                  <Monitor className="w-4 h-4 text-gray-300" />
+                  <span className="text-sm font-semibold text-gray-600">{tool}</span>
+                </motion.div>
+              ))}
+            </div>
+          </AnimatedSection>
         </div>
-        <div className="w-full relative flex items-center">
-          <div className="marquee-track flex items-center gap-16 py-4">
-            {/* Double the array elements for seamless loops */}
-            {[...clients, ...clients, ...clients].map((client, idx) => (
-              <div key={idx} className="h-9 w-24 shrink-0 opacity-40 hover:opacity-85 transition-opacity flex items-center justify-center">
-                <img
-                  src={client.logo}
-                  alt={client.name}
-                  className="max-h-full max-w-full object-contain filter grayscale"
-                  onError={(e) => {
-                    // Fallback to text logo representation
-                    e.target.style.display = 'none';
-                    e.target.parentNode.innerHTML = `<span className="font-black text-sm text-gray-500">${client.name}</span>`;
-                  }}
-                />
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <div className="text-center mb-14">
+              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Client Appreciation</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628]">What Our Clients Say</h2>
+            </div>
+          </AnimatedSection>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="bg-white p-8 border border-gray-200 shadow-sm flex flex-col justify-between"
+            >
+              <p className="text-sm text-gray-500 italic leading-relaxed mb-6">
+                "The work SLS had provided for the project 'Radiography Solutions For Vizag Vessel Project - L&T' is commendable. They supported us in each and every step from conceptual stage till the project was executed."
+              </p>
+              <div>
+                <h4 className="font-bold text-sm text-[#0a1628]">HN Somani</h4>
+                <p className="text-xs text-blue-700 font-semibold">Sr DGM — Larsen & Toubro (L&T)</p>
               </div>
-            ))}
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="bg-white p-8 border border-gray-200 shadow-sm flex flex-col justify-between"
+            >
+              <p className="text-sm text-gray-500 italic leading-relaxed mb-6">
+                "We used SLS services for one of our Multistoried Residential Building Project at Visakhapatnam. The scope of their services included Architectural Planning, Structural Design, Rain Water Harvesting and Solar Water Heating Installation. We recommend their services."
+              </p>
+              <div>
+                <h4 className="font-bold text-sm text-[#0a1628]">P Vishnu Kumar Raju</h4>
+                <p className="text-xs text-blue-700 font-semibold">MD — SVC Projects Pvt. Ltd.</p>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* 7. WHY CHOOSE SLS (4 Premium Feature Cards) */}
-      <section className="py-20 bg-white border-b border-gray-100">
-        <div className="container mx-auto px-4">
-          <AnimatedSection className="text-center mb-12">
-            <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-gray-400 block mb-2">Our Standards</span>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#0a1628] tracking-tight">Why Partner With SLS?</h2>
+      {/* CTA BANNER */}
+      <section className="py-20 bg-white border-y border-gray-200">
+        <div className="container mx-auto px-4 text-center">
+          <AnimatedSection>
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-4">Free Initial Consultation</p>
+            <h2 className="text-3xl md:text-5xl font-bold text-[#0a1628] leading-tight mb-4">
+              Have a Project in Mind?<br />
+              <span className="text-[#43648e]">Let's Engineer It Together.</span>
+            </h2>
+            <p className="text-gray-500 text-sm md:text-base max-w-xl mx-auto mb-10 leading-relaxed">
+              Whether it's a structural challenge, an industrial project, or a feasibility study — our experts are ready to help. Share your requirements and get a personalised response within 24 hours.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Link href="/contact">
+                <button className="flex items-center gap-2 bg-[#0a1628] text-white px-8 py-4 text-sm font-bold uppercase tracking-wider hover:bg-[#0a1628]/90 transition-colors shadow-lg">
+                  Request a Free Consultation <ArrowRight className="w-4 h-4" />
+                </button>
+              </Link>
+              <a href="tel:+919849598424" className="flex items-center gap-2 border border-gray-300 text-[#0a1628] px-8 py-4 text-sm font-semibold hover:bg-gray-50 transition-colors">
+                <Phone className="w-4 h-4" /> Call Us Now
+              </a>
+            </div>
+            <p className="text-xs text-gray-400 mt-6">No commitment required · Response within 24 hours · 20+ years of engineering expertise</p>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* WHY CHOOSE US + INDUSTRIES + CONTACT */}
+      <section className="py-16 bg-[#0a1628] text-white">
+        <div className="container mx-auto px-4 grid md:grid-cols-3 gap-12">
+          <AnimatedSection>
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-5">Why Choose Us</p>
+            <div className="space-y-4">
+              {[
+                'SLS is committed to deliver COST EFFECTIVE QUALITY SOLUTIONS.',
+                'Our products and services shall meet or exceed client expectations.',
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-3">
+                  <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                  <p className="text-sm text-white/60 leading-relaxed">{item}</p>
+                </div>
+              ))}
+            </div>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: <Trophy className="w-6 h-6 text-blue-700" />, title: "20+ Years Experience", desc: "Accumulated engineering intelligence in fired heaters, heavy foundations, and industrial structural design since 2002." },
-              { icon: <Star className="w-6 h-6 text-blue-700" />, title: "500+ Projects", desc: "Successful delivery of large-scale engineering design and fabrication packages for refinery, power, and manufacturing plants." },
-              { icon: <ShieldCheck className="w-6 h-6 text-blue-700" />, title: "International Standards", desc: "Design and detailing compliance with stringent codes including API 530, ASME Sec VIII, and EIL specific specifications." },
-              { icon: <DollarSign className="w-6 h-6 text-blue-700" />, title: "Cost Effective Engineering", desc: "Optimizing steel member profiles and weld layouts in Tekla to reduce raw material tonnage and shop fabrication costs." }
-            ].map((card, idx) => (
-              <div key={idx} className="border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-10 h-10 bg-blue-50 text-blue-700 flex items-center justify-center rounded-sm mb-4">
-                  {card.icon}
+          <AnimatedSection>
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-5">Industries We Serve</p>
+            <div className="grid grid-cols-2 gap-3">
+              {industries.map((ind) => (
+                <div key={ind.name} className="flex items-center gap-2.5">
+                  <div className="text-blue-400 shrink-0">{ind.icon}</div>
+                  <span className="text-sm text-white/60">{ind.name}</span>
                 </div>
-                <h4 className="font-bold text-sm text-[#0a1628] mb-2">{card.title}</h4>
-                <p className="text-xs text-gray-400 leading-relaxed">{card.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              ))}
+            </div>
+          </AnimatedSection>
 
-      {/* 8. FINAL CTA SECTION (Large Full-Width Card) */}
-      <section className="py-20 bg-[#0a1628] text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-          <svg width="100%" height="100%">
-            <rect width="100%" height="100%" fill="url(#herogrid)" />
-          </svg>
-        </div>
-        <div className="container mx-auto px-4 relative z-10 max-w-3xl text-center">
-          <span className="text-[9px] font-bold tracking-[0.25em] uppercase text-white/40 mb-3 block">Start Your Journey</span>
-          <h3 className="text-3xl md:text-4xl font-bold mb-6 tracking-tight">Let's Build Your Next Engineering Project</h3>
-          <p className="text-white/60 text-xs md:text-sm leading-relaxed mb-8 max-w-xl mx-auto">
-            Get in touch with our engineering team to discuss detailed drawings, RLA assessments, dynamic calculations, or specialized fired heater designs.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/contact?service=Industrial%20Design%20%26%20Support">
-              <span className="bg-white text-[#0a1628] px-6 py-3 text-xs font-bold uppercase tracking-wider hover:bg-white/90 transition-all cursor-pointer">
-                Request Consultation
-              </span>
-            </Link>
-            <Link href="/contact">
-              <span className="border border-white/20 text-white hover:bg-white/10 transition-all px-6 py-3 text-xs font-bold uppercase tracking-wider cursor-pointer">
-                Contact Us
-              </span>
-            </Link>
-          </div>
+          <AnimatedSection>
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-5">Get In Touch</p>
+            <div className="space-y-3">
+              {[
+                { icon: <Phone className="w-4 h-4 text-blue-400 shrink-0" />, text: '+91 98495 98424' },
+                { icon: <Mail className="w-4 h-4 text-blue-400 shrink-0" />, text: 'slsind@gmail.com' },
+                { icon: <Globe className="w-4 h-4 text-blue-400 shrink-0" />, text: 'www.slsnexus.com' },
+                { icon: <MapPin className="w-4 h-4 text-blue-400 shrink-0" />, text: 'Visakhapatnam, Andhra Pradesh, India' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-3 text-sm text-white/60">
+                  {item.icon}
+                  <span>{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </AnimatedSection>
         </div>
       </section>
     </div>
