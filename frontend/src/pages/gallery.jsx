@@ -490,7 +490,7 @@ export default function Gallery() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [activeTab, selectedIll, activeWf]);
+  }, [activeTab, activeWf]);
 
   return (
     <div className="w-full bg-white">
