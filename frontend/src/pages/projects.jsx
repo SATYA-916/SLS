@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Building2, X } from 'lucide-react';
 import { getProjects } from '@/lib/api';
+import { fallbackProjects } from '@/data/fallbackProjects';
 
 const categories = [
   'All',
@@ -20,6 +21,7 @@ export default function Projects() {
   const { data: projects, isLoading } = useQuery({
     queryKey: ['projects'],
     queryFn: getProjects,
+    initialData: fallbackProjects,
   });
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);

@@ -4,6 +4,8 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getStats, getProjects, getServices } from '@/lib/api';
+import { fallbackProjects } from '@/data/fallbackProjects';
+import { fallbackServices } from '@/data/fallbackServices';
 import {
   Building2, Factory, Grid3X3, Activity, ClipboardList, Layers,
   Phone, Mail, Globe, MapPin, ArrowRight, CheckCircle2,
@@ -102,8 +104,16 @@ function AnimatedSection({ children, className = '' }) {
 
 export default function Home() {
   const { data: stats, isLoading: statsLoading } = useQuery({ queryKey: ['stats'], queryFn: getStats });
-  const { data: projects, isLoading: projectsLoading } = useQuery({ queryKey: ['projects'], queryFn: getProjects });
-  const { data: services, isLoading: servicesLoading } = useQuery({ queryKey: ['services'], queryFn: getServices });
+  const { data: projects, isLoading: projectsLoading } = useQuery({ 
+    queryKey: ['projects'], 
+    queryFn: getProjects,
+    initialData: fallbackProjects
+  });
+  const { data: services, isLoading: servicesLoading } = useQuery({ 
+    queryKey: ['services'], 
+    queryFn: getServices,
+    initialData: fallbackServices
+  });
 
   const featuredProjects = projects?.slice(0, 4);
 

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Building2, Factory, Grid3X3, Activity, ClipboardList, Layers, Monitor } from 'lucide-react';
 import { getServices } from '@/lib/api';
+import { fallbackServices } from '@/data/fallbackServices';
 
 const serviceIcons = {
   building: <Building2 className="w-10 h-10" />,
@@ -42,6 +43,7 @@ export default function Expertise() {
   const { data: services, isLoading } = useQuery({
     queryKey: ['services'],
     queryFn: getServices,
+    initialData: fallbackServices,
   });
 
   return (
