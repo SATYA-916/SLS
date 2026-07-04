@@ -950,11 +950,11 @@ export default function Gallery() {
 
   // Collapsible groups for 3D model list
   const [openGroups, setOpenGroups] = useState({
-    "Overall Assembly": true,
-    "Radiant System": true,
-    "Convection System": true,
-    "Structural System": true,
-    "Access System": true
+    "Overall Assembly":   true,   // open by default
+    "Radiant System":     false,
+    "Convection System":  false,
+    "Structural System":  false,
+    "Access System":      false
   });
 
   const toggleGroup = (name) => {
@@ -1267,6 +1267,8 @@ export default function Gallery() {
                                     key={ill.id}
                                     onClick={() => {
                                       setSelectedIll(ill);
+                                      // Auto-expand the group containing this item
+                                      setOpenGroups(prev => ({ ...prev, [group.name]: true }));
                                       scrollToViewer();
                                     }}
                                     className={`w-full text-left px-3 py-2.5 border-l-2 transition-all flex items-center gap-3 justify-between ${
