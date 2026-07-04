@@ -531,16 +531,20 @@ export default function Gallery() {
   const tabsRef = useRef(null);
 
   useEffect(() => {
-    if (tabsRef.current) {
-      const headerOffset = 64; // height of sticky header
-      const rect = tabsRef.current.getBoundingClientRect();
-      const elementTop = rect.top + window.scrollY;
-      
-      window.scrollTo({
-        top: elementTop - headerOffset,
-        behavior: 'instant'
-      });
-    }
+    const timer = setTimeout(() => {
+      if (tabsRef.current) {
+        const headerOffset = 64; // height of sticky header
+        const rect = tabsRef.current.getBoundingClientRect();
+        const elementTop = rect.top + window.scrollY;
+        
+        window.scrollTo({
+          top: elementTop - headerOffset,
+          behavior: 'smooth'
+        });
+      }
+    }, 50); // wait for React paint cycle and new tab height to settle
+
+    return () => clearTimeout(timer);
   }, [activeTab]);
 
   return (
