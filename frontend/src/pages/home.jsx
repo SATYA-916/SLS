@@ -354,7 +354,7 @@ export default function Home() {
                 company: "HPCL Vizag Refinery"
               }
             ].map((t, idx) => (
-              <div key={idx} className="bg-white border border-gray-200 p-6 md:p-8 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+              <div key={idx} className="bg-white border border-gray-200 p-6 md:p-8 flex flex-col justify-between shadow-sm">
                 <p className="text-gray-600 text-xs md:text-sm italic leading-relaxed mb-6">
                   “{t.quote}”
                 </p>
@@ -379,9 +379,9 @@ export default function Home() {
               {clients.map((client) => (
                 <div
                   key={client.name}
-                  className="border border-gray-200 px-6 py-3 min-w-[160px] h-14 flex items-center justify-center hover:border-blue-700 hover:shadow-sm transition-all duration-200 group bg-white"
+                  className="border border-gray-300 px-6 py-3 min-w-[160px] h-14 flex items-center justify-center bg-white"
                 >
-                  <div className="text-gray-400 group-hover:text-[#0a1628] transition-colors flex items-center justify-center w-full">
+                  <div className="text-[#0a1628] flex items-center justify-center w-full">
                     {clientLogos[client.name] || (
                       <span className="text-sm font-bold tracking-wide">{client.name}</span>
                     )}
@@ -396,7 +396,7 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 {industries.map((ind) => (
-                  <div key={ind.name} className="flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 hover:border-blue-700 hover:shadow-sm transition-all">
+                  <div key={ind.name} className="flex items-center gap-2 bg-white border border-gray-300 px-4 py-2">
                     <div className="text-blue-700">{ind.icon}</div>
                     <span className="text-[10px] font-bold text-[#0a1628] uppercase tracking-wider">{ind.name}</span>
                   </div>

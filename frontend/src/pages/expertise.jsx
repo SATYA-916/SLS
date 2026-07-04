@@ -189,7 +189,7 @@ export default function Expertise() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: i * 0.07 }}
-                className="text-2xl font-bold text-[#0a1628]/30 hover:text-[#0a1628] transition-colors cursor-default"
+                className="text-2xl font-bold text-[#0a1628]/70 cursor-default"
               >
                 {tool}
               </motion.div>
