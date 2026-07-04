@@ -2,6 +2,100 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+function getCameraSettings(type) {
+  const settings = {
+    camPos: new THREE.Vector3(10, 8, 14),
+    lookAt: new THREE.Vector3(0, 0, 0)
+  };
+
+  switch (type) {
+    case 'heater':
+      settings.camPos.set(12, 8, 18);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'stack':
+      settings.camPos.set(0, 8, 18);
+      settings.lookAt.set(0, 2, 0);
+      break;
+    case 'offtake':
+      settings.camPos.set(8, 6, 12);
+      settings.lookAt.set(0, 1.5, 2);
+      break;
+    case 'radiant':
+      settings.camPos.set(10, 2, 12);
+      settings.lookAt.set(0, -2, 0);
+      break;
+    case 'burnerfloor':
+      settings.camPos.set(8, 2, 10);
+      settings.lookAt.set(0, -3, 0);
+      break;
+    case 'headerbox':
+      settings.camPos.set(6, 4, 8);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'archplate':
+      settings.camPos.set(6, 4, 8);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'convection':
+      settings.camPos.set(8, 6, 12);
+      settings.lookAt.set(0, 4, 0);
+      break;
+    case 'sootblower':
+      settings.camPos.set(6, 4, 8);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'framing':
+      settings.camPos.set(10, 4, 14);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'frame3d':
+      settings.camPos.set(12, 6, 16);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'roof':
+      settings.camPos.set(8, 4, 10);
+      settings.lookAt.set(0, -1, 0);
+      break;
+    case 'ets':
+      settings.camPos.set(8, 4, 10);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'platforms':
+      settings.camPos.set(10, 6, 14);
+      settings.lookAt.set(0, 2, 0);
+      break;
+    case 'staircase':
+      settings.camPos.set(10, 4, 14);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'stackplatform':
+      settings.camPos.set(8, 4, 10);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'heatergrating':
+      settings.camPos.set(8, 4, 10);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'ladders':
+      settings.camPos.set(8, 8, 12);
+      settings.lookAt.set(0, 8, 0);
+      break;
+    case 'breechingdoor':
+      settings.camPos.set(4, 2, 6);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'maintenanceaccess':
+      settings.camPos.set(6, 4, 8);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    default:
+      settings.camPos.set(10, 8, 14);
+      settings.lookAt.set(0, 0, 0);
+  }
+  return settings;
+}
+
 export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoRotate }) {
   const containerRef = useRef(null);
   const [loading, setLoading] = useState(true);
@@ -57,23 +151,9 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     if (resetKey !== resetKeyRef.current) {
       resetKeyRef.current = resetKey;
       isTransitioningRef.current = true;
-      // Trigger camera target reset based on component type
-      if (type === 'heater') {
-        targetCamPos.current.set(12, 8, 18);
-        targetLookAt.current.set(0, 0, 0);
-      } else if (type === 'stack') {
-        targetCamPos.current.set(0, 8, 18);
-        targetLookAt.current.set(0, 2, 0);
-      } else if (type === 'convection') {
-        targetCamPos.current.set(8, 6, 12);
-        targetLookAt.current.set(0, 4, 0);
-      } else if (type === 'radiant') {
-        targetCamPos.current.set(10, 2, 12);
-        targetLookAt.current.set(0, -2, 0);
-      } else {
-        targetCamPos.current.set(10, 8, 14);
-        targetLookAt.current.set(0, 0, 0);
-      }
+      const settings = getCameraSettings(type);
+      targetCamPos.current.copy(settings.camPos);
+      targetLookAt.current.copy(settings.lookAt);
     }
   }, [resetKey, type]);
 
@@ -90,15 +170,17 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
   useEffect(() => {
     if (!containerRef.current) return;
 
+    isTransitioningRef.current = true; // Ensure transition runs on model changes
     setLoading(true);
 
     // 1. Setup Scene, Camera, Renderer
     const scene = new THREE.Scene();
     activeScene.current = scene;
-    scene.background = new THREE.Color(0x050c18); // Premium dark industrial background
+    scene.background = new THREE.Color(0x07111f); // Deep industrial night background
+    scene.fog = new THREE.FogExp2(0x07111f, 0.018); // Subtle depth fog
 
-    // Grid Helper
-    const gridHelper = new THREE.GridHelper(30, 30, 0x1d3557, 0x112240);
+    // Grid Helper — subtle blueprint grid
+    const gridHelper = new THREE.GridHelper(30, 30, 0x0e2a4a, 0x091c36);
     gridHelper.position.y = -5;
     scene.add(gridHelper);
 
@@ -119,20 +201,29 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     containerRef.current.innerHTML = '';
     containerRef.current.appendChild(renderer.domElement);
 
-    // 2. Setup Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
-    scene.add(ambientLight);
+    // 2. Setup Lights (3-point industrial lighting)
+    // Hemisphere sky/ground light for ambient richness
+    const hemiLight = new THREE.HemisphereLight(0xc8d8f0, 0x1a2a40, 0.55);
+    scene.add(hemiLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.85);
-    dirLight.position.set(12, 24, 18);
+    // Key light — warm directional
+    const dirLight = new THREE.DirectionalLight(0xfff4e0, 1.1);
+    dirLight.position.set(14, 28, 18);
     dirLight.castShadow = true;
-    dirLight.shadow.mapSize.width = 1024;
-    dirLight.shadow.mapSize.height = 1024;
+    dirLight.shadow.mapSize.width = 2048;
+    dirLight.shadow.mapSize.height = 2048;
+    dirLight.shadow.bias = -0.001;
     scene.add(dirLight);
 
-    const dirLight2 = new THREE.DirectionalLight(0x43648e, 0.6);
-    dirLight2.position.set(-12, -6, -12);
+    // Fill light — cool blue from opposite side
+    const dirLight2 = new THREE.DirectionalLight(0x4a90d9, 0.55);
+    dirLight2.position.set(-14, -4, -14);
     scene.add(dirLight2);
+
+    // Rim/back light — subtle warm from below
+    const rimLight = new THREE.DirectionalLight(0xf4a017, 0.25);
+    rimLight.position.set(0, -10, -10);
+    scene.add(rimLight);
 
     // 3. Orbit Controls
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -143,56 +234,50 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     controls.maxDistance = 40;
 
     // Set camera interpolation targets based on selected type
-    if (type === 'heater') {
-      targetCamPos.current.set(12, 8, 18);
-      targetLookAt.current.set(0, 0, 0);
-    } else if (type === 'stack') {
-      targetCamPos.current.set(0, 8, 18);
-      targetLookAt.current.set(0, 2, 0);
-    } else if (type === 'convection') {
-      targetCamPos.current.set(8, 6, 12);
-      targetLookAt.current.set(0, 4, 0);
-    } else if (type === 'radiant') {
-      targetCamPos.current.set(10, 2, 12);
-      targetLookAt.current.set(0, -2, 0);
-    } else {
-      targetCamPos.current.set(10, 8, 14);
-      targetLookAt.current.set(0, 0, 0);
-    }
+    const settings = getCameraSettings(type);
+    targetCamPos.current.copy(settings.camPos);
+    targetLookAt.current.copy(settings.lookAt);
 
     // 4. Create Group for models
     const modelGroup = new THREE.Group();
     scene.add(modelGroup);
 
-    // Helper Materials (Enhanced properties for premium rendering)
+    // Helper Materials — Premium industrial steel palette
+    // Structural steel: bright anodized metallic blue-steel
     const blueprintMat = new THREE.MeshStandardMaterial({
-      color: 0x43648e,
-      roughness: 0.25,
-      metalness: 0.85,
-      transparent: true,
-      opacity: 0.85,
-      wireframe: wireframeRef.current
-    });
-
-    const coilMat = new THREE.MeshStandardMaterial({
-      color: 0xe63946, 
-      roughness: 0.15,
+      color: 0x4a90d9,
+      roughness: 0.2,
       metalness: 0.9,
-      wireframe: wireframeRef.current
+      transparent: true,
+      opacity: 0.92,
+      wireframe: wireframeRef.current,
+      envMapIntensity: 1.2
     });
 
+    // Process tubes / coils: industry-standard amber/orange (hot process lines)
+    const coilMat = new THREE.MeshStandardMaterial({
+      color: 0xf4a017,
+      roughness: 0.12,
+      metalness: 0.88,
+      wireframe: wireframeRef.current,
+      envMapIntensity: 1.5
+    });
+
+    // Secondary metal / flanges: polished light steel blue (stainless look)
     const stackMat = new THREE.MeshStandardMaterial({
-      color: 0x8d99ae,
-      roughness: 0.4,
-      metalness: 0.7,
-      wireframe: wireframeRef.current
+      color: 0xb0c4de,
+      roughness: 0.3,
+      metalness: 0.75,
+      wireframe: wireframeRef.current,
+      envMapIntensity: 1.0
     });
 
+    // Wireframe accent overlay: crisp cyan blueprint lines
     const wireMat = new THREE.MeshBasicMaterial({
-      color: 0x58c4ff,
+      color: 0x00d4ff,
       wireframe: true,
       transparent: true,
-      opacity: 0.15
+      opacity: 0.18
     });
 
     // 5. Generate Custom Geometries based on selected component
@@ -276,7 +361,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         const g = new THREE.Group();
         const burnerGeo = new THREE.CylinderGeometry(radius, radius, height, 16);
         const burnerTile = new THREE.Mesh(burnerGeo, new THREE.MeshStandardMaterial({
-          color: 0xddcba4, // Beige refractory color
+          color: 0xc8a97e, // Beige refractory color
           roughness: 0.8,
           metalness: 0.1
         }));
@@ -425,7 +510,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           // Internal refractory lining layer (beige cylinder lining casing)
           const liningGeo = new THREE.CylinderGeometry(3.8, 3.8, 7.8, 32, 1, true, 0, Math.PI * 1.55);
           const liningMesh = new THREE.Mesh(liningGeo, new THREE.MeshStandardMaterial({
-            color: 0xddcba4,
+            color: 0xc8a97e,
             roughness: 0.9,
             metalness: 0.05,
             side: THREE.DoubleSide
@@ -532,7 +617,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           // Conical shell deck plate
           const coneGeo = new THREE.CylinderGeometry(1.5, 5, 2, 32, 1, true);
           const coneMesh = new THREE.Mesh(coneGeo, new THREE.MeshStandardMaterial({
-            color: 0x43648e,
+            color: 0x4a90d9,
             roughness: 0.5,
             metalness: 0.7,
             transparent: true,
@@ -581,9 +666,9 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           // Platform walking surface ring
           const ringGeo = new THREE.RingGeometry(innerR, outerR, 48);
           const platformFloor = new THREE.Mesh(ringGeo, new THREE.MeshStandardMaterial({
-            color: 0x5a6372,
-            roughness: 0.7,
-            metalness: 0.3,
+            color: 0x3a4a5c,
+            roughness: 0.65,
+            metalness: 0.45,
             side: THREE.DoubleSide
           }));
           platformFloor.rotation.x = -Math.PI / 2;
@@ -751,7 +836,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
 
           // Refractory lining ceramic fiber modules inside doors
           const blockGeo = new THREE.BoxGeometry(1.8, 4.6, 0.15);
-          const insulationL = new THREE.Mesh(blockGeo, new THREE.MeshStandardMaterial({ color: 0xdddddd, roughness: 0.9 }));
+          const insulationL = new THREE.Mesh(blockGeo, new THREE.MeshStandardMaterial({ color: 0xd4c5b0, roughness: 0.9 }));
           insulationL.position.set(-1.0, 0, 0.95);
           modelGroup.add(insulationL);
 
@@ -884,7 +969,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           modelGroup.add(plug);
 
           const refractoryGeo = new THREE.CylinderGeometry(1.3, 1.3, 0.4, 32);
-          const refractoryBlock = new THREE.Mesh(refractoryGeo, new THREE.MeshStandardMaterial({ color: 0xddcba4, roughness: 0.9 }));
+          const refractoryBlock = new THREE.Mesh(refractoryGeo, new THREE.MeshStandardMaterial({ color: 0xc8a97e, roughness: 0.9 }));
           refractoryBlock.rotation.x = Math.PI / 2;
           refractoryBlock.position.z = -0.2;
           modelGroup.add(refractoryBlock);
@@ -962,7 +1047,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           // Circular refractory deck plate
           const floorGeo = new THREE.CylinderGeometry(4.5, 4.5, 0.25, 32);
           const floor = new THREE.Mesh(floorGeo, new THREE.MeshStandardMaterial({
-            color: 0xddcba4,
+            color: 0xc8a97e,
             roughness: 0.9,
             metalness: 0.1
           }));
@@ -1056,7 +1141,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
 
           // Refractory lining block
           const blockGeo = new THREE.BoxGeometry(2.0, 3.0, 0.25);
-          const lining = new THREE.Mesh(blockGeo, new THREE.MeshStandardMaterial({ color: 0xddcba4, roughness: 0.9 }));
+          const lining = new THREE.Mesh(blockGeo, new THREE.MeshStandardMaterial({ color: 0xc8a97e, roughness: 0.9 }));
           lining.position.z = -0.1;
           modelGroup.add(lining);
 
@@ -1352,22 +1437,36 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
 
       // Apply exploded view offsets to specific child meshes
       modelGroup.traverse(child => {
-        if (!child.name) return;
-        const factor = explodedFactor.current;
-        if (child.name === 'stack') {
-          child.position.y = 13.8 + factor * 5.0;
-        } else if (child.name === 'offtake') {
-          child.position.y = 8.55 + factor * 3.5;
-        } else if (child.name === 'convection') {
-          child.position.y = 5.5 + factor * 2.0;
-        } else if (child.name === 'headerbox-left') {
-          child.position.x = -1.9 - factor * 1.5;
-        } else if (child.name === 'headerbox-right') {
-          child.position.x = 1.9 + factor * 1.5;
-        } else if (child.name === 'transition') {
-          child.position.y = 2.0 + factor * 0.5;
-        } else if (child.name === 'radiant') {
-          child.position.y = -2.0 - factor * 2.0;
+        // 1. Legacy name-based explosions (for complete-heater group children)
+        if (child.name) {
+          const factor = explodedFactor.current;
+          if (child.name === 'stack') {
+            child.position.y = 13.8 + factor * 5.0;
+          } else if (child.name === 'offtake') {
+            child.position.y = 8.55 + factor * 3.5;
+          } else if (child.name === 'convection') {
+            child.position.y = 5.5 + factor * 2.0;
+          } else if (child.name === 'headerbox-left') {
+            child.position.x = -1.9 - factor * 1.5;
+          } else if (child.name === 'headerbox-right') {
+            child.position.x = 1.9 + factor * 1.5;
+          } else if (child.name === 'transition') {
+            child.position.y = 2.0 + factor * 0.5;
+          } else if (child.name === 'radiant') {
+            child.position.y = -2.0 - factor * 2.0;
+          }
+        }
+
+        // 2. Generic userData.explode animation for other models
+        if (child.userData && child.userData.explode) {
+          const factor = explodedFactor.current;
+          const { x = 0, y = 0, z = 0 } = child.userData.explode;
+          if (!child.userData.origPos) {
+            child.userData.origPos = child.position.clone();
+          }
+          child.position.x = child.userData.origPos.x + x * factor;
+          child.position.y = child.userData.origPos.y + y * factor;
+          child.position.z = child.userData.origPos.z + z * factor;
         }
       });
 
