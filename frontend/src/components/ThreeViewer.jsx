@@ -96,7 +96,7 @@ function getCameraSettings(type) {
   return settings;
 }
 
-export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoRotate }) {
+export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoRotate, modelName }) {
   const containerRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [loadingText, setLoadingText] = useState("Loading Engineering Model...");
@@ -1536,12 +1536,27 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     <div className="w-full h-full relative">
       {/* Premium subtle background gradient behind canvas */}
       <div className="absolute inset-0 bg-gradient-to-tr from-[#050c18] via-[#09152a] to-[#040912] pointer-events-none" />
-      <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing relative z-10" />
+      <div
+        ref={containerRef}
+        className={`w-full h-full cursor-grab active:cursor-grabbing relative z-10 touch-none transition-opacity duration-500 ease-out ${
+          loading ? 'opacity-0' : 'opacity-100'
+        }`}
+      />
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[#050c18]/90 text-white z-20">
-          <div className="text-center">
-            <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <span className="text-[10px] uppercase tracking-widest font-bold text-blue-400 animate-pulse">{loadingText}</span>
+        <div className="absolute inset-0 flex items-center justify-center bg-[#050c18]/95 backdrop-blur-sm text-white z-20">
+          <div className="text-center max-w-xs px-6">
+            <div className="relative w-14 h-14 mx-auto mb-4">
+              <div className="absolute inset-0 rounded-full border-2 border-blue-500/20" />
+              <div className="absolute inset-0 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" />
+              <div className="absolute inset-2 rounded-full border border-cyan-400/30 border-b-transparent animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
+            </div>
+            {modelName && (
+              <p className="text-[11px] font-bold text-white/90 mb-1 truncate">{modelName}</p>
+            )}
+            <span className="text-[9px] uppercase tracking-widest font-bold text-blue-400/80">{loadingText}</span>
+            <div className="mt-4 h-0.5 w-full bg-white/10 rounded-full overflow-hidden">
+              <div className="h-full w-1/3 bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-pulse rounded-full" />
+            </div>
           </div>
         </div>
       )}

@@ -3,7 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'wouter';
 import { 
   Eye, FileText, ChevronRight, Settings, Shield, Activity, BarChart3, Wrench, Layers, Calendar,
-  ChevronDown, ChevronUp, Factory, HelpCircle, Hammer, Columns, Grid, Disc, Cpu, RotateCw, DoorClosed, TrendingUp, Compass, Box
+  ChevronDown, ChevronUp, Factory, HelpCircle, Hammer, Columns, Grid, Disc, Cpu, RotateCw, DoorClosed, TrendingUp, Compass, Box,
+  Search, Maximize2, Minimize2, RotateCcw, MousePointer2, ZoomIn, ChevronLeft, X, SplitSquareHorizontal,
+  Info, Lightbulb, PanelLeftClose, PanelLeft
 } from 'lucide-react';
 import ThreeViewer from '@/components/ThreeViewer';
 
@@ -643,7 +645,23 @@ const illustrations = [
     service: "Blueprint Design",
     icon: "maintenanceaccess"
   }
-];;
+];
+
+const MODEL_GROUPS = [
+  { name: "Overall Assembly",  items: ["complete-heater", "complete-stack", "off-take-duct"] },
+  { name: "Radiant System",    items: ["radiant-section", "burner-floor", "header-box", "arch-plate-assembly"] },
+  { name: "Convection System", items: ["convection-section", "soot-blower"] },
+  { name: "Structural System", items: ["support-steel", "complete-frame", "roof-structure", "ets-structure"] },
+  { name: "Access System",     items: ["platform-system", "stair-assembly", "stack-platform", "heater-grating", "stack-ladders", "breeching-door", "maintenance-access-sys"] },
+];
+
+const GROUP_FULL_ASSEMBLY = {
+  "Overall Assembly":   "complete-heater",
+  "Radiant System":     "radiant-section",
+  "Convection System":  "convection-section",
+  "Structural System":  "complete-frame",
+  "Access System":      "platform-system",
+};
 
 // 3. Workflow lifecycles (Interactive step data - EXPANDED & HIGHLY DETAILED)
 const workflows = [
@@ -966,27 +984,79 @@ export default function Gallery() {
   const [wireframe, setWireframe] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const [autoRotate, setAutoRotate] = useState(true);
+  const [modelSearch, setModelSearch] = useState('');
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [detailTab, setDetailTab] = useState('overview');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showTips, setShowTips] = useState(() => {
+    try { return !localStorage.getItem('sls-3d-tips-dismissed'); } catch { return true; }
+  });
 
-  // Group → top-level assembly mapping
-  const GROUP_FULL_ASSEMBLY = {
-    "Overall Assembly":   "complete-heater",
-    "Radiant System":     "radiant-section",
-    "Convection System":  "convection-section",
-    "Structural System":  "complete-frame",
-    "Access System":      "platform-system",
+  const dismissTips = () => {
+    setShowTips(false);
+    try { localStorage.setItem('sls-3d-tips-dismissed', '1'); } catch { /* ignore */ }
   };
 
-  // Which group does the currently selected model belong to?
   const getActiveGroup = (illId) => {
-    const groups = [
-      { name: "Overall Assembly",  items: ["complete-heater", "complete-stack", "off-take-duct"] },
-      { name: "Radiant System",    items: ["radiant-section", "burner-floor", "header-box", "arch-plate-assembly"] },
-      { name: "Convection System", items: ["convection-section", "soot-blower"] },
-      { name: "Structural System", items: ["support-steel", "complete-frame", "roof-structure", "ets-structure"] },
-      { name: "Access System",     items: ["platform-system", "stair-assembly", "stack-platform", "heater-grating", "stack-ladders", "breeching-door", "maintenance-access-sys"] },
-    ];
-    const found = groups.find(g => g.items.includes(illId));
+    const found = MODEL_GROUPS.find(g => g.items.includes(illId));
     return found ? found.name : "Overall Assembly";
+  };
+
+  const matchesModelSearch = (ill) => {
+    if (!modelSearch.trim()) return true;
+    const q = modelSearch.toLowerCase();
+    return (
+      ill.title.toLowerCase().includes(q) ||
+      ill.subtitle.toLowerCase().includes(q) ||
+      ill.discipline.toLowerCase().includes(q)
+    );
+  };
+
+  const getGroupIllustrations = (groupName) =>
+    MODEL_GROUPS.find(g => g.name === groupName)?.items
+      .map(id => illustrations.find(i => i.id === id))
+      .filter(Boolean) ?? [];
+
+  const getModelPosition = () => {
+    const groupName = getActiveGroup(selectedIll.id);
+    const items = getGroupIllustrations(groupName);
+    const idx = items.findIndex(i => i.id === selectedIll.id);
+    return { current: idx + 1, total: items.length, groupName };
+  };
+
+  const filteredModelCount = MODEL_GROUPS.reduce((acc, group) => {
+    return acc + group.items
+      .map(id => illustrations.find(i => i.id === id))
+      .filter(Boolean)
+      .filter(matchesModelSearch).length;
+  }, 0);
+
+  const jumpToGroup = (groupName) => {
+    const first = getGroupIllustrations(groupName)[0];
+    if (first) selectIllustration(first, groupName);
+  };
+
+  const navigateModel = (direction) => {
+    const groupName = getActiveGroup(selectedIll.id);
+    const items = getGroupIllustrations(groupName);
+    const idx = items.findIndex(i => i.id === selectedIll.id);
+    const next = items[(idx + direction + items.length) % items.length];
+    if (next) setSelectedIll(next);
+  };
+
+  const selectIllustration = (ill, groupName) => {
+    setSelectedIll(ill);
+    setDetailTab('overview');
+    setOpenGroups({
+      "Overall Assembly": false,
+      "Radiant System": false,
+      "Convection System": false,
+      "Structural System": false,
+      "Access System": false,
+      [groupName]: true,
+    });
+    setSidebarOpen(false);
+    scrollToViewer();
   };
 
   const handleSelectFullAssembly = () => {
@@ -995,6 +1065,43 @@ export default function Gallery() {
     const targetIll = illustrations.find(ill => ill.id === targetId);
     if (targetIll) setSelectedIll(targetIll);
   };
+
+  const canExplode = selectedIll.id === 'complete-heater';
+
+  useEffect(() => {
+    if (!canExplode && exploded) setExploded(false);
+  }, [canExplode, exploded]);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      if (e.key === 'Escape') {
+        setIsFullscreen(false);
+        setSidebarOpen(false);
+        return;
+      }
+      if (activeTab !== 'illustrations') return;
+
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        navigateModel(e.key === 'ArrowLeft' ? -1 : 1);
+      }
+      if (e.key === 'r' || e.key === 'R') setResetKey(prev => prev + 1);
+      if (e.key === 'f' || e.key === 'F') setIsFullscreen(f => !f);
+      if (e.key === ' ') {
+        e.preventDefault();
+        setAutoRotate(v => !v);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [activeTab, selectedIll.id]);
+
+  useEffect(() => {
+    document.body.style.overflow = isFullscreen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isFullscreen]);
 
   const getDrawingCategory = (draw) => {
     if (draw.file.startsWith('eil_ga')) return 'EIL';
@@ -1024,7 +1131,9 @@ export default function Gallery() {
       case 'ets': return <Columns className="w-4 h-4" />;
       case 'platforms': return <Eye className="w-4 h-4" />;
       case 'staircase': return <TrendingUp className="w-4 h-4" />;
-      case 'ladders': return <Grid className="w-4 h-4" />;
+      case 'stackplatform': return <Compass className="w-4 h-4" />;
+      case 'heatergrating': return <Grid className="w-4 h-4" />;
+      case 'ladders': return <TrendingUp className="w-4 h-4" />;
       case 'breechingdoor': return <DoorClosed className="w-4 h-4" />;
       case 'maintenanceaccess': return <Settings className="w-4 h-4" />;
       default: return <Settings className="w-4 h-4" />;
@@ -1217,83 +1326,118 @@ export default function Gallery() {
           {/* TAB 2: EXPLODED ILLUSTRATIONS (THREE.JS 3D VIEW) */}
           {/* TAB 2: EXPLODED ILLUSTRATIONS (THREE.JS 3D VIEW) */}
           {activeTab === 'illustrations' && (
-            <div className="grid lg:grid-cols-3 gap-12 items-start">
-              {/* Left Column: Grouped Menu & Statistics */}
-              <div className="lg:col-span-1 space-y-6">
-                <div className="bg-white border border-gray-200 p-6 shadow-sm">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-5">Select 3D Component</h3>
-                  <div className="space-y-3">
-                    {[
-                      {
-                        name: "Overall Assembly",
-                        items: ["complete-heater", "complete-stack", "off-take-duct"]
-                      },
-                      {
-                        name: "Radiant System",
-                        items: ["radiant-section", "burner-floor", "header-box", "arch-plate-assembly"]
-                      },
-                      {
-                        name: "Convection System",
-                        items: ["convection-section", "soot-blower"]
-                      },
-                      {
-                        name: "Structural System",
-                        items: ["support-steel", "complete-frame", "roof-structure", "ets-structure"]
-                      },
-                      {
-                        name: "Access System",
-                        items: ["platform-system", "stair-assembly", "stack-platform", "heater-grating", "stack-ladders", "breeching-door", "maintenance-access-sys"]
-                      }
-                    ].map((group) => {
-                      const isOpen = openGroups[group.name];
+            <div className="grid lg:grid-cols-3 gap-6 lg:gap-10 items-start">
+              {/* Mobile: viewer first; Desktop: sidebar left */}
+              <div className={`lg:col-span-1 order-2 lg:order-1 space-y-4 lg:space-y-6 ${sidebarOpen ? 'block' : 'hidden lg:block'}`}>
+                <div className="bg-white border border-gray-200 p-5 lg:p-6 shadow-sm rounded-xl">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400">Select 3D Component</h3>
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">
+                      {illustrations.length} Models
+                    </span>
+                  </div>
+
+                  {/* Quick group jump pills */}
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {MODEL_GROUPS.map(group => {
+                      const isActive = getActiveGroup(selectedIll.id) === group.name;
                       return (
-                        <div key={group.name} className="border-b border-gray-100 pb-3">
+                        <button
+                          key={group.name}
+                          onClick={() => jumpToGroup(group.name)}
+                          className={`px-2 py-1 text-[8px] font-bold uppercase tracking-wider rounded-full border transition-colors ${
+                            isActive
+                              ? 'bg-[#0a1628] text-white border-[#0a1628]'
+                              : 'bg-gray-50 text-gray-500 border-gray-200 hover:border-blue-300 hover:text-blue-700'
+                          }`}
+                        >
+                          {group.name.replace(' System', '').replace(' Assembly', '')}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="relative mb-4">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+                    <input
+                      type="text"
+                      value={modelSearch}
+                      onChange={(e) => setModelSearch(e.target.value)}
+                      placeholder="Search assemblies..."
+                      className="w-full pl-9 pr-8 py-2.5 text-xs border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400/30 transition-colors"
+                    />
+                    {modelSearch && (
+                      <button
+                        onClick={() => setModelSearch('')}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600"
+                        aria-label="Clear search"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                  {filteredModelCount === 0 && (
+                    <div className="py-8 text-center">
+                      <Search className="w-8 h-8 text-gray-300 mx-auto mb-2" />
+                      <p className="text-xs font-semibold text-gray-500">No assemblies found</p>
+                      <p className="text-[10px] text-gray-400 mt-1">Try a different search term</p>
+                      <button
+                        onClick={() => setModelSearch('')}
+                        className="mt-3 text-[10px] font-bold uppercase tracking-wider text-blue-600 hover:text-blue-800"
+                      >
+                        Clear search
+                      </button>
+                    </div>
+                  )}
+                  <div className="space-y-3 max-h-[380px] lg:max-h-[420px] overflow-y-auto pr-1 scrollbar-thin">
+                    {MODEL_GROUPS.map((group) => {
+                      const groupItems = group.items
+                        .map(itemId => illustrations.find(x => x.id === itemId))
+                        .filter(Boolean)
+                        .filter(matchesModelSearch);
+                      if (groupItems.length === 0) return null;
+                      const isOpen = openGroups[group.name] || !!modelSearch.trim();
+                      return (
+                        <div key={group.name} className="border-b border-gray-100 pb-3 last:border-0">
                           <button
                             onClick={() => toggleGroup(group.name)}
-                            className="w-full flex items-center justify-between py-1 text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:text-gray-600 transition-colors"
+                            className="w-full flex items-center justify-between py-1.5 text-[10px] font-bold uppercase tracking-wider text-gray-500 hover:text-[#0a1628] transition-colors"
                           >
-                            <span>{group.name}</span>
+                            <span className="flex items-center gap-2">
+                              {group.name}
+                              <span className="text-[8px] font-semibold text-gray-400 normal-case tracking-normal">
+                                ({groupItems.length})
+                              </span>
+                            </span>
                             {isOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
                           </button>
                           
                           {isOpen && (
-                            <div className="space-y-1 mt-2 pl-1">
-                              {group.items.map((itemId) => {
-                                const ill = illustrations.find(x => x.id === itemId);
-                                if (!ill) return null;
+                            <div className="space-y-1 mt-2">
+                              {groupItems.map((ill) => {
                                 const isSelected = selectedIll.id === ill.id;
                                 return (
                                   <button
                                     key={ill.id}
-                                    onClick={() => {
-                                      setSelectedIll(ill);
-                                      // Expand only the selected group, collapse all others
-                                      setOpenGroups({
-                                        "Overall Assembly": false,
-                                        "Radiant System": false,
-                                        "Convection System": false,
-                                        "Structural System": false,
-                                        "Access System": false,
-                                        [group.name]: true
-                                      });
-                                      scrollToViewer();
-                                    }}
-                                    className={`w-full text-left px-3 py-2.5 border-l-2 transition-all flex items-center gap-3 justify-between ${
+                                    onClick={() => selectIllustration(ill, group.name)}
+                                    className={`w-full text-left px-3 py-2.5 rounded-sm border-l-2 transition-all flex items-center gap-3 justify-between ${
                                       isSelected
-                                        ? 'bg-[#0a1628] border-l-blue-600 text-white shadow-sm font-bold'
-                                        : 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-800 bg-white'
+                                        ? 'bg-[#0a1628] border-l-blue-500 text-white shadow-md font-bold'
+                                        : 'border-l-transparent text-gray-600 hover:bg-blue-50/60 hover:border-l-blue-300 bg-white'
                                     }`}
                                   >
                                     <div className="flex items-center gap-2.5 min-w-0">
-                                      <span className={isSelected ? 'text-blue-400' : 'text-gray-400'}>
+                                      <span className={`shrink-0 p-1 rounded-sm ${isSelected ? 'bg-blue-600/30 text-blue-300' : 'bg-gray-100 text-gray-400'}`}>
                                         {getComponentIcon(ill.icon)}
                                       </span>
                                       <div className="min-w-0 text-left">
                                         <div className="font-bold truncate text-[10px] uppercase tracking-wide leading-none mb-1">{ill.title}</div>
-                                        <div className={`text-[9px] truncate leading-none ${isSelected ? 'text-white/60' : 'text-gray-400 font-medium'}`}>{ill.subtitle}</div>
+                                        <div className={`text-[9px] truncate leading-none ${isSelected ? 'text-white/55' : 'text-gray-400 font-medium'}`}>{ill.subtitle}</div>
                                       </div>
                                     </div>
-                                    <ChevronRight className={`w-3.5 h-3.5 shrink-0 transition-transform ${isSelected ? 'translate-x-0.5 text-blue-400' : 'opacity-25'}`} />
+                                    {isSelected && (
+                                      <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 animate-pulse" />
+                                    )}
                                   </button>
                                 );
                               })}
@@ -1306,8 +1450,8 @@ export default function Gallery() {
                 </div>
 
                 {/* Left Column Bottom: Engineering Statistics */}
-                <div className="bg-gray-50 border border-gray-100 p-5 shadow-sm">
-                  <h4 className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-4">Refinery Detailing Track Record</h4>
+                <div className="bg-gradient-to-br from-[#0a1628] to-[#132238] border border-[#1e3a5f]/30 p-5 shadow-sm text-white rounded-xl">
+                  <h4 className="text-[9px] font-bold uppercase tracking-widest text-white/40 mb-4">Refinery Detailing Track Record</h4>
                   <div className="grid grid-cols-2 gap-4">
                     {[
                       { value: "91+", label: "Engineering Drawings" },
@@ -1316,9 +1460,9 @@ export default function Gallery() {
                       { value: "20+", label: "Years Exp" },
                       { value: "500+", label: "Projects Delivered" }
                     ].map((stat, idx) => (
-                      <div key={idx}>
-                        <div className="text-lg font-bold text-[#0a1628] leading-none mb-0.5">{stat.value}</div>
-                        <div className="text-[8px] uppercase tracking-wider text-gray-500 leading-tight">{stat.label}</div>
+                      <div key={idx} className={idx === 4 ? 'col-span-2 pt-2 border-t border-white/10' : ''}>
+                        <div className="text-lg font-bold text-white leading-none mb-0.5">{stat.value}</div>
+                        <div className="text-[8px] uppercase tracking-wider text-white/45 leading-tight">{stat.label}</div>
                       </div>
                     ))}
                   </div>
@@ -1326,139 +1470,344 @@ export default function Gallery() {
               </div>
 
               {/* Right/Middle Columns: Details & 3D Interactive WebGL Rendering */}
-              <div className="lg:col-span-2 space-y-8">
+              <div className="lg:col-span-2 order-1 lg:order-2 space-y-4 lg:space-y-6">
+                {/* First-time interaction tips */}
+                <AnimatePresence>
+                  {showTips && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                      className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-xl"
+                    >
+                      <Lightbulb className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-bold text-[#0a1628] mb-1">Interactive 3D Viewer Tips</p>
+                        <p className="text-[11px] text-gray-600 leading-relaxed">
+                          Drag to orbit · Scroll to zoom · Use ← → to switch models within a group ·
+                          Press <kbd className="px-1 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-mono">R</kbd> reset ·
+                          <kbd className="px-1 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-mono ml-1">F</kbd> fullscreen ·
+                          <kbd className="px-1 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-mono ml-1">Space</kbd> toggle spin
+                        </p>
+                      </div>
+                      <button
+                        onClick={dismissTips}
+                        className="p-1 text-gray-400 hover:text-gray-600 shrink-0"
+                        aria-label="Dismiss tips"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Mobile sidebar toggle */}
+                <button
+                  onClick={() => setSidebarOpen(o => !o)}
+                  className="lg:hidden flex items-center gap-2 w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-xs font-bold uppercase tracking-wider text-[#0a1628] shadow-sm"
+                >
+                  {sidebarOpen ? <PanelLeftClose className="w-4 h-4" /> : <PanelLeft className="w-4 h-4" />}
+                  {sidebarOpen ? 'Hide Component List' : 'Browse All 20 Components'}
+                </button>
+
                 {/* Three.js Interactive 3D Canvas */}
-                <div ref={viewerRef} className="aspect-[16/10] flex items-center justify-center text-white relative overflow-hidden shadow-md border border-gray-200">
-                  <ThreeViewer 
-                    type={selectedIll.threeType} 
-                    exploded={exploded} 
-                    wireframe={wireframe} 
-                    resetKey={resetKey} 
+                <div
+                  ref={viewerRef}
+                  className={`relative overflow-hidden bg-[#050c18] shadow-2xl ring-1 ring-[#1e3a5f]/50 ${
+                    isFullscreen
+                      ? 'fixed inset-0 z-50 h-screen w-screen rounded-none'
+                      : 'aspect-[16/10] rounded-xl'
+                  }`}
+                >
+                  {/* Blueprint corner markers */}
+                  <div className="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-blue-500/50 pointer-events-none z-20" />
+                  <div className="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-blue-500/50 pointer-events-none z-20" />
+                  <div className="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-blue-500/50 pointer-events-none z-20" />
+                  <div className="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-blue-500/50 pointer-events-none z-20" />
+
+                  <ThreeViewer
+                    type={selectedIll.threeType}
+                    exploded={exploded}
+                    wireframe={wireframe}
+                    resetKey={resetKey}
                     autoRotate={autoRotate}
+                    modelName={selectedIll.title}
                   />
-                  
-                  {/* Interaction Instructions */}
-                  <div className="absolute top-4 left-4 flex items-center gap-1.5 text-[9px] uppercase tracking-widest text-white/50 bg-black/40 px-2.5 py-1.5 rounded-sm pointer-events-none z-10">
-                    <Activity className="w-3.5 h-3.5 text-blue-400 animate-pulse" />
-                    <span>Left Click + Drag: Rotate 360&deg; | Wheel: Zoom</span>
+
+                  {/* Top overlay — model identity */}
+                  <div className="absolute top-0 inset-x-0 z-10 flex items-start justify-between gap-3 p-4 bg-gradient-to-b from-black/75 via-black/30 to-transparent pointer-events-none">
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                        <span className="inline-block px-2 py-0.5 rounded-full bg-blue-600/20 border border-blue-500/30 text-[8px] font-bold uppercase tracking-widest text-blue-300">
+                          {getActiveGroup(selectedIll.id)}
+                        </span>
+                        <span className="inline-block px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-[8px] font-bold uppercase tracking-widest text-white/50">
+                          {getModelPosition().current} / {getModelPosition().total}
+                        </span>
+                      </div>
+                      <AnimatePresence mode="wait">
+                        <motion.p
+                          key={selectedIll.id}
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -6 }}
+                          transition={{ duration: 0.2 }}
+                          className="text-sm font-bold text-white leading-tight truncate"
+                        >
+                          {selectedIll.title}
+                        </motion.p>
+                      </AnimatePresence>
+                      <p className="text-[10px] text-white/45 uppercase tracking-wide truncate">{selectedIll.subtitle}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 shrink-0">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-[8px] font-bold uppercase tracking-widest text-emerald-400">WebGL</span>
+                    </div>
                   </div>
 
-                  {/* WebGL Camera & View Controls Toolbar */}
-                  <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm p-1.5 rounded-sm z-10 border border-white/10">
-                    <button
-                      onClick={() => setResetKey(prev => prev + 1)}
-                      className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-white hover:text-blue-400 transition-colors border border-white/10"
-                    >
-                      Reset View
-                    </button>
-                    <button
-                      onClick={handleSelectFullAssembly}
-                      className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-white hover:text-blue-400 transition-colors border border-white/10"
-                    >
-                      Full Assembly
-                    </button>
-                    <button
-                      onClick={() => setWireframe(!wireframe)}
-                      className={`px-2 py-1 text-[9px] font-bold uppercase tracking-wider transition-colors border border-white/10 ${
-                        wireframe ? 'bg-blue-600 text-white border-blue-600' : 'text-white hover:text-blue-400'
-                      }`}
-                    >
-                      {wireframe ? 'Solid' : 'Wireframe'}
-                    </button>
-                    <button
-                      onClick={() => setExploded(!exploded)}
-                      className={`px-2 py-1 text-[9px] font-bold uppercase tracking-wider transition-colors border border-white/10 ${
-                        exploded ? 'bg-blue-600 text-white border-blue-600' : 'text-white hover:text-blue-400'
-                      }`}
-                    >
-                      {exploded ? 'Assembled' : 'Exploded'}
-                    </button>
-                    <button
-                      onClick={() => setAutoRotate(!autoRotate)}
-                      className={`px-2 py-1 text-[9px] font-bold uppercase tracking-wider transition-colors border border-white/10 ${
-                        autoRotate ? 'bg-blue-600 text-white border-blue-600' : 'text-white hover:text-blue-400'
-                      }`}
-                    >
-                      {autoRotate ? 'Pause Rotation' : 'Auto Rotate'}
-                    </button>
-                  </div>
+                  {/* Side navigation — hidden on small screens to avoid overlap */}
+                  <button
+                    onClick={() => navigateModel(-1)}
+                    className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-2.5 rounded-full bg-black/50 hover:bg-black/70 border border-white/10 text-white/70 hover:text-white transition-all backdrop-blur-sm hidden sm:flex"
+                    title="Previous model (←)"
+                    aria-label="Previous model"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => navigateModel(1)}
+                    className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-2.5 rounded-full bg-black/50 hover:bg-black/70 border border-white/10 text-white/70 hover:text-white transition-all backdrop-blur-sm hidden xs:flex sm:flex"
+                    title="Next model (→)"
+                    aria-label="Next model"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
 
-                  {/* Watermark/Metadata details */}
-                  <div className="absolute bottom-4 left-6 flex items-center gap-2 text-[9px] uppercase tracking-widest text-white/35 pointer-events-none z-10">
-                    <Settings className="w-3.5 h-3.5 animate-spin-slow text-blue-500" />
-                    <span>WebGL 3D Engine Active</span>
+                  {/* Bottom control panel */}
+                  <div className="absolute bottom-0 inset-x-0 z-10 p-4 bg-gradient-to-t from-black/85 via-black/50 to-transparent">
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[8px] uppercase tracking-widest text-white/40 pointer-events-none">
+                        <span className="flex items-center gap-1.5"><MousePointer2 className="w-3 h-3" /> Drag to orbit</span>
+                        <span className="flex items-center gap-1.5"><ZoomIn className="w-3 h-3" /> Scroll to zoom</span>
+                        <span className="hidden md:flex items-center gap-1.5">← → Switch models</span>
+                        <span className="flex md:hidden items-center gap-1.5"><ChevronLeft className="w-3 h-3" /><ChevronRight className="w-3 h-3" /> Swipe group</span>
+                        <span className="hidden lg:flex items-center gap-1.5">R reset · F full · Space spin</span>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <button
+                          onClick={() => setResetKey(prev => prev + 1)}
+                          className="flex items-center gap-1.5 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-sm transition-colors"
+                          title="Reset camera"
+                        >
+                          <RotateCcw className="w-3 h-3" /> Reset
+                        </button>
+                        <button
+                          onClick={handleSelectFullAssembly}
+                          className="flex items-center gap-1.5 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-sm transition-colors"
+                          title="Jump to group assembly"
+                        >
+                          <Layers className="w-3 h-3" /> Assembly
+                        </button>
+                        <button
+                          onClick={() => setWireframe(!wireframe)}
+                          className={`flex items-center gap-1.5 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border rounded-sm transition-colors ${
+                            wireframe
+                              ? 'bg-blue-600 text-white border-blue-500'
+                              : 'text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border-white/10'
+                          }`}
+                          title="Toggle wireframe"
+                        >
+                          <Grid className="w-3 h-3" /> {wireframe ? 'Solid' : 'Wire'}
+                        </button>
+                        <button
+                          onClick={() => canExplode && setExploded(!exploded)}
+                          disabled={!canExplode}
+                          className={`flex items-center gap-1.5 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border rounded-sm transition-colors ${
+                            !canExplode
+                              ? 'opacity-30 cursor-not-allowed text-white/40 border-white/5 bg-transparent'
+                              : exploded
+                                ? 'bg-blue-600 text-white border-blue-500'
+                                : 'text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border-white/10'
+                          }`}
+                          title={canExplode ? 'Toggle exploded view' : 'Exploded view available on Complete Fired Heater only'}
+                        >
+                          <SplitSquareHorizontal className="w-3 h-3" /> {exploded ? 'Assembled' : 'Explode'}
+                        </button>
+                        <button
+                          onClick={() => setAutoRotate(!autoRotate)}
+                          className={`flex items-center gap-1.5 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border rounded-sm transition-colors ${
+                            autoRotate
+                              ? 'bg-blue-600 text-white border-blue-500'
+                              : 'text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border-white/10'
+                          }`}
+                          title="Toggle auto rotation"
+                        >
+                          <RotateCw className={`w-3 h-3 ${autoRotate ? 'animate-spin' : ''}`} style={{ animationDuration: '3s' }} />
+                          {autoRotate ? 'Pause' : 'Spin'}
+                        </button>
+                        <button
+                          onClick={() => setIsFullscreen(f => !f)}
+                          className="flex items-center gap-1.5 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-sm transition-colors"
+                          title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+                        >
+                          {isFullscreen ? <Minimize2 className="w-3 h-3" /> : <Maximize2 className="w-3 h-3" />}
+                          {isFullscreen ? 'Exit' : 'Full'}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Material legend */}
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-3 pt-3 border-t border-white/10 pointer-events-none">
+                      {[
+                        { color: 'bg-[#6e7d8c]', label: 'Shell / Casing' },
+                        { color: 'bg-[#8b95a1]', label: 'Structural Steel' },
+                        { color: 'bg-[#d4840a]', label: 'Process Tubing' },
+                        { color: 'bg-[#a8b4c0]', label: 'Flanges & Hardware' },
+                      ].map(item => (
+                        <span key={item.label} className="flex items-center gap-1.5 text-[8px] uppercase tracking-wider text-white/35">
+                          <span className={`w-2.5 h-2.5 rounded-sm ${item.color} ring-1 ring-white/20`} />
+                          {item.label}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
                 {/* Conceptual metadata descriptions card */}
-                <div className="bg-white border border-gray-200 p-8 shadow-sm">
-                  <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-6 border-b border-gray-100">
-                    <div>
-                      <span className="text-[9px] font-bold uppercase tracking-wider text-blue-700 block mb-1">
-                        3D Technical Visualization
-                      </span>
-                      <h3 className="text-2xl font-bold text-[#0a1628]">{selectedIll.title}</h3>
-                      <p className="text-xs text-gray-400 mt-1 uppercase font-semibold tracking-wide">
-                        {selectedIll.subtitle}
-                      </p>
+                <div className="bg-white border border-gray-200 shadow-sm rounded-xl overflow-hidden">
+                  <div className="p-6 lg:p-8 pb-0">
+                    <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
+                      <div className="min-w-0">
+                        <span className="text-[9px] font-bold uppercase tracking-wider text-blue-700 block mb-1">
+                          3D Technical Visualization
+                        </span>
+                        <AnimatePresence mode="wait">
+                          <motion.h3
+                            key={selectedIll.id}
+                            initial={{ opacity: 0, x: -8 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: 8 }}
+                            transition={{ duration: 0.2 }}
+                            className="text-xl lg:text-2xl font-bold text-[#0a1628]"
+                          >
+                            {selectedIll.title}
+                          </motion.h3>
+                        </AnimatePresence>
+                        <p className="text-xs text-gray-400 mt-1 uppercase font-semibold tracking-wide">
+                          {selectedIll.subtitle}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleBookRedirect(selectedIll.service)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white text-[10px] lg:text-xs font-bold uppercase tracking-widest px-4 lg:px-5 py-2.5 lg:py-3 rounded-sm shadow-md transition-colors shrink-0"
+                      >
+                        Book Service &rarr;
+                      </button>
                     </div>
-                    <button
-                      onClick={() => handleBookRedirect(selectedIll.service)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase tracking-widest px-5 py-3 rounded-sm shadow-md transition-colors"
-                    >
-                      Book Service: {selectedIll.service} &rarr;
-                    </button>
-                  </div>
-                  
-                  <div className="mb-6">
-                    <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Description</h4>
-                    <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.description}</p>
-                  </div>
 
-                  <div className="grid md:grid-cols-2 gap-x-8 gap-y-6 pt-6 border-t border-gray-100">
-                    <div>
-                      <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <HelpCircle className="w-3.5 h-3.5 text-blue-700" /> Purpose
-                      </h4>
-                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.purpose}</p>
-                    </div>
-                    <div>
-                      <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <Activity className="w-3.5 h-3.5 text-blue-700" /> Engineering Function
-                      </h4>
-                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.function}</p>
-                    </div>
-                    <div>
-                      <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <Hammer className="w-3.5 h-3.5 text-blue-700" /> Typical Materials
-                      </h4>
-                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.materials}</p>
-                    </div>
-                    <div>
-                      <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <Layers className="w-3.5 h-3.5 text-blue-700" /> Engineering Discipline
-                      </h4>
-                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.discipline}</p>
-                    </div>
-                    <div>
-                      <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <Factory className="w-3.5 h-3.5 text-blue-700" /> Industrial Application
-                      </h4>
-                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.application}</p>
-                    </div>
-                    <div>
-                      <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <Shield className="w-3.5 h-3.5 text-blue-700" /> SLS Scope of Work
-                      </h4>
-                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.scope}</p>
+                    {/* Detail tabs */}
+                    <div className="flex gap-1 border-b border-gray-100 -mx-1">
+                      {[
+                        { id: 'overview', label: 'Overview', icon: Info },
+                        { id: 'engineering', label: 'Engineering', icon: Activity },
+                        { id: 'deliverables', label: 'Deliverables', icon: FileText },
+                      ].map(tab => (
+                        <button
+                          key={tab.id}
+                          onClick={() => setDetailTab(tab.id)}
+                          className={`flex items-center gap-1.5 px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider border-b-2 transition-colors -mb-px ${
+                            detailTab === tab.id
+                              ? 'border-blue-600 text-blue-700'
+                              : 'border-transparent text-gray-400 hover:text-gray-600'
+                          }`}
+                        >
+                          <tab.icon className="w-3.5 h-3.5" />
+                          {tab.label}
+                        </button>
+                      ))}
                     </div>
                   </div>
 
-                  <div className="mt-8 p-4 bg-gray-50 border-l-2 border-blue-700 text-xs">
-                    <span className="font-bold text-[#0a1628] block mb-1 uppercase text-[9px] tracking-wider">
-                      Engineering Deliverables:
-                    </span>
-                    <p className="text-gray-600 leading-relaxed">{selectedIll.deliverables}</p>
+                  <div className="p-6 lg:p-8 pt-5">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={`${selectedIll.id}-${detailTab}`}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {detailTab === 'overview' && (
+                          <>
+                            <div className="mb-6">
+                              <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Description</h4>
+                              <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.description}</p>
+                            </div>
+                            <div className="grid sm:grid-cols-2 gap-6">
+                              <div>
+                                <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                                  <HelpCircle className="w-3.5 h-3.5 text-blue-700" /> Purpose
+                                </h4>
+                                <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.purpose}</p>
+                              </div>
+                              <div>
+                                <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                                  <Factory className="w-3.5 h-3.5 text-blue-700" /> Application
+                                </h4>
+                                <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.application}</p>
+                              </div>
+                            </div>
+                          </>
+                        )}
+
+                        {detailTab === 'engineering' && (
+                          <div className="grid sm:grid-cols-2 gap-x-8 gap-y-6">
+                            <div>
+                              <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                                <Activity className="w-3.5 h-3.5 text-blue-700" /> Engineering Function
+                              </h4>
+                              <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.function}</p>
+                            </div>
+                            <div>
+                              <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                                <Hammer className="w-3.5 h-3.5 text-blue-700" /> Typical Materials
+                              </h4>
+                              <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.materials}</p>
+                            </div>
+                            <div>
+                              <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                                <Layers className="w-3.5 h-3.5 text-blue-700" /> Discipline
+                              </h4>
+                              <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.discipline}</p>
+                            </div>
+                            <div>
+                              <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                                <Shield className="w-3.5 h-3.5 text-blue-700" /> Scope of Work
+                              </h4>
+                              <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.scope}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {detailTab === 'deliverables' && (
+                          <div className="p-4 bg-gray-50 border-l-2 border-blue-700 rounded-r-sm">
+                            <span className="font-bold text-[#0a1628] block mb-2 uppercase text-[9px] tracking-wider">
+                              Engineering Deliverables
+                            </span>
+                            <p className="text-xs text-gray-600 leading-relaxed">{selectedIll.deliverables}</p>
+                            <div className="mt-4 pt-4 border-t border-gray-200 flex flex-wrap gap-2">
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 bg-white px-2 py-1 rounded border border-gray-100">
+                                {selectedIll.service}
+                              </span>
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-1 rounded border border-blue-100">
+                                {getActiveGroup(selectedIll.id)}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </motion.div>
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>
