@@ -630,11 +630,11 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             }
           }
 
-          // Intermediate support plates (cutting vertical partitions in convection bank)
-          const supportPlateGeo = new THREE.BoxGeometry(0.08, 5.4, 3.8);
-          for (let x of [-1, 1]) {
+          // Intermediate support plates (cutting vertical partitions in convection bank - horizontal baffles/sheets at different Y heights)
+          const supportPlateGeo = new THREE.BoxGeometry(5.8, 0.08, 3.6);
+          for (let y of [-1.0, 1.0]) {
             const sup = new THREE.Mesh(supportPlateGeo, wireMat);
-            sup.position.set(x, 0, 0);
+            sup.position.set(0, y, 0);
             modelGroup.add(sup);
           }
           break;
@@ -1030,47 +1030,47 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         }
 
         case 'sootblower': { // Soot Blower Structure
-          // Dual main cantilever rails (channels)
-          const railGeo = new THREE.BoxGeometry(0.1, 0.3, 8.0);
+          // Dual main cantilever rails (channels) running along X-axis
+          const railGeo = new THREE.BoxGeometry(8.0, 0.3, 0.1);
           const r1 = new THREE.Mesh(railGeo, blueprintMat);
-          r1.position.set(-0.35, 0, 0);
+          r1.position.set(0, 0, -0.35);
           modelGroup.add(r1);
 
           const r2 = r1.clone();
-          r2.position.x = 0.35;
+          r2.position.z = 0.35;
           modelGroup.add(r2);
 
           // Cross braces along rails
-          const braceGeo = new THREE.BoxGeometry(0.8, 0.04, 0.1);
-          for (let z = -3.5; z <= 3.5; z += 1.0) {
+          const braceGeo = new THREE.BoxGeometry(0.1, 0.04, 0.8);
+          for (let x = -3.5; x <= 3.5; x += 1.0) {
             const cross = new THREE.Mesh(braceGeo, blueprintMat);
-            cross.position.set(0, -0.1, z);
+            cross.position.set(x, -0.1, 0);
             modelGroup.add(cross);
           }
 
-          // Soot blower lance tube (metallic tube running through center)
+          // Soot blower lance tube (metallic tube inserting along X-axis)
           const lanceGeo = new THREE.CylinderGeometry(0.08, 0.08, 7.8, 16);
           const lance = new THREE.Mesh(lanceGeo, coilMat);
-          lance.rotation.x = Math.PI / 2;
-          lance.position.set(0, 0.1, 0.2);
+          lance.rotation.z = Math.PI / 2;
+          lance.position.set(0.2, 0.1, 0);
           modelGroup.add(lance);
 
           // Lance jet tip nozzle
           const jetTip = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.09, 0.3, 12), stackMat);
-          jetTip.rotation.x = Math.PI / 2;
-          jetTip.position.set(0, 0.1, 4.1);
+          jetTip.rotation.z = -Math.PI / 2;
+          jetTip.position.set(4.1, 0.1, 0);
           modelGroup.add(jetTip);
 
           // Support wall box sleeve flange
           const sleeveFlange = createBoltFlange(0.7, 0.2, 0.2, 8, stackMat, blueprintMat);
-          sleeveFlange.position.set(0, 0.1, -3.9);
-          sleeveFlange.rotation.x = Math.PI / 2;
+          sleeveFlange.position.set(-3.9, 0.1, 0);
+          sleeveFlange.rotation.z = Math.PI / 2;
           modelGroup.add(sleeveFlange);
 
           // Carriage driver assembly box (motor unit on rails)
-          const carGeo = new THREE.BoxGeometry(0.9, 0.6, 1.0);
+          const carGeo = new THREE.BoxGeometry(1.0, 0.6, 0.9);
           const carriage = new THREE.Mesh(carGeo, blueprintMat);
-          carriage.position.set(0, 0.25, -1.5);
+          carriage.position.set(-1.5, 0.25, 0);
           modelGroup.add(carriage);
           break;
         }
@@ -1094,15 +1094,24 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             modelGroup.add(beam);
           }
 
-          // 6 detailed burners pointing vertically
-          const numBurners = 6;
-          const radius = 2.4;
+          // Center burner (primary design)
+          const centerBurner = createIndustrialBurner(0.55, 0.8);
+          centerBurner.position.set(0, -2.6, 0);
+          modelGroup.add(centerBurner);
+
+          const centerPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1.2, 8), stackMat);
+          centerPipe.position.set(0, -3.9, 0);
+          modelGroup.add(centerPipe);
+
+          // 4 surrounding burners in a compact central circle (radius = 1.5)
+          const numBurners = 4;
+          const radius = 1.5;
           for (let i = 0; i < numBurners; i++) {
             const angle = (i / numBurners) * Math.PI * 2;
             const x = Math.cos(angle) * radius;
             const z = Math.sin(angle) * radius;
 
-            const burner = createIndustrialBurner(0.55, 0.8);
+            const burner = createIndustrialBurner(0.5, 0.8);
             burner.position.set(x, -2.6, z);
             modelGroup.add(burner);
 
@@ -1228,24 +1237,25 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         }
 
         case 'offtake': { // Off-Take Duct
-          // Rectangular box segment for transition
-          const ductBoxGeo = new THREE.BoxGeometry(2.0, 1.8, 3.5);
-          const ductBox = new THREE.Mesh(ductBoxGeo, blueprintMat);
-          ductBox.position.set(0, 0, 0);
-          modelGroup.add(ductBox);
+          // Bottom transition adapter box (4-sided shape)
+          const baseDuctGeo = new THREE.CylinderGeometry(1.6, 1.6, 0.5, 4);
+          const baseDuct = new THREE.Mesh(baseDuctGeo, blueprintMat);
+          baseDuct.position.set(0, -0.5, 0);
+          baseDuct.rotation.y = Math.PI / 4; // Align square sides
+          modelGroup.add(baseDuct);
 
-          // Sloped duct transition (box rotated)
-          const slopedGeo = new THREE.BoxGeometry(1.8, 1.5, 4.0);
-          const slopedDuct = new THREE.Mesh(slopedGeo, blueprintMat);
-          slopedDuct.position.set(0, 1.5, 2.0);
-          slopedDuct.rotation.x = -Math.PI / 6;
-          modelGroup.add(slopedDuct);
+          // Middle transition reducer (rectangular-to-circular layout)
+          // 4-sided pyramid frustum represents the sheet transition
+          const transDuctGeo = new THREE.CylinderGeometry(0.9, 1.6, 2.2, 4);
+          const transDuct = new THREE.Mesh(transDuctGeo, blueprintMat);
+          transDuct.position.set(0, 0.85, 0);
+          transDuct.rotation.y = Math.PI / 4;
+          modelGroup.add(transDuct);
 
-          // Connecting flange
-          const flangeGeo = new THREE.CylinderGeometry(1.4, 1.4, 0.4, 16);
+          // Top circular flange collar connecting to the stack
+          const flangeGeo = new THREE.CylinderGeometry(0.9, 0.9, 0.4, 32);
           const flange = new THREE.Mesh(flangeGeo, stackMat);
-          flange.position.set(0, 2.8, 3.8);
-          flange.rotation.x = Math.PI / 2;
+          flange.position.set(0, 2.15, 0);
           modelGroup.add(flange);
           break;
         }
@@ -1273,19 +1283,30 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         }
 
         case 'heatergrating': { // Heater Grating System
-          // Circular ring for platform walkway
-          const gratingRingGeo = new THREE.CylinderGeometry(3.6, 5.0, 0.1, 32, 1, false);
+          // Circular ring for platform walkway - flat ring structure
+          const gratingRingGeo = new THREE.RingGeometry(3.6, 5.0, 48);
           const gratingMesh = new THREE.Mesh(gratingRingGeo, wireMat);
+          gratingMesh.rotation.x = -Math.PI / 2;
           gratingMesh.position.y = -1;
+          gratingMesh.material.side = THREE.DoubleSide;
           modelGroup.add(gratingMesh);
 
-          // Add cross bars to suggest grating texture
-          for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 24) {
+          // Outer and inner structural steel kickplates
+          const outerRim = new THREE.Mesh(new THREE.CylinderGeometry(5.0, 5.0, 0.15, 48, 1, true), blueprintMat);
+          outerRim.position.y = -0.925;
+          modelGroup.add(outerRim);
+
+          const innerRim = new THREE.Mesh(new THREE.CylinderGeometry(3.6, 3.6, 0.15, 48, 1, true), blueprintMat);
+          innerRim.position.y = -0.925;
+          modelGroup.add(innerRim);
+
+          // Add radial grating load bars
+          for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 36) {
             const x = Math.cos(angle) * 4.3;
             const z = Math.sin(angle) * 4.3;
-            const barGeo = new THREE.BoxGeometry(0.02, 0.08, 1.4);
-            const bar = new THREE.Mesh(barGeo, blueprintMat);
-            bar.position.set(x, -1, z);
+            const barGeo = new THREE.BoxGeometry(0.02, 0.1, 1.4);
+            const bar = new THREE.Mesh(barGeo, stackMat);
+            bar.position.set(x, -1.0, z);
             bar.rotation.y = -angle;
             modelGroup.add(bar);
           }
@@ -1293,39 +1314,63 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         }
 
         case 'stackplatform': { // Stack Platform System
-          // Platform rings mounted at stack height
-          const stackPlatGeo = new THREE.CylinderGeometry(1.3, 2.5, 0.1, 32, 1, false);
-          const plat1 = new THREE.Mesh(stackPlatGeo, blueprintMat);
-          plat1.position.y = 2.0;
-          modelGroup.add(plat1);
+          // Platform rings mounted at stack height - flat ring walkways
+          const stackPlatGeo = new THREE.RingGeometry(1.3, 2.5, 32);
+          
+          for (let y of [2.0, 8.0]) {
+            const plat = new THREE.Mesh(stackPlatGeo, blueprintMat);
+            plat.rotation.x = -Math.PI / 2;
+            plat.position.y = y;
+            plat.material.side = THREE.DoubleSide;
+            modelGroup.add(plat);
 
-          const plat2 = new THREE.Mesh(stackPlatGeo, blueprintMat);
-          plat2.position.y = 8.0;
-          modelGroup.add(plat2);
+            // Circular handrails
+            const rail = new THREE.Mesh(new THREE.CylinderGeometry(2.5, 2.5, 1.1, 32, 1, true), wireMat);
+            rail.position.y = y + 0.55;
+            modelGroup.add(rail);
 
-          // Platform rail cage
-          const cageGeo1 = new THREE.CylinderGeometry(2.5, 2.5, 1.1, 32, 1, true);
-          const cage1 = new THREE.Mesh(cageGeo1, wireMat);
-          cage1.position.y = 2.55;
-          modelGroup.add(cage1);
+            // Outer toe-plate vertical metal rim
+            const toe = new THREE.Mesh(new THREE.CylinderGeometry(2.5, 2.5, 0.15, 32, 1, true), stackMat);
+            toe.position.y = y + 0.075;
+            modelGroup.add(toe);
 
-          const cage2 = new THREE.Mesh(cageGeo1, wireMat);
-          cage2.position.y = 8.55;
-          modelGroup.add(cage2);
+            // Stanchions (vertical posts)
+            for (let i = 0; i < 16; i++) {
+              const angle = (i / 16) * Math.PI * 2;
+              const post = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 1.1, 8), blueprintMat);
+              post.position.set(Math.cos(angle) * 2.45, y + 0.55, Math.sin(angle) * 2.45);
+              modelGroup.add(post);
+            }
+          }
           break;
         }
 
         case 'archplate': { // Arch Plate Assembly
-          // Large ring separating zones
-          const archGeo = new THREE.CylinderGeometry(2.5, 3.8, 0.8, 32);
-          const archMesh = new THREE.Mesh(archGeo, blueprintMat);
+          // Flat horizontal separator deck (annular plate with central opening)
+          const ringGeo = new THREE.RingGeometry(2.0, 3.6, 48);
+          const archMesh = new THREE.Mesh(ringGeo, blueprintMat);
+          archMesh.rotation.x = -Math.PI / 2;
           archMesh.position.y = 2.0;
+          archMesh.material.side = THREE.DoubleSide;
           modelGroup.add(archMesh);
 
-          // Flue opening cylinder inside
-          const flueGeo = new THREE.CylinderGeometry(2.2, 2.2, 1.0, 32);
-          const flue = new THREE.Mesh(flueGeo, wireMat);
+          // Ring lining (insulation layer on top)
+          const liningGeo = new THREE.RingGeometry(2.02, 3.58, 48);
+          const lining = new THREE.Mesh(liningGeo, new THREE.MeshStandardMaterial({
+            color: 0xc8a97e,
+            roughness: 0.9,
+            metalness: 0.05,
+            side: THREE.DoubleSide
+          }));
+          lining.rotation.x = -Math.PI / 2;
+          lining.position.y = 2.03;
+          modelGroup.add(lining);
+
+          // Inner flange/collar for flue opening (throat)
+          const flueGeo = new THREE.CylinderGeometry(2.0, 2.0, 0.6, 32, 1, true);
+          const flue = new THREE.Mesh(flueGeo, stackMat);
           flue.position.y = 2.0;
+          flue.material.side = THREE.DoubleSide;
           modelGroup.add(flue);
           break;
         }
