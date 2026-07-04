@@ -1012,9 +1012,21 @@ export default function Gallery() {
 
   const tabsRef = useRef(null);
 
+  const isFirstMount = useRef(true);
+
   useEffect(() => {
+    // Reset to very top of page on initial entry
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+
     if (tabsRef.current) {
-      const headerOffset = 64; // height of sticky header
+      const headerOffset = 80; // height of sticky header + buffer
       const rect = tabsRef.current.getBoundingClientRect();
       const elementTop = rect.top + window.scrollY;
       
