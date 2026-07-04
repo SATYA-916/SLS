@@ -459,6 +459,87 @@ const illustrations = [
     deliverables: "Door framing details, hinge pin drawings, latch mechanism details, insulation layer schedules.",
     threeType: "breechingdoor",
     service: "Industrial Design & Support"
+  },
+  {
+    id: "complete-stack",
+    title: "Complete Stack / Chimney",
+    description: "A 45-meter self-supporting structural stack utilizing helical wind strakes to mitigate vortex shedding and dynamic wind vibration.",
+    disciplines: "Structural & Wind Engineering",
+    considerations: "Dynamic wind analysis, vortex shedding strakes, foundation anchor bolt shear forces.",
+    deliverables: "Stack shell drawings, helical strake templates, flange details.",
+    threeType: "stack",
+    service: "Industrial Design & Support"
+  },
+  {
+    id: "off-take-duct",
+    title: "Off-Take Duct",
+    description: "The transition duct system connecting the heater convection module top section with the stack chimney inlet.",
+    disciplines: "Mechanical & Flow Engineering",
+    considerations: "Flue gas velocity, expansion bellows compatibility, structural guide frames.",
+    deliverables: "Duct plate layouts, duct expansion joint details, guide brackets.",
+    threeType: "offtake",
+    service: "Industrial Design & Support"
+  },
+  {
+    id: "pressure-parts-assembly",
+    title: "Pressure Parts Assembly",
+    description: "The full arrangement of radiant tubes and convection finned coils, forming the primary high-pressure process fluid circulation circuit.",
+    disciplines: "Piping & Thermal Engineering",
+    considerations: "High-pressure thermal expansion, tube sheet spacing, tube hangers alloy grades.",
+    deliverables: "Coil assembly designs, pipe guides details, manifold nozzle ratings.",
+    threeType: "pressureparts",
+    service: "Industrial Design & Support"
+  },
+  {
+    id: "heater-grating",
+    title: "Heater Grating System",
+    description: "Anti-slip steel walkway gratings configured for the main heater platforms, engineered for safety and maximum ventilation.",
+    disciplines: "Structural Safety Detailing",
+    considerations: "Anti-slip span ratings, circular grating fitments, corrosion resistance galvanization.",
+    deliverables: "Grating layout plans, fastening clips spacing schedules, steel bill of materials.",
+    threeType: "heatergrating",
+    service: "Blueprint Design"
+  },
+  {
+    id: "stack-platform",
+    title: "Stack Platform System",
+    description: "Circular maintenance walkways mounted at upper elevations of the exhaust stack for emission monitoring instrumentation.",
+    disciplines: "Structural Detailing (Tekla)",
+    considerations: "High elevation wind gusts, platform sway limits, OSHA safety handrails.",
+    deliverables: "Circular girder designs, platform bracket detail drawings.",
+    threeType: "stackplatform",
+    service: "Blueprint Design"
+  },
+  {
+    id: "arch-plate-assembly",
+    title: "Arch Plate Assembly",
+    description: "A structural dividing ring backed with refractory lining separating the high-temperature radiant box from the convection module zone.",
+    disciplines: "Mechanical & Refractory Design",
+    considerations: "High thermal stress gradients, monolithic castable backing anchors, flue gas velocity bottlenecks.",
+    deliverables: "Arch plate segment designs, anchor pattern drawings, refractory specifications.",
+    threeType: "archplate",
+    service: "Industrial Design & Support"
+  },
+  {
+    id: "ets-structure",
+    title: "ETS Structure",
+    description: "External Structural Steel framing system designed to support convection modules and soot blower walkways.",
+    secondTitle: "ETS Structure",
+    disciplines: "Structural Analysis (STAAD.Pro)",
+    considerations: "Symmetrical load distribution, lateral wind load resistance, Tekla connection joints.",
+    deliverables: "ETS framing plans, node connections detailing, diagonal bracing plans.",
+    threeType: "ets",
+    service: "Engineering & Architecture Design"
+  },
+  {
+    id: "maintenance-access-sys",
+    title: "Maintenance Access System",
+    description: "Coordinated systems of circular access platforms, safety ladders, and stairways providing secure transit channels.",
+    disciplines: "Multi-Disciplinary Detailing",
+    considerations: "OSHA clearance rules, platform-to-ladder transitions, structural bracket spacing.",
+    deliverables: "Access general arrangement drawings, connection joint sheets.",
+    threeType: "maintenanceaccess",
+    service: "Blueprint Design"
   }
 ];
 

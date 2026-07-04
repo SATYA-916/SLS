@@ -776,6 +776,198 @@ export default function ThreeViewer({ type }) {
           break;
         }
 
+        case 'stack': { // Complete Stack / Chimney
+          // Stack body (tall cylinder)
+          const stackGeo = new THREE.CylinderGeometry(1.2, 1.4, 15, 32);
+          const stackMesh = new THREE.Mesh(stackGeo, stackMat);
+          stackMesh.position.y = 2.5;
+          modelGroup.add(stackMesh);
+
+          // Helical strakes (coiled small boxes spiraling around it)
+          for (let h = -5; h < 7; h += 0.2) {
+            const angle = h * 1.5;
+            const r = 1.35;
+            const x = Math.cos(angle) * r;
+            const z = Math.sin(angle) * r;
+            const boxGeo = new THREE.BoxGeometry(0.15, 0.15, 0.15);
+            const box = new THREE.Mesh(boxGeo, blueprintMat);
+            box.position.set(x, h, z);
+            modelGroup.add(box);
+          }
+
+          // Stack platform
+          const stackPlat = new THREE.CylinderGeometry(2.2, 2.2, 0.15, 32, 1, false);
+          const platMesh = new THREE.Mesh(stackPlat, blueprintMat);
+          platMesh.position.y = 5.0;
+          modelGroup.add(platMesh);
+
+          // Platform handrails
+          const railGeo = new THREE.CylinderGeometry(2.2, 2.2, 1.0, 32, 1, true);
+          const railMesh = new THREE.Mesh(railGeo, wireMat);
+          railMesh.position.y = 5.5;
+          modelGroup.add(railMesh);
+          break;
+        }
+
+        case 'offtake': { // Off-Take Duct
+          // Rectangular box segment for transition
+          const ductBoxGeo = new THREE.BoxGeometry(2.0, 1.8, 3.5);
+          const ductBox = new THREE.Mesh(ductBoxGeo, blueprintMat);
+          ductBox.position.set(0, 0, 0);
+          modelGroup.add(ductBox);
+
+          // Sloped duct transition (box rotated)
+          const slopedGeo = new THREE.BoxGeometry(1.8, 1.5, 4.0);
+          const slopedDuct = new THREE.Mesh(slopedGeo, blueprintMat);
+          slopedDuct.position.set(0, 1.5, 2.0);
+          slopedDuct.rotation.x = -Math.PI / 6;
+          modelGroup.add(slopedDuct);
+
+          // Connecting flange
+          const flangeGeo = new THREE.CylinderGeometry(1.4, 1.4, 0.4, 16);
+          const flange = new THREE.Mesh(flangeGeo, stackMat);
+          flange.position.set(0, 2.8, 3.8);
+          flange.rotation.x = Math.PI / 2;
+          modelGroup.add(flange);
+          break;
+        }
+
+        case 'pressureparts': { // Pressure Parts Assembly
+          // Create vertical radiant tubes (cylinders around outer boundary)
+          for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 12) {
+            const x = Math.cos(angle) * 3.0;
+            const z = Math.sin(angle) * 3.0;
+            const tubeGeo = new THREE.CylinderGeometry(0.08, 0.08, 8, 8);
+            const tube = new THREE.Mesh(tubeGeo, coilMat);
+            tube.position.set(x, -2, z);
+            modelGroup.add(tube);
+          }
+
+          // Create convection section coils (grid of horizontal tubes)
+          for (let y = 3; y < 6; y += 0.5) {
+            for (let x = -2; x <= 2; x += 0.6) {
+              const coilGeo = new THREE.CylinderGeometry(0.06, 0.06, 5.0, 8);
+              const coil = new THREE.Mesh(coilGeo, coilMat);
+              coil.position.set(x, y, 0);
+              coil.rotation.x = Math.PI / 2;
+              modelGroup.add(coil);
+            }
+          }
+          break;
+        }
+
+        case 'heatergrating': { // Heater Grating System
+          // Circular ring for platform walkway
+          const gratingRingGeo = new THREE.CylinderGeometry(3.6, 5.0, 0.1, 32, 1, false);
+          const gratingMesh = new THREE.Mesh(gratingRingGeo, wireMat);
+          gratingMesh.position.y = -1;
+          modelGroup.add(gratingMesh);
+
+          // Add cross bars to suggest grating texture
+          for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 24) {
+            const x = Math.cos(angle) * 4.3;
+            const z = Math.sin(angle) * 4.3;
+            const barGeo = new THREE.BoxGeometry(0.02, 0.08, 1.4);
+            const bar = new THREE.Mesh(barGeo, blueprintMat);
+            bar.position.set(x, -1, z);
+            bar.rotation.y = -angle;
+            modelGroup.add(bar);
+          }
+          break;
+        }
+
+        case 'stackplatform': { // Stack Platform System
+          // Platform rings mounted at stack height
+          const stackPlatGeo = new THREE.CylinderGeometry(1.3, 2.5, 0.1, 32, 1, false);
+          const plat1 = new THREE.Mesh(stackPlatGeo, blueprintMat);
+          plat1.position.y = 2.0;
+          modelGroup.add(plat1);
+
+          const plat2 = new THREE.Mesh(stackPlatGeo, blueprintMat);
+          plat2.position.y = 8.0;
+          modelGroup.add(plat2);
+
+          // Platform rail cage
+          const cageGeo1 = new THREE.CylinderGeometry(2.5, 2.5, 1.1, 32, 1, true);
+          const cage1 = new THREE.Mesh(cageGeo1, wireMat);
+          cage1.position.y = 2.55;
+          modelGroup.add(cage1);
+
+          const cage2 = new THREE.Mesh(cageGeo1, wireMat);
+          cage2.position.y = 8.55;
+          modelGroup.add(cage2);
+          break;
+        }
+
+        case 'archplate': { // Arch Plate Assembly
+          // Large ring separating zones
+          const archGeo = new THREE.CylinderGeometry(2.5, 3.8, 0.8, 32);
+          const archMesh = new THREE.Mesh(archGeo, blueprintMat);
+          archMesh.position.y = 2.0;
+          modelGroup.add(archMesh);
+
+          // Flue opening cylinder inside
+          const flueGeo = new THREE.CylinderGeometry(2.2, 2.2, 1.0, 32);
+          const flue = new THREE.Mesh(flueGeo, wireMat);
+          flue.position.y = 2.0;
+          modelGroup.add(flue);
+          break;
+        }
+
+        case 'ets': { // ETS Structure
+          // Heavy outer portal frame around convection module
+          const etsLegGeo = new THREE.BoxGeometry(0.3, 10, 0.3);
+          for (let x of [-3, 3]) {
+            for (let z of [-2, 2]) {
+              const leg = new THREE.Mesh(etsLegGeo, blueprintMat);
+              leg.position.set(x, 1, z);
+              modelGroup.add(leg);
+            }
+          }
+
+          // Diagonal cross bracing
+          const diagonalGeo = new THREE.BoxGeometry(0.1, 10.4, 0.1);
+          const d1 = new THREE.Mesh(diagonalGeo, blueprintMat);
+          d1.position.set(0, 1, -2);
+          d1.rotation.z = Math.PI / 6;
+          modelGroup.add(d1);
+
+          const d2 = new THREE.Mesh(diagonalGeo, blueprintMat);
+          d2.position.set(0, 1, -2);
+          d2.rotation.z = -Math.PI / 6;
+          modelGroup.add(d2);
+          break;
+        }
+
+        case 'maintenanceaccess': { // Maintenance Access System
+          // Nested assembly of stairs, platforms, ladders
+          // Platform base
+          const basePlatGeo = new THREE.BoxGeometry(6, 0.2, 6);
+          const basePlat = new THREE.Mesh(basePlatGeo, wireMat);
+          basePlat.position.y = -2;
+          modelGroup.add(basePlat);
+
+          // Staircase flights rising up
+          const flightGeo = new THREE.BoxGeometry(0.8, 0.1, 4.2);
+          const flight = new THREE.Mesh(flightGeo, blueprintMat);
+          flight.position.set(1.5, 0, 1);
+          flight.rotation.x = Math.PI / 6;
+          modelGroup.add(flight);
+
+          // Intermediate landing
+          const landingGeo = new THREE.BoxGeometry(1.6, 0.2, 1.6);
+          const landing = new THREE.Mesh(landingGeo, blueprintMat);
+          landing.position.set(1.5, 1, -1.5);
+          modelGroup.add(landing);
+
+          // Upper ladder rising from landing
+          const ladGeo = new THREE.BoxGeometry(0.6, 6, 0.1);
+          const lad = new THREE.Mesh(ladGeo, blueprintMat);
+          lad.position.set(1.5, 4, -1.5);
+          modelGroup.add(lad);
+          break;
+        }
+
         case 'frame3d': // Complete Structural Frame
         default:
           // Fully compiled refinery structural steel tower skeleton
