@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Phone, Mail, Globe, MapPin, CheckCircle2, Clock, ShieldCheck, Zap, CalendarDays, X, Video } from 'lucide-react';
+import { Phone, Mail, Globe, MapPin, CheckCircle2, Clock, ShieldCheck, Zap, CalendarDays, X, Video, FileText } from 'lucide-react';
 import { submitContact, getServices } from '@/lib/api';
 import { toast } from '@/components/ui/toaster';
 
@@ -79,6 +79,25 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
+  const nameInputRef = useRef(null);
+  const formContainerRef = useRef(null);
+  const [highlightForm, setHighlightForm] = useState(false);
+
+  const handleScrollToForm = () => {
+    const formEl = document.getElementById('contact-form');
+    if (formEl) {
+      formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setHighlightForm(true);
+      setTimeout(() => {
+        setHighlightForm(false);
+      }, 2000);
+      setTimeout(() => {
+        if (nameInputRef.current) {
+          nameInputRef.current.focus();
+        }
+      }, 850);
+    }
+  };
   
   // Parse URL query parameter for service pre-selection
   const queryParams = new URLSearchParams(window.location.search);
@@ -95,8 +114,17 @@ export default function Contact() {
         const formEl = document.getElementById('contact-form');
         if (formEl) {
           formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          setHighlightForm(true);
+          setTimeout(() => {
+            setHighlightForm(false);
+          }, 2000);
+          setTimeout(() => {
+            if (nameInputRef.current) {
+              nameInputRef.current.focus();
+            }
+          }, 850);
         }
-      }, 150);
+      }, 350);
       return () => clearTimeout(timer);
     }
   }, [initialService]);
@@ -247,8 +275,9 @@ export default function Contact() {
 
   return (
     <div className="w-full">
-      <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
-        <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
+      {/* Hero Section */}
+      <section className="bg-slate-50 text-[#0a1628] pt-20 pb-12 relative overflow-hidden border-b border-slate-100">
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
           <svg width="100%" height="100%">
             <defs>
               <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
@@ -258,61 +287,85 @@ export default function Contact() {
             <rect width="100%" height="100%" fill="url(#grid)" />
           </svg>
         </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Global Engineering Delivery Center</p>
-            <h1 className="text-4xl md:text-6xl font-bold max-w-3xl leading-tight mb-5 text-[#0a1628]">
-              Request an Engineering<br />Consultation.
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }}>
+            <p className="text-xs font-bold tracking-[0.25em] uppercase text-slate-400 mb-3">Global Engineering Delivery Center</p>
+            <h1 className="text-3xl md:text-5xl font-extrabold max-w-3xl leading-tight mb-4 text-[#0a1628] mx-auto tracking-tight">
+              Let's Discuss Your Engineering Project
             </h1>
-            <p className="text-slate-600 text-sm md:text-base max-w-xl leading-relaxed mb-8">
-              Providing round-the-clock design and detailing support. Fill in the form — we will study your requirements and get back to you to schedule a technical scoping discussion.
+            <p className="text-slate-500 text-xs md:text-sm max-w-xl leading-relaxed mx-auto font-medium">
+              Choose the approach that best suits your project. Schedule a consultation with our engineers or submit your project details for a detailed technical review.
             </p>
-            <div className="flex flex-wrap gap-6">
-              {[
-                { icon: <Clock className="w-4 h-4" />, text: 'Timezone-neutral communication' },
-                { icon: <ShieldCheck className="w-4 h-4" />, text: 'ASME & API code compliance' },
-                { icon: <Zap className="w-4 h-4" />, text: 'Coordinated engineering packages' },
-              ].map((item) => (
-                <div key={item.text} className="flex items-center gap-2 text-xs text-slate-500">
-                  <span className="text-[#43648e]">{item.icon}</span>
-                  {item.text}
-                </div>
-              ))}
-            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ── Direct Scheduling Strip (Replaced redundant RFQ card) ── */}
-      <section className="bg-white border-b border-slate-200 py-6">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col md:flex-row items-center justify-between gap-6 p-6 bg-slate-50 border border-slate-200 rounded-sm"
-          >
-            <div className="flex items-center gap-4 text-left">
-              <div className="w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-xs">
-                <CalendarDays className="w-5 h-5 text-[#43648e]" />
-              </div>
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Direct Scheduling</p>
-                <h3 className="text-base font-bold text-[#0a1628] mb-1">Book a Consultation Call</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Pick a time slot — 30‑min technical scoping session with Mr. Subrahmanyam.
-                </p>
-              </div>
-            </div>
-            <button
-              id="calendly-book-btn"
-              onClick={openPopup}
-              className="shrink-0 bg-[#0a1628] hover:bg-[#1a2f4c] text-white px-6 py-3 text-xs font-bold uppercase tracking-wider transition-all shadow-md flex items-center gap-2 rounded-sm whitespace-nowrap"
+      {/* Two Consultation Method Cards */}
+      <section className="bg-white border-b border-slate-100 py-12">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+            
+            {/* Left Card: 30-Minute Consultation */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="bg-gradient-to-br from-white to-slate-50 border border-slate-200 p-8 shadow-sm hover:shadow-md transition-all duration-300 rounded-sm flex flex-col justify-between hover:-translate-y-0.5 group cursor-default"
             >
-              <CalendarDays className="w-3.5 h-3.5" /> Book a Slot
-            </button>
-          </motion.div>
+              <div>
+                <div className="w-12 h-12 rounded-full bg-[#0a1628]/5 flex items-center justify-center text-[#0a1628] mb-6 group-hover:scale-105 transition-transform duration-300">
+                  <CalendarDays className="w-5 h-5" />
+                </div>
+                <h3 className="text-lg font-bold text-[#0a1628] mb-2">30-Minute Engineering Consultation</h3>
+                <p className="text-xs text-slate-500 leading-relaxed mb-6">
+                  Discuss your project requirements directly with our engineering team.
+                </p>
+                <div className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-6 bg-slate-100/60 inline-block px-2.5 py-1 rounded-sm">
+                  Response expectation: Instant Scheduling
+                </div>
+              </div>
+              <button
+                id="calendly-book-btn"
+                onClick={openPopup}
+                className="w-full bg-[#0a1628] hover:bg-[#13233c] text-white py-3.5 px-6 font-bold uppercase tracking-widest text-[10px] shadow-sm hover:shadow transition-all duration-200 text-center flex items-center justify-center gap-2 rounded-sm"
+              >
+                <CalendarDays className="w-4 h-4" /> Book a Call &rarr;
+              </button>
+            </motion.div>
+
+            {/* Right Card: Submit Project Details */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="bg-gradient-to-br from-white to-slate-50 border border-slate-200 p-8 shadow-sm hover:shadow-md transition-all duration-300 rounded-sm flex flex-col justify-between hover:-translate-y-0.5 group cursor-default"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-full bg-[#43648e]/10 flex items-center justify-center text-[#43648e] mb-6 group-hover:scale-105 transition-transform duration-300">
+                  <FileText className="w-5 h-5" />
+                </div>
+                <h3 className="text-lg font-bold text-[#0a1628] mb-2">Submit Your Project Requirements</h3>
+                <p className="text-xs text-slate-500 leading-relaxed mb-4">
+                  Share your project scope, drawings, specifications, and engineering requirements. Our team will review your submission and respond with the appropriate technical guidance.
+                </p>
+                
+                {/* 4 Process Preview Steps */}
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 my-4 pt-4 border-t border-slate-100 text-[9px] font-extrabold uppercase tracking-wider text-slate-400">
+                  <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Select a Service</span>
+                  <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Describe Project</span>
+                  <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Upload Drawings</span>
+                  <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Tech Response</span>
+                </div>
+              </div>
+              <button
+                onClick={handleScrollToForm}
+                className="w-full border border-slate-300 bg-white hover:bg-slate-50 text-[#0a1628] py-3.5 px-6 font-bold uppercase tracking-widest text-[10px] transition-all duration-200 text-center flex items-center justify-center gap-1.5 rounded-sm"
+              >
+                Complete the Form Below &darr;
+              </button>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 
@@ -376,7 +429,18 @@ export default function Contact() {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+          <motion.div
+            ref={formContainerRef}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className={`p-6 md:p-8 rounded-lg transition-all duration-500 border ${
+              highlightForm
+                ? 'bg-blue-50/30 border-blue-500 shadow-xl scale-[1.01] ring-4 ring-blue-500/10'
+                : 'bg-transparent border-transparent'
+            }`}
+          >
             {submitted ? (
               <div className="h-full flex items-center justify-center">
                 <div className="text-center py-16">
@@ -393,6 +457,7 @@ export default function Contact() {
                   <div>
                     <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Name *</label>
                     <input
+                      ref={nameInputRef}
                       name="name"
                       value={form.name}
                       onChange={handleChange}
@@ -437,12 +502,23 @@ export default function Contact() {
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Service Required</label>
+                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block flex items-center justify-between">
+                    <span>Service Required</span>
+                    {initialService && form.service === initialService && (
+                      <span className="text-[9px] font-extrabold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded animate-pulse">
+                        Pre-selected from Services
+                      </span>
+                    )}
+                  </label>
                   <select
                     name="service"
                     value={form.service}
                     onChange={handleChange}
-                    className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors bg-white"
+                    className={`w-full border px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors bg-white ${
+                      initialService && form.service === initialService
+                        ? 'border-blue-500 ring-2 ring-blue-500/10 font-medium text-blue-900 bg-blue-50/20'
+                        : 'border-gray-200 text-gray-800'
+                    }`}
                   >
                     <option value="">Select a service</option>
                     {dropdownServices.map((s) => <option key={s} value={s}>{s}</option>)}
