@@ -215,6 +215,106 @@ const drawings = [
     desc: "High-pressure hydrocarbon nozzle schedules, flange ratings, and testing specifications.", 
     code: "ASME B31.3 / API 530",
     service: "Industrial Design & Support"
+  },
+  // 6 additional EIL drawings
+  { 
+    title: "Refinery Heater Structural Layout - GA", 
+    file: "eil_ga_sheet3.png", 
+    desc: "Detailed structural arrangement drawing of the heater frame, columns, and bracing system.", 
+    code: "EIL Specs / IS 800",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Convection Section Detail - Section View", 
+    file: "eil_ga_sheet4.png", 
+    desc: "Cross-sectional engineering view of convection tube sheets, tube supports, and baffle plate settings.", 
+    code: "EIL Specs / ASME Sec VIII",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Self-Supporting Stack Flange Details", 
+    file: "eil_ga_sheet5.png", 
+    desc: "Base plate and structural anchor details for the 45-meter self-supporting chimney.", 
+    code: "EIL Specs / IS 6533",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "HDS Heater Structural Frame Layout", 
+    file: "eil_ga_sheet6.png", 
+    desc: "Structural portal frames, columns, and wind-girder detaling for the HDS unit heater tower.", 
+    code: "EIL Specs / AISC Standards",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "HDS Heater Convection Module GA", 
+    file: "eil_ga_sheet7.png", 
+    desc: "General arrangement section layout of the HDS heater convection tube bank module.", 
+    code: "EIL Specs / ASME Sec VIII",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "HDS Heater Piping Assembly Details", 
+    file: "eil_ga_sheet8.png", 
+    desc: "Piping layouts, header connections, and high-pressure manifold joints detailing.", 
+    code: "EIL Specs / ASME B31.3",
+    service: "Industrial Design & Support"
+  },
+  // 8 additional HDS drawings
+  { 
+    title: "HDS Pressure Parts Arrangement - Sheet 3", 
+    file: "hds_parts_sheet1.png", 
+    desc: "Details of critical pressure tubing weld joints, support clips, and temperature nozzle installations.", 
+    code: "ASME B31.3 / API 530",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "HDS Radiant Section Plate Detailing - Sheet 1", 
+    file: "hds_radiant_sheet1.png", 
+    desc: "Casing plate segments, structural stiffeners, and burner register sleeve weld details.", 
+    code: "ASME Sec VIII / IS 800",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "HDS Radiant Coil Hanger Assemblies", 
+    file: "hds_radiant_sheet2.png", 
+    desc: "High-alloy casting support hooks and coil guides designed to accommodate vertical thermal growth.", 
+    code: "ASME Sec VIII / API 560",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "HDS Convection Casing Layout", 
+    file: "hds_convection_sheet1.png", 
+    desc: "Casing modules framing details, refractory anchor layouts, and lifting lug locations.", 
+    code: "IS 800 / ASME Sec VIII",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "HDS Convection Tube Sheet Details", 
+    file: "hds_convection_sheet2.png", 
+    desc: "Tube sheet hole pitches, tube guide plates, and baffle plate spacing layout.", 
+    code: "ASME Sec VIII / EIL Specs",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "HDS Structural Steel Support Frames", 
+    file: "hds_sss_sheet1.png", 
+    desc: "Connection joints detailing, gusset plates, and heavy portal bracing systems for the HDS unit.", 
+    code: "IS 800 / AISC Standards",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "HDS Exhaust Stack Layout & GA", 
+    file: "hds_stack_sheet1.png", 
+    desc: "Exhaust stack section drawing including rain hood, sampling ports, and structural platform mounts.", 
+    code: "IS 6533 / ASME Steel Chimneys",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "HDS Tube Header Box Details", 
+    file: "hds_header_sheet1.png", 
+    desc: "Casing plates, return bend spaces, inspection doors, and seal weld schedules for HDS header boxes.", 
+    code: "ASME Sec VIII / Refinery Specs",
+    service: "Industrial Design & Support"
   }
 ];
 
@@ -667,7 +767,7 @@ export default function Gallery() {
 
   const getDrawingCategory = (draw) => {
     if (draw.file.startsWith('eil_ga')) return 'EIL';
-    if (draw.file.startsWith('pressure_parts')) return 'HDS';
+    if (draw.file.startsWith('pressure_parts') || draw.file.startsWith('hds_')) return 'HDS';
     return 'DHDT';
   };
 
