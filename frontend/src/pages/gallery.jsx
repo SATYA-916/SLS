@@ -631,9 +631,14 @@ export default function Gallery() {
                       <img
                         src={`/gallery/${draw.file}`}
                         alt={draw.title}
-                        className="w-full h-full object-cover opacity-90 group-hover:scale-102 transition-transform duration-300"
+                        className="w-full h-full object-cover opacity-90 group-hover:scale-102 transition-transform duration-300 filter blur-[8px]"
                       />
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
+                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <span className="bg-black/60 text-white text-[9px] font-bold tracking-widest uppercase px-3 py-1.5 border border-white/10 backdrop-blur-sm">
+                          Confidential - Data Shielded
+                        </span>
+                      </div>
                       <div className="absolute top-3 right-3 w-8 h-8 bg-white/95 text-[#0a1628] flex items-center justify-center shadow-sm">
                         <Eye className="w-4 h-4" />
                       </div>
@@ -874,12 +879,17 @@ export default function Gallery() {
               >
                 Close View ✕
               </button>
-              <div className="bg-slate-900 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center aspect-[16/10] shadow-2xl">
+              <div className="bg-slate-900 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center aspect-[16/10] relative shadow-2xl">
                 <img
                   src={`/gallery/${selectedImg.file}`}
                   alt={selectedImg.title}
-                  className="max-w-full max-h-full object-contain"
+                  className="max-w-full max-h-full object-contain filter blur-[12px]"
                 />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 pointer-events-none p-4 text-center">
+                  <span className="bg-black/80 text-white text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-2 border border-white/10 backdrop-blur-sm">
+                    Confidential Drawing — Details Obscured for Security
+                  </span>
+                </div>
               </div>
               <div className="text-white mt-4 flex items-start justify-between gap-6">
                 <div>
