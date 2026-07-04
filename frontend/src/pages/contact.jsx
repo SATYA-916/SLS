@@ -69,6 +69,11 @@ function validate(data) {
   return errors;
 }
 
+function getInitialMessageForService(serviceName) {
+  if (!serviceName) return '';
+  return `I would like to inquire about your "${serviceName}" engineering services. Please coordinate a technical discussion or share drawing layouts so we can align on standard compliance (ASME/API/IS) and scoping timelines.`;
+}
+
 export default function Contact() {
   const { openPopup } = useCalendly();
   const [submitted, setSubmitted] = useState(false);
@@ -78,9 +83,23 @@ export default function Contact() {
   // Parse URL query parameter for service pre-selection
   const queryParams = new URLSearchParams(window.location.search);
   const initialService = queryParams.get('service') || '';
+  const initialMessage = initialService ? getInitialMessageForService(initialService) : '';
 
-  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', service: initialService, message: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', service: initialService, message: initialMessage });
   const [errors, setErrors] = useState({});
+
+  // Auto-scroll directly to form on service pre-selection
+  useEffect(() => {
+    if (initialService) {
+      const timer = setTimeout(() => {
+        const formEl = document.getElementById('contact-form');
+        if (formEl) {
+          formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [initialService]);
 
   // Query database services dynamically
   const { data: dbServices } = useQuery({
@@ -140,6 +159,23 @@ export default function Contact() {
   });
 
   function handleChange(e) {
+    if (e.target.name === 'service') {
+      const selectedSvc = e.target.value;
+      setForm((prev) => {
+        const currentMsg = prev.message.trim();
+        const wasEmpty = !currentMsg;
+        const isDefaultTemplate = prev.service && currentMsg === getInitialMessageForService(prev.service);
+        
+        return {
+          ...prev,
+          service: selectedSvc,
+          message: (wasEmpty || isDefaultTemplate) ? getInitialMessageForService(selectedSvc) : prev.message
+        };
+      });
+      if (errors.service) setErrors((prev) => ({ ...prev, service: '' }));
+      return;
+    }
+
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     if (errors[e.target.name]) setErrors((prev) => ({ ...prev, [e.target.name]: '' }));
   }
@@ -247,65 +283,36 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* ── Dual CTA Strip: Book or Write ── */}
-      <section className="bg-white border-b border-slate-200">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
-
-            {/* Calendly — Book a slot */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-5 px-8 py-8"
-            >
-              <div className="w-12 h-12 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
+      {/* ── Direct Scheduling Strip (Replaced redundant RFQ card) ── */}
+      <section className="bg-white border-b border-slate-200 py-6">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col md:flex-row items-center justify-between gap-6 p-6 bg-slate-50 border border-slate-200 rounded-sm"
+          >
+            <div className="flex items-center gap-4 text-left">
+              <div className="w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-xs">
                 <CalendarDays className="w-5 h-5 text-[#43648e]" />
               </div>
-              <div className="flex-1 min-w-0">
+              <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Direct Scheduling</p>
                 <h3 className="text-base font-bold text-[#0a1628] mb-1">Book a Consultation Call</h3>
                 <p className="text-xs text-slate-500 leading-relaxed">
-                  Pick a time slot — 30‑min technical scoping session with Mr. Subrahmanyam, available Mon–Sat.
+                  Pick a time slot — 30‑min technical scoping session with Mr. Subrahmanyam.
                 </p>
               </div>
-              <button
-                id="calendly-book-btn"
-                onClick={openPopup}
-                className="shrink-0 bg-[#0a1628] hover:bg-[#1a2f4c] text-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors shadow-sm flex items-center gap-2 rounded-sm whitespace-nowrap"
-              >
-                <CalendarDays className="w-3.5 h-3.5" /> Book a Slot
-              </button>
-            </motion.div>
-
-            {/* Anchor scroll — send a message */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-5 px-8 py-8"
+            </div>
+            <button
+              id="calendly-book-btn"
+              onClick={openPopup}
+              className="shrink-0 bg-[#0a1628] hover:bg-[#1a2f4c] text-white px-6 py-3 text-xs font-bold uppercase tracking-wider transition-all shadow-md flex items-center gap-2 rounded-sm whitespace-nowrap"
             >
-              <div className="w-12 h-12 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
-                <Mail className="w-5 h-5 text-[#43648e]" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Project Inquiry / RFQ</p>
-                <h3 className="text-base font-bold text-[#0a1628] mb-1">Send Project Details</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Submit specifications, drawings, or scope documents. We will respond within 24 hours.
-                </p>
-              </div>
-              <a
-                href="#contact-form"
-                className="shrink-0 border border-slate-300 text-[#0a1628] hover:bg-slate-100 px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-2 rounded-sm whitespace-nowrap text-center"
-              >
-                <Mail className="w-3.5 h-3.5" /> Send a Message
-              </a>
-            </motion.div>
-
-          </div>
+              <CalendarDays className="w-3.5 h-3.5" /> Book a Slot
+            </button>
+          </motion.div>
         </div>
       </section>
 
