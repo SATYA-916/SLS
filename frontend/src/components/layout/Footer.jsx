@@ -3,17 +3,17 @@ import { Phone, Mail, Globe, MapPin, Linkedin } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="bg-[#0a1628] text-white">
+    <footer className="bg-slate-50 border-t border-slate-200 text-slate-800">
       <div className="container mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-4 gap-10">
         <div className="md:col-span-1">
-          <h3 className="text-lg font-bold mb-2">SLS Consultants</h3>
-          <p className="text-xs text-white/50 uppercase tracking-widest mb-6">
+          <h3 className="text-lg font-bold mb-2 text-[#0a1628]">SLS Consultants</h3>
+          <p className="text-xs text-slate-500 uppercase tracking-widest mb-6">
             Engineering. Structures. Industrial Solutions. Since 2002.
           </p>
           <div className="flex gap-3">
             <a
               href="mailto:slsind@gmail.com"
-              className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors"
+              className="w-8 h-8 border border-slate-300 text-slate-600 flex items-center justify-center hover:bg-slate-200/50 hover:text-[#0a1628] transition-colors"
             >
               <Mail className="w-4 h-4" />
             </a>
@@ -21,13 +21,13 @@ export function Footer() {
               href="https://www.slsnexus.com"
               target="_blank"
               rel="noreferrer"
-              className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors"
+              className="w-8 h-8 border border-slate-300 text-slate-600 flex items-center justify-center hover:bg-slate-200/50 hover:text-[#0a1628] transition-colors"
             >
               <Globe className="w-4 h-4" />
             </a>
             <a
               href="#"
-              className="w-8 h-8 border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors"
+              className="w-8 h-8 border border-slate-300 text-slate-600 flex items-center justify-center hover:bg-slate-200/50 hover:text-[#0a1628] transition-colors"
             >
               <Linkedin className="w-4 h-4" />
             </a>
@@ -35,7 +35,7 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="text-xs font-bold tracking-[0.15em] uppercase text-white/40 mb-5">Quick Links</h4>
+          <h4 className="text-xs font-bold tracking-[0.15em] uppercase text-slate-500 mb-5">Quick Links</h4>
           <ul className="space-y-2.5 text-sm">
             {[
               { href: '/', label: 'Home' },
@@ -46,7 +46,7 @@ export function Footer() {
               { href: '/contact', label: 'Contact' },
             ].map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="text-white/60 hover:text-white transition-colors">
+                <Link href={link.href} className="text-slate-600 hover:text-[#0a1628] transition-colors font-medium">
                   {link.label}
                 </Link>
               </li>
@@ -55,8 +55,8 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="text-xs font-bold tracking-[0.15em] uppercase text-white/40 mb-5">Our Services</h4>
-          <ul className="space-y-2.5 text-sm text-white/60">
+          <h4 className="text-xs font-bold tracking-[0.15em] uppercase text-slate-500 mb-5">Our Services</h4>
+          <ul className="space-y-2.5 text-sm text-slate-600 font-medium">
             <li>Project Consultancy</li>
             <li>Special Products Design & Manufacturing</li>
             <li>RLA Studies</li>
@@ -68,8 +68,8 @@ export function Footer() {
         </div>
 
         <div>
-          <h4 className="text-xs font-bold tracking-[0.15em] uppercase text-white/40 mb-5">Contact Info</h4>
-          <ul className="space-y-3.5 text-sm text-white/60">
+          <h4 className="text-xs font-bold tracking-[0.15em] uppercase text-slate-500 mb-5">Contact Info</h4>
+          <ul className="space-y-3.5 text-sm text-slate-600 font-medium">
             <li className="flex items-start gap-2.5">
               <Phone className="w-4 h-4 shrink-0 mt-0.5 text-[#43648e]" />
               <span>+91 98495 98424</span>
@@ -90,19 +90,19 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/10 py-6">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/30">
+      <div className="border-t border-slate-200 py-6">
+        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <p>© 2025 SLS Consultants. All Rights Reserved.</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/privacy" className="hover:text-[#0a1628] transition-colors font-medium">Privacy Policy</Link>
             <span>|</span>
-            <Link href="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link>
+            <Link href="/terms" className="hover:text-[#0a1628] transition-colors font-medium">Terms & Conditions</Link>
             <span>|</span>
-            <Link href="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link>
+            <Link href="/cookies" className="hover:text-[#0a1628] transition-colors font-medium">Cookie Policy</Link>
             <span>|</span>
-            <Link href="/disclaimer" className="hover:text-white transition-colors">Disclaimer</Link>
+            <Link href="/disclaimer" className="hover:text-[#0a1628] transition-colors font-medium">Disclaimer</Link>
             <span>|</span>
-            <Link href="/admin" className="hover:text-white/60 transition-colors text-white/20">Admin Portal</Link>
+            <Link href="/admin" className="hover:text-[#0a1628] transition-colors text-slate-300 font-medium">Admin Portal</Link>
           </div>
         </div>
       </div>

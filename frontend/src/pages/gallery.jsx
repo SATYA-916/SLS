@@ -1185,12 +1185,12 @@ export default function Gallery() {
   return (
     <div className="w-full bg-white">
       {/* HEADER SECTION */}
-      <section className="bg-[#0a1628] text-white py-20 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
+      <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
             <defs>
               <pattern id="gallery_grid" width="60" height="60" patternUnits="userSpaceOnUse">
-                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="1" />
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" strokeWidth="1" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#gallery_grid)" />
@@ -1198,11 +1198,11 @@ export default function Gallery() {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Engineering Assets & Knowledge</p>
-            <h1 className="text-5xl md:text-6xl font-bold max-w-3xl leading-tight">
-              Design Drawings & Technical Assets
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Engineering Assets &amp; Knowledge</p>
+            <h1 className="text-5xl md:text-6xl font-bold max-w-3xl leading-tight text-[#0a1628]">
+              Design Drawings &amp; Technical Assets
             </h1>
-            <p className="mt-4 text-white/60 max-w-xl text-sm leading-relaxed">
+            <p className="mt-4 text-slate-600 max-w-xl text-sm leading-relaxed">
               Explore the structural and mechanical detailing engineering database compiled from our recent hydrotreater (DHDT) and hydrodesulfurization (HDS) fired heater projects, executed under strict EIL specifications.
             </p>
           </motion.div>

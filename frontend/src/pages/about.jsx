@@ -20,12 +20,12 @@ const milestones = [
 export default function About() {
   return (
     <div className="w-full">
-      <section className="bg-[#0a1628] text-white py-20 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
+      <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
             <defs>
               <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="1" />
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" strokeWidth="1" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
@@ -33,8 +33,8 @@ export default function About() {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">About SLS</p>
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight max-w-2xl">
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">About SLS</p>
+            <h1 className="text-5xl md:text-6xl font-bold leading-tight max-w-2xl text-[#0a1628]">
               Engineering Excellence. Driven by Innovation.
             </h1>
           </motion.div>
@@ -57,9 +57,9 @@ export default function About() {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <div className="bg-[#0a1628] text-white p-10">
+            <div className="bg-slate-50 border border-slate-200 text-[#0a1628] p-10 rounded-sm">
               <div className="flex items-start gap-6 mb-8">
-                <div className="w-20 h-20 bg-white/10 overflow-hidden shrink-0 flex items-center justify-center">
+                <div className="w-20 h-20 bg-slate-200 overflow-hidden shrink-0 flex items-center justify-center rounded-sm">
                   <img
                     src="/founder_portrait.png"
                     alt="Mr. C. Subrahmanyam"
@@ -67,26 +67,26 @@ export default function About() {
                   />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold mb-1">Mr. C. Subrahmanyam</h3>
-                  <p className="text-white/60 text-sm">Founder & Principal Engineer</p>
+                  <h3 className="text-2xl font-bold mb-1 text-[#0a1628]">Mr. C. Subrahmanyam</h3>
+                  <p className="text-slate-500 text-sm">Founder &amp; Principal Engineer</p>
                 </div>
               </div>
               <div className="space-y-3 mb-6 text-sm">
-                <div className="flex items-center gap-2 text-white/70">
+                <div className="flex items-center gap-2 text-slate-600">
                   <Award className="w-4 h-4 text-[#43648e] shrink-0" />
                   <span>Ex-BHEL (Bharat Heavy Plate Vessels Limited) — 18 Years</span>
                 </div>
-                <div className="flex items-center gap-2 text-white/70">
+                <div className="flex items-center gap-2 text-slate-600">
                   <Award className="w-4 h-4 text-[#43648e] shrink-0" />
                   <span>Ex-Mitsui Babcock Energy (I) Pvt Ltd (Now Doosan Babcock)</span>
                 </div>
-                <div className="flex items-center gap-2 text-white/70">
+                <div className="flex items-center gap-2 text-slate-600">
                   <Clock className="w-4 h-4 text-[#43648e] shrink-0" />
                   <span>20+ Years heading SLS Consultants</span>
                 </div>
               </div>
-              <div className="border-t border-white/10 pt-6">
-                <p className="text-white/70 text-sm leading-relaxed">
+              <div className="border-t border-slate-200 pt-6">
+                <p className="text-slate-600 text-sm leading-relaxed">
                   Recognised by Larsen & Toubro with a Letter of Appreciation for services rendered on handling structures for a vessel of 10,000mm dia × 164,000mm length.
                 </p>
               </div>

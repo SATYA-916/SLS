@@ -48,12 +48,12 @@ export default function Expertise() {
 
   return (
     <div className="w-full">
-      <section className="bg-[#0a1628] text-white py-20 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
+      <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
             <defs>
               <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="1" />
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" strokeWidth="1" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
@@ -61,11 +61,11 @@ export default function Expertise() {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Our Services</p>
-            <h1 className="text-5xl md:text-6xl font-bold max-w-2xl leading-tight mb-4">
-              Engineering & Design Services
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Our Services</p>
+            <h1 className="text-5xl md:text-6xl font-bold max-w-2xl leading-tight mb-4 text-[#0a1628]">
+              Engineering &amp; Design Services
             </h1>
-            <p className="text-white/60 text-sm md:text-base max-w-xl leading-relaxed">
+            <p className="text-slate-600 text-sm md:text-base max-w-xl leading-relaxed">
               Engineering solutions designed in accordance with project-specific international and regional standards, including ASME, API, IS, and client specifications.
             </p>
           </motion.div>
@@ -148,27 +148,27 @@ export default function Expertise() {
         </div>
       </section>
 
-      <section className="py-20 bg-[#0a1628] text-white">
+      <section className="py-20 bg-slate-50 text-[#0a1628] border-t border-b border-slate-200">
         <div className="container mx-auto px-4 grid md:grid-cols-2 gap-16">
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/40 mb-6">Engineering Activities</p>
-            <h2 className="text-3xl font-bold mb-8">What We Do</h2>
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 mb-6">Engineering Activities</p>
+            <h2 className="text-3xl font-bold mb-8 text-[#0a1628]">What We Do</h2>
             <div className="space-y-3">
               {activities.map((act) => (
-                <div key={act} className="flex items-start gap-3 text-sm text-white/70">
-                  <div className="w-1 h-1 rounded-full bg-[#43648e] mt-2 shrink-0" />
+                <div key={act} className="flex items-start gap-3 text-sm text-slate-600">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#43648e] mt-2 shrink-0" />
                   <span>{act}</span>
                 </div>
               ))}
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/40 mb-6">Engineering Specialisms</p>
-            <h2 className="text-3xl font-bold mb-8">What We Design</h2>
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 mb-6">Engineering Specialisms</p>
+            <h2 className="text-3xl font-bold mb-8 text-[#0a1628]">What We Design</h2>
             <div className="space-y-3">
               {specialisms.map((spec) => (
-                <div key={spec} className="flex items-start gap-3 text-sm text-white/70">
-                  <div className="w-1 h-1 rounded-full bg-[#43648e] mt-2 shrink-0" />
+                <div key={spec} className="flex items-start gap-3 text-sm text-slate-600">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#43648e] mt-2 shrink-0" />
                   <span>{spec}</span>
                 </div>
               ))}

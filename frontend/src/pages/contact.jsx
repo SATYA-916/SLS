@@ -187,12 +187,12 @@ export default function Contact() {
 
   return (
     <div className="w-full">
-      <section className="bg-[#0a1628] text-white py-20 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
+      <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
+        <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
             <defs>
               <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="1" />
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" strokeWidth="1" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
@@ -200,11 +200,11 @@ export default function Contact() {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Global Engineering Delivery Center</p>
-            <h1 className="text-4xl md:text-6xl font-bold max-w-3xl leading-tight mb-5">
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Global Engineering Delivery Center</p>
+            <h1 className="text-4xl md:text-6xl font-bold max-w-3xl leading-tight mb-5 text-[#0a1628]">
               Request an Engineering<br />Consultation.
             </h1>
-            <p className="text-white/60 text-sm md:text-base max-w-xl leading-relaxed mb-8">
+            <p className="text-slate-600 text-sm md:text-base max-w-xl leading-relaxed mb-8">
               Providing round-the-clock design and detailing support. Fill in the form — we will study your requirements and get back to you to schedule a technical scoping discussion.
             </p>
             <div className="flex flex-wrap gap-6">
@@ -213,7 +213,7 @@ export default function Contact() {
                 { icon: <ShieldCheck className="w-4 h-4" />, text: 'ASME & API code compliance' },
                 { icon: <Zap className="w-4 h-4" />, text: 'Coordinated engineering packages' },
               ].map((item) => (
-                <div key={item.text} className="flex items-center gap-2 text-xs text-white/50">
+                <div key={item.text} className="flex items-center gap-2 text-xs text-slate-500">
                   <span className="text-[#43648e]">{item.icon}</span>
                   {item.text}
                 </div>

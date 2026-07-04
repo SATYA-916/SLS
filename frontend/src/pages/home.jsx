@@ -112,30 +112,30 @@ export default function Home() {
 
       {/* 1. HERO & STATS COMBINED */}
       <section className="grid md:grid-cols-2 min-h-[480px]">
-        <div className="bg-[#0a1628] text-white px-10 md:px-16 py-16 md:py-20 flex flex-col justify-center relative overflow-hidden">
-          <div className="absolute inset-0 opacity-[0.04]">
+        <div className="bg-slate-50 text-[#0a1628] px-10 md:px-16 py-16 md:py-20 flex flex-col justify-center relative overflow-hidden border-b border-slate-200">
+          <div className="absolute inset-0 opacity-[0.05] text-[#0a1628] pointer-events-none">
             <svg width="100%" height="100%">
               <defs>
                 <pattern id="herogrid" width="50" height="50" patternUnits="userSpaceOnUse">
-                  <path d="M 50 0 L 0 0 0 50" fill="none" stroke="white" strokeWidth="1" />
+                  <path d="M 50 0 L 0 0 0 50" fill="none" stroke="currentColor" strokeWidth="1" />
                 </pattern>
               </defs>
               <rect width="100%" height="100%" fill="url(#herogrid)" />
             </svg>
           </div>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }} className="relative z-10">
-            <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-white/50 mb-5">
+            <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 mb-5">
               Engineering Excellence Since 2002
             </span>
             <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-6">
               Industrial Fired Heaters & Structural Engineering
             </h1>
-            <p className="text-white/60 text-sm leading-relaxed mb-8 max-w-sm">
+            <p className="text-slate-600 text-sm leading-relaxed mb-8 max-w-sm">
               Providing full-scale mechanical and structural engineering consultancy designed in accordance with project-specific international and regional standards.
             </p>
 
             {/* Inline Stats Counter inside Hero */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-4 mb-8 border-t border-white/10 pt-6 max-w-lg">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-4 mb-8 border-t border-slate-200 pt-6 max-w-lg">
               {[
                 { value: `${stats?.yearsExperience || 20}+`, label: 'Years Exp', sub: 'Since 2002' },
                 { value: `${stats?.projectsCompleted || 500}+`, label: 'Projects', sub: 'Delivered' },
@@ -143,21 +143,21 @@ export default function Home() {
                 { value: `${stats?.softwarePlatforms || 5}+`, label: 'Software', sub: 'Platforms' }
               ].map((stat, idx) => (
                 <div key={idx} className="min-w-0 flex flex-col justify-end">
-                  <div className="text-xl font-bold text-white leading-none mb-1.5">{stat.value}</div>
-                  <div className="text-[9px] font-bold uppercase tracking-wider text-white/50 leading-none mb-0.5">{stat.label}</div>
-                  <div className="text-[8px] text-white/25 truncate leading-none">{stat.sub}</div>
+                  <div className="text-xl font-bold text-[#0a1628] leading-none mb-1.5">{stat.value}</div>
+                  <div className="text-[9px] font-bold uppercase tracking-wider text-slate-500 leading-none mb-0.5">{stat.label}</div>
+                  <div className="text-[8px] text-slate-400 truncate leading-none">{stat.sub}</div>
                 </div>
               ))}
             </div>
 
             <div className="flex flex-wrap gap-3">
               <Link href="/contact">
-                <button className="flex items-center gap-2 bg-white text-[#0a1628] px-6 py-3 text-sm font-semibold hover:bg-white/90 transition-colors">
+                <button className="flex items-center gap-2 bg-[#0a1628] text-white px-6 py-3 text-sm font-semibold hover:bg-[#1a2f4c] transition-colors rounded-sm shadow-sm">
                   Request a Consultation <ArrowRight className="w-4 h-4" />
                 </button>
               </Link>
               <Link href="/projects">
-                <button className="flex items-center gap-2 border border-white/30 text-white px-6 py-3 text-sm font-semibold hover:bg-white/10 transition-colors">
+                <button className="flex items-center gap-2 border border-slate-300 text-[#0a1628] px-6 py-3 text-sm font-semibold hover:bg-slate-100 transition-colors rounded-sm">
                   View Our Projects <ArrowRight className="w-4 h-4" />
                 </button>
               </Link>
@@ -169,16 +169,16 @@ export default function Home() {
           initial={{ opacity: 0, scale: 1.02 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative min-h-[350px] md:min-h-[480px] overflow-hidden bg-gray-900 border-l border-gray-800"
+          className="relative min-h-[350px] md:min-h-[480px] overflow-hidden bg-slate-100 border-l border-slate-200"
         >
           <img
             src="/hero_industrial_plant.png"
             alt="SLS Engineering Hero"
             className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700 hover:scale-105"
           />
-          {/* Gradient blend: left edge fades into the navy content panel */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628]/60 via-[#0a1628]/10 to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+          {/* Gradient blend: left edge fades into the light content panel */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-50/80 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-100/30 via-transparent to-transparent pointer-events-none" />
         </motion.div>
       </section>
 
@@ -424,12 +424,12 @@ export default function Home() {
       </section>
 
       {/* 8. CTA */}
-      <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+      <section className="py-20 bg-slate-50 text-[#0a1628] relative overflow-hidden border-t border-slate-200">
+        <div className="absolute inset-0 opacity-[0.05] text-[#0a1628] pointer-events-none">
           <svg width="100%" height="100%">
             <defs>
               <pattern id="ctagrid" width="50" height="50" patternUnits="userSpaceOnUse">
-                <path d="M 50 0 L 0 0 0 50" fill="none" stroke="white" strokeWidth="1" />
+                <path d="M 50 0 L 0 0 0 50" fill="none" stroke="currentColor" strokeWidth="1" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#ctagrid)" />
@@ -437,25 +437,25 @@ export default function Home() {
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <AnimatedSection>
-            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/40 mb-4">Project Consultation</p>
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Project Consultation</p>
             <h2 className="text-3xl md:text-5xl font-bold leading-tight mb-4">
               Have a Project in Mind?<br />
-              <span className="text-blue-400">Let's Engineer It Together.</span>
+              <span className="text-[#43648e]">Let's Engineer It Together.</span>
             </h2>
-            <p className="text-white/60 text-sm md:text-base max-w-xl mx-auto mb-10 leading-relaxed">
+            <p className="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-10 leading-relaxed">
               Share your project scope, connection codes, or drawing layouts with us. Our engineers will review your requirements and coordinate a technical proposal.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link href="/contact">
-                <button className="flex items-center gap-2 bg-white text-[#0a1628] px-8 py-4 text-sm font-bold uppercase tracking-wider hover:bg-white/90 transition-colors shadow-lg">
+                <button className="flex items-center gap-2 bg-[#0a1628] text-white px-8 py-4 text-sm font-bold uppercase tracking-wider hover:bg-[#1a2f4c] transition-colors rounded-sm shadow-md">
                   Request a Consultation <ArrowRight className="w-4 h-4" />
                 </button>
               </Link>
-              <a href="tel:+919849598424" className="flex items-center gap-2 border border-white/20 text-white px-8 py-4 text-sm font-semibold hover:bg-white/5 transition-colors">
+              <a href="tel:+919849598424" className="flex items-center gap-2 border border-slate-300 bg-white text-[#0a1628] px-8 py-4 text-sm font-semibold hover:bg-slate-100 transition-colors rounded-sm shadow-sm">
                 <Phone className="w-4 h-4" /> Call Us Now
               </a>
             </div>
-            <p className="text-xs text-white/40 mt-6">
+            <p className="text-xs text-slate-400 mt-6">
               Confidential project information handled securely · Response within timezone working hours
             </p>
           </AnimatedSection>
