@@ -1938,14 +1938,14 @@ export default function Gallery() {
               >
                 Close View ✕
               </button>
-              <div className="bg-slate-900 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center aspect-[16/10] shadow-2xl">
+              <div className="bg-slate-900 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center h-[50vh] md:h-auto md:aspect-[16/10] shadow-2xl">
                 <img
                   src={`/gallery/${selectedImg.file}`}
                   alt={selectedImg.title}
                   className="max-w-full max-h-full object-contain select-none pointer-events-none"
                 />
               </div>
-              <div className="text-white mt-4 flex items-start justify-between gap-6">
+              <div className="text-white mt-4 flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-[9px] font-bold uppercase tracking-wider text-blue-400">{selectedImg.code}</span>
@@ -1954,7 +1954,7 @@ export default function Gallery() {
                   <h3 className="text-lg font-bold">{selectedImg.title}</h3>
                   <p className="text-xs text-white/60 leading-relaxed mt-1">{selectedImg.desc}</p>
                 </div>
-                <div className="flex flex-col items-end gap-2 shrink-0">
+                <div className="flex flex-col items-start md:items-end gap-2 shrink-0">
                   <button
                     onClick={() => {
                       setSelectedImg(null);

@@ -343,9 +343,9 @@ export default function Projects() {
                 </div>
 
                 {/* Grid Split Content */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="flex flex-col md:grid md:grid-cols-3 gap-8">
                   {/* Left Column (65%) */}
-                  <div className="md:col-span-2 space-y-6">
+                  <div className="md:col-span-2 space-y-6 order-2 md:order-1">
                     {selectedProject.challenge ? (
                       <>
                         <div>
@@ -452,7 +452,7 @@ export default function Projects() {
                   </div>
 
                   {/* Right Column (35%) */}
-                  <div className="space-y-6">
+                  <div className="space-y-6 order-1 md:order-2">
                     {/* Metadata Panel */}
                     <div className="bg-slate-50 border border-slate-200 p-5 rounded-sm space-y-4">
                       <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2 border-b border-slate-200 pb-2">
