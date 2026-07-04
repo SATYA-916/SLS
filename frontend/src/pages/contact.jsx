@@ -224,9 +224,9 @@ export default function Contact() {
       </section>
 
       {/* ── Dual CTA Strip: Book or Write ── */}
-      <section className="bg-gradient-to-r from-[#0a1628] to-[#0d1f3c] border-b border-white/10">
+      <section className="bg-white border-b border-slate-200">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/10">
+          <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200">
 
             {/* Calendly — Book a slot */}
             <motion.div
@@ -236,20 +236,20 @@ export default function Contact() {
               transition={{ duration: 0.5 }}
               className="flex flex-col sm:flex-row items-start sm:items-center gap-5 px-8 py-8"
             >
-              <div className="w-12 h-12 rounded-full bg-[#43648e]/30 border border-[#43648e]/40 flex items-center justify-center shrink-0">
-                <CalendarDays className="w-5 h-5 text-[#7ab3e0]" />
+              <div className="w-12 h-12 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
+                <CalendarDays className="w-5 h-5 text-[#43648e]" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-0.5">Direct Scheduling</p>
-                <h3 className="text-base font-bold text-white mb-1">Book a Consultation Call</h3>
-                <p className="text-xs text-white/50 leading-relaxed">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Direct Scheduling</p>
+                <h3 className="text-base font-bold text-[#0a1628] mb-1">Book a Consultation Call</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">
                   Pick a time slot — 30‑min technical scoping session with Mr. Subrahmanyam, available Mon–Sat.
                 </p>
               </div>
               <button
                 id="calendly-book-btn"
                 onClick={openPopup}
-                className="shrink-0 bg-[#43648e] hover:bg-[#5580a8] text-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors shadow-md flex items-center gap-2 rounded-sm whitespace-nowrap"
+                className="shrink-0 bg-[#0a1628] hover:bg-[#1a2f4c] text-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors shadow-sm flex items-center gap-2 rounded-sm whitespace-nowrap"
               >
                 <CalendarDays className="w-3.5 h-3.5" /> Book a Slot
               </button>
@@ -263,19 +263,19 @@ export default function Contact() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="flex flex-col sm:flex-row items-start sm:items-center gap-5 px-8 py-8"
             >
-              <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                <Mail className="w-5 h-5 text-white/50" />
+              <div className="w-12 h-12 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
+                <Mail className="w-5 h-5 text-[#43648e]" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-0.5">Project Inquiry / RFQ</p>
-                <h3 className="text-base font-bold text-white mb-1">Send Project Details</h3>
-                <p className="text-xs text-white/50 leading-relaxed">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Project Inquiry / RFQ</p>
+                <h3 className="text-base font-bold text-[#0a1628] mb-1">Send Project Details</h3>
+                <p className="text-xs text-slate-500 leading-relaxed">
                   Submit specifications, drawings, or scope documents. We will respond within 24 hours.
                 </p>
               </div>
               <a
                 href="#contact-form"
-                className="shrink-0 border border-white/20 hover:border-white/50 text-white/70 hover:text-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-2 rounded-sm whitespace-nowrap"
+                className="shrink-0 border border-slate-300 text-[#0a1628] hover:bg-slate-100 px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-2 rounded-sm whitespace-nowrap text-center"
               >
                 <Mail className="w-3.5 h-3.5" /> Send a Message
               </a>
