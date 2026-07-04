@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { CheckCircle2, Award, Users, Clock } from 'lucide-react';
+import { CheckCircle2, Award, Users, Clock, Eye, Target, Compass } from 'lucide-react';
 
 const values = [
   { title: 'Quality First', desc: 'Every deliverable meets or exceeds the client\'s technical and safety expectations.' },
@@ -95,7 +95,47 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-20 bg-gray-50">
+      {/* ── Vision, Mission & Purpose Section ── */}
+      <section className="py-20 bg-gray-50 border-t border-b border-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-200 max-w-5xl mx-auto shadow-sm">
+            {[
+              {
+                icon: <Eye className="w-8 h-8 text-[#43648e]" />,
+                title: 'Vision',
+                desc: 'To be the most trusted engineering consultancy in India — recognised for technical excellence, innovation, and the delivery of cost-effective, safe, and sustainable engineering solutions across structural, industrial, and digital domains.',
+              },
+              {
+                icon: <Target className="w-8 h-8 text-[#43648e]" />,
+                title: 'Mission',
+                desc: 'To provide comprehensive, high-quality engineering consultancy services that consistently meet or exceed client expectations, leveraging 20+ years of expertise, industry-leading tools, and a commitment to continuous improvement.',
+              },
+              {
+                icon: <Compass className="w-8 h-8 text-[#43648e]" />,
+                title: 'Core Purpose',
+                desc: 'To deliver cost-effective quality engineering solutions — on time, within budget, and to the highest technical standards — for every client, every project, without compromise.',
+              },
+            ].map((p, i) => (
+              <motion.div
+                key={p.title}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: i * 0.08 }}
+                className="bg-white p-8 md:p-10 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="mb-6">{p.icon}</div>
+                  <h3 className="text-xl font-bold text-[#0a1628] mb-4">{p.title}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">{p.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-center mb-14">
             <p className="text-xs font-bold tracking-[0.2em] uppercase text-[#43648e] mb-3">Our Journey</p>
@@ -127,7 +167,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50 border-t border-gray-100">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-center mb-14">
             <p className="text-xs font-bold tracking-[0.2em] uppercase text-[#43648e] mb-3">Our Values</p>

@@ -8,7 +8,6 @@ import About from '@/pages/about';
 import Expertise from '@/pages/expertise';
 import Projects from '@/pages/projects';
 import Software from '@/pages/software';
-import Vision from '@/pages/vision';
 import Contact from '@/pages/contact';
 import Gallery from '@/pages/gallery';
 import AdminLogin from '@/pages/admin-login';
@@ -52,9 +51,6 @@ function Router() {
         </Route>
         <Route path="/software">
           <Layout><Software /></Layout>
-        </Route>
-        <Route path="/vision">
-          <Layout><Vision /></Layout>
         </Route>
         <Route path="/contact">
           <Layout><Contact /></Layout>
