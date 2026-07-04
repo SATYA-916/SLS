@@ -105,12 +105,12 @@ export default function Home() {
     initialData: fallbackServices
   });
 
-  const featuredProjects = projects?.slice(0, 4);
+  const featuredProjects = projects?.slice(0, 3);
 
   return (
     <div className="w-full bg-white">
 
-      {/* 1. HERO */}
+      {/* 1. HERO & STATS COMBINED */}
       <section className="grid md:grid-cols-2 min-h-[480px]">
         <div className="bg-[#0a1628] text-white px-10 md:px-16 py-16 md:py-20 flex flex-col justify-center relative overflow-hidden">
           <div className="absolute inset-0 opacity-[0.04]">
@@ -128,11 +128,28 @@ export default function Home() {
               Engineering Excellence Since 2002
             </span>
             <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-6">
-              Industrial Fired Heaters & Structural Engineering Solutions
+              Industrial Fired Heaters & Structural Engineering
             </h1>
             <p className="text-white/60 text-sm leading-relaxed mb-8 max-w-sm">
               Providing full-scale mechanical and structural engineering consultancy designed in accordance with project-specific international and regional standards.
             </p>
+
+            {/* Inline Stats Counter inside Hero */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 border-t border-white/10 pt-6 max-w-lg">
+              {[
+                { value: `${stats?.yearsExperience || 20}+`, label: 'Years Exp', sub: 'Since 2002' },
+                { value: `${stats?.projectsCompleted || 500}+`, label: 'Projects', sub: 'Delivered' },
+                { value: `${stats?.clientsServed || 25}+`, label: 'Clients', sub: 'Satisfied' },
+                { value: `${stats?.softwarePlatforms || 5}+`, label: 'Software', sub: 'Platforms' }
+              ].map((stat, idx) => (
+                <div key={idx} className="min-w-0">
+                  <div className="text-xl font-bold text-white leading-none mb-1">{stat.value}</div>
+                  <div className="text-[9px] font-bold uppercase tracking-wider text-white/40 leading-none mb-0.5">{stat.label}</div>
+                  <div className="text-[8px] text-white/20 truncate leading-none">{stat.sub}</div>
+                </div>
+              ))}
+            </div>
+
             <div className="flex flex-wrap gap-3">
               <Link href="/contact">
                 <button className="flex items-center gap-2 bg-white text-[#0a1628] px-6 py-3 text-sm font-semibold hover:bg-white/90 transition-colors">
@@ -163,91 +180,6 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* 2. STATS */}
-      <section className="bg-white border-y border-gray-200">
-        <div className="container mx-auto px-4">
-          {statsLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 py-10 gap-6">
-              {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-20" />)}
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-gray-200">
-              {[
-                { icon: <Clock className="w-7 h-7" />, value: `${stats?.yearsExperience || 20}+`, label: 'Years of Experience', sub: 'Since 2002' },
-                { icon: <Briefcase className="w-7 h-7" />, value: `${stats?.projectsCompleted || 500}+`, label: 'Projects Completed', sub: 'Across India & Abroad' },
-                { icon: <Users className="w-7 h-7" />, value: `${stats?.clientsServed || 25}+`, label: 'Satisfied Clients', sub: 'In Diverse Industries' },
-                { icon: <Monitor className="w-7 h-7" />, value: `${stats?.softwarePlatforms || 5}+`, label: 'Engineering Software', sub: 'Platforms' },
-              ].map((stat, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.1 + i * 0.08 }}
-                  className="flex flex-col items-center text-center py-10 px-4"
-                >
-                  <div className="text-gray-400 mb-3">{stat.icon}</div>
-                  <div className="text-3xl font-bold text-[#0a1628] mb-1">{stat.value}</div>
-                  <div className="text-xs font-semibold text-gray-700">{stat.label}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">{stat.sub}</div>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* 3. ABOUT PREVIEW */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <AnimatedSection>
-            <div className="grid md:grid-cols-2 gap-14 items-start">
-              <div>
-                <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-4">About SLS Consultants</p>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#0a1628] leading-tight mb-6">
-                  Engineering Excellence.<br />Driven by Innovation.
-                </h2>
-                <div className="w-10 h-0.5 bg-blue-700 mb-6" />
-                <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                  SLS Consultants was established in 2002 by Mr. C. Subrahmanyam after 18 years of rich experience with BHPV (BHEL) and Mitsui Babcock / Doosan Babcock.
-                </p>
-                <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                  We specialize in delivering high-fidelity design layouts, stress analysis, and structural detailing packages tailored to complex heavy industrial scopes.
-                </p>
-                <div className="space-y-3">
-                  {[
-                    'Improve fabrication accuracy through detailed engineering.',
-                    'Reduce project delays with coordinated engineering deliverables.',
-                    'Deliver engineering packages that support efficient fabrication and construction.'
-                  ].map((item) => (
-                    <div key={item} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 text-blue-700 mt-0.5 shrink-0" />
-                      <span className="text-sm text-gray-600">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center aspect-square">
-                  <img
-                    src="/founder_portrait.png"
-                    alt="Mr. C. Subrahmanyam"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex flex-col justify-center">
-                  <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Founder</p>
-                  <h3 className="text-xl font-bold text-[#0a1628] mb-1">Mr. C. Subrahmanyam</h3>
-                  <p className="text-xs text-blue-700 font-semibold mb-3">Ex-BHEL (18 Years)<br />Ex-Doosan Babcock</p>
-                  <p className="text-xs text-gray-500 leading-relaxed">
-                    Bringing decades of rigorous industrial design standards to global partners.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
       {/* 4. FEATURED SERVICES */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -258,12 +190,12 @@ export default function Home() {
             </div>
           </AnimatedSection>
           {servicesLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {[...Array(6)].map((_, i) => <Skeleton key={i} className="h-44" />)}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-44" />)}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {services?.slice(0, 6).map((svc, i) => (
+              {services?.slice(0, 3).map((svc, i) => (
                 <motion.div
                   key={svc.id}
                   initial={{ opacity: 0, y: 16 }}
@@ -302,11 +234,11 @@ export default function Home() {
           </AnimatedSection>
 
           {projectsLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
-              {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-56" />)}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+              {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-56" />)}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-10">
               {featuredProjects?.map((proj, i) => (
                 <motion.div
                   key={proj.id}
@@ -354,14 +286,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. CLIENT LOGOS */}
+      {/* 6. CLIENT LOGOS & TARGET SECTORS */}
       <section className="py-16 bg-gray-50 border-y border-gray-200">
         <div className="container mx-auto px-4">
           <AnimatedSection>
-            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 text-center mb-10">
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 text-center mb-8">
               Trusted by Leading Organizations
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-5">
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-12">
               {clients.map((client) => (
                 <div
                   key={client.name}
@@ -375,58 +307,21 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <p className="text-center text-[10px] text-gray-400 italic">
-              Detailed fired heaters and structural solutions for multi-billion dollar state-owned and private refineries.
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* 7. WHY CHOOSE SLS & WHO WE WORK WITH (TRUST BANNER) */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid md:grid-cols-2 gap-16 items-start">
             
-            {/* Trust factors */}
-            <AnimatedSection>
-              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-4">Credibility</p>
-              <h2 className="text-3xl font-bold text-[#0a1628] mb-6">Trusted Since 2002</h2>
-              <p className="text-gray-600 text-sm leading-relaxed mb-8">
-                With over 20 years of experience as industrial engineering specialists, we have delivered 500+ successful projects across India and international markets.
+            <div className="border-t border-gray-200 pt-10">
+              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 text-center mb-6">
+                Engineering Solutions Across Industrial Sectors
               </p>
-              <div className="grid grid-cols-2 gap-6">
-                {[
-                  { value: '20+ Years', desc: 'Industrial Engineering Specialists' },
-                  { value: '500+ Projects', desc: 'Delivered to Strict Specifications' },
-                  { value: 'ASME & API', desc: 'International Code Compliance' },
-                  { value: 'Since 2002', desc: 'Established Reputation' }
-                ].map((item, idx) => (
-                  <div key={idx} className="border-l-2 border-blue-700 pl-4">
-                    <div className="font-bold text-[#0a1628] text-lg mb-1">{item.value}</div>
-                    <div className="text-xs text-gray-500">{item.desc}</div>
-                  </div>
-                ))}
-              </div>
-            </AnimatedSection>
-
-            {/* Who we work with / Industries */}
-            <AnimatedSection>
-              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-4">Target Sectors</p>
-              <h2 className="text-3xl font-bold text-[#0a1628] mb-6">Who We Work With</h2>
-              <p className="text-gray-600 text-sm leading-relaxed mb-8">
-                We serve engineering managers, procurement leads, and EPC contractors across diverse industrial markets:
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex flex-wrap justify-center gap-3">
                 {industries.map((ind) => (
-                  <div key={ind.name} className="flex items-center gap-3 bg-gray-50 border border-gray-100 p-3 hover:border-gray-200 transition-colors">
+                  <div key={ind.name} className="flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 hover:border-blue-700 hover:shadow-sm transition-all">
                     <div className="text-blue-700">{ind.icon}</div>
-                    <span className="text-xs font-bold text-gray-700 uppercase tracking-wider">{ind.name}</span>
+                    <span className="text-[10px] font-bold text-[#0a1628] uppercase tracking-wider">{ind.name}</span>
                   </div>
                 ))}
               </div>
-            </AnimatedSection>
-
-          </div>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
