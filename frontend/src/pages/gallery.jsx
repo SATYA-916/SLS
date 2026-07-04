@@ -1324,7 +1324,6 @@ export default function Gallery() {
             </div>
 
           {/* TAB 2: EXPLODED ILLUSTRATIONS (THREE.JS 3D VIEW) */}
-          {/* TAB 2: EXPLODED ILLUSTRATIONS (THREE.JS 3D VIEW) */}
           <div
             style={{ display: activeTab === 'illustrations' ? 'grid' : 'none' }}
             className="grid lg:grid-cols-3 gap-6 lg:gap-10 items-start"
@@ -1527,14 +1526,16 @@ export default function Gallery() {
                   <div className="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-blue-500/50 pointer-events-none z-20" />
                   <div className="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-blue-500/50 pointer-events-none z-20" />
 
-                  <ThreeViewer
-                    type={selectedIll.threeType}
-                    exploded={exploded}
-                    wireframe={wireframe}
-                    resetKey={resetKey}
-                    autoRotate={autoRotate}
-                    modelName={selectedIll.title}
-                  />
+                  {activeTab === 'illustrations' && (
+                    <ThreeViewer
+                      type={selectedIll.threeType}
+                      exploded={exploded}
+                      wireframe={wireframe}
+                      resetKey={resetKey}
+                      autoRotate={autoRotate}
+                      modelName={selectedIll.title}
+                    />
+                  )}
 
                   {/* Top overlay — model identity */}
                   <div className="absolute top-0 inset-x-0 z-10 flex items-start justify-between gap-3 p-4 bg-gradient-to-b from-black/75 via-black/30 to-transparent pointer-events-none">
