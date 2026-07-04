@@ -5,14 +5,14 @@ import { Phone, Mail, Globe, MapPin, CheckCircle2, Clock, ShieldCheck, Zap } fro
 import { submitContact, getServices } from '@/lib/api';
 
 const fallbackServices = [
-  'Structural Engineering',
-  'Industrial Projects',
-  'FEM Analysis',
-  'RLA Studies',
-  'Project Consultancy',
-  'Steel Detailing (Tekla)',
-  'Software & AI Solutions',
-  'Other',
+  'ASME Boiler & Pressure Vessel Design',
+  'STAAD.Pro Structural Steel Analysis',
+  'Tekla Fabrication & Steel Detailing',
+  'API 560 Fired Heater General Arrangement',
+  'EIL Compliance Drawing Scoping',
+  'FEM/FEA Stress Verification',
+  'Remaining Life Assessment (RLA) Study',
+  'Other Services & Scoping Inquiry'
 ];
 
 function validate(data) {
@@ -43,9 +43,7 @@ export default function Contact() {
     queryFn: getServices,
   });
 
-  const dropdownServices = dbServices 
-    ? [...dbServices.map((s) => s.title), 'Other'] 
-    : fallbackServices;
+  const dropdownServices = fallbackServices;
 
   const mutation = useMutation({
     mutationFn: submitContact,
@@ -161,6 +159,20 @@ export default function Contact() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Embedded Google Map */}
+            <div className="w-full h-56 bg-gray-100 border border-gray-200 shadow-sm relative overflow-hidden rounded-sm mb-10">
+              <iframe
+                title="SLS Consultants Office Location Map"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121634.3411132644!2d83.136284!3d17.729263!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a39431389e6973f%3A0x92d9d69106cd2c4f!2sVisakhapatnam%2C+Andhra+Pradesh!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
             
             <div className="bg-[#0a1628]/5 p-8 border-l-2 border-[#0a1628] rounded-sm">

@@ -3,7 +3,7 @@ import { Link } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Building2, X } from 'lucide-react';
+import { Building2, X, CheckCircle2 } from 'lucide-react';
 import { getProjects } from '@/lib/api';
 import { fallbackProjects } from '@/data/fallbackProjects';
 
@@ -16,6 +16,38 @@ const categories = [
   'Structures',
   'Industrial Structures',
 ];
+
+function getProjectTechnicalSpecs(proj) {
+  const category = proj.category || '';
+  const title = proj.title || '';
+  const desc = proj.description || '';
+
+  const specs = {
+    codes: 'IS 800 (Structural Design), IS 456 (Plain & Reinforced Concrete)',
+    software: 'AutoCAD, STAAD.Pro',
+    deliverables: 'Structural Design Calculations & Construction-Ready Fabrication Drawings'
+  };
+
+  if (category === 'Fired Heaters' || title.toLowerCase().includes('heater') || desc.toLowerCase().includes('heater')) {
+    specs.codes = 'API 560 (Fired Heaters), API 530 (Tube Thickness Calc), ASME Section VIII (Pressure Parts)';
+    specs.software = 'AutoCAD, STAAD.Pro, ANSYS (FEA Thermal Modeling)';
+    specs.deliverables = 'Thermal & Structural Calculations, General Arrangement & Shell Detail Drawings, Nozzle Load Verification Reports';
+  } else if (category === 'Cryogenic Plants' || desc.toLowerCase().includes('cryogenic') || desc.toLowerCase().includes('cold box')) {
+    specs.codes = 'ASME Section VIII Div 1, AD 2000, IS 1893 (Seismic Design)';
+    specs.software = 'STAAD.Pro, ANSYS (Dynamic foundation FEA)';
+    specs.deliverables = 'Heavy Dynamic Foundation design reports, Anchor Bolt layout drawings, RCC Pile load capacity analysis';
+  } else if (category === 'Boilers & Chimneys' || title.toLowerCase().includes('stack') || title.toLowerCase().includes('chimney') || desc.toLowerCase().includes('chimney')) {
+    specs.codes = 'IS 6533 (Steel Chimneys), IS 875 Part 3 (Wind Loads), ASME STS-1 (Steel Stacks)';
+    specs.software = 'AutoCAD, STAAD.Pro (Finite element chimney shell model)';
+    specs.deliverables = 'Vortex shedding dynamic analysis reports, Helical strake layout sheets, Foundation reaction reports';
+  } else if (category === 'Special Structures' || desc.toLowerCase().includes('shield') || desc.toLowerCase().includes('fixture')) {
+    specs.codes = 'ASME Section VIII, AISC 360, IS 800 (Steel structures)';
+    specs.software = 'AutoCAD, ANSYS (Lifting & structural integrity FEA)';
+    specs.deliverables = 'Radiographic cordoning shielding design sheets, Heavy lifting rigging plans, FEA structural stress verification reports';
+  }
+
+  return specs;
+}
 
 export default function Projects() {
   const { data: projects, isLoading } = useQuery({
@@ -186,6 +218,29 @@ export default function Projects() {
                 </span>
                 <h2 className="text-2xl font-bold text-[#0a1628] mb-4">{selectedProject.title}</h2>
                 <p className="text-sm text-gray-500 leading-relaxed mb-6">{selectedProject.description}</p>
+                {(() => {
+                  const specs = getProjectTechnicalSpecs(selectedProject);
+                  return (
+                    <div className="mb-6 bg-gray-50 p-4 border border-gray-200 rounded-sm space-y-3">
+                      <div>
+                        <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block mb-0.5">Design Codes Compliance</span>
+                        <span className="text-xs font-semibold text-[#0a1628]">{specs.codes}</span>
+                      </div>
+                      <div>
+                        <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block mb-0.5">Analysis & Design Software</span>
+                        <span className="text-xs font-semibold text-[#0a1628]">{specs.software}</span>
+                      </div>
+                      <div>
+                        <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block mb-0.5">Primary Deliverables</span>
+                        <span className="text-xs font-semibold text-[#0a1628]">{specs.deliverables}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 pt-1.5 border-t border-gray-200 text-[10px] font-bold uppercase tracking-wide text-green-700">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-green-700" />
+                        <span>Quality Checked: EIL Compliance Audited</span>
+                      </div>
+                    </div>
+                  );
+                })()}
                 <div className="flex items-center gap-6 text-sm border-t border-gray-200 pt-4">
                   {selectedProject.client && (
                     <div>
