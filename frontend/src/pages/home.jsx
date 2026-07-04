@@ -174,11 +174,8 @@ export default function Home() {
           <img
             src="/hero_industrial_plant.png"
             alt="SLS Engineering Hero"
-            className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700 hover:scale-105"
+            className="absolute inset-0 w-full h-full object-cover opacity-95 transition-transform duration-700 hover:scale-105"
           />
-          {/* Gradient blend: left edge fades into the light content panel */}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-50/80 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-100/30 via-transparent to-transparent pointer-events-none" />
         </motion.div>
       </section>
 
