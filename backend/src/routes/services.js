@@ -45,6 +45,18 @@ const services = [
     description: 'Developing custom automation scripts for structural analysis, drafting plugins, Tekla macros, and BIM model coordination using Autodesk Navisworks to automate steel detailing, detect spatial clashes, and optimize part lists.',
     icon: 'monitor',
   },
+  {
+    id: 8,
+    title: 'Finite Element Analysis (FEA)',
+    description: 'Advanced computational stress analysis, dynamic vibration assessments, and thermal fatigue modeling for heavy pressure vessels, chimneys, and storage tanks under dynamic loading and thermal expansion conditions.',
+    icon: 'cpu',
+  },
+  {
+    id: 9,
+    title: 'Piping Design & Stress Analysis',
+    description: 'Comprehensive 3D piping routing, isometric drawing generation, pipe rack design, and piping flexibility/stress analysis under ASME B31.3 process piping codes to verify nozzle load limits.',
+    icon: 'pipeline',
+  },
 ];
 
 router.get('/', (_req, res) => {

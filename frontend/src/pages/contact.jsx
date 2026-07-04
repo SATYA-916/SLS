@@ -107,7 +107,9 @@ export default function Contact() {
       'Construction Supervision',
       'Municipality Relation Services',
       'Remaining Life Assessment (RLA)',
-      'Software & AI Solutions'
+      'Software & AI Solutions',
+      'Finite Element Analysis (FEA)',
+      'Piping Design & Stress Analysis'
     ];
     coreServices.forEach(s => list.add(s));
 

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Building2, Factory, Grid3X3, Activity, ClipboardList, Layers, Monitor } from 'lucide-react';
+import { Building2, Factory, Grid3X3, Activity, ClipboardList, Layers, Monitor, Cpu, Workflow } from 'lucide-react';
 import { getServices } from '@/lib/api';
 import { fallbackServices } from '@/data/fallbackServices';
 
@@ -14,6 +14,8 @@ const serviceIcons = {
   clipboard: <ClipboardList className="w-10 h-10" />,
   layers: <Layers className="w-10 h-10" />,
   monitor: <Monitor className="w-10 h-10" />,
+  cpu: <Cpu className="w-10 h-10" />,
+  pipeline: <Workflow className="w-10 h-10" />,
 };
 
 const activities = [
@@ -116,6 +118,10 @@ export default function Expertise() {
                         specs = { codes: 'API 579 (FFS), ASME FFS-1', software: 'STAAD.Pro, UT Gauging' };
                       } else if (svc.title === 'Software & AI Solutions') {
                         specs = { codes: 'Tekla Open API, AutoCAD LISP', software: 'Python, C#, Tekla Structures' };
+                      } else if (svc.title === 'Finite Element Analysis (FEA)') {
+                        specs = { codes: 'ASME Sec VIII Div 2, API 579, IS 1893', software: 'ANSYS, STAAD.Pro (FEA)' };
+                      } else if (svc.title === 'Piping Design & Stress Analysis') {
+                        specs = { codes: 'ASME B31.3, ASME B31.1', software: 'CAESAR II, AutoCAD' };
                       }
                       
                       if (!specs) return null;
