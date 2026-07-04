@@ -267,37 +267,37 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     // Metalness kept at 0.6–0.75 so diffuse is visible without an HDRI env map.
     // ─────────────────────────────────────────────────────────────────
 
-    // Shell / primary body — gunmetal gray, slight clearcoat = "brushed painted steel"
+    // Shell / primary body — deep slate blue
     const shellMat = new THREE.MeshPhysicalMaterial({
-      color: 0x6e7d8c,        // Muted blue-gray (#6E7D8C) — industrial gunmetal
-      roughness: 0.5,
-      metalness: 0.7,
-      clearcoat: 0.3,          // Subtle gloss layer — painted equipment finish
+      color: 0x3a4f66,
+      roughness: 0.55,
+      metalness: 0.6,
+      clearcoat: 0.3,
       clearcoatRoughness: 0.4,
       wireframe: wireframeRef.current,
     });
 
-    // Structural framing, I-beams, columns — warm graphite, slightly lighter
+    // Structural framing, I-beams, columns — galvanized brand blue-steel
     const blueprintMat = new THREE.MeshStandardMaterial({
-      color: 0x8b95a1,        // Warm graphite (#8B95A1) — primed/galvanised steel
-      roughness: 0.55,
-      metalness: 0.65,
+      color: 0x5c80a6,
+      roughness: 0.5,
+      metalness: 0.7,
       wireframe: wireframeRef.current,
     });
 
-    // Process tubes / coils — amber/orange (industry-standard hot-service line colour)
+    // Process tubes / coils — bright industrial orange
     const coilMat = new THREE.MeshStandardMaterial({
-      color: 0xd4840a,        // Deeper warm amber — slightly richer than bright orange
-      roughness: 0.35,
-      metalness: 0.55,
+      color: 0xe65c00,
+      roughness: 0.3,
+      metalness: 0.6,
       wireframe: wireframeRef.current,
     });
 
-    // Secondary metal — flanges, bolts, hangers — silver-steel, polished stainless tone
+    // Secondary metal — flanges, bolts, hangers — polished chrome silver
     const stackMat = new THREE.MeshStandardMaterial({
-      color: 0xa8b4c0,        // Silver-steel (#A8B4C0) — lighter than blueprint, reads as SS
-      roughness: 0.4,
-      metalness: 0.6,
+      color: 0xe2e8f0,
+      roughness: 0.2,
+      metalness: 0.9,
       wireframe: wireframeRef.current,
     });
 

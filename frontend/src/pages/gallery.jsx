@@ -1400,32 +1400,32 @@ export default function Gallery() {
                       if (groupItems.length === 0) return null;
                       const isOpen = openGroups[group.name] || !!modelSearch.trim();
                       return (
-                        <div key={group.name} className="border-b border-gray-100 pb-3 last:border-0">
+                        <div key={group.name} className="bg-slate-50/50 border border-slate-100/80 p-3 rounded-md mb-4 last:mb-0 space-y-2">
                           <button
                             onClick={() => toggleGroup(group.name)}
-                            className="w-full flex items-center justify-between py-1.5 text-[10px] font-bold uppercase tracking-wider text-gray-500 hover:text-[#0a1628] transition-colors"
+                            className="w-full flex items-center justify-between text-[10px] font-extrabold uppercase tracking-widest text-[#0a1628] hover:text-blue-700 transition-colors"
                           >
                             <span className="flex items-center gap-2">
                               {group.name}
-                              <span className="text-[8px] font-semibold text-gray-400 normal-case tracking-normal">
+                              <span className="text-[9px] font-bold text-slate-400 normal-case tracking-normal">
                                 ({groupItems.length})
                               </span>
                             </span>
-                            {isOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+                            {isOpen ? <ChevronDown className="w-3.5 h-3.5 text-slate-400 animate-pulse" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-400" />}
                           </button>
                           
                           {isOpen && (
-                            <div className="space-y-1 mt-2">
+                            <div className="space-y-1.5 pl-2.5 border-l border-slate-200/60 ml-1.5 mt-1">
                               {groupItems.map((ill) => {
                                 const isSelected = selectedIll.id === ill.id;
                                 return (
                                   <button
                                     key={ill.id}
                                     onClick={() => selectIllustration(ill, group.name)}
-                                    className={`w-full text-left px-3 py-2.5 rounded-sm border-l-2 transition-all flex items-center gap-3 justify-between ${
+                                    className={`w-full text-left px-3 py-2 rounded-sm border-l-2 transition-all flex items-center gap-3 justify-between ${
                                       isSelected
-                                        ? 'bg-[#0a1628] border-l-blue-500 text-white shadow-md font-bold'
-                                        : 'border-l-transparent text-gray-600 hover:bg-blue-50/60 hover:border-l-blue-300 bg-white'
+                                        ? 'bg-[#0a1628] border-l-blue-500 text-white shadow-sm font-bold'
+                                        : 'border-l-transparent text-gray-500 hover:text-[#0a1628] hover:bg-white border-slate-200 bg-white/80'
                                     }`}
                                   >
                                     <div className="flex items-center gap-2.5 min-w-0">
@@ -1452,7 +1452,7 @@ export default function Gallery() {
                 </div>
 
                 {/* Left Column Bottom: Engineering Statistics */}
-                <div className="bg-gradient-to-br from-[#0a1628] to-[#132238] border border-[#1e3a5f]/30 p-5 shadow-sm text-white rounded-xl">
+                <div className="bg-gradient-to-br from-[#0a1628] to-[#132238] border border-[#1e3a5f]/30 p-5 shadow-xl text-white rounded-xl">
                   <h4 className="text-[9px] font-bold uppercase tracking-widest text-white/40 mb-4">Refinery Detailing Track Record</h4>
                   <div className="grid grid-cols-2 gap-4">
                     {[
@@ -1515,7 +1515,7 @@ export default function Gallery() {
                 {/* Three.js Interactive 3D Canvas */}
                 <div
                   ref={viewerRef}
-                  className={`relative overflow-hidden bg-[#050c18] shadow-2xl ring-1 ring-[#1e3a5f]/50 ${
+                  className={`relative overflow-hidden bg-gradient-to-br from-[#0a1628] to-[#132238] border border-[#1e3a5f]/30 shadow-xl ${
                     isFullscreen
                       ? 'fixed inset-0 z-50 h-screen w-screen rounded-none'
                       : 'aspect-[16/10] rounded-xl'
@@ -1662,10 +1662,10 @@ export default function Gallery() {
                     {/* Material legend */}
                     <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-3 pt-3 border-t border-white/10 pointer-events-none">
                       {[
-                        { color: 'bg-[#6e7d8c]', label: 'Shell / Casing' },
-                        { color: 'bg-[#8b95a1]', label: 'Structural Steel' },
-                        { color: 'bg-[#d4840a]', label: 'Process Tubing' },
-                        { color: 'bg-[#a8b4c0]', label: 'Flanges & Hardware' },
+                        { color: 'bg-[#3a4f66]', label: 'Shell / Casing' },
+                        { color: 'bg-[#5c80a6]', label: 'Structural Steel' },
+                        { color: 'bg-[#e65c00]', label: 'Process Tubing' },
+                        { color: 'bg-[#e2e8f0]', label: 'Flanges & Hardware' },
                       ].map(item => (
                         <span key={item.label} className="flex items-center gap-1.5 text-[8px] uppercase tracking-wider text-white/35">
                           <span className={`w-2.5 h-2.5 rounded-sm ${item.color} ring-1 ring-white/20`} />
@@ -1701,11 +1701,11 @@ export default function Gallery() {
                         </p>
                       </div>
                       <button
-                        onClick={() => handleBookRedirect(selectedIll.service)}
-                        className="bg-blue-600 hover:bg-blue-700 text-white text-[10px] lg:text-xs font-bold uppercase tracking-widest px-4 lg:px-5 py-2.5 lg:py-3 rounded-sm shadow-md transition-colors shrink-0"
-                      >
-                        Book Service &rarr;
-                      </button>
+                         onClick={() => handleBookRedirect(selectedIll.service)}
+                         className="bg-[#0a1628] hover:bg-[#1a2f4c] text-white text-[11px] lg:text-xs font-extrabold uppercase tracking-widest px-6 py-3.5 rounded-sm shadow-lg border border-slate-950 transition-all hover:translate-x-0.5 shrink-0"
+                       >
+                         Book Service &rarr;
+                       </button>
                     </div>
 
                     {/* Detail tabs */}
