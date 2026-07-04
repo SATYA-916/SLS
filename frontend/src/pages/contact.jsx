@@ -7,7 +7,7 @@ import { submitContact, getServices } from '@/lib/api';
 // ── Calendly Configuration ──────────────────────────────────────────────────
 // Replace this URL with your actual Calendly link once you create a free account
 // at https://calendly.com  →  copy your personal scheduling link here
-const CALENDLY_URL = 'https://calendly.com/slsind';
+const CALENDLY_URL = 'https://calendly.com/zywu801/30min';
 
 // Hook: dynamically loads Calendly widget script + CSS once
 function useCalendly() {
