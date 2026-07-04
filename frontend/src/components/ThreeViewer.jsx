@@ -574,6 +574,208 @@ export default function ThreeViewer({ type }) {
           modelGroup.add(handle);
           break;
 
+        case 'sootblower': { // Soot Blower Structure
+          const beamGeo = new THREE.BoxGeometry(0.2, 0.4, 7);
+          const beam = new THREE.Mesh(beamGeo, blueprintMat);
+          beam.position.set(0, 0, 0);
+          modelGroup.add(beam);
+
+          const bracingColGeo = new THREE.BoxGeometry(0.15, 3.5, 0.15);
+          const col1 = new THREE.Mesh(bracingColGeo, blueprintMat);
+          col1.position.set(-1.2, -1.75, -2);
+          modelGroup.add(col1);
+
+          const col2 = col1.clone();
+          col2.position.set(1.2, -1.75, -2);
+          modelGroup.add(col2);
+
+          const strutGeo = new THREE.BoxGeometry(0.15, 4.5, 0.15);
+          const strut1 = new THREE.Mesh(strutGeo, blueprintMat);
+          strut1.position.set(-0.6, -1.8, 1);
+          strut1.rotation.x = 0.5;
+          modelGroup.add(strut1);
+
+          const strut2 = strut1.clone();
+          strut2.position.x = 0.6;
+          modelGroup.add(strut2);
+
+          const lanceGeo = new THREE.CylinderGeometry(0.1, 0.1, 6.5, 16);
+          const lance = new THREE.Mesh(lanceGeo, stackMat);
+          lance.rotation.x = Math.PI / 2;
+          lance.position.set(0, 0.25, 0.5);
+          modelGroup.add(lance);
+
+          const tipGeo = new THREE.CylinderGeometry(0.02, 0.12, 0.4, 16);
+          const tip = new THREE.Mesh(tipGeo, stackMat);
+          tip.rotation.x = Math.PI / 2;
+          tip.position.set(0, 0.25, 3.9);
+          modelGroup.add(tip);
+
+          const cradleGeo = new THREE.CylinderGeometry(0.22, 0.22, 0.1, 16, 1, true);
+          for (let z of [-2.5, -0.5, 1.5]) {
+            const cradle = new THREE.Mesh(cradleGeo, stackMat);
+            cradle.rotation.x = Math.PI / 2;
+            cradle.position.set(0, 0.25, z);
+            modelGroup.add(cradle);
+          }
+          break;
+        }
+
+        case 'burnerfloor': { // Floor Plate & Burner Layout
+          const floorGeo = new THREE.CylinderGeometry(4.5, 4.5, 0.2, 32);
+          const floor = new THREE.Mesh(floorGeo, blueprintMat);
+          floor.position.y = -3;
+          modelGroup.add(floor);
+
+          const floorWire = new THREE.Mesh(floorGeo, wireMat);
+          floorWire.position.y = -3;
+          floorWire.scale.setScalar(1.005);
+          modelGroup.add(floorWire);
+
+          const rBeamGeo = new THREE.BoxGeometry(8.6, 0.3, 0.15);
+          for (let rot of [0, Math.PI / 4, Math.PI / 2, 3 * Math.PI / 4]) {
+            const beam = new THREE.Mesh(rBeamGeo, blueprintMat);
+            beam.position.y = -3.25;
+            beam.rotation.y = rot;
+            modelGroup.add(beam);
+          }
+
+          const portGeo = new THREE.CylinderGeometry(0.6, 0.6, 0.3, 16);
+          const burnerGasGeo = new THREE.CylinderGeometry(0.08, 0.08, 1.8, 8);
+
+          const numBurners = 6;
+          const radius = 2.4;
+          for (let i = 0; i < numBurners; i++) {
+            const angle = (i / numBurners) * Math.PI * 2;
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
+
+            const port = new THREE.Mesh(portGeo, stackMat);
+            port.position.set(x, -3, z);
+            modelGroup.add(port);
+
+            const burner = new THREE.Mesh(burnerGasGeo, stackMat);
+            burner.position.set(x, -2.5, z);
+            modelGroup.add(burner);
+
+            const capGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.15, 8);
+            const cap = new THREE.Mesh(capGeo, blueprintMat);
+            cap.position.set(x, -1.5, z);
+            modelGroup.add(cap);
+          }
+          break;
+        }
+
+        case 'ladders': { // Refinery Stack Ladder & Cage
+          const railGeo = new THREE.BoxGeometry(0.05, 12, 0.1);
+          const rail1 = new THREE.Mesh(railGeo, blueprintMat);
+          rail1.position.set(-0.3, 0, 0);
+          modelGroup.add(rail1);
+
+          const rail2 = rail1.clone();
+          rail2.position.x = 0.3;
+          modelGroup.add(rail2);
+
+          const rungGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.6, 8);
+          for (let y = -5.6; y <= 5.6; y += 0.4) {
+            const rung = new THREE.Mesh(rungGeo, stackMat);
+            rung.position.set(0, y, 0);
+            rung.rotation.z = Math.PI / 2;
+            modelGroup.add(rung);
+          }
+
+          const hoopGeo = new THREE.CylinderGeometry(0.55, 0.55, 0.04, 24, 1, true);
+          for (let y = -2; y <= 5.6; y += 1.2) {
+            const hoop = new THREE.Mesh(hoopGeo, blueprintMat);
+            hoop.position.set(0, y, 0.35);
+            hoop.rotation.x = Math.PI / 2;
+            modelGroup.add(hoop);
+          }
+
+          const strapGeo = new THREE.BoxGeometry(0.03, 7.8, 0.03);
+          for (let angle of [-Math.PI / 4, 0, Math.PI / 4, Math.PI / 2, -Math.PI / 2]) {
+            const strap = new THREE.Mesh(strapGeo, blueprintMat);
+            const radius = 0.55;
+            strap.position.set(
+              Math.sin(angle) * radius,
+              1.8,
+              0.35 + Math.cos(angle) * radius
+            );
+            modelGroup.add(strap);
+          }
+
+          const bracketGeo = new THREE.BoxGeometry(0.08, 0.08, 0.8);
+          for (let y of [-4, 0, 4]) {
+            const b1 = new THREE.Mesh(bracketGeo, blueprintMat);
+            b1.position.set(-0.3, y, -0.4);
+            modelGroup.add(b1);
+
+            const b2 = b1.clone();
+            b2.position.x = 0.3;
+            modelGroup.add(b2);
+          }
+          break;
+        }
+
+        case 'breechingdoor': { // Breeching Access Door
+          const frameGeo = new THREE.BoxGeometry(3.2, 3.2, 0.15);
+          const frame = new THREE.Mesh(frameGeo, blueprintMat);
+          frame.position.set(0, 0, 0);
+          modelGroup.add(frame);
+
+          const innerOpenGeo = new THREE.BoxGeometry(2.6, 2.6, 0.05);
+          const innerOpen = new THREE.Mesh(innerOpenGeo, new THREE.MeshStandardMaterial({
+            color: 0x03070c,
+            roughness: 0.9,
+            metalness: 0.1
+          }));
+          innerOpen.position.set(0, 0, 0.06);
+          modelGroup.add(innerOpen);
+
+          const doorPlateGeo = new THREE.BoxGeometry(2.7, 2.7, 0.1);
+          const doorPivot = new THREE.Group();
+          doorPivot.position.set(-1.35, 0, 0.12);
+          
+          const doorMesh = new THREE.Mesh(doorPlateGeo, stackMat);
+          doorMesh.position.set(1.35, 0, 0);
+          doorPivot.add(doorMesh);
+
+          const ribGeo = new THREE.BoxGeometry(3.6, 0.15, 0.06);
+          const rib1 = new THREE.Mesh(ribGeo, blueprintMat);
+          rib1.position.set(1.35, 0, 0.06);
+          rib1.rotation.z = Math.PI / 4;
+          doorPivot.add(rib1);
+
+          const rib2 = rib1.clone();
+          rib2.rotation.z = -Math.PI / 4;
+          doorPivot.add(rib2);
+
+          const clampBaseGeo = new THREE.BoxGeometry(0.15, 0.3, 0.1);
+          const handleGeo = new THREE.BoxGeometry(0.4, 0.08, 0.08);
+
+          for (let y of [-0.9, 0.9]) {
+            const base = new THREE.Mesh(clampBaseGeo, blueprintMat);
+            base.position.set(2.6, y, 0.1);
+            doorPivot.add(base);
+
+            const handle = new THREE.Mesh(handleGeo, blueprintMat);
+            handle.position.set(2.8, y, 0.15);
+            handle.rotation.y = 0.3;
+            doorPivot.add(handle);
+          }
+
+          const hingeGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.4, 16);
+          for (let y of [-1, 1]) {
+            const hinge = new THREE.Mesh(hingeGeo, blueprintMat);
+            hinge.position.set(-1.45, y, 0.08);
+            modelGroup.add(hinge);
+          }
+
+          doorPivot.rotation.y = 0.5;
+          modelGroup.add(doorPivot);
+          break;
+        }
+
         case 'frame3d': // Complete Structural Frame
         default:
           // Fully compiled refinery structural steel tower skeleton

@@ -179,6 +179,46 @@ const illustrations = [
     deliverables: "Erection sequence drawings, bolt lists, dynamic lift analyses.",
     threeType: "frame3d",
     service: "Engineering & Architecture Design"
+  },
+  {
+    id: "soot-blower",
+    title: "Soot Blower Structure",
+    description: "The auxiliary cantilevered structural steel frame that projects from the convection section to support the soot blower lance rails and mechanical drive system.",
+    disciplines: "Structural & Mechanical Engineering",
+    considerations: "Horizontal cantilever loading, vibration damping during lance retraction, structural steel alignment.",
+    deliverables: "Catwalk support details, track support frames, fabrication steel bills.",
+    threeType: "sootblower",
+    service: "Industrial Design & Support"
+  },
+  {
+    id: "burner-floor",
+    title: "Burner Floor Assembly",
+    description: "The bottom floor plate structural system of the cylindrical heater, designed to hold the vertically-fired burners and secondary air registers.",
+    disciplines: "Thermal & Structural Detailing",
+    considerations: "Burner port spacing and clearances, high thermal stresses near burner registers, floor plate segment structural joints.",
+    deliverables: "Burner floor plate layouts, floor structural framing designs, air plenum details.",
+    threeType: "burnerfloor",
+    service: "Industrial Design & Support"
+  },
+  {
+    id: "stack-ladders",
+    title: "Stack Ladder & Cage",
+    description: "The vertical steel climbing ladders with circular safety hoops and intermediate landing platforms configured along the outer shell of the stack.",
+    disciplines: "Structural Safety Detailing",
+    considerations: "OSHA cage clearance standards, shell mounting clip loads under high wind conditions, safety hoop weld configurations.",
+    deliverables: "Ladder fabrication sheets, safety cage details, clip installation layout drawings.",
+    threeType: "ladders",
+    service: "Blueprint Design"
+  },
+  {
+    id: "breeching-door",
+    title: "Breeching Access Door",
+    description: "A heavy-duty rectangular inspection access door located on the convection off-take breeching duct, featuring thick internal refractory backing.",
+    disciplines: "Mechanical & Refractory Design",
+    considerations: "Thermal gas sealing under positive draft pressures, hinge swing clearances, refractory hook alignment.",
+    deliverables: "Door framing details, hinge pin drawings, latch mechanism details, insulation layer schedules.",
+    threeType: "breechingdoor",
+    service: "Industrial Design & Support"
   }
 ];
 
