@@ -13,6 +13,7 @@ export function Footer() {
           <div className="flex gap-3">
             <a
               href="mailto:slsind@gmail.com"
+              rel="external"
               className="w-8 h-8 border border-slate-300 text-slate-600 flex items-center justify-center hover:bg-slate-200/50 hover:text-[#0a1628] transition-colors"
             >
               <Mail className="w-4 h-4" />

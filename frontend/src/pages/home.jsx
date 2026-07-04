@@ -448,7 +448,7 @@ export default function Home() {
                   Request a Consultation <ArrowRight className="w-4 h-4" />
                 </button>
               </Link>
-              <a href="tel:+919849598424" className="flex items-center gap-2 border border-slate-300 bg-white text-[#0a1628] px-8 py-4 text-sm font-semibold hover:bg-slate-100 transition-colors rounded-sm shadow-sm">
+              <a href="tel:+919849598424" rel="external" className="flex items-center gap-2 border border-slate-300 bg-white text-[#0a1628] px-8 py-4 text-sm font-semibold hover:bg-slate-100 transition-colors rounded-sm shadow-sm">
                 <Phone className="w-4 h-4" /> Call Us Now
               </a>
             </div>
