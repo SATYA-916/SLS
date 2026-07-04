@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-export default function ThreeViewer({ type, exploded, wireframe, resetKey }) {
+export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoRotate }) {
   const containerRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [loadingText, setLoadingText] = useState("Loading Engineering Model...");
@@ -23,6 +23,12 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey }) {
   useEffect(() => {
     wireframeRef.current = wireframe;
   }, [wireframe]);
+
+  // Auto rotate configuration ref
+  const autoRotateRef = useRef(autoRotate);
+  useEffect(() => {
+    autoRotateRef.current = autoRotate;
+  }, [autoRotate]);
 
   // Track scene for dynamic material updates
   const activeScene = useRef(null);
@@ -1351,8 +1357,8 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey }) {
         }
       });
 
-      // Auto-rotation when not interacting
-      if (controls.state === -1) {
+      // Auto-rotation when not interacting and autoRotate is active
+      if (autoRotateRef.current && controls.state === -1) {
         modelGroup.rotation.y += 0.003;
       }
       

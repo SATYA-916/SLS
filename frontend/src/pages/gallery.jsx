@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'wouter';
 import { 
   Eye, FileText, ChevronRight, Settings, Shield, Activity, BarChart3, Wrench, Layers, Calendar,
-  ChevronDown, Factory, HelpCircle, Hammer, Columns, Grid, Disc, Cpu, RotateCw, DoorClosed, TrendingUp, Compass, Box
+  ChevronDown, ChevronUp, Factory, HelpCircle, Hammer, Columns, Grid, Disc, Cpu, RotateCw, DoorClosed, TrendingUp, Compass, Box
 } from 'lucide-react';
 import ThreeViewer from '@/components/ThreeViewer';
 
@@ -965,6 +965,7 @@ export default function Gallery() {
   const [exploded, setExploded] = useState(false);
   const [wireframe, setWireframe] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+  const [autoRotate, setAutoRotate] = useState(true);
 
   const handleSelectFullAssembly = () => {
     const fullHeater = illustrations.find(ill => ill.id === 'complete-heater');
@@ -1286,6 +1287,7 @@ export default function Gallery() {
                     exploded={exploded} 
                     wireframe={wireframe} 
                     resetKey={resetKey} 
+                    autoRotate={autoRotate}
                   />
                   
                   {/* Interaction Instructions */}
@@ -1323,6 +1325,14 @@ export default function Gallery() {
                       }`}
                     >
                       {exploded ? 'Assembled' : 'Exploded'}
+                    </button>
+                    <button
+                      onClick={() => setAutoRotate(!autoRotate)}
+                      className={`px-2 py-1 text-[9px] font-bold uppercase tracking-wider transition-colors border border-white/10 ${
+                        autoRotate ? 'bg-blue-600 text-white border-blue-600' : 'text-white hover:text-blue-400'
+                      }`}
+                    >
+                      {autoRotate ? 'Pause Rotation' : 'Auto Rotate'}
                     </button>
                   </div>
 
