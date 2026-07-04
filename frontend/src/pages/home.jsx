@@ -135,17 +135,17 @@ export default function Home() {
             </p>
 
             {/* Inline Stats Counter inside Hero */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 border-t border-white/10 pt-6 max-w-lg">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-4 mb-8 border-t border-white/10 pt-6 max-w-lg">
               {[
                 { value: `${stats?.yearsExperience || 20}+`, label: 'Years Exp', sub: 'Since 2002' },
                 { value: `${stats?.projectsCompleted || 500}+`, label: 'Projects', sub: 'Delivered' },
                 { value: `${stats?.clientsServed || 25}+`, label: 'Clients', sub: 'Satisfied' },
                 { value: `${stats?.softwarePlatforms || 5}+`, label: 'Software', sub: 'Platforms' }
               ].map((stat, idx) => (
-                <div key={idx} className="min-w-0">
-                  <div className="text-xl font-bold text-white leading-none mb-1">{stat.value}</div>
-                  <div className="text-[9px] font-bold uppercase tracking-wider text-white/40 leading-none mb-0.5">{stat.label}</div>
-                  <div className="text-[8px] text-white/20 truncate leading-none">{stat.sub}</div>
+                <div key={idx} className="min-w-0 flex flex-col justify-end">
+                  <div className="text-xl font-bold text-white leading-none mb-1.5">{stat.value}</div>
+                  <div className="text-[9px] font-bold uppercase tracking-wider text-white/50 leading-none mb-0.5">{stat.label}</div>
+                  <div className="text-[8px] text-white/25 truncate leading-none">{stat.sub}</div>
                 </div>
               ))}
             </div>
@@ -176,28 +176,30 @@ export default function Home() {
             alt="SLS Engineering Hero"
             className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700 hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/10 pointer-events-none" />
+          {/* Gradient blend: left edge fades into the navy content panel */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628]/60 via-[#0a1628]/10 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
         </motion.div>
       </section>
 
       {/* 2. COMPACT ABOUT & FOUNDER (SINGLE COMPACT MODULE) */}
       <section className="py-12 bg-white border-b border-gray-100">
         <div className="container mx-auto px-4">
-          <div className="bg-gray-50 border border-gray-100 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8 max-w-5xl mx-auto">
+          <div className="bg-gray-50 border border-gray-100 p-6 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 max-w-5xl mx-auto">
             <div className="max-w-xl">
-              <span className="text-[9px] font-bold uppercase tracking-widest text-blue-700 block mb-2">Our Profile</span>
+              <span className="text-[9px] font-bold uppercase tracking-widest text-[#43648e] block mb-2">Our Profile</span>
               <p className="text-[#0a1628] text-sm md:text-base leading-relaxed mb-4">
                 Established in 2002, SLS Consultants provides premium structural design, stress analysis, and steel detailing solutions for heavy industrial refineries, boilers, and petrochemical facilities across India and global markets.
               </p>
               <Link href="/about">
-                <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-blue-700 cursor-pointer hover:text-blue-900 transition-colors">
+                <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-[#43648e] cursor-pointer hover:text-[#0a1628] transition-colors">
                   Learn More About SLS &rarr;
                 </span>
               </Link>
             </div>
             
-            <div className="flex items-center gap-4 border-l border-gray-200 pl-0 md:pl-8 shrink-0 w-full md:w-auto">
-              <div className="w-14 h-14 bg-gray-200 overflow-hidden shrink-0">
+            <div className="flex items-center gap-4 border-t md:border-t-0 md:border-l border-gray-200 pt-6 md:pt-0 md:pl-8 shrink-0 w-full md:w-auto">
+              <div className="w-14 h-14 bg-gray-200 overflow-hidden shrink-0 rounded-sm">
                 <img
                   src="/founder_portrait.png"
                   alt="Mr. C. Subrahmanyam"
@@ -205,9 +207,10 @@ export default function Home() {
                 />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-[#0a1628]">Mr. C. Subrahmanyam</h4>
-                <p className="text-[11px] text-gray-500 font-medium">Founder & Principal Engineer</p>
-                <p className="text-[10px] text-blue-700 font-semibold mt-0.5">Ex-BHEL (18 Yrs) | Ex-Doosan Babcock</p>
+                <h4 className="text-sm font-bold text-[#0a1628] leading-tight">Mr. C. Subrahmanyam</h4>
+                <p className="text-[11px] text-gray-500 font-medium mt-0.5">Founder &amp; Principal Engineer</p>
+                {/* Descriptive metadata — not a link */}
+                <p className="text-[10px] text-gray-400 font-medium mt-1">Ex-BHEL (18 Yrs)&nbsp;&nbsp;|&nbsp;&nbsp;Ex-Doosan Babcock</p>
               </div>
             </div>
           </div>
@@ -353,7 +356,7 @@ export default function Home() {
             ].map((t, idx) => (
               <div key={idx} className="bg-white border border-gray-200 p-6 md:p-8 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
                 <p className="text-gray-600 text-xs md:text-sm italic leading-relaxed mb-6">
-                  "{t.quote}"
+                  “{t.quote}”
                 </p>
                 <div>
                   <h4 className="text-xs font-bold text-[#0a1628]">{t.author}</h4>
@@ -422,9 +425,14 @@ export default function Home() {
 
       {/* 8. CTA */}
       <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03]">
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
           <svg width="100%" height="100%">
-            <rect width="100%" height="100%" fill="url(#herogrid)" />
+            <defs>
+              <pattern id="ctagrid" width="50" height="50" patternUnits="userSpaceOnUse">
+                <path d="M 50 0 L 0 0 0 50" fill="none" stroke="white" strokeWidth="1" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#ctagrid)" />
           </svg>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">

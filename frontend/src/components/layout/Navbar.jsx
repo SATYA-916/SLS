@@ -59,7 +59,7 @@ export function Navbar() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex flex-col cursor-pointer shrink-0" onClick={() => setMenuOpen(false)}>
           <span className="text-base font-bold text-[#0a1628] leading-tight">SLS Consultants</span>
-          <span className="text-[9px] text-gray-400 uppercase tracking-[0.12em] hidden sm:block">
+          <span className="text-[9px] text-gray-500 uppercase tracking-[0.12em] hidden sm:block">
             Engineering. Structures. Industrial Solutions. Since 2002.
           </span>
         </Link>
@@ -85,7 +85,7 @@ export function Navbar() {
           {/* Opens Calendly popup directly — distinct from Contact nav link */}
           <button
             onClick={openPopup}
-            className="flex items-center gap-1.5 bg-[#0a1628] text-white hover:bg-[#43648e] transition-colors rounded px-4 py-2 text-xs font-bold uppercase tracking-wider shadow-sm"
+            className="ml-6 flex items-center gap-1.5 bg-[#0a1628] text-white hover:bg-[#43648e] transition-colors rounded px-4 py-2 text-xs font-bold uppercase tracking-wider shadow-sm"
           >
             <CalendarDays className="w-3.5 h-3.5" />
             Book a Call
