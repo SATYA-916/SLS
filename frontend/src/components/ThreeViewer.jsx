@@ -98,6 +98,7 @@ function getCameraSettings(type) {
 
 export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoRotate, modelName }) {
   const containerRef = useRef(null);
+  const wrapperRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [loadingText, setLoadingText] = useState("Loading Engineering Model...");
   const [touchInteracting, setTouchInteracting] = useState(false);
