@@ -528,9 +528,7 @@ export default function Gallery() {
     setLocation('/contact?service=' + encodeURIComponent(serviceName));
   };
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [activeTab, activeWf]);
+
 
   return (
     <div className="w-full bg-white">
