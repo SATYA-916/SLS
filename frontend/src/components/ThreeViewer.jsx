@@ -105,6 +105,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
   const targetCamPos = useRef(new THREE.Vector3(12, 12, 18));
   const targetLookAt = useRef(new THREE.Vector3(0, 0, 0));
   const isTransitioningRef = useRef(true);
+  const transitionFrames = useRef(0);
 
   // Exploded view interpolation refs
   const explodedFactor = useRef(0);
@@ -151,6 +152,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     if (resetKey !== resetKeyRef.current) {
       resetKeyRef.current = resetKey;
       isTransitioningRef.current = true;
+      transitionFrames.current = 0;
       const settings = getCameraSettings(type);
       targetCamPos.current.copy(settings.camPos);
       targetLookAt.current.copy(settings.lookAt);
@@ -171,6 +173,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     if (!containerRef.current) return;
 
     isTransitioningRef.current = true; // Ensure transition runs on model changes
+    transitionFrames.current = 0;
     setLoading(true);
 
     // 1. Setup Scene, Camera, Renderer
@@ -245,8 +248,8 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.maxPolarAngle = Math.PI / 2 + 0.1; 
-    controls.minDistance = 3;
-    controls.maxDistance = 40;
+    controls.minDistance = 2;
+    controls.maxDistance = 150;
 
     // Set camera interpolation targets based on selected type
     const settings = getCameraSettings(type);
@@ -1497,12 +1500,15 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         if (controls.state !== -1) {
           isTransitioningRef.current = false;
         } else {
+          transitionFrames.current += 1;
           camera.position.lerp(targetCamPos.current, 0.05);
           controls.target.lerp(targetLookAt.current, 0.05);
 
           const distCam = camera.position.distanceTo(targetCamPos.current);
           const distTarget = controls.target.distanceTo(targetLookAt.current);
-          if (distCam < 0.05 && distTarget < 0.05) {
+          if ((distCam < 0.05 && distTarget < 0.05) || transitionFrames.current > 50) {
+            camera.position.copy(targetCamPos.current);
+            controls.target.copy(targetLookAt.current);
             isTransitioningRef.current = false;
           }
         }
