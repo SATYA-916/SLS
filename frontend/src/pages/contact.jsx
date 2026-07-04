@@ -82,18 +82,18 @@ export default function Contact() {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Free Consultation — No Obligation</p>
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Global Engineering Delivery Center</p>
             <h1 className="text-4xl md:text-6xl font-bold max-w-3xl leading-tight mb-5">
-              Tell Us About<br />Your Project.
+              Request an Engineering<br />Consultation.
             </h1>
             <p className="text-white/60 text-sm md:text-base max-w-xl leading-relaxed mb-8">
-              Our engineers have delivered 500+ projects across India. Fill in the form — we'll study your requirements and get back to you within 24 hours with expert guidance.
+              Providing round-the-clock design and detailing support. Fill in the form — we will study your requirements and get back to you to schedule a technical scoping discussion.
             </p>
             <div className="flex flex-wrap gap-6">
               {[
-                { icon: <Clock className="w-4 h-4" />, text: 'Response within 24 hours' },
-                { icon: <ShieldCheck className="w-4 h-4" />, text: '20+ years of expertise' },
-                { icon: <Zap className="w-4 h-4" />, text: 'Cost-effective solutions' },
+                { icon: <Clock className="w-4 h-4" />, text: 'Timezone-neutral communication' },
+                { icon: <ShieldCheck className="w-4 h-4" />, text: 'ASME & API code compliance' },
+                { icon: <Zap className="w-4 h-4" />, text: 'Coordinated engineering packages' },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-2 text-xs text-white/50">
                   <span className="text-[#43648e]">{item.icon}</span>
@@ -108,12 +108,12 @@ export default function Contact() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4 grid md:grid-cols-2 gap-16">
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <h2 className="text-2xl font-bold text-[#0a1628] mb-2">Talk to Our Engineers</h2>
-            <p className="text-sm text-gray-500 mb-8">Reach out through any channel — or simply fill the form on the right.</p>
+            <h2 className="text-2xl font-bold text-[#0a1628] mb-2">Connect with Our Engineering Office</h2>
+            <p className="text-sm text-gray-500 mb-8">Reach out through any channel — or submit your project details using the form.</p>
             <div className="space-y-5 mb-10">
               {[
                 { icon: <Phone className="w-5 h-5 text-[#43648e] mt-0.5 shrink-0" />, label: 'Phone', value: '+91 98495 98424' },
-                { icon: <Mail className="w-5 h-5 text-[#43648e] mt-0.5 shrink-0" />, label: 'Email', value: 'slsind@gmail.com' },
+                { icon: <Mail className="w-5 h-5 text-[#43648e] mt-0.5 shrink-0" />, label: 'Email', value: 'slsind@gmail.com\nslsvizag@gmail.com' },
                 { icon: <Globe className="w-5 h-5 text-[#43648e] mt-0.5 shrink-0" />, label: 'Website', value: 'www.slsnexus.com' },
                 { icon: <MapPin className="w-5 h-5 text-[#43648e] mt-0.5 shrink-0" />, label: 'Address', value: 'Visakhapatnam, Andhra Pradesh, India' },
               ].map((item) => (
@@ -128,17 +128,23 @@ export default function Contact() {
                 </div>
               ))}
             </div>
-            <div className="bg-gray-50 p-6 border-l-2 border-[#43648e]">
-              <p className="text-sm text-gray-500 leading-relaxed font-medium mb-3">Why fill the form?</p>
-              <div className="space-y-2">
+            
+            <div className="bg-[#0a1628]/5 p-8 border-l-2 border-[#0a1628] rounded-sm">
+              <h3 className="font-bold text-base text-[#0a1628] mb-5">Our Consultation Process</h3>
+              <div className="space-y-5">
                 {[
-                  'We respond to every inquiry personally — no bots.',
-                  'Your project details go straight to our lead engineer.',
-                  'Get a tailored quote, not a generic brochure.',
-                ].map((point) => (
-                  <div key={point} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#43648e] mt-0.5 shrink-0" />
-                    <p className="text-sm text-gray-500">{point}</p>
+                  { step: "01", title: "Submit Specifications & Details", desc: "Share your scoping data and layout requirements. Confidential project information is handled securely." },
+                  { step: "02", title: "Technical Scoping Call", desc: "Schedule a video scoping call with Mr. Subrahmanyam to align on connection codes and design standards." },
+                  { step: "03", title: "Proposal Dispatch", desc: "Receive a detailed commercial proposal and drawing delivery schedule within 48 hours." }
+                ].map((item) => (
+                  <div key={item.step} className="flex items-start gap-4">
+                    <div className="w-6 h-6 rounded-full bg-[#0a1628] text-white text-[10px] font-bold flex items-center justify-center shrink-0">
+                      {item.step}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-xs text-[#0a1628] mb-1">{item.title}</h4>
+                      <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -216,6 +222,16 @@ export default function Contact() {
                     <option value="">Select a service</option>
                     {dropdownServices.map((s) => <option key={s} value={s}>{s}</option>)}
                   </select>
+                </div>
+                <div>
+                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">
+                    Upload Drawings & Specifications (Optional)
+                  </label>
+                  <div className="border border-dashed border-gray-300 p-5 text-center bg-gray-50 flex flex-col items-center justify-center rounded-sm hover:border-[#0a1628] transition-colors cursor-pointer">
+                    <ShieldCheck className="w-6 h-6 text-gray-400 mb-1.5" />
+                    <span className="text-xs font-semibold text-gray-600 block">Drag & Drop files here, or browse</span>
+                    <span className="text-[10px] text-gray-400 mt-1">Confidential project information handled securely. Max size 50MB.</span>
+                  </div>
                 </div>
                 <div>
                   <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Message *</label>

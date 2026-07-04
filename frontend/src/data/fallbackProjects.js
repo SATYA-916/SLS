@@ -158,7 +158,7 @@ export const fallbackProjects = [
   {
     id: 19,
     title: 'College Buildings for PG Courses',
-    description: 'Structural design of a 30,000 SFT academic building for postgraduate studies at the historical MR College. Features reinforced concrete frames, masonry infill, and large administrative spaces.',
+    description: 'Structural design of a 30,000 Sq.Ft (approx. 2,800 Sq.M) academic building for postgraduate studies at the historical MR College. Features reinforced concrete frames, masonry infill, and large administrative spaces.',
     category: 'Buildings',
     client: 'MR College',
     year: 2007,

@@ -12,6 +12,8 @@ import Vision from '@/pages/vision';
 import Contact from '@/pages/contact';
 import Gallery from '@/pages/gallery';
 import AdminLogin from '@/pages/admin-login';
+import CookieBanner from '@/components/CookieBanner';
+import Legal from '@/pages/legal';
 import AdminDashboard from '@/pages/admin-dashboard';
 import NotFound from '@/pages/not-found';
 
@@ -57,6 +59,18 @@ function Router() {
         <Route path="/contact">
           <Layout><Contact /></Layout>
         </Route>
+        <Route path="/privacy">
+          <Layout><Legal /></Layout>
+        </Route>
+        <Route path="/terms">
+          <Layout><Legal /></Layout>
+        </Route>
+        <Route path="/cookies">
+          <Layout><Legal /></Layout>
+        </Route>
+        <Route path="/disclaimer">
+          <Layout><Legal /></Layout>
+        </Route>
         <Route path="/">
           <Layout><Home /></Layout>
         </Route>
@@ -73,6 +87,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <Router />
       <Toaster />
+      <CookieBanner />
     </QueryClientProvider>
   );
 }

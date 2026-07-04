@@ -62,9 +62,12 @@ export default function Expertise() {
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Our Services</p>
-            <h1 className="text-5xl md:text-6xl font-bold max-w-2xl leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold max-w-2xl leading-tight mb-4">
               Engineering & Design Services
             </h1>
+            <p className="text-white/60 text-sm md:text-base max-w-xl leading-relaxed">
+              Engineering solutions designed in accordance with project-specific international and regional standards, including ASME, API, IS, and client specifications.
+            </p>
           </motion.div>
         </div>
       </section>

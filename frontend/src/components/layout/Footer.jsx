@@ -45,7 +45,6 @@ export function Footer() {
               { href: '/gallery', label: 'Gallery' },
               { href: '/vision', label: 'Vision' },
               { href: '/contact', label: 'Contact' },
-              { href: '/admin', label: 'Admin Portal' },
             ].map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className="text-white/60 hover:text-white transition-colors">
@@ -92,10 +91,21 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/10 py-5">
-        <p className="text-center text-xs text-white/30">
-          © 2025 SLS Consultants. All Rights Reserved.
-        </p>
+      <div className="border-t border-white/10 py-6">
+        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/30">
+          <p>© 2025 SLS Consultants. All Rights Reserved.</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <span>|</span>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link>
+            <span>|</span>
+            <Link href="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link>
+            <span>|</span>
+            <Link href="/disclaimer" className="hover:text-white transition-colors">Disclaimer</Link>
+            <span>|</span>
+            <Link href="/admin" className="hover:text-white/60 transition-colors text-white/20">Admin Portal</Link>
+          </div>
+        </div>
       </div>
     </footer>
   );

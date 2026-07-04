@@ -45,12 +45,10 @@ export function Navbar() {
           </nav>
 
           <Link
-            href="/admin"
-            className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-[#0a1628] transition-colors border border-gray-200 hover:border-[#0a1628] rounded px-2.5 py-1.5"
-            title="Admin Portal"
+            href="/contact?service=General%20Inquiry"
+            className="bg-[#0a1628] text-white hover:bg-[#43648e] transition-colors rounded px-4 py-2 text-xs font-bold uppercase tracking-wider shadow-sm"
           >
-            <Lock className="w-3 h-3" />
-            <span>Admin</span>
+            Book Consultation
           </Link>
         </div>
 
@@ -88,12 +86,11 @@ export function Navbar() {
                 </Link>
               ))}
               <Link
-                href="/admin"
+                href="/contact?service=General%20Inquiry"
                 onClick={() => setMenuOpen(false)}
-                className="py-3 px-2 text-sm font-medium text-gray-400 hover:text-[#0a1628] transition-colors flex items-center gap-1.5"
+                className="my-3 bg-[#0a1628] text-white text-center py-2.5 text-xs font-bold uppercase tracking-wider rounded transition-colors"
               >
-                <Lock className="w-3.5 h-3.5" />
-                Admin Portal
+                Book Consultation
               </Link>
             </nav>
           </motion.div>
