@@ -768,7 +768,7 @@ export default function Gallery() {
                       <img
                         src={`/gallery/${draw.file}`}
                         alt={draw.title}
-                        className="w-full h-full object-cover opacity-90 group-hover:scale-102 transition-transform duration-300 filter blur-[3px] select-none pointer-events-none"
+                        className="w-full h-full object-cover opacity-90 group-hover:scale-102 transition-transform duration-300 select-none pointer-events-none"
                       />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
                       <div className="absolute top-3 right-3 w-8 h-8 bg-white/95 text-[#0a1628] flex items-center justify-center shadow-sm">
@@ -1015,7 +1015,7 @@ export default function Gallery() {
                 <img
                   src={`/gallery/${selectedImg.file}`}
                   alt={selectedImg.title}
-                  className="max-w-full max-h-full object-contain filter blur-[3px] select-none pointer-events-none"
+                  className="max-w-full max-h-full object-contain select-none pointer-events-none"
                 />
               </div>
               <div className="text-white mt-4 flex items-start justify-between gap-6">
