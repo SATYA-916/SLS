@@ -191,38 +191,53 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     // Initial camera position
     camera.position.set(12, 12, 18);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // Tone mapping helps metals read properly without a full HDRI env map
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     
     // Clear old contents
     containerRef.current.innerHTML = '';
     containerRef.current.appendChild(renderer.domElement);
 
-    // 2. Setup Lights (3-point industrial lighting)
-    // Hemisphere sky/ground light for ambient richness
-    const hemiLight = new THREE.HemisphereLight(0xc8d8f0, 0x1a2a40, 0.55);
+    // 2. Setup Lights — Proper 3-point industrial rig
+    // Ambient: strong enough so no surface goes pure black (critical for metallic PBR without env map)
+    const ambientLight = new THREE.AmbientLight(0xd0dff0, 0.9);
+    scene.add(ambientLight);
+
+    // Hemisphere: sky-blue top, warm concrete ground, for natural gradient fill
+    const hemiLight = new THREE.HemisphereLight(0xbfd4f2, 0x4a3f35, 0.7);
     scene.add(hemiLight);
 
-    // Key light — warm directional
-    const dirLight = new THREE.DirectionalLight(0xfff4e0, 1.1);
-    dirLight.position.set(14, 28, 18);
-    dirLight.castShadow = true;
-    dirLight.shadow.mapSize.width = 2048;
-    dirLight.shadow.mapSize.height = 2048;
-    dirLight.shadow.bias = -0.001;
-    scene.add(dirLight);
+    // Key light: cool-white, upper-front-right — primary modelling light
+    const keyLight = new THREE.DirectionalLight(0xf0f5ff, 2.2);
+    keyLight.position.set(10, 18, 14);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.width = 2048;
+    keyLight.shadow.mapSize.height = 2048;
+    keyLight.shadow.bias = -0.001;
+    keyLight.shadow.camera.near = 0.5;
+    keyLight.shadow.camera.far = 80;
+    scene.add(keyLight);
 
-    // Fill light — cool blue from opposite side
-    const dirLight2 = new THREE.DirectionalLight(0x4a90d9, 0.55);
-    dirLight2.position.set(-14, -4, -14);
-    scene.add(dirLight2);
+    // Fill light: soft warm-grey, lower-left opposite key — reveals shadow-side detail
+    const fillLight = new THREE.DirectionalLight(0xfff0e0, 0.8);
+    fillLight.position.set(-12, 4, -8);
+    scene.add(fillLight);
 
-    // Rim/back light — subtle warm from below
-    const rimLight = new THREE.DirectionalLight(0xf4a017, 0.25);
-    rimLight.position.set(0, -10, -10);
+    // Front-low fill: prevents front faces going dark (common with top key light only)
+    const frontFill = new THREE.DirectionalLight(0xe8eeff, 0.5);
+    frontFill.position.set(0, -4, 16);
+    scene.add(frontFill);
+
+    // Rim/accent: subtle teal-blue silhouette accent — brand colour, NOT dominant
+    const rimLight = new THREE.DirectionalLight(0x4a90d9, 0.3);
+    rimLight.position.set(-8, 8, -14);
     scene.add(rimLight);
 
     // 3. Orbit Controls
@@ -243,33 +258,32 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     scene.add(modelGroup);
 
     // Helper Materials — Premium industrial steel palette
-    // Structural steel: bright anodized metallic blue-steel
+    // KEY FIX: Keep metalness moderate (0.45-0.6) so diffuse lighting works without an env map.
+    // Pure metals (metalness ~1.0) go nearly black without a proper HDRI environment map.
+
+    // Structural steel: mid-blue steel — bright enough to read against dark bg
     const blueprintMat = new THREE.MeshStandardMaterial({
       color: 0x4a90d9,
-      roughness: 0.2,
-      metalness: 0.9,
-      transparent: true,
-      opacity: 0.92,
+      roughness: 0.35,
+      metalness: 0.5,
+      transparent: false,
       wireframe: wireframeRef.current,
-      envMapIntensity: 1.2
     });
 
-    // Process tubes / coils: industry-standard amber/orange (hot process lines)
+    // Process tubes / coils: amber/orange — hot process lines (industry standard)
     const coilMat = new THREE.MeshStandardMaterial({
       color: 0xf4a017,
-      roughness: 0.12,
-      metalness: 0.88,
+      roughness: 0.3,
+      metalness: 0.45,
       wireframe: wireframeRef.current,
-      envMapIntensity: 1.5
     });
 
-    // Secondary metal / flanges: polished light steel blue (stainless look)
+    // Secondary metal / flanges: light steel-blue — polished stainless look
     const stackMat = new THREE.MeshStandardMaterial({
-      color: 0xb0c4de,
-      roughness: 0.3,
-      metalness: 0.75,
+      color: 0xc8d8ee,
+      roughness: 0.4,
+      metalness: 0.4,
       wireframe: wireframeRef.current,
-      envMapIntensity: 1.0
     });
 
     // Wireframe accent overlay: crisp cyan blueprint lines
@@ -277,7 +291,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
       color: 0x00d4ff,
       wireframe: true,
       transparent: true,
-      opacity: 0.18
+      opacity: 0.2
     });
 
     // 5. Generate Custom Geometries based on selected component
