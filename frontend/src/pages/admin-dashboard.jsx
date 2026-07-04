@@ -167,6 +167,22 @@ export default function AdminDashboard() {
                 ))}
               </div>
 
+              {selected.fileName && (
+                <div className="bg-blue-50 border border-blue-100 p-5 mb-6 flex items-center justify-between">
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold tracking-widest uppercase text-blue-800 mb-1">Attached Drawing / Spec</p>
+                    <p className="text-sm font-semibold text-[#0a1628] truncate pr-4">{selected.fileName}</p>
+                  </div>
+                  <a
+                    href={`/api/admin/contacts/download/${selected._id}`}
+                    download
+                    className="bg-[#0a1628] hover:bg-[#43648e] text-white px-4 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors shrink-0 shadow-sm"
+                  >
+                    Download File
+                  </a>
+                </div>
+              )}
+
               <div className="bg-white border border-gray-200 p-5">
                 <p className="text-[10px] font-bold tracking-widest uppercase text-gray-400 mb-3">Message</p>
                 <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{selected.message}</p>
