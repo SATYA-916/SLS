@@ -1267,8 +1267,15 @@ export default function Gallery() {
                                     key={ill.id}
                                     onClick={() => {
                                       setSelectedIll(ill);
-                                      // Auto-expand the group containing this item
-                                      setOpenGroups(prev => ({ ...prev, [group.name]: true }));
+                                      // Expand only the selected group, collapse all others
+                                      setOpenGroups({
+                                        "Overall Assembly": false,
+                                        "Radiant System": false,
+                                        "Convection System": false,
+                                        "Structural System": false,
+                                        "Access System": false,
+                                        [group.name]: true
+                                      });
                                       scrollToViewer();
                                     }}
                                     className={`w-full text-left px-3 py-2.5 border-l-2 transition-all flex items-center gap-3 justify-between ${
