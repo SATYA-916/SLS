@@ -7,73 +7,213 @@ import ThreeViewer from '@/components/ThreeViewer';
 // 1. Technical drawings (cropped screenshots)
 const drawings = [
   { 
-    title: "General Arrangement Section", 
-    file: "general_arrangement.png", 
+    title: "General Arrangement Section - Elevation", 
+    file: "eil_ga_sheet1.png", 
     desc: "Cross-sectional elevation of the fired heater showing radiant and convection chambers, platform elevations, and foundation connections.", 
     code: "API STD 530 / EIL Specs",
     service: "Industrial Design & Support"
   },
   { 
-    title: "Radiant Section Layout", 
-    file: "radiant_section_layout.png", 
+    title: "General Arrangement Section - Plan View", 
+    file: "eil_ga_sheet2.png", 
+    desc: "Detailed plan view layout of the refinery fired heater system highlighting spacing, clearances, and equipment alignments.", 
+    code: "API STD 530 / EIL Specs",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Radiant Casing Plate Arrangement", 
+    file: "radiant_sheet1.png", 
     desc: "Detailed structural framing and casing plate arrangement of the bottom radiant combustion zone.", 
     code: "ASME Sec VIII / IS 800",
     service: "Industrial Design & Support"
   },
   { 
-    title: "Convection Section Modules", 
-    file: "convection_section_layout.png", 
+    title: "Radiant Tube Hangers Detailing", 
+    file: "radiant_sheet2.png", 
+    desc: "Mechanical detail drawings of high-alloy heat resistant radiant tube sheets and hanger assemblies.", 
+    code: "ASME Sec VIII / API 530",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Radiant Chamber Coil Assembly", 
+    file: "radiant_sheet3.png", 
+    desc: "General arrangement and engineering sections of the vertical radiant piping coils.", 
+    code: "ASME B31.3 / API 530",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Convection Module Section - Sheet 1", 
+    file: "convection_sheet1.png", 
     desc: "Arrangement of tube bundles, structural tube sheets, and intermediate support plates within the convection bank.", 
     code: "ASME Sec II & VIII",
     service: "Industrial Design & Support"
   },
   { 
-    title: "Structural Steel Support", 
-    file: "structural_steel_support.png", 
+    title: "Convection Module Section - Sheet 2", 
+    file: "convection_sheet2.png", 
+    desc: "End cover plate and structural details of the convection module casing box.", 
+    code: "IS 800 / ASME Sec VIII",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Convection Intermediate Tube Support", 
+    file: "convection_sheet3.png", 
+    desc: "Thermal analysis support plates and intermediate baffles to prevent tube sagging at high flue temperatures.", 
+    code: "ASME Sec VIII / EIL Spec",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Convection Finned Tube Pitch Layout", 
+    file: "convection_sheet4.png", 
+    desc: "Arrangement details and spacing of high-efficiency finned tubes inside the convection section bank.", 
+    code: "ASME Sec VIII / Refinery Specs",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Convection Casing & Insulation", 
+    file: "convection_sheet5.png", 
+    desc: "Internal refractory lining anchor layouts and plate welding schedules for the convection module casing.", 
+    code: "ASME Sec VIII / Refractory Specs",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Structural Steel Support Tower - GA", 
+    file: "sss_sheet1.png", 
     desc: "Heavy portal frames, column bracing systems, and anchor bolt details designed to stabilize the 60-meter high assembly.", 
     code: "IS 800 (Structural Steel)",
     service: "Engineering & Architecture Design"
   },
   { 
-    title: "Stack Section Layout", 
-    file: "stack_layout.png", 
+    title: "Structural Steel Bracing Details", 
+    file: "sss_sheet2.png", 
+    desc: "Tekla steel detailing connection configurations, gusset plates, and high-strength bolted connection details.", 
+    code: "IS 800 / AISC Standards",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Self-Supporting Stack Layout - Sheet 1", 
+    file: "stack_sheet1.png", 
     desc: "Exhaust stack detailing including helical strakes for wind vortex shedding, damper controls, and platform hangers.", 
     code: "IS 6533 (Steel Chimneys)",
     service: "Industrial Design & Support"
   },
   { 
-    title: "Header Box Details", 
-    file: "header_box_detail.png", 
+    title: "Self-Supporting Stack Layout - Sheet 2", 
+    file: "stack_sheet2.png", 
+    desc: "Damper mechanism, counterweights, and stack base plate anchoring details.", 
+    code: "IS 6533 / ASME Steel Chimneys",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Tube Header Box Enclosure - Sheet 1", 
+    file: "header_box_sheet1.png", 
     desc: "Detailed structural enclosure for pipe return bends, including quick-acting access doors and heat seal plates.", 
     code: "ASME Sec VIII / Refinery Standard",
     service: "Industrial Design & Support"
   },
   { 
-    title: "Heater Platforms Arrangement", 
-    file: "heater_platforms.png", 
+    title: "Tube Header Box Enclosure - Sheet 2", 
+    file: "header_box_sheet2.png", 
+    desc: "Structural door hinge calculations and layout details for header box inspection access.", 
+    code: "ASME Sec VIII / Refinery Standard",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Heater Platforms Arrangement - GA", 
+    file: "platforms_sheet1.png", 
     desc: "Layout and detailing of circular maintenance platforms at various elevations, incorporating anti-slip gratings.", 
     code: "OSHA / IS 800",
     service: "Blueprint Design"
   },
   { 
-    title: "Stair Case Detailing", 
-    file: "stair_structure.png", 
+    title: "Heater Platform Details - Sheet 2", 
+    file: "platforms_sheet2.png", 
+    desc: "Handrail configurations, toe plates, and circular grating layout sheets.", 
+    code: "OSHA / IS 800",
+    service: "Blueprint Design"
+  },
+  { 
+    title: "Heater Platform Hangers - Sheet 3", 
+    file: "platforms_sheet3.png", 
+    desc: "Structural platform supports, brackets, and structural welding connection details.", 
+    code: "IS 800 / AISC Standards",
+    service: "Blueprint Design"
+  },
+  { 
+    title: "Stair Case Detailing - GA", 
+    file: "stair_sheet1.png", 
     desc: "Isometric and elevation drawings of the structural stair tower detailing stringers, treads, and handrail mounts.", 
     code: "IS 800 / OSHA Guidelines",
     service: "Blueprint Design"
   },
   { 
-    title: "Pressure Parts Detail", 
-    file: "pressure_parts_detail.png", 
-    desc: "Piping layouts, nozzle schedules, and weld joint detailing for high-pressure hydrocarbon and steam tubes.", 
+    title: "Stair Case Structural Joint Details", 
+    file: "stair_sheet2.png", 
+    desc: "Tekla joint details for the stair tower column base, landing supports, and connection plates.", 
+    code: "IS 800 / OSHA Guidelines",
+    service: "Blueprint Design"
+  },
+  { 
+    title: "Arch Plate Details", 
+    file: "arch_plate_sheet1.png", 
+    desc: "Monolithic refractory arch plate lining and retaining anchors designed to withstand high operating temperatures.", 
+    code: "ASME Sec VIII / Refractory Spec",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Breeching Access Door Detailing", 
+    file: "breeching_door_sheet1.png", 
+    desc: "Fabricated double-hinge hot gas inspection door showing refractory plug casting anchors.", 
+    code: "ASME Sec VIII / Refinery Standards",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Observation Port & Sight Glass Details", 
+    file: "observation_door_sheet1.png", 
+    desc: "High temperature flame inspection doors and sight glass assemblies for heater radiant chamber monitoring.", 
+    code: "API 560 / ASME Sec VIII",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Off-take Duct Arrangement", 
+    file: "offtake_duct_sheet1.png", 
+    desc: "Transition duct detailing connecting the convection section module to the self-supporting stack.", 
+    code: "IS 800 / ASME Steel Chimneys",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Burner Floor Plate Arrangement", 
+    file: "floor_plate_sheet1.png", 
+    desc: "Floor segment plates, burner openings, air register cutouts, and bottom structural floor beam systems.", 
+    code: "IS 800 / API 560",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Heater Vertical Climbing Ladders", 
+    file: "heater_ladders_sheet1.png", 
+    desc: "Vertical climbing steel ladders with safety cages, hoops, and shell mounting clips.", 
+    code: "OSHA / IS 800 Standards",
+    service: "Blueprint Design"
+  },
+  { 
+    title: "Soot Blower Structure Steel detailing", 
+    file: "soot_blower_sheet1.png", 
+    desc: "Structural framework and catwalk layout designed to support soot blower mechanical lances.", 
+    code: "IS 800 / AISC Standards",
+    service: "Industrial Design & Support"
+  },
+  { 
+    title: "Pressure Piping Layout - Sheet 1", 
+    file: "pressure_parts_sheet1.png", 
+    desc: "High pressure fluid tubing loop arrangement, weld joint detailing, and expansion elbow layouts.", 
     code: "ASME B31.3 / API 530",
     service: "Industrial Design & Support"
   },
   { 
-    title: "Arch Plate Details", 
-    file: "arch_plate_details.png", 
-    desc: "Monolithic refractory arch plate lining and retaining anchors designed to withstand high operating temperatures.", 
-    code: "ASME Sec VIII / Refractory Spec",
+    title: "Pressure Piping Layout - Sheet 2", 
+    file: "pressure_parts_sheet2.png", 
+    desc: "High-pressure hydrocarbon nozzle schedules, flange ratings, and testing specifications.", 
+    code: "ASME B31.3 / API 530",
     service: "Industrial Design & Support"
   }
 ];
@@ -628,7 +768,7 @@ export default function Gallery() {
                       <img
                         src={`/gallery/${draw.file}`}
                         alt={draw.title}
-                        className="w-full h-full object-cover opacity-90 group-hover:scale-102 transition-transform duration-300"
+                        className="w-full h-full object-cover opacity-90 group-hover:scale-102 transition-transform duration-300 filter blur-[3px] select-none pointer-events-none"
                       />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
                       <div className="absolute top-3 right-3 w-8 h-8 bg-white/95 text-[#0a1628] flex items-center justify-center shadow-sm">
@@ -875,7 +1015,7 @@ export default function Gallery() {
                 <img
                   src={`/gallery/${selectedImg.file}`}
                   alt={selectedImg.title}
-                  className="max-w-full max-h-full object-contain"
+                  className="max-w-full max-h-full object-contain filter blur-[3px] select-none pointer-events-none"
                 />
               </div>
               <div className="text-white mt-4 flex items-start justify-between gap-6">
