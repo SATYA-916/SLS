@@ -29,12 +29,16 @@ function useCalendly() {
   }, []);
 
   const openPopup = useCallback(() => {
-    if (window.Calendly) {
-      window.Calendly.initPopupWidget({ url: CALENDLY_URL });
-    } else {
-      window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+    try {
+      if (window.Calendly) {
+        window.Calendly.initPopupWidget({ url: CALENDLY_URL });
+      } else {
+        window.open(CALENDLY_URL, '_blank');
+      }
+    } catch (e) {
+      window.open(CALENDLY_URL, '_blank');
     }
-  }, [ready]);
+  }, []);
 
   return { openPopup };
 }

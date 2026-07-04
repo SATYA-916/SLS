@@ -37,13 +37,16 @@ function useCalendly() {
   }, []);
 
   const openPopup = useCallback(() => {
-    if (window.Calendly) {
-      window.Calendly.initPopupWidget({ url: CALENDLY_URL });
-    } else {
-      // Fallback: open Calendly directly in new tab if script blocked
-      window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+    try {
+      if (window.Calendly) {
+        window.Calendly.initPopupWidget({ url: CALENDLY_URL });
+      } else {
+        window.open(CALENDLY_URL, '_blank');
+      }
+    } catch (e) {
+      window.open(CALENDLY_URL, '_blank');
     }
-  }, [ready]);
+  }, []);
 
   return { openPopup };
 }
@@ -82,6 +85,8 @@ export default function Contact() {
   const serviceSelectRef = useRef(null);
   const formContainerRef = useRef(null);
   const [highlightForm, setHighlightForm] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleScrollToForm = () => {
     const formEl = document.getElementById('contact-form');
@@ -183,7 +188,19 @@ export default function Contact() {
 
   const mutation = useMutation({
     mutationFn: submitContact,
-    onSuccess: () => setSubmitted(true),
+    onSuccess: () => {
+      if (window.__uploadInterval) clearInterval(window.__uploadInterval);
+      setUploadProgress(100);
+      setTimeout(() => {
+        setIsUploading(false);
+        setSubmitted(true);
+      }, 400);
+    },
+    onError: () => {
+      if (window.__uploadInterval) clearInterval(window.__uploadInterval);
+      setIsUploading(false);
+      setUploadProgress(0);
+    }
   });
 
   function handleChange(e) {
@@ -266,8 +283,24 @@ export default function Contact() {
     formData.append('company', form.company || '');
     formData.append('service', form.service || '');
     formData.append('message', form.message);
+    
     if (file) {
       formData.append('file', file);
+      
+      // Start upload progress simulation
+      setIsUploading(true);
+      setUploadProgress(0);
+      const interval = setInterval(() => {
+        setUploadProgress((prev) => {
+          if (prev >= 92) {
+            clearInterval(interval);
+            return 92;
+          }
+          return prev + Math.floor(Math.random() * 8) + 4;
+        });
+      }, 100);
+      
+      window.__uploadInterval = interval;
     }
 
     mutation.mutate(formData);
@@ -579,15 +612,42 @@ export default function Contact() {
                   />
                   {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message}</p>}
                 </div>
+                 {isUploading && (
+                  <div className="space-y-1.5 pt-2">
+                    <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#43648e]">
+                      <span>Uploading Specifications...</span>
+                      <span>{uploadProgress}%</span>
+                    </div>
+                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden border border-slate-200">
+                      <div
+                        className="bg-blue-600 h-full transition-all duration-300 ease-out animate-pulse"
+                        style={{ width: `${uploadProgress}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+
                 {mutation.isError && (
                   <p className="text-xs text-red-500">Failed to send inquiry. Please try again or contact us directly.</p>
                 )}
+                
                 <button
                   type="submit"
                   disabled={mutation.isPending}
-                  className="w-full bg-[#0a1628] text-white py-4 text-sm font-bold uppercase tracking-wider hover:bg-[#0a1628]/90 transition-colors disabled:opacity-60"
+                  className={`w-full text-white py-4 px-6 text-xs font-bold uppercase tracking-widest shadow-md transition-all duration-200 flex items-center justify-center gap-2 rounded-sm ${
+                    mutation.isPending
+                      ? 'bg-slate-400 cursor-not-allowed opacity-80'
+                      : 'bg-[#0a1628] hover:bg-[#1a2f4c] active:scale-[0.99]'
+                  }`}
                 >
-                  {mutation.isPending ? 'Sending...' : 'Request My Free Consultation →'}
+                  {mutation.isPending ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-t-transparent border-white rounded-full animate-spin" />
+                      {isUploading ? 'Uploading Drawings...' : 'Submitting Enquiry...'}
+                    </>
+                  ) : (
+                    <>Request My Free Consultation &rarr;</>
+                  )}
                 </button>
               </form>
             )}

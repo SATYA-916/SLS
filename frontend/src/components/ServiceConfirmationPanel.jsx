@@ -248,12 +248,12 @@ export default function ServiceConfirmationPanel({ serviceName, onClose, onConfi
             </div>
           </div>
 
-          {/* Matched Projects (Omitted completely if 0 matches) */}
-          {matchedProjects.length > 0 && (
-            <div className="space-y-3 pt-2">
-              <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#0a1628] border-b border-gray-100 pb-1.5 flex items-center gap-1.5">
-                <Briefcase className="w-3.5 h-3.5 text-[#43648e]" /> Recently Delivered Case Studies
-              </h4>
+          {/* Matched Projects (Show dynamic case studies or a premium confidentiality advisory) */}
+          <div className="space-y-3 pt-2">
+            <h4 className="text-[10px] font-bold uppercase tracking-wider text-[#0a1628] border-b border-gray-100 pb-1.5 flex items-center gap-1.5">
+              <Briefcase className="w-3.5 h-3.5 text-[#43648e]" /> Recently Delivered Case Studies
+            </h4>
+            {matchedProjects.length > 0 ? (
               <div className="space-y-2">
                 {matchedProjects.map((proj) => (
                   <div
@@ -284,8 +284,15 @@ export default function ServiceConfirmationPanel({ serviceName, onClose, onConfi
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="border border-slate-150 p-4 rounded-sm bg-slate-50/40 text-slate-500 flex items-start gap-2.5">
+                <FileText className="w-4 h-4 text-[#43648e] shrink-0 mt-0.5" />
+                <p className="text-[11px] leading-relaxed">
+                  Project records for this specific category are protected under active non-disclosure agreements (NDAs) or regulatory privacy covenants. Detailing logs are available upon request during technical scoping discussions.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Footer CTAs */}

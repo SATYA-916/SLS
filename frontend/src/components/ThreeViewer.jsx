@@ -100,6 +100,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
   const containerRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [loadingText, setLoadingText] = useState("Loading Engineering Model...");
+  const [touchInteracting, setTouchInteracting] = useState(false);
 
   // Refs for smooth camera interpolation
   const targetCamPos = useRef(new THREE.Vector3(12, 12, 18));
@@ -1584,14 +1585,40 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
   }, [type]);
 
   return (
-    <div className="w-full h-full relative">
-      {/* Premium subtle background gradient behind canvas */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-[#050c18] via-[#09152a] to-[#040912] pointer-events-none" />
+    <div
+      ref={wrapperRef}
+      className="w-full h-full relative"
+    >
+      {/* Mobile Touch Interaction Overlay Selector */}
+      {!touchInteracting && !loading && (
+        <div 
+          className="absolute inset-0 bg-slate-950/25 backdrop-blur-xs flex items-center justify-center z-25 md:hidden cursor-pointer"
+          onClick={() => setTouchInteracting(true)}
+        >
+          <div className="bg-slate-900/90 border border-slate-700/80 px-4 py-2.5 rounded-sm shadow-xl text-center flex items-center gap-2 max-w-[240px]">
+            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+            <span className="text-[9px] font-extrabold uppercase tracking-widest text-white leading-tight">
+              Tap to Rotate Model
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Lock Camera Floating Button */}
+      {touchInteracting && !loading && (
+        <button
+          onClick={() => setTouchInteracting(false)}
+          className="absolute top-16 right-3 z-35 md:hidden bg-slate-900/90 border border-slate-750 px-3 py-1.5 rounded-sm shadow-md text-white text-[9px] font-bold uppercase tracking-wider flex items-center gap-1.5"
+        >
+          <span>Lock Camera 🔒</span>
+        </button>
+      )}
+
       <div
         ref={containerRef}
-        className={`w-full h-full cursor-grab active:cursor-grabbing relative z-10 touch-none transition-opacity duration-500 ease-out ${
+        className={`w-full h-full cursor-grab active:cursor-grabbing relative z-10 transition-opacity duration-500 ease-out ${
           loading ? 'opacity-0' : 'opacity-100'
-        }`}
+        } ${touchInteracting ? 'touch-none' : 'touch-auto md:touch-none'}`}
       />
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-[#050c18]/95 backdrop-blur-sm text-white z-20">

@@ -1245,8 +1245,7 @@ export default function Gallery() {
         <div className="container mx-auto px-4">
           
           {/* TAB 1: TECHNICAL DRAWINGS */}
-          {activeTab === 'drawings' && (
-            <div>
+          <div style={{ display: activeTab === 'drawings' ? 'block' : 'none' }}>
               <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-gray-200 pb-6">
                 <div className="max-w-xl">
                   <h2 className="text-2xl font-bold text-[#0a1628] mb-3">Cropped Structural Drawing Database</h2>
@@ -1323,12 +1322,14 @@ export default function Gallery() {
                 ))}
               </div>
             </div>
-          )}
+          </div>
 
           {/* TAB 2: EXPLODED ILLUSTRATIONS (THREE.JS 3D VIEW) */}
           {/* TAB 2: EXPLODED ILLUSTRATIONS (THREE.JS 3D VIEW) */}
-          {activeTab === 'illustrations' && (
-            <div className="grid lg:grid-cols-3 gap-6 lg:gap-10 items-start">
+          <div
+            style={{ display: activeTab === 'illustrations' ? 'grid' : 'none' }}
+            className="grid lg:grid-cols-3 gap-6 lg:gap-10 items-start"
+          >
               {/* Mobile: viewer first; Desktop: sidebar left */}
               <div className={`lg:col-span-1 order-2 lg:order-1 space-y-4 lg:space-y-6 ${sidebarOpen ? 'block' : 'hidden lg:block'}`}>
                 <div className="bg-white border border-gray-200 p-5 lg:p-6 shadow-sm rounded-xl">
@@ -1813,8 +1814,6 @@ export default function Gallery() {
                   </div>
                 </div>
               </div>
-            </div>
-          )}
 
           {/* TAB 3: WORKFLOW LIFECYCLES */}
           {activeTab === 'workflows' && (
@@ -1938,11 +1937,21 @@ export default function Gallery() {
               >
                 Close View ✕
               </button>
-              <div className="bg-slate-900 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center h-[50vh] md:h-auto md:aspect-[16/10] shadow-2xl">
+              <div className="bg-slate-900 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center h-[50vh] md:h-auto md:aspect-[16/10] shadow-2xl relative">
+                {/* Visual Confidentiality Watermark Overlay */}
+                <div className="absolute inset-0 z-10 pointer-events-none flex flex-col items-center justify-center select-none overflow-hidden opacity-20">
+                  <div className="text-[12px] sm:text-[16px] md:text-[22px] font-bold text-slate-350 uppercase tracking-[0.2em] -rotate-12 border-2 border-slate-300/40 px-4 py-2 rounded-sm whitespace-nowrap mb-4 sm:mb-6">
+                    CONFIDENTIALITY-SAFE VIEW
+                  </div>
+                  <div className="text-[7px] sm:text-[9px] md:text-[11px] font-semibold text-slate-400 uppercase tracking-widest whitespace-nowrap">
+                    FOR EVALUATION ONLY • COPYRIGHT © SLS CONSULTANTS
+                  </div>
+                </div>
+
                 <img
                   src={`/gallery/${selectedImg.file}`}
                   alt={selectedImg.title}
-                  className="max-w-full max-h-full object-contain select-none pointer-events-none"
+                  className="max-w-full max-h-full object-contain select-none pointer-events-none z-0"
                 />
               </div>
               <div className="text-white mt-4 flex flex-col md:flex-row md:items-start justify-between gap-4">
