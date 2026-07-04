@@ -184,7 +184,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
 
     // Grid Helper — subtle blueprint grid
     const gridHelper = new THREE.GridHelper(30, 30, 0x0e2a4a, 0x091c36);
-    gridHelper.position.y = -5;
+    gridHelper.position.y = -5.41;
     scene.add(gridHelper);
 
     const width = containerRef.current.clientWidth;
