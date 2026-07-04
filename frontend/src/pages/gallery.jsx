@@ -1036,6 +1036,17 @@ export default function Gallery() {
   };
 
   const tabsRef = useRef(null);
+  const viewerRef = useRef(null);
+
+  // Scroll to the tab bar / viewer area (not the full page top)
+  const scrollToViewer = () => {
+    if (tabsRef.current) {
+      const headerOffset = 80; // sticky header + tab bar height
+      const rect = tabsRef.current.getBoundingClientRect();
+      const elementTop = rect.top + window.scrollY;
+      window.scrollTo({ top: elementTop - headerOffset, behavior: 'smooth' });
+    }
+  };
 
   const isFirstMount = useRef(true);
 
@@ -1254,7 +1265,10 @@ export default function Gallery() {
                                 return (
                                   <button
                                     key={ill.id}
-                                    onClick={() => setSelectedIll(ill)}
+                                    onClick={() => {
+                                      setSelectedIll(ill);
+                                      scrollToViewer();
+                                    }}
                                     className={`w-full text-left px-3 py-2.5 border-l-2 transition-all flex items-center gap-3 justify-between ${
                                       isSelected
                                         ? 'bg-[#0a1628] border-l-blue-600 text-white shadow-sm font-bold'
@@ -1305,7 +1319,7 @@ export default function Gallery() {
               {/* Right/Middle Columns: Details & 3D Interactive WebGL Rendering */}
               <div className="lg:col-span-2 space-y-8">
                 {/* Three.js Interactive 3D Canvas */}
-                <div className="aspect-[16/10] flex items-center justify-center text-white relative overflow-hidden shadow-md border border-gray-200">
+                <div ref={viewerRef} className="aspect-[16/10] flex items-center justify-center text-white relative overflow-hidden shadow-md border border-gray-200">
                   <ThreeViewer 
                     type={selectedIll.threeType} 
                     exploded={exploded} 
