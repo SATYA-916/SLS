@@ -217,7 +217,26 @@ export default function Projects() {
                   {selectedProject.category}
                 </span>
                 <h2 className="text-2xl font-bold text-[#0a1628] mb-4">{selectedProject.title}</h2>
-                <p className="text-sm text-gray-500 leading-relaxed mb-6">{selectedProject.description}</p>
+                <div className="space-y-4 text-sm text-gray-600 mb-6 max-h-[260px] overflow-y-auto pr-2 scrollbar-thin">
+                  {selectedProject.challenge ? (
+                    <>
+                      <div>
+                        <strong className="text-[10px] font-bold uppercase tracking-wider text-[#0a1628] block mb-1">Challenge / Problem</strong>
+                        <p className="text-xs leading-relaxed text-gray-500">{selectedProject.challenge}</p>
+                      </div>
+                      <div>
+                        <strong className="text-[10px] font-bold uppercase tracking-wider text-[#0a1628] block mb-1">Engineering Solution</strong>
+                        <p className="text-xs leading-relaxed text-gray-500">{selectedProject.solution}</p>
+                      </div>
+                      <div>
+                        <strong className="text-[10px] font-bold uppercase tracking-wider text-[#0a1628] block mb-1">What SLS Did (Scope)</strong>
+                        <p className="text-xs leading-relaxed text-gray-500">{selectedProject.slsAction}</p>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-xs leading-relaxed text-gray-500">{selectedProject.description}</p>
+                  )}
+                </div>
                 {(() => {
                   const specs = getProjectTechnicalSpecs(selectedProject);
                   return (
