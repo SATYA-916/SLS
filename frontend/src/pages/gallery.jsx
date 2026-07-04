@@ -967,9 +967,33 @@ export default function Gallery() {
   const [resetKey, setResetKey] = useState(0);
   const [autoRotate, setAutoRotate] = useState(true);
 
+  // Group → top-level assembly mapping
+  const GROUP_FULL_ASSEMBLY = {
+    "Overall Assembly":   "complete-heater",
+    "Radiant System":     "radiant-section",
+    "Convection System":  "convection-section",
+    "Structural System":  "complete-frame",
+    "Access System":      "platform-system",
+  };
+
+  // Which group does the currently selected model belong to?
+  const getActiveGroup = (illId) => {
+    const groups = [
+      { name: "Overall Assembly",  items: ["complete-heater", "complete-stack", "off-take-duct"] },
+      { name: "Radiant System",    items: ["radiant-section", "burner-floor", "header-box", "arch-plate-assembly"] },
+      { name: "Convection System", items: ["convection-section", "soot-blower"] },
+      { name: "Structural System", items: ["support-steel", "complete-frame", "roof-structure", "ets-structure"] },
+      { name: "Access System",     items: ["platform-system", "stair-assembly", "stack-platform", "heater-grating", "stack-ladders", "breeching-door", "maintenance-access-sys"] },
+    ];
+    const found = groups.find(g => g.items.includes(illId));
+    return found ? found.name : "Overall Assembly";
+  };
+
   const handleSelectFullAssembly = () => {
-    const fullHeater = illustrations.find(ill => ill.id === 'complete-heater');
-    if (fullHeater) setSelectedIll(fullHeater);
+    const groupName = getActiveGroup(selectedIll.id);
+    const targetId = GROUP_FULL_ASSEMBLY[groupName] || "complete-heater";
+    const targetIll = illustrations.find(ill => ill.id === targetId);
+    if (targetIll) setSelectedIll(targetIll);
   };
 
   const getDrawingCategory = (draw) => {
