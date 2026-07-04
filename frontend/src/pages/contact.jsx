@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Phone, Mail, Globe, MapPin, CheckCircle2, Clock, ShieldCheck, Zap, CalendarDays, X, Video } from 'lucide-react';
@@ -87,7 +87,49 @@ export default function Contact() {
     queryFn: getServices,
   });
 
-  const dropdownServices = fallbackServices;
+  // Build the list of services for the dropdown dynamically
+  const dropdownServices = useMemo(() => {
+    const list = new Set();
+    
+    // 1. Add any dynamically loaded services from the backend
+    if (dbServices && Array.isArray(dbServices)) {
+      dbServices.forEach(s => {
+        if (s.title) list.add(s.title);
+      });
+    }
+    
+    // 2. Add fallback services from fallbackServices data file (the core ones)
+    const coreServices = [
+      'Blueprint Design',
+      'Industrial Design & Support',
+      'Engineering & Architecture Design',
+      'Construction Supervision',
+      'Municipality Relation Services',
+      'Remaining Life Assessment (RLA)',
+      'Software & AI Solutions'
+    ];
+    coreServices.forEach(s => list.add(s));
+
+    // 3. Add the old detailed contact-form specific options
+    const detailServices = [
+      'ASME Boiler & Pressure Vessel Design',
+      'STAAD.Pro Structural Steel Analysis',
+      'Tekla Fabrication & Steel Detailing',
+      'API 560 Fired Heater General Arrangement',
+      'EIL Compliance Drawing Scoping',
+      'FEM/FEA Stress Verification',
+      'Remaining Life Assessment (RLA) Study',
+      'Other Services & Scoping Inquiry'
+    ];
+    detailServices.forEach(s => list.add(s));
+
+    // 4. Ensure initialService is in the list
+    if (initialService) {
+      list.add(initialService);
+    }
+
+    return Array.from(list);
+  }, [dbServices, initialService]);
 
   const mutation = useMutation({
     mutationFn: submitContact,
