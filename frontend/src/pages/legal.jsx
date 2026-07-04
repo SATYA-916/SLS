@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { ShieldAlert, BookOpen, Fingerprint, HelpCircle } from 'lucide-react';
 
 const legalContent = {
