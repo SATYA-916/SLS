@@ -392,63 +392,6 @@ export default function Projects() {
                       </div>
                     )}
 
-                    {/* Related Projects section */}
-                    <div className="pt-8 border-t border-gray-100">
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-[#0a1628] mb-4">
-                        Related Case Studies
-                      </h3>
-                      <div className="grid grid-cols-3 gap-4">
-                        {getRelatedProjects(selectedProject).map((rel) => (
-                          <div
-                            key={rel.id}
-                            onClick={() => setSelectedProject(rel)}
-                            className="group cursor-pointer space-y-2 border border-slate-100 hover:border-slate-300 p-2 rounded-sm transition-all"
-                          >
-                            <div className="aspect-[4/3] bg-gray-100 overflow-hidden relative">
-                              <img
-                                src={rel.image}
-                                alt={rel.title}
-                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103"
-                              />
-                            </div>
-                            <h4 className="text-[10px] font-bold text-[#0a1628] leading-tight truncate group-hover:text-[#43648e] transition-colors">
-                              {rel.title}
-                            </h4>
-                            <span className="text-[8px] font-semibold text-slate-400 block uppercase">
-                              {rel.category}
-                            </span>
-                          </div>
-                        ))}
-                        {getRelatedProjects(selectedProject).length === 0 && (
-                          <p className="text-[10px] text-gray-400 italic col-span-3">No other projects in this category.</p>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Premium Call to Action */}
-                    <div className="bg-slate-50 border border-slate-200 p-6 rounded-sm text-center">
-                      <h4 className="text-sm font-bold text-[#0a1628] mb-2">Interested in a similar engineering solution?</h4>
-                      <p className="text-xs text-slate-500 mb-5 max-w-md mx-auto leading-relaxed">
-                        SLS Consultants specializes in structural and mechanical design for fired heaters, chimneys, boiler structures, and cryogenic plant foundations.
-                      </p>
-                      <div className="flex flex-wrap items-center justify-center gap-3">
-                        <Link href="/contact?service=Other Services &amp; Scoping Inquiry">
-                          <button
-                            onClick={() => setSelectedProject(null)}
-                            className="bg-[#0a1628] hover:bg-[#1a2f4c] text-white px-5 py-2.5 text-xs font-semibold rounded-sm transition-all shadow-sm"
-                          >
-                            Book a Consultation
-                          </button>
-                        </Link>
-                        <a
-                          href="tel:+919849598424"
-                          className="border border-slate-300 bg-white hover:bg-slate-100 text-[#0a1628] px-5 py-2.5 text-xs font-semibold rounded-sm transition-all shadow-xs"
-                        >
-                          Request Technical Discussion
-                        </a>
-                      </div>
-                    </div>
-
                   </div>
 
                   {/* Right Column (35%) */}
@@ -549,6 +492,64 @@ export default function Projects() {
                         </div>
                       );
                     })()}
+                  </div>
+                </div>
+
+                {/* Related Projects — full width below two columns */}
+                <div className="pt-8 border-t border-gray-100">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#0a1628] mb-4">
+                    Related Case Studies
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {getRelatedProjects(selectedProject).map((rel) => (
+                      <div
+                        key={rel.id}
+                        onClick={() => setSelectedProject(rel)}
+                        className="group cursor-pointer space-y-2 border border-slate-100 hover:border-slate-300 p-2 rounded-sm transition-all"
+                      >
+                        <div className="aspect-[4/3] bg-gray-100 overflow-hidden relative">
+                          <img
+                            src={rel.image}
+                            alt={rel.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103"
+                          />
+                        </div>
+                        <h4 className="text-[10px] font-bold text-[#0a1628] leading-tight truncate group-hover:text-[#43648e] transition-colors">
+                          {rel.title}
+                        </h4>
+                        <span className="text-[8px] font-semibold text-slate-400 block uppercase">
+                          {rel.category}
+                        </span>
+                      </div>
+                    ))}
+                    {getRelatedProjects(selectedProject).length === 0 && (
+                      <p className="text-[10px] text-gray-400 italic col-span-3">No other projects in this category.</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* CTA — full width */}
+                <div className="bg-slate-50 border border-slate-200 p-6 rounded-sm text-center">
+                  <h4 className="text-sm font-bold text-[#0a1628] mb-2">Interested in a similar engineering solution?</h4>
+                  <p className="text-xs text-slate-500 mb-5 max-w-md mx-auto leading-relaxed">
+                    SLS Consultants specializes in structural and mechanical design for fired heaters, chimneys, boiler structures, and cryogenic plant foundations.
+                  </p>
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <Link href="/contact?service=Other Services &amp; Scoping Inquiry">
+                      <button
+                        onClick={() => setSelectedProject(null)}
+                        className="bg-[#0a1628] hover:bg-[#1a2f4c] text-white px-5 py-2.5 text-xs font-semibold rounded-sm transition-all shadow-sm"
+                      >
+                        Book a Consultation
+                      </button>
+                    </Link>
+                    <a
+                      href="tel:+919849598424"
+                      rel="external"
+                      className="border border-slate-300 bg-white hover:bg-slate-100 text-[#0a1628] px-5 py-2.5 text-xs font-semibold rounded-sm transition-all shadow-xs"
+                    >
+                      Request Technical Discussion
+                    </a>
                   </div>
                 </div>
 
