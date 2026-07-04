@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
 import { 
   Building2, X, CheckCircle2, ArrowRight, ArrowLeft, 
-  User, Calendar, MapPin, Briefcase, FileText, FileSpreadsheet 
+  User, Calendar, MapPin, Briefcase, FileText 
 } from 'lucide-react';
 import { getProjects } from '@/lib/api';
 import { fallbackProjects } from '@/data/fallbackProjects';
@@ -546,51 +546,6 @@ export default function Projects() {
                             </ul>
                           </div>
 
-                          {/* Simulated Downloads */}
-                          <div className="bg-slate-50 border border-slate-200 p-4 rounded-sm space-y-2">
-                            <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1 border-b border-slate-200 pb-1">
-                              Downloads &amp; Assets
-                            </h4>
-                            <a
-                              href="#"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                alert(`Simulating PDF download: Case Study for "${selectedProject.title}"`);
-                              }}
-                              className="flex items-center justify-between text-xs text-[#0a1628] hover:text-[#43648e] transition-colors py-1.5 border-b border-slate-200 last:border-0"
-                            >
-                              <span className="font-semibold flex items-center gap-2">
-                                <FileText className="w-3.5 h-3.5 text-red-500 shrink-0" /> Case Study (PDF)
-                              </span>
-                              <span className="text-[9px] text-gray-400 font-mono">1.2 MB</span>
-                            </a>
-                            <a
-                              href="#"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                alert(`Simulating Document download: Technical Summary sheet`);
-                              }}
-                              className="flex items-center justify-between text-xs text-[#0a1628] hover:text-[#43648e] transition-colors py-1.5 border-b border-slate-200 last:border-0"
-                            >
-                              <span className="font-semibold flex items-center gap-2">
-                                <FileText className="w-3.5 h-3.5 text-blue-500 shrink-0" /> Technical Sheets
-                              </span>
-                              <span className="text-[9px] text-gray-400 font-mono">820 KB</span>
-                            </a>
-                            <a
-                              href="#"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                alert(`Simulating Package Request: Inquiry for engineering details sent to office.`);
-                              }}
-                              className="flex items-center justify-between text-xs text-[#0a1628] hover:text-[#43648e] transition-colors py-1.5"
-                            >
-                              <span className="font-semibold flex items-center gap-2">
-                                <FileSpreadsheet className="w-3.5 h-3.5 text-green-600 shrink-0" /> Full GA Package
-                              </span>
-                              <span className="text-[9px] text-gray-400 font-mono">ZIP/DWG</span>
-                            </a>
-                          </div>
                         </div>
                       );
                     })()}
