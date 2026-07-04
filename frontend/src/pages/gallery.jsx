@@ -1275,10 +1275,9 @@ export default function Gallery() {
                 {filteredDrawings.map((draw, idx) => (
                   <motion.div
                     key={idx}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.35, delay: idx * 0.05 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25, delay: Math.min(idx * 0.025, 0.25) }}
                     className="bg-white border border-gray-200 overflow-hidden shadow-sm flex flex-col hover:shadow-md transition-shadow group cursor-pointer"
                     onClick={() => setSelectedImg(draw)}
                   >
@@ -1286,6 +1285,7 @@ export default function Gallery() {
                       <img
                         src={`/gallery/${draw.file}`}
                         alt={draw.title}
+                        loading={idx < 6 ? "eager" : "lazy"}
                         className="w-full h-full object-cover opacity-90 group-hover:scale-102 transition-transform duration-300 select-none pointer-events-none"
                       />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
