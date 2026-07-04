@@ -531,20 +531,16 @@ export default function Gallery() {
   const tabsRef = useRef(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (tabsRef.current) {
-        const headerOffset = 64; // height of sticky header
-        const rect = tabsRef.current.getBoundingClientRect();
-        const elementTop = rect.top + window.scrollY;
-        
-        window.scrollTo({
-          top: elementTop - headerOffset,
-          behavior: 'smooth'
-        });
-      }
-    }, 50); // wait for React paint cycle and new tab height to settle
-
-    return () => clearTimeout(timer);
+    if (tabsRef.current) {
+      const headerOffset = 64; // height of sticky header
+      const rect = tabsRef.current.getBoundingClientRect();
+      const elementTop = rect.top + window.scrollY;
+      
+      window.scrollTo({
+        top: elementTop - headerOffset,
+        behavior: 'smooth'
+      });
+    }
   }, [activeTab]);
 
   return (
@@ -575,7 +571,8 @@ export default function Gallery() {
       </section>
 
       {/* TABS CONTROLLER */}
-      <section ref={tabsRef} className="border-b border-gray-200 sticky top-16 bg-white z-40 shadow-sm">
+      <div ref={tabsRef} />
+      <section className="border-b border-gray-200 sticky top-16 bg-white z-40 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex gap-8">
             {[
@@ -631,14 +628,9 @@ export default function Gallery() {
                       <img
                         src={`/gallery/${draw.file}`}
                         alt={draw.title}
-                        className="w-full h-full object-cover opacity-90 group-hover:scale-102 transition-transform duration-300 filter blur-[8px]"
+                        className="w-full h-full object-cover opacity-90 group-hover:scale-102 transition-transform duration-300"
                       />
-                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <span className="bg-black/60 text-white text-[9px] font-bold tracking-widest uppercase px-3 py-1.5 border border-white/10 backdrop-blur-sm">
-                          Confidential - Data Shielded
-                        </span>
-                      </div>
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
                       <div className="absolute top-3 right-3 w-8 h-8 bg-white/95 text-[#0a1628] flex items-center justify-center shadow-sm">
                         <Eye className="w-4 h-4" />
                       </div>
@@ -879,17 +871,12 @@ export default function Gallery() {
               >
                 Close View ✕
               </button>
-              <div className="bg-slate-900 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center aspect-[16/10] relative shadow-2xl">
+              <div className="bg-slate-900 border border-white/10 rounded-sm overflow-hidden flex items-center justify-center aspect-[16/10] shadow-2xl">
                 <img
                   src={`/gallery/${selectedImg.file}`}
                   alt={selectedImg.title}
-                  className="max-w-full max-h-full object-contain filter blur-[12px]"
+                  className="max-w-full max-h-full object-contain"
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20 pointer-events-none p-4 text-center">
-                  <span className="bg-black/80 text-white text-[10px] md:text-xs font-bold tracking-widest uppercase px-4 py-2 border border-white/10 backdrop-blur-sm">
-                    Confidential Drawing — Details Obscured for Security
-                  </span>
-                </div>
               </div>
               <div className="text-white mt-4 flex items-start justify-between gap-6">
                 <div>
