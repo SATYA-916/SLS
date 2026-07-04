@@ -1,8 +1,51 @@
-import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Phone, Mail, Globe, MapPin, CheckCircle2, Clock, ShieldCheck, Zap } from 'lucide-react';
+import { Phone, Mail, Globe, MapPin, CheckCircle2, Clock, ShieldCheck, Zap, CalendarDays, X, Video } from 'lucide-react';
 import { submitContact, getServices } from '@/lib/api';
+
+// ── Calendly Configuration ──────────────────────────────────────────────────
+// Replace this URL with your actual Calendly link once you create a free account
+// at https://calendly.com  →  copy your personal scheduling link here
+const CALENDLY_URL = 'https://calendly.com/slsind';
+
+// Hook: dynamically loads Calendly widget script + CSS once
+function useCalendly() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    // Load Calendly CSS
+    if (!document.getElementById('calendly-css')) {
+      const link = document.createElement('link');
+      link.id   = 'calendly-css';
+      link.rel  = 'stylesheet';
+      link.href = 'https://assets.calendly.com/assets/external/widget.css';
+      document.head.appendChild(link);
+    }
+    // Load Calendly JS
+    if (!document.getElementById('calendly-js')) {
+      const script  = document.createElement('script');
+      script.id     = 'calendly-js';
+      script.src    = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async  = true;
+      script.onload = () => setReady(true);
+      document.body.appendChild(script);
+    } else if (window.Calendly) {
+      setReady(true);
+    }
+  }, []);
+
+  const openPopup = useCallback(() => {
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({ url: CALENDLY_URL });
+    } else {
+      // Fallback: open Calendly directly in new tab if script blocked
+      window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+    }
+  }, [ready]);
+
+  return { openPopup };
+}
 
 const fallbackServices = [
   'ASME Boiler & Pressure Vessel Design',
@@ -26,6 +69,7 @@ function validate(data) {
 }
 
 export default function Contact() {
+  const { openPopup } = useCalendly();
   const [submitted, setSubmitted] = useState(false);
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
@@ -137,7 +181,69 @@ export default function Contact() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      {/* ── Dual CTA Strip: Book or Write ── */}
+      <section className="bg-gradient-to-r from-[#0a1628] to-[#0d1f3c] border-b border-white/10">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/10">
+
+            {/* Calendly — Book a slot */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-5 px-8 py-8"
+            >
+              <div className="w-12 h-12 rounded-full bg-[#43648e]/30 border border-[#43648e]/40 flex items-center justify-center shrink-0">
+                <CalendarDays className="w-5 h-5 text-[#7ab3e0]" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-0.5">Direct Scheduling</p>
+                <h3 className="text-base font-bold text-white mb-1">Book a Consultation Call</h3>
+                <p className="text-xs text-white/50 leading-relaxed">
+                  Pick a time slot — 30‑min technical scoping session with Mr. Subrahmanyam, available Mon–Sat.
+                </p>
+              </div>
+              <button
+                id="calendly-book-btn"
+                onClick={openPopup}
+                className="shrink-0 bg-[#43648e] hover:bg-[#5580a8] text-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors shadow-md flex items-center gap-2 rounded-sm whitespace-nowrap"
+              >
+                <CalendarDays className="w-3.5 h-3.5" /> Book a Slot
+              </button>
+            </motion.div>
+
+            {/* Anchor scroll — send a message */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-5 px-8 py-8"
+            >
+              <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                <Mail className="w-5 h-5 text-white/50" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-0.5">Project Inquiry / RFQ</p>
+                <h3 className="text-base font-bold text-white mb-1">Send Project Details</h3>
+                <p className="text-xs text-white/50 leading-relaxed">
+                  Submit specifications, drawings, or scope documents. We will respond within 24 hours.
+                </p>
+              </div>
+              <a
+                href="#contact-form"
+                className="shrink-0 border border-white/20 hover:border-white/50 text-white/70 hover:text-white px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-2 rounded-sm whitespace-nowrap"
+              >
+                <Mail className="w-3.5 h-3.5" /> Send a Message
+              </a>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      <section id="contact-form" className="py-20 bg-white">
         <div className="container mx-auto px-4 grid md:grid-cols-2 gap-16">
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             <h2 className="text-2xl font-bold text-[#0a1628] mb-2">Connect with Our Engineering Office</h2>
