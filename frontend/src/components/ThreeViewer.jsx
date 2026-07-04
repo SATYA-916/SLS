@@ -2,9 +2,82 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-export default function ThreeViewer({ type }) {
+export default function ThreeViewer({ type, exploded, wireframe, resetKey }) {
   const containerRef = useRef(null);
   const [loading, setLoading] = useState(true);
+  const [loadingText, setLoadingText] = useState("Loading Engineering Model...");
+
+  // Refs for smooth camera interpolation
+  const targetCamPos = useRef(new THREE.Vector3(12, 12, 18));
+  const targetLookAt = useRef(new THREE.Vector3(0, 0, 0));
+
+  // Exploded view interpolation refs
+  const explodedFactor = useRef(0);
+  const explodedRef = useRef(exploded);
+  useEffect(() => {
+    explodedRef.current = exploded;
+  }, [exploded]);
+
+  // Wireframe configuration ref
+  const wireframeRef = useRef(wireframe);
+  useEffect(() => {
+    wireframeRef.current = wireframe;
+  }, [wireframe]);
+
+  // Track scene for dynamic material updates
+  const activeScene = useRef(null);
+
+  // Cycling loading messages
+  useEffect(() => {
+    if (!loading) return;
+    const texts = [
+      "Loading Engineering Model...",
+      "Preparing Structural Assembly...",
+      "Generating Interactive View...",
+      "Loading Industrial Components..."
+    ];
+    let idx = 0;
+    const interval = setInterval(() => {
+      idx = (idx + 1) % texts.length;
+      setLoadingText(texts[idx]);
+    }, 850);
+    return () => clearInterval(interval);
+  }, [loading]);
+
+  // Reset Camera listener
+  const resetKeyRef = useRef(resetKey);
+  useEffect(() => {
+    if (resetKey !== resetKeyRef.current) {
+      resetKeyRef.current = resetKey;
+      // Trigger camera target reset based on component type
+      if (type === 'heater') {
+        targetCamPos.current.set(12, 8, 18);
+        targetLookAt.current.set(0, 0, 0);
+      } else if (type === 'stack') {
+        targetCamPos.current.set(0, 8, 18);
+        targetLookAt.current.set(0, 2, 0);
+      } else if (type === 'convection') {
+        targetCamPos.current.set(8, 6, 12);
+        targetLookAt.current.set(0, 4, 0);
+      } else if (type === 'radiant') {
+        targetCamPos.current.set(10, 2, 12);
+        targetLookAt.current.set(0, -2, 0);
+      } else {
+        targetCamPos.current.set(10, 8, 14);
+        targetLookAt.current.set(0, 0, 0);
+      }
+    }
+  }, [resetKey, type]);
+
+  // Handle wireframe changes dynamically
+  useEffect(() => {
+    if (!activeScene.current) return;
+    activeScene.current.traverse(child => {
+      if (child.isMesh) {
+        child.material.wireframe = wireframe;
+      }
+    });
+  }, [wireframe]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -13,7 +86,8 @@ export default function ThreeViewer({ type }) {
 
     // 1. Setup Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x050b14); // Dark blueprint background
+    activeScene.current = scene;
+    scene.background = new THREE.Color(0x050c18); // Premium dark industrial background
 
     // Grid Helper
     const gridHelper = new THREE.GridHelper(30, 30, 0x1d3557, 0x112240);
@@ -24,59 +98,86 @@ export default function ThreeViewer({ type }) {
     const height = containerRef.current.clientHeight;
 
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    // Initial camera position
     camera.position.set(12, 12, 18);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     
     // Clear old contents
     containerRef.current.innerHTML = '';
     containerRef.current.appendChild(renderer.domElement);
 
     // 2. Setup Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    dirLight.position.set(10, 20, 15);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.85);
+    dirLight.position.set(12, 24, 18);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.width = 1024;
+    dirLight.shadow.mapSize.height = 1024;
     scene.add(dirLight);
 
-    const dirLight2 = new THREE.DirectionalLight(0x43648e, 0.5);
-    dirLight2.position.set(-10, -5, -10);
+    const dirLight2 = new THREE.DirectionalLight(0x43648e, 0.6);
+    dirLight2.position.set(-12, -6, -12);
     scene.add(dirLight2);
 
     // 3. Orbit Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.maxPolarAngle = Math.PI / 2 + 0.1; // Don't go too far below ground
+    controls.maxPolarAngle = Math.PI / 2 + 0.1; 
     controls.minDistance = 3;
     controls.maxDistance = 40;
+
+    // Set camera interpolation targets based on selected type
+    if (type === 'heater') {
+      targetCamPos.current.set(12, 8, 18);
+      targetLookAt.current.set(0, 0, 0);
+    } else if (type === 'stack') {
+      targetCamPos.current.set(0, 8, 18);
+      targetLookAt.current.set(0, 2, 0);
+    } else if (type === 'convection') {
+      targetCamPos.current.set(8, 6, 12);
+      targetLookAt.current.set(0, 4, 0);
+    } else if (type === 'radiant') {
+      targetCamPos.current.set(10, 2, 12);
+      targetLookAt.current.set(0, -2, 0);
+    } else {
+      targetCamPos.current.set(10, 8, 14);
+      targetLookAt.current.set(0, 0, 0);
+    }
 
     // 4. Create Group for models
     const modelGroup = new THREE.Group();
     scene.add(modelGroup);
 
-    // Helper Materials
+    // Helper Materials (Enhanced properties for premium rendering)
     const blueprintMat = new THREE.MeshStandardMaterial({
       color: 0x43648e,
-      roughness: 0.4,
-      metalness: 0.8,
+      roughness: 0.25,
+      metalness: 0.85,
       transparent: true,
-      opacity: 0.85
+      opacity: 0.85,
+      wireframe: wireframeRef.current
     });
 
     const coilMat = new THREE.MeshStandardMaterial({
-      color: 0xe63946, // Red/Copper coils
-      roughness: 0.2,
+      color: 0xe63946, 
+      roughness: 0.15,
       metalness: 0.9,
+      wireframe: wireframeRef.current
     });
 
     const stackMat = new THREE.MeshStandardMaterial({
       color: 0x8d99ae,
-      roughness: 0.6,
-      metalness: 0.5
+      roughness: 0.4,
+      metalness: 0.7,
+      wireframe: wireframeRef.current
     });
 
     const wireMat = new THREE.MeshBasicMaterial({
@@ -1006,6 +1107,14 @@ export default function ThreeViewer({ type }) {
           break;
       }
 
+      // Add shadow settings for all models
+      modelGroup.traverse(child => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+
       setLoading(false);
     };
 
@@ -1016,9 +1125,38 @@ export default function ThreeViewer({ type }) {
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
       
+      // Interpolate camera position and target controls smoothly
+      camera.position.lerp(targetCamPos.current, 0.05);
+      controls.target.lerp(targetLookAt.current, 0.05);
+
+      // Interpolate exploded views
+      const targetExplode = explodedRef.current ? 1.0 : 0.0;
+      explodedFactor.current = THREE.MathUtils.lerp(explodedFactor.current, targetExplode, 0.08);
+
+      // Apply exploded view offsets to specific child meshes
+      modelGroup.traverse(child => {
+        if (!child.name) return;
+        const factor = explodedFactor.current;
+        if (child.name === 'stack') {
+          child.position.y = 13.8 + factor * 5.0;
+        } else if (child.name === 'offtake') {
+          child.position.y = 8.55 + factor * 3.5;
+        } else if (child.name === 'convection') {
+          child.position.y = 5.5 + factor * 2.0;
+        } else if (child.name === 'headerbox-left') {
+          child.position.x = -1.9 - factor * 1.5;
+        } else if (child.name === 'headerbox-right') {
+          child.position.x = 1.9 + factor * 1.5;
+        } else if (child.name === 'transition') {
+          child.position.y = 2.0 + factor * 0.5;
+        } else if (child.name === 'radiant') {
+          child.position.y = -2.0 - factor * 2.0;
+        }
+      });
+
       // Auto-rotation when not interacting
-      if (!controls.state === -1) {
-        modelGroup.rotation.y += 0.002;
+      if (controls.state === -1) {
+        modelGroup.rotation.y += 0.003;
       }
       
       controls.update();
@@ -1048,12 +1186,14 @@ export default function ThreeViewer({ type }) {
 
   return (
     <div className="w-full h-full relative">
-      <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
+      {/* Premium subtle background gradient behind canvas */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#050c18] via-[#09152a] to-[#040912] pointer-events-none" />
+      <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing relative z-10" />
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[#050b14]/80 text-white z-20">
+        <div className="absolute inset-0 flex items-center justify-center bg-[#050c18]/90 text-white z-20">
           <div className="text-center">
             <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <span className="text-[10px] uppercase tracking-wider text-gray-400">Loading 3D Model...</span>
+            <span className="text-[10px] uppercase tracking-widest font-bold text-blue-400 animate-pulse">{loadingText}</span>
           </div>
         </div>
       )}

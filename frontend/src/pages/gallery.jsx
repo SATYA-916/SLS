@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'wouter';
-import { Eye, FileText, ChevronRight, Settings, Shield, Activity, BarChart3, Wrench, Layers, Calendar } from 'lucide-react';
+import { 
+  Eye, FileText, ChevronRight, Settings, Shield, Activity, BarChart3, Wrench, Layers, Calendar,
+  ChevronDown, Factory, HelpCircle, Hammer, Columns, Grid, Disc, Cpu, RotateCw, DoorClosed, TrendingUp, Compass, Box
+} from 'lucide-react';
 import ThreeViewer from '@/components/ThreeViewer';
 
 // 1. Technical drawings (cropped screenshots)
@@ -323,225 +326,324 @@ const illustrations = [
   {
     id: "complete-heater",
     title: "Complete Fired Heater",
+    subtitle: "Overall Industrial Assembly",
     description: "The complete vertically-fired cylindrical heater assembly incorporating the bottom burner floor, radiant tube chamber, convection module bank, header boxes, platforms, and a self-supporting stack.",
-    disciplines: "Multi-Disciplinary (Structural, Mechanical, Thermal, Piping)",
-    considerations: "Wind load vibration analysis (vortex shedding), thermal expansion joints at convection junctions, seismic load resistance.",
-    deliverables: "General Arrangement drawings, structural loading sheets, anchor bolt details, transport logistics documentation.",
+    purpose: "Provides primary process fluid heating for high-capacity crude distillation and hydrotreating refinery units.",
+    function: "Combustion energy from bottom-mounted burners is transferred to process fluids circulating through radiant and convection tube coils.",
+    materials: "A36 Structural Steel, Refractory Lining, High-Alloy Piping (HP40/Grade 9), Carbon Steel Casing",
+    discipline: "Multi-disciplinary (Structural, Mechanical, Thermal, Piping)",
+    application: "Refineries, Chemical Plants, Petrochemical Facilities",
+    scope: "Full-scale mechanical calculations, structural design, Tekla detailing, and connection design.",
+    deliverables: "General Arrangement drawings, structural loading sheets, anchor bolt details, fabrication packages.",
     threeType: "heater",
-    service: "Industrial Design & Support"
-  },
-  {
-    id: "radiant-section",
-    title: "Radiant Tube Section",
-    description: "The high-temperature zone where burners fire vertically into a cylindrical refractory-lined chamber. Incorporates vertical tubes mounted on heat-resistant alloy hangers.",
-    disciplines: "Mechanical & Refractory Engineering",
-    considerations: "REF-55 Refractory anchor layout, skin thermocouple piping, thermal expansion calculations of tubes under 750°C.",
-    deliverables: "Casing fabrication drawings, tube sheet details, burner plenum layouts, refractory hook spacing schedules.",
-    threeType: "radiant",
-    service: "Industrial Design & Support"
-  },
-  {
-    id: "convection-section",
-    title: "Convection Section Module",
-    description: "The waste heat recovery zone located above the radiant section. Horizontal tubes (often finned to maximize heat transfer surface) absorb heat from rising flue gases.",
-    disciplines: "Thermal & Piping Engineering",
-    considerations: "Finned tube pitch optimization, flue gas velocity profiling, tube sagging prevention at span midpoints.",
-    deliverables: "Tube bundle shop drawings, intermediate support plate details, finned tube schedules.",
-    threeType: "convection",
-    service: "Industrial Design & Support"
-  },
-  {
-    id: "roof-structure",
-    title: "Refinery Roof Structure",
-    description: "A heavy structural steel roof canopy framing that seals the upper chamber and supports the stack load, designed for high thermal resistance and weathering.",
-    disciplines: "Structural Engineering",
-    considerations: "Stack base load transfer, thermal stress shielding, dead and live load combinations under IS 875.",
-    deliverables: "Roof framing layouts, connection detailing, fabrication weld schedules.",
-    threeType: "roof",
-    service: "Engineering & Architecture Design"
-  },
-  {
-    id: "platform-system",
-    title: "Platform Walkway System",
-    description: "Multi-tier circular access platforms mounted at key maintenance elevations (observation doors, header boxes, dampers, stack monitors).",
-    disciplines: "Structural detailing",
-    considerations: "OSHA safety clearances, toe-plate detailing, handrail weld strengths, galvanic corrosion mitigation.",
-    deliverables: "Circular grating layouts, handrail details, staircase stringer brackets.",
-    threeType: "platforms",
-    service: "Blueprint Design"
-  },
-  {
-    id: "stair-assembly",
-    title: "Stair Tower Assembly",
-    description: "Self-supporting structural steel stair tower providing safe access to all heater operating levels, engineered for rapid erection.",
-    disciplines: "Structural Detailing (Tekla)",
-    considerations: "Wind loading on open steel frames, step rise/run ratios, foundation pile cap reactions.",
-    deliverables: "Stringer detail drawings, shop assembly files (NC/DXF), erection marking plans.",
-    threeType: "staircase",
-    service: "Blueprint Design"
-  },
-  {
-    id: "header-box",
-    title: "Tube Header Box",
-    description: "Enclosed structural steel compartments at the ends of tube bundles housing the U-bends. Designed with quick-open doors for easy tube cleanout.",
-    disciplines: "Mechanical & Structural Design",
-    considerations: "Quick-access door hinge load capacities, high-temperature gasket sealing, gas leak prevention.",
-    deliverables: "Box casing fabrication details, door hinge mechanics drawings, insulation lining details.",
-    threeType: "headerbox",
-    service: "Industrial Design & Support"
-  },
-  {
-    id: "support-steel",
-    title: "Main Support Steelwork",
-    description: "The primary structural steel columns, portal beams, and diagonal bracing that transmit gravity and lateral loads to the foundations.",
-    disciplines: "Structural Analysis (STAAD.Pro)",
-    considerations: "Base plate thickness, anchor bolt shear forces, dynamic load factors from wind and earthquakes.",
-    deliverables: "Column detail drawings, base plate drawings, connection calculations.",
-    threeType: "framing",
-    service: "Engineering & Architecture Design"
-  },
-  {
-    id: "maintenance-access",
-    title: "Access & Observation Doors",
-    description: "High-temperature inspection ports and explosion doors providing access to the radiant chamber and convection box.",
-    disciplines: "Mechanical detailing",
-    considerations: "Explosion relief spring tension, thermal sealing, refractory plug thickness.",
-    deliverables: "Fabricated door assemblies, latch details, casting insulation schedules.",
-    threeType: "doors",
-    service: "Industrial Design & Support"
-  },
-  {
-    id: "complete-frame",
-    title: "Complete Structural Frame",
-    description: "The complete load-carrying skeleton of the heater, excluding pressure parts and cladding, highlighting structural engineering modeling.",
-    disciplines: "Structural & Erection Engineering",
-    considerations: "Erection crane access points, transport splitting joints, field-weld vs. bolted joint optimization.",
-    deliverables: "Erection sequence drawings, bolt lists, dynamic lift analyses.",
-    threeType: "frame3d",
-    service: "Engineering & Architecture Design"
-  },
-  {
-    id: "soot-blower",
-    title: "Soot Blower Structure",
-    description: "The auxiliary cantilevered structural steel frame that projects from the convection section to support the soot blower lance rails and mechanical drive system.",
-    disciplines: "Structural & Mechanical Engineering",
-    considerations: "Horizontal cantilever loading, vibration damping during lance retraction, structural steel alignment.",
-    deliverables: "Catwalk support details, track support frames, fabrication steel bills.",
-    threeType: "sootblower",
-    service: "Industrial Design & Support"
-  },
-  {
-    id: "burner-floor",
-    title: "Burner Floor Assembly",
-    description: "The bottom floor plate structural system of the cylindrical heater, designed to hold the vertically-fired burners and secondary air registers.",
-    disciplines: "Thermal & Structural Detailing",
-    considerations: "Burner port spacing and clearances, high thermal stresses near burner registers, floor plate segment structural joints.",
-    deliverables: "Burner floor plate layouts, floor structural framing designs, air plenum details.",
-    threeType: "burnerfloor",
-    service: "Industrial Design & Support"
-  },
-  {
-    id: "stack-ladders",
-    title: "Stack Ladder & Cage",
-    description: "The vertical steel climbing ladders with circular safety hoops and intermediate landing platforms configured along the outer shell of the stack.",
-    disciplines: "Structural Safety Detailing",
-    considerations: "OSHA cage clearance standards, shell mounting clip loads under high wind conditions, safety hoop weld configurations.",
-    deliverables: "Ladder fabrication sheets, safety cage details, clip installation layout drawings.",
-    threeType: "ladders",
-    service: "Blueprint Design"
-  },
-  {
-    id: "breeching-door",
-    title: "Breeching Access Door",
-    description: "A heavy-duty rectangular inspection access door located on the convection off-take breeching duct, featuring thick internal refractory backing.",
-    disciplines: "Mechanical & Refractory Design",
-    considerations: "Thermal gas sealing under positive draft pressures, hinge swing clearances, refractory hook alignment.",
-    deliverables: "Door framing details, hinge pin drawings, latch mechanism details, insulation layer schedules.",
-    threeType: "breechingdoor",
-    service: "Industrial Design & Support"
+    service: "Industrial Design & Support",
+    icon: "heater"
   },
   {
     id: "complete-stack",
     title: "Complete Stack / Chimney",
+    subtitle: "Flue Gas Exhaust System",
     description: "A 45-meter self-supporting structural stack utilizing helical wind strakes to mitigate vortex shedding and dynamic wind vibration.",
-    disciplines: "Structural & Wind Engineering",
-    considerations: "Dynamic wind analysis, vortex shedding strakes, foundation anchor bolt shear forces.",
-    deliverables: "Stack shell drawings, helical strake templates, flange details.",
+    purpose: "Discharges combustion flue gases safely into the atmosphere while maintaining positive draft control.",
+    function: "Helical strakes break wind patterns to prevent resonant oscillation (vortex shedding) at high wind speeds.",
+    materials: "A36/A572 Steel plates, Helical strakes (CS), Internal Acid-Resistant coating",
+    discipline: "Structural & Wind Dynamics Engineering",
+    application: "Hydrotreater units, reforming heaters, utility boilers",
+    scope: "Dynamic wind analysis, strake pitch calculations, anchor flange detailing.",
+    deliverables: "Stack shell details, helical strake templates, flange connection designs.",
     threeType: "stack",
-    service: "Industrial Design & Support"
+    service: "Industrial Design & Support",
+    icon: "stack"
   },
   {
     id: "off-take-duct",
     title: "Off-Take Duct",
+    subtitle: "Breeching & Flue Gas Transition",
     description: "The transition duct system connecting the heater convection module top section with the stack chimney inlet.",
-    disciplines: "Mechanical & Flow Engineering",
-    considerations: "Flue gas velocity, expansion bellows compatibility, structural guide frames.",
-    deliverables: "Duct plate layouts, duct expansion joint details, guide brackets.",
+    purpose: "Channels hot flue gas from the convection chamber to the exhaust chimney without thermal expansion stress.",
+    function: "Transition guide plates smooth flue gas flows and direct gas through expansion bellows.",
+    materials: "Carbon Steel Casing plate, internal insulating castable, stainless steel anchors",
+    discipline: "Mechanical & Flow Engineering",
+    application: "DHDT and HDS fired heaters",
+    scope: "Thermal casing stress analysis, expansion joint sizing, internal support detailing.",
+    deliverables: "Duct plate layouts, expansion joint details, guide brackets, load tables.",
     threeType: "offtake",
-    service: "Industrial Design & Support"
+    service: "Industrial Design & Support",
+    icon: "offtake"
   },
   {
-    id: "pressure-parts-assembly",
-    title: "Pressure Parts Assembly",
-    description: "The full arrangement of radiant tubes and convection finned coils, forming the primary high-pressure process fluid circulation circuit.",
-    disciplines: "Piping & Thermal Engineering",
-    considerations: "High-pressure thermal expansion, tube sheet spacing, tube hangers alloy grades.",
-    deliverables: "Coil assembly designs, pipe guides details, manifold nozzle ratings.",
-    threeType: "pressureparts",
-    service: "Industrial Design & Support"
+    id: "radiant-section",
+    title: "Radiant Tube Section",
+    subtitle: "High-Temp Combustion Zone",
+    description: "The high-temperature zone where burners fire vertically into a cylindrical refractory-lined chamber. Incorporates vertical tubes mounted on heat-resistant alloy hangers.",
+    purpose: "Transfers maximum radiant heat from combustion flue gases directly into process fluids.",
+    function: "Burners generate high radiant heat fluxes absorbed by vertical tubes lining the refractory chamber walls.",
+    materials: "ASTM A312 TP347H / HP40 Mod tubes, Refractory lining (grade 26/28), SS310 anchors",
+    discipline: "Thermal & Metallurgy Engineering",
+    application: "Crude heating, hydrotreating process heaters",
+    scope: "Tube wall thickness calculations, hanger alloy design, refractory anchor layout.",
+    deliverables: "Radiant casing details, coil hanger layouts, skin thermocouple piping details.",
+    threeType: "radiant",
+    service: "Industrial Design & Support",
+    icon: "radiant"
   },
   {
-    id: "heater-grating",
-    title: "Heater Grating System",
-    description: "Anti-slip steel walkway gratings configured for the main heater platforms, engineered for safety and maximum ventilation.",
-    disciplines: "Structural Safety Detailing",
-    considerations: "Anti-slip span ratings, circular grating fitments, corrosion resistance galvanization.",
-    deliverables: "Grating layout plans, fastening clips spacing schedules, steel bill of materials.",
-    threeType: "heatergrating",
-    service: "Blueprint Design"
+    id: "burner-floor",
+    title: "Burner Floor Assembly",
+    subtitle: "Burner Mounting & Floor Structure",
+    description: "The bottom floor plate structural system of the cylindrical heater, designed to hold the vertically-fired burners and secondary air registers.",
+    purpose: "Supports combustion burners and controls air plenum distribution underneath the radiant zone.",
+    function: "Directs combustion air registers and secures the burner plenum box assembly to the lower portal beams.",
+    materials: "A36 Steel plate, High-temp floor castable insulation, SS304 seal components",
+    discipline: "Thermal & Structural Detailing",
+    application: "Refineries, bottom-fired cylindrical heaters",
+    scope: "Air register cutout detailing, floor beam structural joints, burner bolt circle layouts.",
+    deliverables: "Plenum fabrication drawings, burner floor layouts, support steel details.",
+    threeType: "burnerfloor",
+    service: "Industrial Design & Support",
+    icon: "burnerfloor"
   },
   {
-    id: "stack-platform",
-    title: "Stack Platform System",
-    description: "Circular maintenance walkways mounted at upper elevations of the exhaust stack for emission monitoring instrumentation.",
-    disciplines: "Structural Detailing (Tekla)",
-    considerations: "High elevation wind gusts, platform sway limits, OSHA safety handrails.",
-    deliverables: "Circular girder designs, platform bracket detail drawings.",
-    threeType: "stackplatform",
-    service: "Blueprint Design"
+    id: "header-box",
+    title: "Tube Header Box",
+    subtitle: "Tube Return Enclosure",
+    description: "Enclosed structural steel compartments at the ends of tube bundles housing the U-bends. Designed with quick-open doors for easy tube cleanout.",
+    purpose: "Encloses process return bends (U-bends) to prevent hot gas leaks and provide quick maintenance access.",
+    function: "Seals the tube bundle sheet while providing quick-acting doors for tube inspection and mechanical cleaning.",
+    materials: "ASTM A36 Casing, High-temp ceramic fiber insulation, SS304 hinge pins",
+    discipline: "Mechanical & Structural Design",
+    application: "Convection sections, header boxes",
+    scope: "Hinge load calculations, seal gasket specs, door latch detailing.",
+    deliverables: "Header box assembly drawings, hinge details, seal plate configurations.",
+    threeType: "headerbox",
+    service: "Industrial Design & Support",
+    icon: "headerbox"
   },
   {
     id: "arch-plate-assembly",
     title: "Arch Plate Assembly",
+    subtitle: "Chamber Separation Deck",
     description: "A structural dividing ring backed with refractory lining separating the high-temperature radiant box from the convection module zone.",
-    disciplines: "Mechanical & Refractory Design",
-    considerations: "High thermal stress gradients, monolithic castable backing anchors, flue gas velocity bottlenecks.",
-    deliverables: "Arch plate segment designs, anchor pattern drawings, refractory specifications.",
+    purpose: "Directs flue gases from the radiant combustion chamber into the narrow convection tube bank.",
+    function: "Forms a tight thermal seal around the radiant-to-convection throat, protecting structural steel columns from local hot spots.",
+    materials: "A36 Heavy steel plates, Ceramic fiber module packing, Stainless steel studs",
+    discipline: "Mechanical & Refractory Design",
+    application: "Cylindrical fired heaters",
+    scope: "Thermal expansion gap calculations, structural joint details, lift lug detailing.",
+    deliverables: "Arch plate segments, thermal seal drawings.",
     threeType: "archplate",
-    service: "Industrial Design & Support"
+    service: "Industrial Design & Support",
+    icon: "archplate"
+  },
+  {
+    id: "convection-section",
+    title: "Convection Section Module",
+    subtitle: "Waste Heat Recovery Bank",
+    description: "The waste heat recovery zone located above the radiant section. Horizontal tubes (often finned to maximize heat transfer surface) absorb heat from rising flue gases.",
+    purpose: "Recovers residual convective heat from flue gases to preheat crude feed or generate steam.",
+    function: "Horizontal tubes absorb heat from convective hot gases flowing upward from the radiant chamber throat.",
+    materials: "ASTM A106 Gr B / A335 P9 tubes, Carbon Steel / Solid helical fins, A36 module box",
+    discipline: "Thermal & Piping Engineering",
+    application: "Heater convection sections, steam superheaters",
+    scope: "Finned tube pitch design, intermediate support plate spacing, flue gas velocity analysis.",
+    deliverables: "Convection bundle detail plans, finned tube schedules, support plate drawings.",
+    threeType: "convection",
+    service: "Industrial Design & Support",
+    icon: "convection"
+  },
+  {
+    id: "soot-blower",
+    title: "Soot Blower Structure",
+    subtitle: "Auxiliary Catwalk & Lance Support",
+    description: "The auxiliary cantilevered structural steel frame that projects from the convection section to support the soot blower lance rails and mechanical drive system.",
+    purpose: "Supports mechanical soot-blowing equipment used to clean ash/debris from convection tubes.",
+    function: "Carries steam lance rails and driving motors, allowing cleaning lances to slide between tube rows.",
+    materials: "A36 steel channels, grating walkways, high-strength bolts",
+    discipline: "Structural & Mechanical Detailing",
+    application: "Heavy oil-fired heater convection modules",
+    scope: "Cantilever bending analysis, structural bracing details, mechanical rail load supports.",
+    deliverables: "Catwalk frame details, structural bracing layouts, steel bill of materials.",
+    threeType: "sootblower",
+    service: "Industrial Design & Support",
+    icon: "sootblower"
+  },
+  {
+    id: "support-steel",
+    title: "Main Support Steelwork",
+    subtitle: "Primary Columns & Portal Bracing",
+    description: "The primary structural steel columns, portal beams, and diagonal bracing that transmit gravity and lateral loads to the foundations.",
+    purpose: "Transmits all vertical loads (dead/live) and horizontal forces (wind/seismic) to the foundation anchors.",
+    function: "Heavy structural portal frame stabilizes the 60-meter assembly against thermal, seismic, and wind loads.",
+    materials: "IS 2062 Gr B / ASTM A572 Gr 50 beams, ASTM A325 high-strength bolts",
+    discipline: "Structural Analysis (STAAD.Pro)",
+    application: "Industrial plant towers, refinery heater support steel",
+    scope: "Finite element frame analysis, connection moment design, base plate sizing.",
+    deliverables: "Erection diagrams, column detail sheets, base plate moment connection designs.",
+    threeType: "framing",
+    service: "Engineering & Architecture Design",
+    icon: "supportsteel"
+  },
+  {
+    id: "complete-frame",
+    title: "Complete Structural Frame",
+    subtitle: "Full Load-Carrying Skeleton",
+    description: "The complete load-carrying skeleton of the heater, excluding pressure parts and cladding, highlighting structural engineering modeling.",
+    purpose: "Integrates columns, platform brackets, stair stringers, and stack bases into a cohesive load path.",
+    function: "Distributes structural stresses evenly across portal frames and columns to prevent stress concentrations.",
+    materials: "IS 2062 Grade B Steel, High-tensile fasteners, hot-dip galvanized bracing",
+    discipline: "Structural & Erection Engineering",
+    application: "Fired heater steel structures, Tekla assemblies",
+    scope: "Tekla structural detailing, lifting weight checks, bolted joint layout optimization.",
+    deliverables: "Erection sequence plans, field bolt listings, shipping package drawings.",
+    threeType: "frame3d",
+    service: "Engineering & Architecture Design",
+    icon: "completeframe"
+  },
+  {
+    id: "roof-structure",
+    title: "Refinery Roof Structure",
+    subtitle: "Conical Shell & Rafters",
+    description: "A heavy structural steel roof canopy framing that seals the upper chamber and supports the stack load, designed for high thermal resistance and weathering.",
+    purpose: "Seals the top of the radiant section and supports the chimney stack column load.",
+    function: "Conical rafter system transfers the stack load down to the main columns while enclosing hot flue gases.",
+    materials: "IS 2062 Structural steel rafters, A36 roof cover plate, insulating refractory",
+    discipline: "Structural Engineering",
+    application: "Bottom-supported chimney stacks, refinery roofs",
+    scope: "Stack base moment transfer calculations, thermal expansion joint designs.",
+    deliverables: "Roof rafter layouts, rafter connection details, center ring weld details.",
+    threeType: "roof",
+    service: "Engineering & Architecture Design",
+    icon: "roof"
   },
   {
     id: "ets-structure",
     title: "ETS Structure",
+    subtitle: "External Truss Support Frame",
     description: "External Structural Steel framing system designed to support convection modules and soot blower walkways.",
-    secondTitle: "ETS Structure",
-    disciplines: "Structural Analysis (STAAD.Pro)",
-    considerations: "Symmetrical load distribution, lateral wind load resistance, Tekla connection joints.",
-    deliverables: "ETS framing plans, node connections detailing, diagonal bracing plans.",
+    purpose: "Supports heavy convection section module boxes and lateral wind loads on auxiliary catwalks.",
+    function: "Truss framework carries the vertical load of convection banks, preventing load transfers onto the radiant box shell.",
+    materials: "IS 2062 Structural profiles, A325 structural bolts, galvanized gratings",
+    discipline: "Structural Analysis (STAAD.Pro)",
+    application: "Refineries, large modular fired heaters",
+    scope: "Truss load distribution calculations, modular splice detailing, node stress checks.",
+    deliverables: "ETS framing plans, module support joints, bracing details.",
     threeType: "ets",
-    service: "Engineering & Architecture Design"
+    service: "Engineering & Architecture Design",
+    icon: "ets"
+  },
+  {
+    id: "platform-system",
+    title: "Platform Walkway System",
+    subtitle: "Maintenance Catwalks",
+    description: "Multi-tier circular access platforms mounted at key maintenance elevations (observation doors, header boxes, dampers, stack monitors).",
+    purpose: "Provides safe walking paths for refinery operators to perform routine maintenance and inspections.",
+    function: "Secures anti-slip steel gratings, handrails, and safety toe plates to structural support brackets.",
+    materials: "IS 2062 Steel brackets, galvanized gratings, safety handrails",
+    discipline: "Structural detailing",
+    application: "Refineries, chimneys, columns",
+    scope: "OSHA clearance checks, platform bracket weld sizes, handrail layout plans.",
+    deliverables: "Circular platform details, bracket fabrication sheets, handrail designs.",
+    threeType: "platforms",
+    service: "Blueprint Design",
+    icon: "platforms"
+  },
+  {
+    id: "stair-assembly",
+    title: "Stair Tower Assembly",
+    subtitle: "Multi-Level Access Staircase",
+    description: "Self-supporting structural steel stair tower providing safe access to all heater operating levels, engineered for rapid erection.",
+    purpose: "Allows safe vertical movement of personnel and tools across all heater platform tiers.",
+    function: "Stringer beams, tread assemblies, and handrail cages transfer local dynamic live loads to columns and pile caps.",
+    materials: "IS 2062 Channel profiles, checker-plate treads, galvanized handrails",
+    discipline: "Structural Detailing (Tekla)",
+    application: "Process towers, refinery fired heaters",
+    scope: "Tekla structural detailing, foundation loads check, safety rise/run checks.",
+    deliverables: "Stair stringer designs, tread fabrication plans, foundation load specifications.",
+    threeType: "staircase",
+    service: "Blueprint Design",
+    icon: "staircase"
+  },
+  {
+    id: "stack-platform",
+    title: "Stack Platform System",
+    subtitle: "High-Elevation Maintenance Deck",
+    description: "Circular maintenance walkways mounted at upper elevations of the exhaust stack for emission monitoring instrumentation.",
+    purpose: "Supports flue gas analysis sensors, stack dampers, and aviation warning lights.",
+    function: "Provides a safe platform for maintenance engineers checking flue gas monitoring systems (CEMS).",
+    materials: "A36 steel channels, hot-dip galvanized gratings, safety loops",
+    discipline: "Structural Detailing (Tekla)",
+    application: "Exhaust stack chimneys, flue gas monitors",
+    scope: "High wind gust load analysis, bracket shear checks, OSHA safety hoops.",
+    deliverables: "Stack platform drawings, support bracket details, handrail layouts.",
+    threeType: "stackplatform",
+    service: "Blueprint Design",
+    icon: "stackplatform"
+  },
+  {
+    id: "heater-grating",
+    title: "Heater Grating System",
+    subtitle: "Walkway Floor Gratings",
+    description: "Anti-slip steel walkway gratings configured for the main heater platforms, engineered for safety and maximum ventilation.",
+    purpose: "Forms the walking surface of maintenance catwalks, preventing slip hazards.",
+    function: "Grating bars distribute personnel live loads while allowing wind and water drainage.",
+    materials: "Mild Steel, hot-dip galvanized coating, saddle clip anchors",
+    discipline: "Structural Safety Detailing",
+    application: "Refineries, industrial plants, stair towers",
+    scope: "Span load calculations, circular grating segment detailing, clip installation layouts.",
+    deliverables: "Grating layout sheets, grating bills of materials, fixing clip locations.",
+    threeType: "heatergrating",
+    service: "Blueprint Design",
+    icon: "heatergrating"
+  },
+  {
+    id: "stack-ladders",
+    title: "Stack Ladder & Cage",
+    subtitle: "Vertical Safety Ladder",
+    description: "The vertical steel climbing ladders with circular safety hoops and intermediate landing platforms configured along the outer shell of the stack.",
+    purpose: "Provides emergency escape and maintenance access routes to the upper stack platforms.",
+    function: "Vertical rungs are supported by a safety cage to prevent operator falls.",
+    materials: "IS 2062 Round bars and flat bars, hot-dip galvanized profiles",
+    discipline: "Structural Safety Detailing",
+    application: "Industrial chimneys, stacks, tall columns",
+    scope: "OSHA cage clearance layout, shell clip design, mounting weld specs.",
+    deliverables: "Ladder details, safety cage assembly sheets, clip welding designs.",
+    threeType: "ladders",
+    service: "Blueprint Design",
+    icon: "ladders"
+  },
+  {
+    id: "breeching-door",
+    title: "Breeching Access Door",
+    subtitle: "Convection Duct Entry Door",
+    description: "A heavy-duty rectangular inspection access door located on the convection off-take breeching duct, featuring thick internal refractory backing.",
+    purpose: "Enables refinery operators to enter the convection transition duct during shut-down cycles.",
+    function: "Double-hinge swing mechanism provides gas-tight sealing under normal operating draft vacuum.",
+    materials: "ASTM A36 Casing, Ceramic refractory block lining, SS310 studs",
+    discipline: "Mechanical & Refractory Design",
+    application: "Convection ducts, flue gas plenums",
+    scope: "Refractory anchor layouts, door hinge stress calculations, thermal seal designs.",
+    deliverables: "Fabricated door assemblies, door lock details, insulation layer schedules.",
+    threeType: "breechingdoor",
+    service: "Industrial Design & Support",
+    icon: "breechingdoor"
   },
   {
     id: "maintenance-access-sys",
     title: "Maintenance Access System",
+    subtitle: "Coordinated Egress System",
     description: "Coordinated systems of circular access platforms, safety ladders, and stairways providing secure transit channels.",
-    disciplines: "Multi-Disciplinary Detailing",
-    considerations: "OSHA clearance rules, platform-to-ladder transitions, structural bracket spacing.",
-    deliverables: "Access general arrangement drawings, connection joint sheets.",
+    purpose: "Integrates stairways and ladders to form a continuous safety route across all levels.",
+    function: "Coordinates structural brackets and ladder cage hoops to ensure safe transit between platform levels.",
+    materials: "IS 2062 Grade B Steel, galvanized safety railings, high-tensile bolts",
+    discipline: "Multi-Disciplinary Detailing",
+    application: "Industrial process furnaces, fired heaters",
+    scope: "OSHA conformance reviews, ladder-to-stairway transition designs, structural safety checking.",
+    deliverables: "Access general arrangement drawings, ladder-to-platform detailing sheets.",
     threeType: "maintenanceaccess",
-    service: "Blueprint Design"
+    service: "Blueprint Design",
+    icon: "maintenanceaccess"
   }
-];
+];;
 
 // 3. Workflow lifecycles (Interactive step data - EXPANDED & HIGHLY DETAILED)
 const workflows = [
@@ -846,6 +948,29 @@ export default function Gallery() {
   const [activeWfStep, setActiveWfStep] = useState(0);
   const [_, setLocation] = useLocation();
 
+  // Collapsible groups for 3D model list
+  const [openGroups, setOpenGroups] = useState({
+    "Overall Assembly": true,
+    "Radiant System": true,
+    "Convection System": true,
+    "Structural System": true,
+    "Access System": true
+  });
+
+  const toggleGroup = (name) => {
+    setOpenGroups(prev => ({ ...prev, [name]: !prev[name] }));
+  };
+
+  // WebGL camera, wireframe and exploded controls
+  const [exploded, setExploded] = useState(false);
+  const [wireframe, setWireframe] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
+
+  const handleSelectFullAssembly = () => {
+    const fullHeater = illustrations.find(ill => ill.id === 'complete-heater');
+    if (fullHeater) setSelectedIll(fullHeater);
+  };
+
   const getDrawingCategory = (draw) => {
     if (draw.file.startsWith('eil_ga')) return 'EIL';
     if (draw.file.startsWith('pressure_parts') || draw.file.startsWith('hds_')) return 'HDS';
@@ -856,6 +981,30 @@ export default function Gallery() {
     if (drawingSubTab === 'All') return true;
     return getDrawingCategory(draw) === drawingSubTab;
   });
+
+  const getComponentIcon = (iconName) => {
+    switch (iconName) {
+      case 'heater': return <Factory className="w-4 h-4" />;
+      case 'stack': return <Compass className="w-4 h-4" />;
+      case 'offtake': return <Layers className="w-4 h-4" />;
+      case 'radiant': return <Cpu className="w-4 h-4" />;
+      case 'burnerfloor': return <Grid className="w-4 h-4" />;
+      case 'headerbox': return <Box className="w-4 h-4" />;
+      case 'archplate': return <Disc className="w-4 h-4" />;
+      case 'convection': return <Layers className="w-4 h-4" />;
+      case 'sootblower': return <RotateCw className="w-4 h-4" />;
+      case 'supportsteel': return <Columns className="w-4 h-4" />;
+      case 'completeframe': return <Shield className="w-4 h-4" />;
+      case 'roof': return <ChevronUp className="w-4 h-4" />;
+      case 'ets': return <Columns className="w-4 h-4" />;
+      case 'platforms': return <Eye className="w-4 h-4" />;
+      case 'staircase': return <TrendingUp className="w-4 h-4" />;
+      case 'ladders': return <Grid className="w-4 h-4" />;
+      case 'breechingdoor': return <DoorClosed className="w-4 h-4" />;
+      case 'maintenanceaccess': return <Settings className="w-4 h-4" />;
+      default: return <Settings className="w-4 h-4" />;
+    }
+  };
 
   const handleBookRedirect = (serviceName) => {
     setLocation('/contact?service=' + encodeURIComponent(serviceName));
@@ -1018,54 +1167,171 @@ export default function Gallery() {
           )}
 
           {/* TAB 2: EXPLODED ILLUSTRATIONS (THREE.JS 3D VIEW) */}
+          {/* TAB 2: EXPLODED ILLUSTRATIONS (THREE.JS 3D VIEW) */}
           {activeTab === 'illustrations' && (
             <div className="grid lg:grid-cols-3 gap-12 items-start">
-              {/* Left Column: Menu */}
-              <div className="lg:col-span-1 bg-white border border-gray-200 p-6 shadow-sm">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-5">Select 3D Component</h3>
-                <div className="space-y-1">
-                  {illustrations.map((ill) => (
-                    <button
-                      key={ill.id}
-                      onClick={() => setSelectedIll(ill)}
-                      className={`w-full text-left px-4 py-3.5 text-xs font-bold uppercase tracking-wider border-l-2 transition-all flex items-center justify-between ${
-                        selectedIll.id === ill.id
-                          ? 'bg-[#0a1628]/5 border-l-[#0a1628] text-[#0a1628]'
-                          : 'border-transparent text-gray-500 hover:bg-gray-50 hover:text-gray-800'
-                      }`}
-                    >
-                      <span>{ill.title}</span>
-                      <ChevronRight className={`w-4 h-4 transition-transform ${selectedIll.id === ill.id ? 'translate-x-1' : 'opacity-30'}`} />
-                    </button>
-                  ))}
+              {/* Left Column: Grouped Menu & Statistics */}
+              <div className="lg:col-span-1 space-y-6">
+                <div className="bg-white border border-gray-200 p-6 shadow-sm">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-5">Select 3D Component</h3>
+                  <div className="space-y-3">
+                    {[
+                      {
+                        name: "Overall Assembly",
+                        items: ["complete-heater", "complete-stack", "off-take-duct"]
+                      },
+                      {
+                        name: "Radiant System",
+                        items: ["radiant-section", "burner-floor", "header-box", "arch-plate-assembly"]
+                      },
+                      {
+                        name: "Convection System",
+                        items: ["convection-section", "soot-blower"]
+                      },
+                      {
+                        name: "Structural System",
+                        items: ["support-steel", "complete-frame", "roof-structure", "ets-structure"]
+                      },
+                      {
+                        name: "Access System",
+                        items: ["platform-system", "stair-assembly", "stack-platform", "heater-grating", "stack-ladders", "breeching-door", "maintenance-access-sys"]
+                      }
+                    ].map((group) => {
+                      const isOpen = openGroups[group.name];
+                      return (
+                        <div key={group.name} className="border-b border-gray-100 pb-3">
+                          <button
+                            onClick={() => toggleGroup(group.name)}
+                            className="w-full flex items-center justify-between py-1 text-[10px] font-bold uppercase tracking-wider text-gray-400 hover:text-gray-600 transition-colors"
+                          >
+                            <span>{group.name}</span>
+                            {isOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+                          </button>
+                          
+                          {isOpen && (
+                            <div className="space-y-1 mt-2 pl-1">
+                              {group.items.map((itemId) => {
+                                const ill = illustrations.find(x => x.id === itemId);
+                                if (!ill) return null;
+                                const isSelected = selectedIll.id === ill.id;
+                                return (
+                                  <button
+                                    key={ill.id}
+                                    onClick={() => setSelectedIll(ill)}
+                                    className={`w-full text-left px-3 py-2.5 border-l-2 transition-all flex items-center gap-3 justify-between ${
+                                      isSelected
+                                        ? 'bg-[#0a1628] border-l-blue-600 text-white shadow-sm font-bold'
+                                        : 'border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-800 bg-white'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2.5 min-w-0">
+                                      <span className={isSelected ? 'text-blue-400' : 'text-gray-400'}>
+                                        {getComponentIcon(ill.icon)}
+                                      </span>
+                                      <div className="min-w-0 text-left">
+                                        <div className="font-bold truncate text-[10px] uppercase tracking-wide leading-none mb-1">{ill.title}</div>
+                                        <div className={`text-[9px] truncate leading-none ${isSelected ? 'text-white/60' : 'text-gray-400 font-medium'}`}>{ill.subtitle}</div>
+                                      </div>
+                                    </div>
+                                    <ChevronRight className={`w-3.5 h-3.5 shrink-0 transition-transform ${isSelected ? 'translate-x-0.5 text-blue-400' : 'opacity-25'}`} />
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Left Column Bottom: Engineering Statistics */}
+                <div className="bg-gray-50 border border-gray-100 p-5 shadow-sm">
+                  <h4 className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-4">Refinery Detailing Track Record</h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    {[
+                      { value: "91+", label: "Engineering Drawings" },
+                      { value: "20+", label: "Major Assemblies" },
+                      { value: "3", label: "Engineering Packages" },
+                      { value: "20+", label: "Years Exp" },
+                      { value: "500+", label: "Projects Delivered" }
+                    ].map((stat, idx) => (
+                      <div key={idx}>
+                        <div className="text-lg font-bold text-[#0a1628] leading-none mb-0.5">{stat.value}</div>
+                        <div className="text-[8px] uppercase tracking-wider text-gray-500 leading-tight">{stat.label}</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               {/* Right/Middle Columns: Details & 3D Interactive WebGL Rendering */}
               <div className="lg:col-span-2 space-y-8">
                 {/* Three.js Interactive 3D Canvas */}
-                <div className="bg-[#050b14] aspect-[16/10] flex items-center justify-center text-white relative overflow-hidden shadow-md border border-gray-200">
-                  <ThreeViewer type={selectedIll.threeType} />
+                <div className="aspect-[16/10] flex items-center justify-center text-white relative overflow-hidden shadow-md border border-gray-200">
+                  <ThreeViewer 
+                    type={selectedIll.threeType} 
+                    exploded={exploded} 
+                    wireframe={wireframe} 
+                    resetKey={resetKey} 
+                  />
                   
                   {/* Interaction Instructions */}
-                  <div className="absolute top-4 right-4 flex items-center gap-1.5 text-[9px] uppercase tracking-widest text-white/50 bg-black/40 px-2.5 py-1.5 rounded-sm pointer-events-none">
+                  <div className="absolute top-4 left-4 flex items-center gap-1.5 text-[9px] uppercase tracking-widest text-white/50 bg-black/40 px-2.5 py-1.5 rounded-sm pointer-events-none z-10">
                     <Activity className="w-3.5 h-3.5 text-blue-400 animate-pulse" />
                     <span>Left Click + Drag: Rotate 360&deg; | Wheel: Zoom</span>
                   </div>
 
+                  {/* WebGL Camera & View Controls Toolbar */}
+                  <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-black/60 backdrop-blur-sm p-1.5 rounded-sm z-10 border border-white/10">
+                    <button
+                      onClick={() => setResetKey(prev => prev + 1)}
+                      className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-white hover:text-blue-400 transition-colors border border-white/10"
+                    >
+                      Reset View
+                    </button>
+                    <button
+                      onClick={handleSelectFullAssembly}
+                      className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-white hover:text-blue-400 transition-colors border border-white/10"
+                    >
+                      Full Assembly
+                    </button>
+                    <button
+                      onClick={() => setWireframe(!wireframe)}
+                      className={`px-2 py-1 text-[9px] font-bold uppercase tracking-wider transition-colors border border-white/10 ${
+                        wireframe ? 'bg-blue-600 text-white border-blue-600' : 'text-white hover:text-blue-400'
+                      }`}
+                    >
+                      {wireframe ? 'Solid' : 'Wireframe'}
+                    </button>
+                    <button
+                      onClick={() => setExploded(!exploded)}
+                      className={`px-2 py-1 text-[9px] font-bold uppercase tracking-wider transition-colors border border-white/10 ${
+                        exploded ? 'bg-blue-600 text-white border-blue-600' : 'text-white hover:text-blue-400'
+                      }`}
+                    >
+                      {exploded ? 'Assembled' : 'Exploded'}
+                    </button>
+                  </div>
+
                   {/* Watermark/Metadata details */}
-                  <div className="absolute bottom-4 left-6 flex items-center gap-2 text-[9px] uppercase tracking-widest text-white/30 pointer-events-none">
-                    <Settings className="w-3.5 h-3.5 animate-spin-slow" />
+                  <div className="absolute bottom-4 left-6 flex items-center gap-2 text-[9px] uppercase tracking-widest text-white/35 pointer-events-none z-10">
+                    <Settings className="w-3.5 h-3.5 animate-spin-slow text-blue-500" />
                     <span>WebGL 3D Engine Active</span>
                   </div>
                 </div>
 
                 {/* Conceptual metadata descriptions card */}
                 <div className="bg-white border border-gray-200 p-8 shadow-sm">
-                  <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                  <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-6 border-b border-gray-100">
                     <div>
-                      <span className="text-[9px] font-bold uppercase tracking-wider text-blue-700 block mb-1">WebGL Interactive 3D Model</span>
+                      <span className="text-[9px] font-bold uppercase tracking-wider text-blue-700 block mb-1">
+                        3D Technical Visualization
+                      </span>
                       <h3 className="text-2xl font-bold text-[#0a1628]">{selectedIll.title}</h3>
+                      <p className="text-xs text-gray-400 mt-1 uppercase font-semibold tracking-wide">
+                        {selectedIll.subtitle}
+                      </p>
                     </div>
                     <button
                       onClick={() => handleBookRedirect(selectedIll.service)}
@@ -1075,26 +1341,55 @@ export default function Gallery() {
                     </button>
                   </div>
                   
-                  <p className="text-sm text-gray-500 leading-relaxed mb-6">{selectedIll.description}</p>
-                  
-                  <div className="grid md:grid-cols-2 gap-6 pt-6 border-t border-gray-100">
+                  <div className="mb-6">
+                    <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Description</h4>
+                    <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.description}</p>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-x-8 gap-y-6 pt-6 border-t border-gray-100">
                     <div>
-                      <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <Layers className="w-4 h-4 text-[#43648e]" /> Engineering Disciplines
+                      <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <HelpCircle className="w-3.5 h-3.5 text-blue-700" /> Purpose
                       </h4>
-                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.disciplines}</p>
+                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.purpose}</p>
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <Shield className="w-4 h-4 text-[#43648e]" /> Mechanical & Structural Considerations
+                      <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <Activity className="w-3.5 h-3.5 text-blue-700" /> Engineering Function
                       </h4>
-                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.considerations}</p>
+                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.function}</p>
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <Hammer className="w-3.5 h-3.5 text-blue-700" /> Typical Materials
+                      </h4>
+                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.materials}</p>
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <Layers className="w-3.5 h-3.5 text-blue-700" /> Engineering Discipline
+                      </h4>
+                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.discipline}</p>
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <Factory className="w-3.5 h-3.5 text-blue-700" /> Industrial Application
+                      </h4>
+                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.application}</p>
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] font-bold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <Shield className="w-3.5 h-3.5 text-blue-700" /> SLS Scope of Work
+                      </h4>
+                      <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.scope}</p>
                     </div>
                   </div>
 
-                  <div className="mt-6 p-4 bg-gray-50 border-l-2 border-[#43648e] text-xs">
-                    <span className="font-bold text-gray-700 block mb-1">Key Engineering Deliverables:</span>
-                    <p className="text-gray-500 leading-relaxed">{selectedIll.deliverables}</p>
+                  <div className="mt-8 p-4 bg-gray-50 border-l-2 border-blue-700 text-xs">
+                    <span className="font-bold text-[#0a1628] block mb-1 uppercase text-[9px] tracking-wider">
+                      Engineering Deliverables:
+                    </span>
+                    <p className="text-gray-600 leading-relaxed">{selectedIll.deliverables}</p>
                   </div>
                 </div>
               </div>
