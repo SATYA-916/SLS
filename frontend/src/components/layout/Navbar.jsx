@@ -1,21 +1,58 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Menu, X, Lock } from 'lucide-react';
+import { Menu, X, CalendarDays } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const CALENDLY_URL = 'https://calendly.com/zywu801/30min';
+
+function useCalendly() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (!document.getElementById('calendly-css')) {
+      const link = document.createElement('link');
+      link.id   = 'calendly-css';
+      link.rel  = 'stylesheet';
+      link.href = 'https://assets.calendly.com/assets/external/widget.css';
+      document.head.appendChild(link);
+    }
+    if (!document.getElementById('calendly-js')) {
+      const script  = document.createElement('script');
+      script.id     = 'calendly-js';
+      script.src    = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async  = true;
+      script.onload = () => setReady(true);
+      document.body.appendChild(script);
+    } else if (window.Calendly) {
+      setReady(true);
+    }
+  }, []);
+
+  const openPopup = useCallback(() => {
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({ url: CALENDLY_URL });
+    } else {
+      window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+    }
+  }, [ready]);
+
+  return { openPopup };
+}
+
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About Us' },
+  { href: '/',         label: 'Home'     },
+  { href: '/about',    label: 'About Us' },
   { href: '/services', label: 'Services' },
   { href: '/projects', label: 'Projects' },
-  { href: '/gallery', label: 'Gallery' },
-  { href: '/vision', label: 'Vision' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/gallery',  label: 'Gallery'  },
+  { href: '/vision',   label: 'Vision'   },
+  { href: '/contact',  label: 'Contact'  },
 ];
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [location] = useLocation();
+  const [location]  = useLocation();
+  const { openPopup } = useCalendly();
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm">
@@ -27,6 +64,7 @@ export function Navbar() {
           </span>
         </Link>
 
+        {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-7">
           <nav className="flex items-center gap-7 text-sm font-medium">
             {navLinks.map((link) => (
@@ -44,12 +82,14 @@ export function Navbar() {
             ))}
           </nav>
 
-          <Link
-            href="/contact?service=General%20Inquiry"
-            className="bg-[#0a1628] text-white hover:bg-[#43648e] transition-colors rounded px-4 py-2 text-xs font-bold uppercase tracking-wider shadow-sm"
+          {/* Opens Calendly popup directly — distinct from Contact nav link */}
+          <button
+            onClick={openPopup}
+            className="flex items-center gap-1.5 bg-[#0a1628] text-white hover:bg-[#43648e] transition-colors rounded px-4 py-2 text-xs font-bold uppercase tracking-wider shadow-sm"
           >
-            Book Consultation
-          </Link>
+            <CalendarDays className="w-3.5 h-3.5" />
+            Book a Call
+          </button>
         </div>
 
         <button
@@ -61,6 +101,7 @@ export function Navbar() {
         </button>
       </div>
 
+      {/* Mobile menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -85,13 +126,14 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href="/contact?service=General%20Inquiry"
-                onClick={() => setMenuOpen(false)}
-                className="my-3 bg-[#0a1628] text-white text-center py-2.5 text-xs font-bold uppercase tracking-wider rounded transition-colors"
+              {/* Mobile: opens Calendly popup */}
+              <button
+                onClick={() => { setMenuOpen(false); openPopup(); }}
+                className="my-3 bg-[#0a1628] text-white text-center py-2.5 text-xs font-bold uppercase tracking-wider rounded transition-colors flex items-center justify-center gap-2"
               >
-                Book Consultation
-              </Link>
+                <CalendarDays className="w-3.5 h-3.5" />
+                Book a Call
+              </button>
             </nav>
           </motion.div>
         )}
