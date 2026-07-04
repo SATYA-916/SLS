@@ -658,11 +658,23 @@ const workflows = [
 
 export default function Gallery() {
   const [activeTab, setActiveTab] = useState('drawings');
+  const [drawingSubTab, setDrawingSubTab] = useState('All');
   const [selectedImg, setSelectedImg] = useState(null);
   const [selectedIll, setSelectedIll] = useState(illustrations[0]);
   const [activeWf, setActiveWf] = useState(workflows[0]);
   const [activeWfStep, setActiveWfStep] = useState(0);
   const [_, setLocation] = useLocation();
+
+  const getDrawingCategory = (draw) => {
+    if (draw.file.startsWith('eil_ga')) return 'EIL';
+    if (draw.file.startsWith('pressure_parts')) return 'HDS';
+    return 'DHDT';
+  };
+
+  const filteredDrawings = drawings.filter(draw => {
+    if (drawingSubTab === 'All') return true;
+    return getDrawingCategory(draw) === drawingSubTab;
+  });
 
   const handleBookRedirect = (serviceName) => {
     setLocation('/contact?service=' + encodeURIComponent(serviceName));
@@ -746,15 +758,34 @@ export default function Gallery() {
           {/* TAB 1: TECHNICAL DRAWINGS */}
           {activeTab === 'drawings' && (
             <div>
-              <div className="mb-10 max-w-xl">
-                <h2 className="text-2xl font-bold text-[#0a1628] mb-3">Cropped Structural Drawing Database</h2>
-                <p className="text-xs text-gray-500 leading-relaxed">
-                  These layouts demonstrate the structural and mechanical detailing capacity of SLS. In compliance with confidentiality guidelines, all drawings are cropped to remove specific dimensions, drawing titles, sheets numbers, and approval signatures.
-                </p>
+              <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-gray-200 pb-6">
+                <div className="max-w-xl">
+                  <h2 className="text-2xl font-bold text-[#0a1628] mb-3">Cropped Structural Drawing Database</h2>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    These layouts demonstrate the structural and mechanical detailing capacity of SLS. In compliance with confidentiality guidelines, all drawings are cropped to remove specific dimensions, drawing titles, sheets numbers, and approval signatures.
+                  </p>
+                </div>
+                
+                {/* Sub-tabs for DHDT, HDS, EIL categorization */}
+                <div className="flex flex-wrap gap-2 shrink-0">
+                  {['All', 'DHDT', 'HDS', 'EIL'].map((subcat) => (
+                    <button
+                      key={subcat}
+                      onClick={() => setDrawingSubTab(subcat)}
+                      className={`px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
+                        drawingSubTab === subcat
+                          ? 'bg-[#0a1628] text-white shadow-sm'
+                          : 'bg-white border border-gray-200 text-[#0a1628] hover:bg-gray-50'
+                      }`}
+                    >
+                      {subcat}
+                    </button>
+                  ))}
+                </div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {drawings.map((draw, idx) => (
+                {filteredDrawings.map((draw, idx) => (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, y: 15 }}
