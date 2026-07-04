@@ -1322,7 +1322,6 @@ export default function Gallery() {
                 ))}
               </div>
             </div>
-          </div>
 
           {/* TAB 2: EXPLODED ILLUSTRATIONS (THREE.JS 3D VIEW) */}
           {/* TAB 2: EXPLODED ILLUSTRATIONS (THREE.JS 3D VIEW) */}
@@ -1814,6 +1813,7 @@ export default function Gallery() {
                   </div>
                 </div>
               </div>
+            </div>
 
           {/* TAB 3: WORKFLOW LIFECYCLES */}
           {activeTab === 'workflows' && (
