@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Phone, Mail, Globe, MapPin, CheckCircle2, Clock, ShieldCheck, Zap } from 'lucide-react';
@@ -27,6 +27,8 @@ function validate(data) {
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [file, setFile] = useState(null);
+  const fileInputRef = useRef(null);
   
   // Parse URL query parameter for service pre-selection
   const queryParams = new URLSearchParams(window.location.search);
@@ -55,16 +57,48 @@ export default function Contact() {
     if (errors[e.target.name]) setErrors((prev) => ({ ...prev, [e.target.name]: '' }));
   }
 
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleRemoveFile = (e) => {
+    e.stopPropagation();
+    setFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   function handleSubmit(e) {
     e.preventDefault();
     const errs = validate(form);
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    mutation.mutate({
-      ...form,
-      phone: form.phone || null,
-      company: form.company || null,
-      service: form.service || null,
-    });
+
+    const formData = new FormData();
+    formData.append('name', form.name);
+    formData.append('email', form.email);
+    formData.append('phone', form.phone || '');
+    formData.append('company', form.company || '');
+    formData.append('service', form.service || '');
+    formData.append('message', form.message);
+    if (file) {
+      formData.append('file', file);
+    }
+
+    mutation.mutate(formData);
   }
 
   return (
@@ -227,10 +261,43 @@ export default function Contact() {
                   <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">
                     Upload Drawings & Specifications (Optional)
                   </label>
-                  <div className="border border-dashed border-gray-300 p-5 text-center bg-gray-50 flex flex-col items-center justify-center rounded-sm hover:border-[#0a1628] transition-colors cursor-pointer">
-                    <ShieldCheck className="w-6 h-6 text-gray-400 mb-1.5" />
-                    <span className="text-xs font-semibold text-gray-600 block">Drag & Drop files here, or browse</span>
-                    <span className="text-[10px] text-gray-400 mt-1">Confidential project information handled securely. Max size 50MB.</span>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                    accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg,.zip,.rar"
+                  />
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    className="border border-dashed border-gray-300 p-5 text-center bg-gray-50 flex flex-col items-center justify-center rounded-sm hover:border-[#0a1628] transition-colors cursor-pointer"
+                  >
+                    {file ? (
+                      <div className="flex flex-col items-center">
+                        <CheckCircle2 className="w-6 h-6 text-green-600 mb-1.5" />
+                        <span className="text-xs font-semibold text-gray-700 block max-w-[280px] truncate">
+                          {file.name}
+                        </span>
+                        <span className="text-[10px] text-gray-400 mt-0.5">
+                          ({(file.size / (1024 * 1024)).toFixed(2)} MB)
+                        </span>
+                        <button
+                          type="button"
+                          onClick={handleRemoveFile}
+                          className="mt-2 text-[10px] text-red-500 hover:text-red-700 underline font-bold uppercase tracking-wider"
+                        >
+                          Remove File
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <ShieldCheck className="w-6 h-6 text-gray-400 mb-1.5" />
+                        <span className="text-xs font-semibold text-gray-600 block">Drag & Drop files here, or browse</span>
+                        <span className="text-[10px] text-gray-400 mt-1">Confidential project information handled securely. Max size 50MB.</span>
+                      </>
+                    )}
                   </div>
                 </div>
                 <div>

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import path from 'path';
 import { connectMongo, Contact } from '../lib/mongodb.js';
 import { sendBrevo } from '../lib/email.js';
 
@@ -45,6 +46,22 @@ router.get('/contacts', requireAdmin, async (req, res) => {
   } catch (err) {
     req.log.error({ err }, 'Failed to fetch contacts');
     res.status(500).json({ error: 'Failed to fetch contacts' });
+  }
+});
+
+router.get('/contacts/download/:id', requireAdmin, async (req, res) => {
+  try {
+    await connectMongo();
+    const contact = await Contact.findById(req.params.id);
+    if (!contact || !contact.filePath) {
+      res.status(404).json({ error: 'File not found' });
+      return;
+    }
+    const fullPath = path.join(process.cwd(), 'uploads', contact.filePath);
+    res.download(fullPath, contact.fileName);
+  } catch (err) {
+    req.log.error({ err }, 'Failed to download file');
+    res.status(500).json({ error: 'Failed to download file' });
   }
 });
 

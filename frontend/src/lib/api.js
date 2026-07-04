@@ -2,13 +2,16 @@ const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
 async function apiFetch(path, options = {}) {
   const url = path.startsWith('http') ? path : `${API_URL}${path}`;
+  
+  const headers = { ...options.headers };
+  if (!(options.body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json';
+  }
+
   const res = await fetch(url, {
     credentials: 'include',
     ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
+    headers,
   });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
@@ -32,7 +35,7 @@ export function getServices() {
 export function submitContact(data) {
   return apiFetch('/api/contact', {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: data,
   });
 }
 

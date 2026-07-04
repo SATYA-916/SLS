@@ -1,9 +1,34 @@
 import { Router } from 'express';
 import { z } from 'zod';
+import fs from 'fs';
+import path from 'path';
+import multer from 'multer';
 import { connectMongo, Contact } from '../lib/mongodb.js';
 import { sendBrevo } from '../lib/email.js';
 
 const router = Router();
+
+// Ensure local uploads directory exists
+const uploadsDir = path.join(process.cwd(), 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Multer storage setup
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadsDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + '-' + file.originalname);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 50 * 1024 * 1024 } // 50MB max file size
+});
 
 const SubmitContactBody = z.object({
   name: z.string().min(1),
@@ -14,7 +39,7 @@ const SubmitContactBody = z.object({
   message: z.string().min(10),
 });
 
-function ownerEmailHtml({ name, email, phone, company, service, message }) {
+function ownerEmailHtml({ name, email, phone, company, service, message, fileName }) {
   return `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
       <div style="background:#0a1628;padding:20px 24px;margin-bottom:24px">
@@ -27,6 +52,7 @@ function ownerEmailHtml({ name, email, phone, company, service, message }) {
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Phone</td><td style="padding:10px 12px;border:1px solid #ddd">${phone ?? '—'}</td></tr>
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Company</td><td style="padding:10px 12px;border:1px solid #ddd">${company ?? '—'}</td></tr>
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Service</td><td style="padding:10px 12px;border:1px solid #ddd">${service ?? '—'}</td></tr>
+        <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Uploaded File</td><td style="padding:10px 12px;border:1px solid #ddd">${fileName ?? 'None'}</td></tr>
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Message</td><td style="padding:10px 12px;border:1px solid #ddd">${message}</td></tr>
       </table>
     </div>
@@ -68,20 +94,41 @@ function customerEmailHtml({ name, service }) {
   `;
 }
 
-router.post('/', async (req, res) => {
-  const parsed = SubmitContactBody.safeParse(req.body);
+router.post('/', upload.single('file'), async (req, res) => {
+  // Convert empty string properties from multipart data to null/undefined for validation
+  const bodyData = {
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone === '' || req.body.phone === 'null' || req.body.phone === 'undefined' ? null : req.body.phone,
+    company: req.body.company === '' || req.body.company === 'null' || req.body.company === 'undefined' ? null : req.body.company,
+    service: req.body.service === '' || req.body.service === 'null' || req.body.service === 'undefined' ? null : req.body.service,
+    message: req.body.message,
+  };
+
+  const parsed = SubmitContactBody.safeParse(bodyData);
   if (!parsed.success) {
     res.status(400).json({ error: 'Invalid request data' });
     return;
   }
 
   const { name, email, phone, company, service, message } = parsed.data;
+  const fileName = req.file ? req.file.originalname : null;
+  const filePath = req.file ? req.file.filename : null;
 
   try {
     await connectMongo();
-    await Contact.create({ name, email, phone, company, service, message });
+    await Contact.create({ 
+      name, 
+      email, 
+      phone, 
+      company, 
+      service, 
+      message, 
+      fileName, 
+      filePath 
+    });
 
-    req.log.info({ email }, 'Contact form saved to MongoDB');
+    req.log.info({ email, fileName }, 'Contact form saved to MongoDB');
     res.status(201).json({
       success: true,
       message: 'Your inquiry has been received. We will get back to you shortly.',
@@ -95,7 +142,7 @@ router.post('/', async (req, res) => {
         to: OWNER_EMAIL,
         toName: 'SLS Admin',
         subject: `New Enquiry from ${name} (${email})`,
-        html: ownerEmailHtml({ name, email, phone, company, service, message }),
+        html: ownerEmailHtml({ name, email, phone, company, service, message, fileName }),
       })
         .then(() => req.log.info({ email }, 'Owner notification sent via Brevo'))
         .catch((err) => req.log.error({ err }, 'Owner notification failed'));

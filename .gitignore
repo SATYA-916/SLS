@@ -33,3 +33,6 @@ coverage/
 # Proprietary Client Drawings
 proprietary client/
 *.pdf
+
+# Local drawing uploads
+backend/uploads/
