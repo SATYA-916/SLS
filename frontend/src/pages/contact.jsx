@@ -79,7 +79,7 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
-  const nameInputRef = useRef(null);
+  const serviceSelectRef = useRef(null);
   const formContainerRef = useRef(null);
   const [highlightForm, setHighlightForm] = useState(false);
 
@@ -92,8 +92,8 @@ export default function Contact() {
         setHighlightForm(false);
       }, 2000);
       setTimeout(() => {
-        if (nameInputRef.current) {
-          nameInputRef.current.focus();
+        if (serviceSelectRef.current) {
+          serviceSelectRef.current.focus();
         }
       }, 850);
     }
@@ -119,8 +119,8 @@ export default function Contact() {
             setHighlightForm(false);
           }, 2000);
           setTimeout(() => {
-            if (nameInputRef.current) {
-              nameInputRef.current.focus();
+            if (serviceSelectRef.current) {
+              serviceSelectRef.current.focus();
             }
           }, 850);
         }
@@ -457,7 +457,6 @@ export default function Contact() {
                   <div>
                     <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Name *</label>
                     <input
-                      ref={nameInputRef}
                       name="name"
                       value={form.name}
                       onChange={handleChange}
@@ -511,6 +510,7 @@ export default function Contact() {
                     )}
                   </label>
                   <select
+                    ref={serviceSelectRef}
                     name="service"
                     value={form.service}
                     onChange={handleChange}
