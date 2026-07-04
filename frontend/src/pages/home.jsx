@@ -180,7 +180,41 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* 4. FEATURED SERVICES */}
+      {/* 2. COMPACT ABOUT & FOUNDER (SINGLE COMPACT MODULE) */}
+      <section className="py-12 bg-white border-b border-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="bg-gray-50 border border-gray-100 p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-8 max-w-5xl mx-auto">
+            <div className="max-w-xl">
+              <span className="text-[9px] font-bold uppercase tracking-widest text-blue-700 block mb-2">Our Profile</span>
+              <p className="text-[#0a1628] text-sm md:text-base leading-relaxed mb-4">
+                Established in 2002, SLS Consultants provides premium structural design, stress analysis, and steel detailing solutions for heavy industrial refineries, boilers, and petrochemical facilities across India and global markets.
+              </p>
+              <Link href="/about">
+                <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-blue-700 cursor-pointer hover:text-blue-900 transition-colors">
+                  Learn More About SLS &rarr;
+                </span>
+              </Link>
+            </div>
+            
+            <div className="flex items-center gap-4 border-l border-gray-200 pl-0 md:pl-8 shrink-0 w-full md:w-auto">
+              <div className="w-14 h-14 bg-gray-200 overflow-hidden shrink-0">
+                <img
+                  src="/founder_portrait.png"
+                  alt="Mr. C. Subrahmanyam"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-[#0a1628]">Mr. C. Subrahmanyam</h4>
+                <p className="text-[11px] text-gray-500 font-medium">Founder & Principal Engineer</p>
+                <p className="text-[10px] text-blue-700 font-semibold mt-0.5">Ex-BHEL (18 Yrs) | Ex-Doosan Babcock</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. FEATURED SERVICES (CAPPED AT 6 SERVICES WITH DETAIL LINK) */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <AnimatedSection>
@@ -191,39 +225,50 @@ export default function Home() {
           </AnimatedSection>
           {servicesLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-44" />)}
+              {[...Array(6)].map((_, i) => <Skeleton key={i} className="h-44" />)}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {services?.slice(0, 3).map((svc, i) => (
-                <motion.div
-                  key={svc.id}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: i * 0.06 }}
-                  className="bg-white border border-gray-200 p-6 hover:border-blue-700 hover:shadow-md transition-all duration-200 group flex flex-col"
-                >
-                  <div className="text-gray-300 group-hover:text-blue-700 mb-4 transition-colors">
-                    {serviceIcons[svc.icon] || <Building2 className="w-8 h-8" />}
-                  </div>
-                  <h3 className="font-bold text-[#0a1628] text-sm mb-2">{svc.title}</h3>
-                  <p className="text-xs text-gray-500 leading-relaxed mb-4 flex-grow">{svc.description}</p>
-                  <div>
-                    <Link href={`/contact?service=${encodeURIComponent(svc.title)}`}>
-                      <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-blue-700 cursor-pointer border-b border-transparent hover:border-blue-700 pb-0.5">
-                        Book Service &rarr;
-                      </span>
-                    </Link>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-12">
+                {services?.slice(0, 6).map((svc, i) => (
+                  <motion.div
+                    key={svc.id}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.35, delay: i * 0.06 }}
+                    className="bg-white border border-gray-200 p-6 hover:border-blue-700 hover:shadow-md transition-all duration-200 group flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="text-gray-300 group-hover:text-blue-700 mb-4 transition-colors">
+                        {serviceIcons[svc.icon] || <Building2 className="w-8 h-8" />}
+                      </div>
+                      <h3 className="font-bold text-[#0a1628] text-sm mb-2">{svc.title}</h3>
+                      <p className="text-xs text-gray-500 leading-relaxed mb-4">{svc.description}</p>
+                    </div>
+                    <div>
+                      <Link href={`/contact?service=${encodeURIComponent(svc.title)}`}>
+                        <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-blue-700 cursor-pointer border-b border-transparent hover:border-blue-700 pb-0.5">
+                          Book Service &rarr;
+                        </span>
+                      </Link>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="text-center">
+                <Link href="/services">
+                  <button className="inline-flex items-center gap-2 border border-gray-300 text-[#0a1628] px-8 py-3 text-sm font-semibold hover:bg-[#0a1628] hover:text-white hover:border-[#0a1628] transition-colors">
+                    View All Services &rarr;
+                  </button>
+                </Link>
+              </div>
+            </>
           )}
         </div>
       </section>
 
-      {/* 5. FEATURED PROJECTS */}
+      {/* 4. FEATURED PROJECTS */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <AnimatedSection>
@@ -286,6 +331,40 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 5. CLIENT TESTIMONIALS (EXACTLY 2 CARDS SIDE-BY-SIDE) */}
+      <section className="py-20 bg-gray-50 border-t border-gray-100">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="text-center mb-12">
+            <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Client Feedback</p>
+            <h2 className="text-3xl font-bold text-[#0a1628]">What Our Clients Say</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              {
+                quote: "SLS Consultants has been a key detailing partner for our critical refinery packages. Their adherence to EIL standards and prompt engineering revisions under Mr. Subrahmanyam's guidance kept our projects on schedule.",
+                author: "Senior Engineering Manager",
+                company: "Larsen & Toubro"
+              },
+              {
+                quote: "Their remaining life assessment and FEA reporting for our heater casing was thorough, well-documented, and crucial for our statutory approvals. Exceptional technical detailing capability.",
+                author: "Mechanical Detailing Lead",
+                company: "HPCL Vizag Refinery"
+              }
+            ].map((t, idx) => (
+              <div key={idx} className="bg-white border border-gray-200 p-6 md:p-8 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+                <p className="text-gray-600 text-xs md:text-sm italic leading-relaxed mb-6">
+                  "{t.quote}"
+                </p>
+                <div>
+                  <h4 className="text-xs font-bold text-[#0a1628]">{t.author}</h4>
+                  <p className="text-[10px] text-blue-700 font-semibold uppercase tracking-wider mt-0.5">{t.company}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* 6. CLIENT LOGOS & TARGET SECTORS */}
       <section className="py-16 bg-gray-50 border-y border-gray-200">
         <div className="container mx-auto px-4">
@@ -322,6 +401,22 @@ export default function Home() {
               </div>
             </div>
           </AnimatedSection>
+        </div>
+      </section>
+
+      {/* 7. SOFTWARE EXPERTISE LOGO STRIP */}
+      <section className="py-10 bg-white border-b border-gray-200">
+        <div className="container mx-auto px-4">
+          <p className="text-[9px] font-bold uppercase tracking-widest text-center text-gray-400 mb-6">
+            Powered by industry-standard tools
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12 opacity-65">
+            {['AutoCAD', 'STAAD.Pro', 'Tekla Structures', 'ANSYS', 'CATIA'].map((sw) => (
+              <span key={sw} className="text-xs md:text-sm font-bold tracking-widest text-[#0a1628] uppercase">
+                {sw}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 
