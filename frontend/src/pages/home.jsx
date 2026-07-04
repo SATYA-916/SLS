@@ -1,7 +1,9 @@
-import { Link } from 'wouter';
+import { useState } from 'react';
+import { Link, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { useRef } from 'react';
+import ServiceConfirmationPanel from '@/components/ServiceConfirmationPanel';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getStats, getProjects, getServices } from '@/lib/api';
 import { fallbackProjects } from '@/data/fallbackProjects';
@@ -93,6 +95,9 @@ function AnimatedSection({ children, className = '' }) {
 }
 
 export default function Home() {
+  const [activeServiceToBook, setActiveServiceToBook] = useState(null);
+  const [, setLocation] = useLocation();
+
   const { data: stats, isLoading: statsLoading } = useQuery({ queryKey: ['stats'], queryFn: getStats });
   const { data: projects, isLoading: projectsLoading } = useQuery({ 
     queryKey: ['projects'], 
@@ -247,11 +252,12 @@ export default function Home() {
                       <p className="text-xs text-gray-500 leading-relaxed mb-4">{svc.description}</p>
                     </div>
                     <div>
-                      <Link href={`/contact?service=${encodeURIComponent(svc.title)}`}>
-                        <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-blue-700 cursor-pointer border-b border-transparent hover:border-blue-700 pb-0.5">
-                          Book Service &rarr;
-                        </span>
-                      </Link>
+                      <button
+                        onClick={() => setActiveServiceToBook(svc.title)}
+                        className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-blue-700 cursor-pointer border-b border-transparent hover:border-blue-700 pb-0.5"
+                      >
+                        Book Service &rarr;
+                      </button>
                     </div>
                   </motion.div>
                 ))}
@@ -458,6 +464,19 @@ export default function Home() {
           </AnimatedSection>
         </div>
       </section>
+
+      <AnimatePresence>
+        {activeServiceToBook && (
+          <ServiceConfirmationPanel
+            serviceName={activeServiceToBook}
+            onClose={() => setActiveServiceToBook(null)}
+            onConfirm={() => {
+              setActiveServiceToBook(null);
+              setLocation(`/contact?service=${encodeURIComponent(activeServiceToBook)}`);
+            }}
+          />
+        )}
+      </AnimatePresence>
 
     </div>
   );

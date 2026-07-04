@@ -8,6 +8,7 @@ import {
   Info, Lightbulb, PanelLeftClose, PanelLeft
 } from 'lucide-react';
 import ThreeViewer from '@/components/ThreeViewer';
+import ServiceConfirmationPanel from '@/components/ServiceConfirmationPanel';
 
 // 1. Technical drawings (cropped screenshots)
 const drawings = [
@@ -964,6 +965,7 @@ export default function Gallery() {
   const [selectedIll, setSelectedIll] = useState(illustrations[0]);
   const [activeWf, setActiveWf] = useState(workflows[0]);
   const [activeWfStep, setActiveWfStep] = useState(0);
+  const [activeServiceToBook, setActiveServiceToBook] = useState(null);
   const [_, setLocation] = useLocation();
 
   // Collapsible groups for 3D model list
@@ -1141,7 +1143,7 @@ export default function Gallery() {
   };
 
   const handleBookRedirect = (serviceName) => {
-    setLocation('/contact?service=' + encodeURIComponent(serviceName));
+    setActiveServiceToBook(serviceName);
   };
 
   const tabsRef = useRef(null);
@@ -1969,6 +1971,19 @@ export default function Gallery() {
               </div>
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {activeServiceToBook && (
+          <ServiceConfirmationPanel
+            serviceName={activeServiceToBook}
+            onClose={() => setActiveServiceToBook(null)}
+            onConfirm={() => {
+              setActiveServiceToBook(null);
+              setLocation(`/contact?service=${encodeURIComponent(activeServiceToBook)}`);
+            }}
+          />
         )}
       </AnimatePresence>
     </div>

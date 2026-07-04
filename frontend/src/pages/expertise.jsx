@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'wouter';
-import { motion } from 'framer-motion';
+import { Link, useLocation } from 'wouter';
+import { motion, AnimatePresence } from 'framer-motion';
+import ServiceConfirmationPanel from '@/components/ServiceConfirmationPanel';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Building2, Factory, Grid3X3, Activity, ClipboardList, Layers, Monitor, Cpu, Workflow } from 'lucide-react';
 import { getServices } from '@/lib/api';
@@ -42,6 +44,9 @@ const specialisms = [
 ];
 
 export default function Expertise() {
+  const [activeServiceToBook, setActiveServiceToBook] = useState(null);
+  const [, setLocation] = useLocation();
+
   const { data: services, isLoading } = useQuery({
     queryKey: ['services'],
     queryFn: getServices,
@@ -141,11 +146,12 @@ export default function Expertise() {
                   </div>
 
                   <div>
-                    <Link href={`/contact?service=${encodeURIComponent(svc.title)}`}>
-                      <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#43648e] hover:text-[#0a1628] transition-colors cursor-pointer border-b border-transparent hover:border-current pb-0.5">
-                        Book Service &rarr;
-                      </span>
-                    </Link>
+                    <button
+                      onClick={() => setActiveServiceToBook(svc.title)}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#43648e] hover:text-[#0a1628] transition-colors cursor-pointer border-b border-transparent hover:border-current pb-0.5"
+                    >
+                      Book Service &rarr;
+                    </button>
                   </div>
                 </motion.div>
               ))}
@@ -231,6 +237,19 @@ export default function Expertise() {
           </Link>
         </div>
       </section>
+
+      <AnimatePresence>
+        {activeServiceToBook && (
+          <ServiceConfirmationPanel
+            serviceName={activeServiceToBook}
+            onClose={() => setActiveServiceToBook(null)}
+            onConfirm={() => {
+              setActiveServiceToBook(null);
+              setLocation(`/contact?service=${encodeURIComponent(activeServiceToBook)}`);
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
