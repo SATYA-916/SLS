@@ -10,6 +10,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
   // Refs for smooth camera interpolation
   const targetCamPos = useRef(new THREE.Vector3(12, 12, 18));
   const targetLookAt = useRef(new THREE.Vector3(0, 0, 0));
+  const isTransitioningRef = useRef(true);
 
   // Exploded view interpolation refs
   const explodedFactor = useRef(0);
@@ -55,6 +56,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
   useEffect(() => {
     if (resetKey !== resetKeyRef.current) {
       resetKeyRef.current = resetKey;
+      isTransitioningRef.current = true;
       // Trigger camera target reset based on component type
       if (type === 'heater') {
         targetCamPos.current.set(12, 8, 18);
@@ -1328,9 +1330,21 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
       
-      // Interpolate camera position and target controls smoothly
-      camera.position.lerp(targetCamPos.current, 0.05);
-      controls.target.lerp(targetLookAt.current, 0.05);
+      // Interpolate camera position and target controls smoothly during transition
+      if (isTransitioningRef.current) {
+        if (controls.state !== -1) {
+          isTransitioningRef.current = false;
+        } else {
+          camera.position.lerp(targetCamPos.current, 0.05);
+          controls.target.lerp(targetLookAt.current, 0.05);
+
+          const distCam = camera.position.distanceTo(targetCamPos.current);
+          const distTarget = controls.target.distanceTo(targetLookAt.current);
+          if (distCam < 0.05 && distTarget < 0.05) {
+            isTransitioningRef.current = false;
+          }
+        }
+      }
 
       // Interpolate exploded views
       const targetExplode = explodedRef.current ? 1.0 : 0.0;
