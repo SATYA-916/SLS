@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import fs from 'fs';
 import path from 'path';
 import { connectMongo, Contact } from '../lib/mongodb.js';
 import { sendBrevo } from '../lib/email.js';
@@ -53,12 +54,29 @@ router.get('/contacts/download/:id', requireAdmin, async (req, res) => {
   try {
     await connectMongo();
     const contact = await Contact.findById(req.params.id);
-    if (!contact || !contact.filePath) {
-      res.status(404).json({ error: 'File not found' });
+    if (!contact) {
+      res.status(404).json({ error: 'Record not found' });
       return;
     }
-    const fullPath = path.join(process.cwd(), 'uploads', contact.filePath);
-    res.download(fullPath, contact.fileName);
+
+    // 1. If file data is stored directly in MongoDB (database persistence)
+    if (contact.fileData) {
+      res.setHeader('Content-Type', 'application/octet-stream');
+      res.setHeader('Content-Disposition', `attachment; filename="${contact.fileName}"`);
+      res.send(contact.fileData);
+      return;
+    }
+
+    // 2. Fallback to local file path (for backwards compatibility)
+    if (contact.filePath) {
+      const fullPath = path.join(process.cwd(), 'uploads', contact.filePath);
+      if (fs.existsSync(fullPath)) {
+        res.download(fullPath, contact.fileName);
+        return;
+      }
+    }
+
+    res.status(404).json({ error: 'File not found' });
   } catch (err) {
     req.log.error({ err }, 'Failed to download file');
     res.status(500).json({ error: 'Failed to download file' });

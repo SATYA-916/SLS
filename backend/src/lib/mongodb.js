@@ -22,6 +22,7 @@ const contactSchema = new mongoose.Schema(
     message: { type: String, required: true },
     fileName: { type: String, default: null },
     filePath: { type: String, default: null },
+    fileData: { type: Buffer, default: null },
   },
   { timestamps: true }
 );

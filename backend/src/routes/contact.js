@@ -8,26 +8,12 @@ import { sendBrevo } from '../lib/email.js';
 
 const router = Router();
 
-// Ensure local uploads directory exists
-const uploadsDir = path.join(process.cwd(), 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-// Multer storage setup
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + '-' + file.originalname);
-  }
-});
+// Multer storage setup - use memory storage so it works in serverless/ephemeral environments
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
-  limits: { fileSize: 50 * 1024 * 1024 } // 50MB max file size
+  limits: { fileSize: 15 * 1024 * 1024 } // 15MB max file size to prevent MongoDB 16MB document limit
 });
 
 const SubmitContactBody = z.object({
@@ -113,7 +99,7 @@ router.post('/', upload.single('file'), async (req, res) => {
 
   const { name, email, phone, company, service, message } = parsed.data;
   const fileName = req.file ? req.file.originalname : null;
-  const filePath = req.file ? req.file.filename : null;
+  const fileData = req.file ? req.file.buffer : null;
 
   try {
     await connectMongo();
@@ -125,7 +111,7 @@ router.post('/', upload.single('file'), async (req, res) => {
       service, 
       message, 
       fileName, 
-      filePath 
+      fileData 
     });
 
     req.log.info({ email, fileName }, 'Contact form saved to MongoDB');

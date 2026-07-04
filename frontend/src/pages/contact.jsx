@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Phone, Mail, Globe, MapPin, CheckCircle2, Clock, ShieldCheck, Zap, CalendarDays, X, Video } from 'lucide-react';
 import { submitContact, getServices } from '@/lib/api';
+import { toast } from '@/components/ui/toaster';
 
 // ── Calendly Configuration ──────────────────────────────────────────────────
 // Replace this URL with your actual Calendly link once you create a free account
@@ -143,7 +144,19 @@ export default function Contact() {
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
+      const selectedFile = e.target.files[0];
+      if (selectedFile.size > 15 * 1024 * 1024) {
+        toast({
+          title: "File too large",
+          description: "Please upload a file smaller than 15MB.",
+          variant: "destructive",
+        });
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+        return;
+      }
+      setFile(selectedFile);
     }
   };
 
@@ -154,7 +167,16 @@ export default function Contact() {
   const handleDrop = (e) => {
     e.preventDefault();
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setFile(e.dataTransfer.files[0]);
+      const selectedFile = e.dataTransfer.files[0];
+      if (selectedFile.size > 15 * 1024 * 1024) {
+        toast({
+          title: "File too large",
+          description: "Please upload a file smaller than 15MB.",
+          variant: "destructive",
+        });
+        return;
+      }
+      setFile(selectedFile);
     }
   };
 
@@ -455,7 +477,7 @@ export default function Contact() {
                       <>
                         <ShieldCheck className="w-6 h-6 text-gray-400 mb-1.5" />
                         <span className="text-xs font-semibold text-gray-600 block">Drag & Drop files here, or browse</span>
-                        <span className="text-[10px] text-gray-400 mt-1">Confidential project information handled securely. Max size 50MB.</span>
+                        <span className="text-[10px] text-gray-400 mt-1">Confidential project information handled securely. Max size 15MB.</span>
                       </>
                     )}
                   </div>
