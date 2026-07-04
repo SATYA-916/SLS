@@ -90,51 +90,53 @@ export default function Expertise() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.07 }}
-                  className="bg-white p-10 hover:bg-[#0a1628] hover:text-white group transition-colors duration-300 flex flex-col"
+                  className="bg-white p-10 border border-gray-200 shadow-sm flex flex-col justify-between"
                 >
-                  <div className="text-[#43648e] group-hover:text-white/60 mb-6 transition-colors">
-                    {serviceIcons[svc.icon] || <Building2 className="w-10 h-10" />}
-                  </div>
-                  <h3 className="text-xl font-bold text-[#0a1628] group-hover:text-white mb-4 transition-colors">{svc.title}</h3>
-                  <p className="text-sm text-gray-500 group-hover:text-white/70 leading-relaxed transition-colors mb-6 flex-grow">{svc.description}</p>
-                  
-                  {/* Dynamic Technical Specifications block for service cards */}
-                  {(() => {
-                    let specs = null;
-                    if (svc.title === 'Blueprint Design') {
-                      specs = { codes: 'ASME Sec VIII, API 560, BS EN', software: 'AutoCAD, SolidWorks' };
-                    } else if (svc.title === 'Industrial Design & Support') {
-                      specs = { codes: 'API 560, API 530, ASME Sec VIII', software: 'STAAD.Pro, AutoCAD' };
-                    } else if (svc.title === 'Engineering & Architecture Design') {
-                      specs = { codes: 'IS 800, IS 456, IS 1893 (Seismic)', software: 'STAAD.Pro, AutoCAD' };
-                    } else if (svc.title === 'Construction Supervision') {
-                      specs = { codes: 'AWS D1.1, ASME Sec IX, WPS/PQR', software: 'Quality Inspection' };
-                    } else if (svc.title === 'Municipality Relation Services') {
-                      specs = { codes: 'National Building Code (NBC), VMRDA', software: 'Regulatory Approvals' };
-                    } else if (svc.title === 'Remaining Life Assessment (RLA)') {
-                      specs = { codes: 'API 579 (FFS), ASME FFS-1', software: 'STAAD.Pro, UT Gauging' };
-                    } else if (svc.title === 'Software & AI Solutions') {
-                      specs = { codes: 'Tekla Open API, AutoCAD LISP', software: 'Python, C#, Tekla Structures' };
-                    }
+                  <div>
+                    <div className="text-[#43648e] mb-6">
+                      {serviceIcons[svc.icon] || <Building2 className="w-10 h-10" />}
+                    </div>
+                    <h3 className="text-xl font-bold text-[#0a1628] mb-4">{svc.title}</h3>
+                    <p className="text-sm text-gray-500 leading-relaxed mb-6">{svc.description}</p>
                     
-                    if (!specs) return null;
-                    return (
-                      <div className="mt-2 mb-6 border-t border-gray-100 group-hover:border-white/10 pt-4 space-y-2 text-xs text-left">
-                        <div>
-                          <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 group-hover:text-white/40 block">Codes & Compliance</span>
-                          <span className="font-semibold text-gray-700 group-hover:text-white/90">{specs.codes}</span>
+                    {/* Dynamic Technical Specifications block for service cards */}
+                    {(() => {
+                      let specs = null;
+                      if (svc.title === 'Blueprint Design') {
+                        specs = { codes: 'ASME Sec VIII, API 560, BS EN', software: 'AutoCAD, SolidWorks' };
+                      } else if (svc.title === 'Industrial Design & Support') {
+                        specs = { codes: 'API 560, API 530, ASME Sec VIII', software: 'STAAD.Pro, AutoCAD' };
+                      } else if (svc.title === 'Engineering & Architecture Design') {
+                        specs = { codes: 'IS 800, IS 456, IS 1893 (Seismic)', software: 'STAAD.Pro, AutoCAD' };
+                      } else if (svc.title === 'Construction Supervision') {
+                        specs = { codes: 'AWS D1.1, ASME Sec IX, WPS/PQR', software: 'Quality Inspection' };
+                      } else if (svc.title === 'Municipality Relation Services') {
+                        specs = { codes: 'National Building Code (NBC), VMRDA', software: 'Regulatory Approvals' };
+                      } else if (svc.title === 'Remaining Life Assessment (RLA)') {
+                        specs = { codes: 'API 579 (FFS), ASME FFS-1', software: 'STAAD.Pro, UT Gauging' };
+                      } else if (svc.title === 'Software & AI Solutions') {
+                        specs = { codes: 'Tekla Open API, AutoCAD LISP', software: 'Python, C#, Tekla Structures' };
+                      }
+                      
+                      if (!specs) return null;
+                      return (
+                        <div className="mt-2 mb-6 border-t border-gray-100 pt-4 space-y-2 text-xs text-left">
+                          <div>
+                            <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block">Codes & Compliance</span>
+                            <span className="font-semibold text-gray-700">{specs.codes}</span>
+                          </div>
+                          <div>
+                            <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block">Design Environment</span>
+                            <span className="font-semibold text-gray-700">{specs.software}</span>
+                          </div>
                         </div>
-                        <div>
-                          <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 group-hover:text-white/40 block">Design Environment</span>
-                          <span className="font-semibold text-gray-700 group-hover:text-white/90">{specs.software}</span>
-                        </div>
-                      </div>
-                    );
-                  })()}
+                      );
+                    })()}
+                  </div>
 
                   <div>
                     <Link href={`/contact?service=${encodeURIComponent(svc.title)}`}>
-                      <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#43648e] group-hover:text-white transition-colors cursor-pointer border-b border-transparent hover:border-current pb-0.5">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#43648e] hover:text-[#0a1628] transition-colors cursor-pointer border-b border-transparent hover:border-current pb-0.5">
                         Book Service &rarr;
                       </span>
                     </Link>

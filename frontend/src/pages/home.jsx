@@ -240,10 +240,10 @@ export default function Home() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.35, delay: i * 0.06 }}
-                    className="bg-white border border-gray-200 p-6 hover:border-blue-700 hover:shadow-md transition-all duration-200 group flex flex-col justify-between"
+                    className="bg-white border border-gray-200 p-6 shadow-sm flex flex-col justify-between"
                   >
                     <div>
-                      <div className="text-gray-300 group-hover:text-blue-700 mb-4 transition-colors">
+                      <div className="text-[#43648e] mb-4">
                         {serviceIcons[svc.icon] || <Building2 className="w-8 h-8" />}
                       </div>
                       <h3 className="font-bold text-[#0a1628] text-sm mb-2">{svc.title}</h3>
