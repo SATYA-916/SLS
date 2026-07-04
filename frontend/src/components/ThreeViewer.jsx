@@ -553,28 +553,29 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           }
 
           // Dense circular layout of vertical radiant tubes (API 530 tubes inside chamber)
-          const coilRadius = 3.4;
-          for (let i = 0; i < 28; i++) {
-            const angle = (i / 28) * Math.PI * 1.52;
+          // Full 360° peripheral ring — tubes run all the way around the circumference
+          const coilRadius = 3.6; // Close to refractory wall (lining inner radius ≈ 3.8, clearance ~0.2m)
+          const numTubes = 28;
+          for (let i = 0; i < numTubes; i++) {
+            const angle = (i / numTubes) * Math.PI * 2; // Full 360° ring
             const tubeGeo = new THREE.CylinderGeometry(0.1, 0.1, 7.6, 8);
             const tubeMesh = new THREE.Mesh(tubeGeo, coilMat);
             tubeMesh.position.set(Math.cos(angle) * coilRadius, 0, Math.sin(angle) * coilRadius);
             modelGroup.add(tubeMesh);
 
-            // Alloy support hangers (hooks holding each tube top)
+            // Alloy support hangers (clips holding each tube at the roof arch)
             const hookGeo = new THREE.BoxGeometry(0.04, 0.4, 0.15);
             const hook = new THREE.Mesh(hookGeo, stackMat);
             hook.position.set(Math.cos(angle) * coilRadius, 3.9, Math.sin(angle) * coilRadius);
             modelGroup.add(hook);
           }
 
-          // Bottom burners on floor plate
-          for (let x of [-1.6, 1.6]) {
-            for (let z of [-1.6, 1.6]) {
-              const burner = createIndustrialBurner(0.38, 0.6);
-              burner.position.set(x, -3.7, z);
-              modelGroup.add(burner);
-            }
+          // Floor-fired burners — cylindrical heaters use 1–3 central burners
+          // in a linear array along the centre axis, NOT a 2×2 grid (that's a box heater)
+          for (let z of [-1.2, 1.2]) {
+            const burner = createIndustrialBurner(0.42, 0.65);
+            burner.position.set(0, -3.7, z); // Centreline, equally spaced
+            modelGroup.add(burner);
           }
           break;
         }
