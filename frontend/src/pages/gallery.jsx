@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'wouter';
 import { Eye, FileText, ChevronRight, Settings, Shield, Activity, BarChart3, Wrench, Layers, Calendar } from 'lucide-react';
@@ -528,7 +528,20 @@ export default function Gallery() {
     setLocation('/contact?service=' + encodeURIComponent(serviceName));
   };
 
+  const tabsRef = useRef(null);
 
+  useEffect(() => {
+    if (tabsRef.current) {
+      const headerOffset = 64; // height of sticky header
+      const rect = tabsRef.current.getBoundingClientRect();
+      const elementTop = rect.top + window.scrollY;
+      
+      window.scrollTo({
+        top: elementTop - headerOffset,
+        behavior: 'instant'
+      });
+    }
+  }, [activeTab]);
 
   return (
     <div className="w-full bg-white">
@@ -558,7 +571,7 @@ export default function Gallery() {
       </section>
 
       {/* TABS CONTROLLER */}
-      <section className="border-b border-gray-200 sticky top-16 bg-white z-40 shadow-sm">
+      <section ref={tabsRef} className="border-b border-gray-200 sticky top-16 bg-white z-40 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex gap-8">
             {[
