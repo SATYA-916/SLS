@@ -257,41 +257,53 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     const modelGroup = new THREE.Group();
     scene.add(modelGroup);
 
-    // Helper Materials — Premium industrial steel palette
-    // KEY FIX: Keep metalness moderate (0.45-0.6) so diffuse lighting works without an env map.
-    // Pure metals (metalness ~1.0) go nearly black without a proper HDRI environment map.
+    // ─────────────────────────────────────────────────────────────────
+    // MATERIALS — Industrial Steel PBR Palette
+    // Tech: MeshPhysicalMaterial (shell/body) + MeshStandardMaterial (structural)
+    // Blue is ACCENT ONLY — not used as base fill color.
+    // Metalness kept at 0.6–0.75 so diffuse is visible without an HDRI env map.
+    // ─────────────────────────────────────────────────────────────────
 
-    // Structural steel: mid-blue steel — bright enough to read against dark bg
+    // Shell / primary body — gunmetal gray, slight clearcoat = "brushed painted steel"
+    const shellMat = new THREE.MeshPhysicalMaterial({
+      color: 0x6e7d8c,        // Muted blue-gray (#6E7D8C) — industrial gunmetal
+      roughness: 0.5,
+      metalness: 0.7,
+      clearcoat: 0.3,          // Subtle gloss layer — painted equipment finish
+      clearcoatRoughness: 0.4,
+      wireframe: wireframeRef.current,
+    });
+
+    // Structural framing, I-beams, columns — warm graphite, slightly lighter
     const blueprintMat = new THREE.MeshStandardMaterial({
-      color: 0x4a90d9,
-      roughness: 0.35,
-      metalness: 0.5,
-      transparent: false,
+      color: 0x8b95a1,        // Warm graphite (#8B95A1) — primed/galvanised steel
+      roughness: 0.55,
+      metalness: 0.65,
       wireframe: wireframeRef.current,
     });
 
-    // Process tubes / coils: amber/orange — hot process lines (industry standard)
+    // Process tubes / coils — amber/orange (industry-standard hot-service line colour)
     const coilMat = new THREE.MeshStandardMaterial({
-      color: 0xf4a017,
-      roughness: 0.3,
-      metalness: 0.45,
+      color: 0xd4840a,        // Deeper warm amber — slightly richer than bright orange
+      roughness: 0.35,
+      metalness: 0.55,
       wireframe: wireframeRef.current,
     });
 
-    // Secondary metal / flanges: light steel-blue — polished stainless look
+    // Secondary metal — flanges, bolts, hangers — silver-steel, polished stainless tone
     const stackMat = new THREE.MeshStandardMaterial({
-      color: 0xc8d8ee,
+      color: 0xa8b4c0,        // Silver-steel (#A8B4C0) — lighter than blueprint, reads as SS
       roughness: 0.4,
-      metalness: 0.4,
+      metalness: 0.6,
       wireframe: wireframeRef.current,
     });
 
-    // Wireframe accent overlay: crisp cyan blueprint lines
+    // Wireframe accent overlay — thin cyan blueprint edge lines (brand accent only)
     const wireMat = new THREE.MeshBasicMaterial({
       color: 0x00d4ff,
       wireframe: true,
       transparent: true,
-      opacity: 0.2
+      opacity: 0.18
     });
 
     // 5. Generate Custom Geometries based on selected component
@@ -398,14 +410,14 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
 
       switch (type) {
         case 'heater': { // Complete Fired Heater
-          // Radiant chamber (cylindrical bottom)
+          // Radiant chamber — main shell body (gunmetal)
           const radGeo = new THREE.CylinderGeometry(3.5, 3.5, 6, 32, 1, true);
-          const radMesh = new THREE.Mesh(radGeo, blueprintMat);
+          const radMesh = new THREE.Mesh(radGeo, shellMat);
           radMesh.position.y = -2;
           radMesh.name = "radiant";
           modelGroup.add(radMesh);
 
-          // Buckstays (vertical structural columns on outer shell)
+          // Buckstays (vertical structural I-beams on outer shell — graphite framing)
           for (let i = 0; i < 8; i++) {
             const angle = (i / 8) * Math.PI * 2;
             const beam = createIBeam(6, 0.25, 0.04, blueprintMat);
@@ -416,16 +428,16 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             modelGroup.add(beam);
           }
 
-          // Transition cone
+          // Transition cone — shell body
           const transGeo = new THREE.CylinderGeometry(2, 3.5, 2, 32, 1, true);
-          const transMesh = new THREE.Mesh(transGeo, blueprintMat);
+          const transMesh = new THREE.Mesh(transGeo, shellMat);
           transMesh.position.y = 2;
           transMesh.name = "transition";
           modelGroup.add(transMesh);
 
-          // Convection section module
+          // Convection section module — shell body
           const convGeo = new THREE.BoxGeometry(3.2, 5, 3.2);
-          const convMesh = new THREE.Mesh(convGeo, blueprintMat);
+          const convMesh = new THREE.Mesh(convGeo, shellMat);
           convMesh.position.y = 5.5;
           convMesh.name = "convection";
           modelGroup.add(convMesh);
@@ -439,30 +451,30 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             modelGroup.add(stiff);
           }
 
-          // Header Boxes Left & Right
+          // Header Boxes Left & Right — shell body
           const hBoxGeo = new THREE.BoxGeometry(0.6, 4.8, 3.2);
-          const hBoxLeft = new THREE.Mesh(hBoxGeo, blueprintMat);
+          const hBoxLeft = new THREE.Mesh(hBoxGeo, shellMat);
           hBoxLeft.position.set(-1.9, 5.5, 0);
           hBoxLeft.name = "headerbox-left";
           hBoxLeft.userData = { origX: -1.9 };
           modelGroup.add(hBoxLeft);
 
-          const hBoxRight = new THREE.Mesh(hBoxGeo, blueprintMat);
+          const hBoxRight = new THREE.Mesh(hBoxGeo, shellMat);
           hBoxRight.position.set(1.9, 5.5, 0);
           hBoxRight.name = "headerbox-right";
           hBoxRight.userData = { origX: 1.9 };
           modelGroup.add(hBoxRight);
 
-          // Off-take duct
+          // Off-take duct — shell body
           const ductGeo = new THREE.CylinderGeometry(1.0, 1.4, 1.5, 16);
-          const ductMesh = new THREE.Mesh(ductGeo, stackMat);
+          const ductMesh = new THREE.Mesh(ductGeo, shellMat);
           ductMesh.position.y = 8.55;
           ductMesh.name = "offtake";
           modelGroup.add(ductMesh);
 
-          // Chimney stack
+          // Chimney stack — shell body
           const stackGeo = new THREE.CylinderGeometry(0.8, 1, 9, 16);
-          const stackMesh = new THREE.Mesh(stackGeo, stackMat);
+          const stackMesh = new THREE.Mesh(stackGeo, shellMat);
           stackMesh.position.y = 13.8;
           stackMesh.name = "stack";
           modelGroup.add(stackMesh);
@@ -515,9 +527,9 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         }
 
         case 'radiant': { // Radiant Section
-          // Cylindrical casing cut-open (using cylinder with theta length so it's a cutaway view)
+          // Cylindrical casing — primary shell (gunmetal)
           const casingGeo = new THREE.CylinderGeometry(4, 4, 8, 32, 1, true, 0, Math.PI * 1.55);
-          const casingMesh = new THREE.Mesh(casingGeo, blueprintMat);
+          const casingMesh = new THREE.Mesh(casingGeo, shellMat);
           casingMesh.material.side = THREE.DoubleSide;
           modelGroup.add(casingMesh);
 
@@ -628,16 +640,19 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         }
 
         case 'roof': { // Refinery Roof Structure
-          // Conical shell deck plate
-          const coneGeo = new THREE.CylinderGeometry(1.5, 5, 2, 32, 1, true);
-          const coneMesh = new THREE.Mesh(coneGeo, new THREE.MeshStandardMaterial({
-            color: 0x4a90d9,
+          // Conical shell deck plate — use shellMat (gunmetal, semi-transparent)
+          const shellRoofMat = new THREE.MeshPhysicalMaterial({
+            color: 0x6e7d8c,
             roughness: 0.5,
             metalness: 0.7,
+            clearcoat: 0.3,
+            clearcoatRoughness: 0.4,
             transparent: true,
-            opacity: 0.65,
+            opacity: 0.7,
             side: THREE.DoubleSide
-          }));
+          });
+          const coneGeo = new THREE.CylinderGeometry(1.5, 5, 2, 32, 1, true);
+          const coneMesh = new THREE.Mesh(coneGeo, shellRoofMat);
           coneMesh.position.y = -1;
           modelGroup.add(coneMesh);
 
@@ -807,7 +822,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             const stepBox = new THREE.BoxGeometry(0.75, 0.02, 0.22);
             for (let i = 0; i <= numSteps; i++) {
               const t = i / numSteps;
-              const step = new THREE.Mesh(stepBox, stackMat);
+              const step = new THREE.Mesh(stepBox, shellMat);
               step.position.set(
                 xS + (xE - xS) * t,
                 yS + (yE - yS) * t + 0.04,
@@ -824,27 +839,29 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         }
 
         case 'headerbox': { // Tube Header Box
-          // Main casing enclosure box (semi-transparent paneling)
+          // Main casing — very subtle ghost shell so tubes inside are visible
           const boxGeo = new THREE.BoxGeometry(4.2, 5.2, 2.2);
-          const boxMesh = new THREE.Mesh(boxGeo, new THREE.MeshStandardMaterial({
-            color: 0x112240,
+          const boxMesh = new THREE.Mesh(boxGeo, new THREE.MeshPhysicalMaterial({
+            color: 0x5a6878,
             transparent: true,
-            opacity: 0.15,
+            opacity: 0.12,
+            roughness: 0.5,
+            metalness: 0.6,
             side: THREE.DoubleSide
           }));
           modelGroup.add(boxMesh);
 
-          // Casing stiffener edge frame angles
-          const boxFrame = new THREE.BoxHelper(boxMesh, 0x58c4ff);
+          // Casing stiffener edge frame — accent blue outline
+          const boxFrame = new THREE.BoxHelper(boxMesh, 0x4a90d9);
           modelGroup.add(boxFrame);
 
-          // Dual doors on hinges (left and right)
+          // Dual doors — shell body material
           const doorGeo = new THREE.BoxGeometry(1.95, 4.8, 0.08);
-          const doorL = new THREE.Mesh(doorGeo, blueprintMat);
+          const doorL = new THREE.Mesh(doorGeo, shellMat);
           doorL.position.set(-1.0, 0, 1.1);
           modelGroup.add(doorL);
 
-          const doorR = new THREE.Mesh(doorGeo, blueprintMat);
+          const doorR = new THREE.Mesh(doorGeo, shellMat);
           doorR.position.set(1.0, 0, 1.1);
           modelGroup.add(doorR);
 
