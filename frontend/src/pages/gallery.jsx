@@ -322,6 +322,111 @@ const drawings = [
     desc: "Casing plates, return bend spaces, inspection doors, and seal weld schedules for HDS header boxes.", 
     code: "ASME Sec VIII / Refinery Specs",
     service: "Industrial Design & Support"
+  },
+  { 
+    title: "Evaporator - G.A. of Structure", 
+    file: "evaporator_ga.png", 
+    desc: "General arrangement elevations showing building column spacings, platform heights, and vertical bracing schemes.", 
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Evaporator - Column Detailing", 
+    file: "evaporator_columns.png", 
+    desc: "Structural detailing of vertical column members, splice connections, and gusset configurations.", 
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Evaporator - Beam Detailing & Framing", 
+    file: "evaporator_beams.png", 
+    desc: "Floor framing layout showing beam member section sizes and typical platform framing joints.", 
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Evaporator - Column Vertical Bracing", 
+    file: "evaporator_bracing.png", 
+    desc: "Diagonal cross bracing system details designed to resist cyclonic and seismic lateral wind loads.", 
+    code: "IS 800 / IS 1893",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Evaporator - Operating Platforms Layout", 
+    file: "evaporator_platforms.png", 
+    desc: "Detailed circular platform layouts around the vessel and handrail upright connections.", 
+    code: "IS 800 / OSHA Standards",
+    service: "Blueprint Design"
+  },
+  { 
+    title: "Evaporator - Floor Gratings Layout", 
+    file: "evaporator_grating.png", 
+    desc: "Serrated safety steel floor grating layouts and panel fixing schedules.", 
+    code: "IS 800 / OSHA Standards",
+    service: "Blueprint Design"
+  },
+  { 
+    title: "Evaporator - Staircase Detailing", 
+    file: "evaporator_staircase.png", 
+    desc: "Stair tower details including stringer sizes, checker-plate treads, and landing platform connections.", 
+    code: "IS 800 / OSHA Standards",
+    service: "Blueprint Design"
+  },
+  { 
+    title: "Evaporator - Roof Truss & Purlins G.A.", 
+    file: "evaporator_truss_ga.png", 
+    desc: "Roof truss layout showing member frames, gables, and purlin pitches for sheet roofing.", 
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Evaporator - Roof Truss Details", 
+    file: "evaporator_truss_detail.png", 
+    desc: "Detailed structural fabrication sheet for welded gusset connections of the roof truss.", 
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Evaporator - Truss Vertical Bracing", 
+    file: "evaporator_truss_bracing.png", 
+    desc: "Horizontal and vertical truss wind bracings detailed to stabilize roof arches.", 
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Evaporator - False Rafter Details", 
+    file: "evaporator_false_rafter.png", 
+    desc: "False rafter overhang templates and structural joints at roof eaves.", 
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Evaporator - Side Wall Cladding Runners", 
+    file: "evaporator_side_runners.png", 
+    desc: "Wall girts and sag rods framing layouts designed to carry building sheet cladding.", 
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Evaporator - Purlin Typical Connections", 
+    file: "evaporator_purlin.png", 
+    desc: "Detailed typical connections and spacing for cold-formed steel roof purlins.", 
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Evaporator - Sag Rods Details", 
+    file: "evaporator_sag_rods.png", 
+    desc: "Sag rod sizes, tensioners, and girt connection brackets detailing.", 
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
+  },
+  { 
+    title: "Evaporator - Safety Ladder & Cage", 
+    file: "evaporator_ladder.png", 
+    desc: "Vertical climbing safety ladder details showing cages and anchor clips.", 
+    code: "OSHA / IS 800",
+    service: "Blueprint Design"
   }
 ];
 
@@ -646,6 +751,22 @@ const illustrations = [
     threeType: "maintenanceaccess",
     service: "Blueprint Design",
     icon: "maintenanceaccess"
+  },
+  {
+    id: "evaporator-structure",
+    title: "Evaporator Building Structure",
+    subtitle: "Multi-Level Process Housing",
+    description: "A heavy-duty industrial steel-framed building structure designed to support high-capacity evaporator columns and chemical process piping, engineered under IS 800 standards.",
+    purpose: "Provides structural support, multi-level access platforms, and canopy shelter for the central evaporator column vessel.",
+    function: "Distributes structural gravity, lateral wind, and seismic loads safely down to pile foundations while housing the high-altitude process column.",
+    materials: "IS 2062 Structural Steel, Anti-slip Gratings, High-Tensile Anchor Bolts",
+    discipline: "Structural Steel Design & Detailing",
+    application: "Chemical Refineries, Petrochemical Processing Plants",
+    scope: "Tekla structural detailing, dynamic load analysis, joint connection calculations under IS 800.",
+    deliverables: "General Arrangement drawings, floor framing plan, column details, connection details, stair layouts.",
+    threeType: "evaporator",
+    service: "Engineering & Architecture Design",
+    icon: "completeframe"
   }
 ];
 
@@ -653,7 +774,7 @@ const MODEL_GROUPS = [
   { name: "Overall Assembly",  items: ["complete-heater", "complete-stack", "off-take-duct"] },
   { name: "Radiant System",    items: ["radiant-section", "burner-floor", "header-box", "arch-plate-assembly"] },
   { name: "Convection System", items: ["convection-section", "soot-blower"] },
-  { name: "Structural System", items: ["support-steel", "complete-frame", "roof-structure", "ets-structure"] },
+  { name: "Structural System", items: ["support-steel", "complete-frame", "roof-structure", "ets-structure", "evaporator-structure"] },
   { name: "Access System",     items: ["platform-system", "stair-assembly", "stack-platform", "heater-grating", "stack-ladders", "breeching-door", "maintenance-access-sys"] },
 ];
 

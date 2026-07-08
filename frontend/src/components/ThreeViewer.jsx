@@ -7,13 +7,17 @@ const HOTSPOTS_DATA = {
     { id: 1, pos: { x: 0, y: 5.5, z: 1.5 }, title: 'Convection Section', text: 'Top convection module housing finned tubes bundle to capture residual flue heat.' },
     { id: 2, pos: { x: 0, y: -2, z: 1.5 }, title: 'Radiant Firebox', text: 'Refractory-lined lower chamber where process coils absorb high radiant heat fluxes.' },
     { id: 3, pos: { x: -1.5, y: 1.5, z: 1.5 }, title: 'Tube Header Boxes', text: 'Side return enclosures with quick-open hinges for decoking inspections.' },
-    { id: 4, pos: { x: 1.5, y: 0.0, z: -1.5 }, title: 'Burner Plenum Assembly', text: 'Secondary combustion air chamber distribution system at bottom floor.' }
+    { id: 4, pos: { x: 1.5, y: 0.0, z: -1.5 }, title: 'Burner Plenum Assembly', text: 'Secondary combustion air chamber distribution system at bottom floor.' },
+    { id: 5, pos: { x: 0, y: 1.8, z: 1.5 }, title: 'Refractory Lining Deck', text: 'Thermal dividing deck lined with ceramic fiber modules for heat retention.' },
+    { id: 6, pos: { x: 0, y: -4.5, z: 0 }, title: 'Fuel Gas Manifolds', text: 'Distribution piping supplying fuel gas to bottom-mounted burners.' }
   ],
   stack: [
     { id: 1, pos: { x: 0, y: 8, z: 1.0 }, title: 'Vortex wind strakes', text: 'Mitigates crosswind vortex shedding oscillations conforming to ASME STS-1.' },
     { id: 2, pos: { x: 0, y: -1, z: 1.8 }, title: 'Foundation Anchor Ring', text: 'Secures stack base plates against coastal cyclonic shear stresses.' },
     { id: 3, pos: { x: 0, y: 4.0, z: -1.0 }, title: 'Stack Access Platform', text: 'Circular sampling platform segment detailed under OSHA standards.' },
-    { id: 4, pos: { x: -0.8, y: 1.5, z: 0.8 }, title: 'Counterweight Damper', text: 'Flue draft control damper balancing furnace air draft flow pressures.' }
+    { id: 4, pos: { x: -0.8, y: 1.5, z: 0.8 }, title: 'Counterweight Damper', text: 'Flue draft control damper balancing furnace air draft flow pressures.' },
+    { id: 5, pos: { x: 0, y: 6.5, z: -0.8 }, title: 'Emission Sampling Nozzles', text: 'Built-in nozzles for flue gas monitors (CEMS) sensor instrumentation.' },
+    { id: 6, pos: { x: 0, y: 11.2, z: 0 }, title: 'Rain Hood & Screen', text: 'Top exhaust opening fitted with mesh screen to prevent weather ingress.' }
   ],
   offtake: [
     { id: 1, pos: { x: 0, y: 1.5, z: 1.2 }, title: 'Expansion joints bellows', text: 'Absorbs vertical and lateral thermal movements between stack and convection section.' },
@@ -25,7 +29,9 @@ const HOTSPOTS_DATA = {
     { id: 1, pos: { x: 0, y: 1.5, z: 1.8 }, title: 'Vertical process coils', text: 'High-alloy tube bundle designed for high temperatures conforming to API 530.' },
     { id: 2, pos: { x: 1.8, y: -1.0, z: 1.5 }, title: 'Coil Hanger Brackets', text: 'Heat-resistant casting support hangers detailed to handle tube thermal growth.' },
     { id: 3, pos: { x: -1.5, y: 0.0, z: 1.5 }, title: 'Skin Thermocouples', text: 'Precision temperature sensor sockets welded to coil outer boundaries.' },
-    { id: 4, pos: { x: 0, y: -2.5, z: -1.2 }, title: 'Refractory Floor blocks', text: 'Monolithic high-alumina block segments lined to insulate steel plates.' }
+    { id: 4, pos: { x: 0, y: -2.5, z: -1.2 }, title: 'Refractory Floor blocks', text: 'Monolithic high-alumina block segments lined to insulate steel plates.' },
+    { id: 5, pos: { x: 0, y: -3.2, z: 0 }, title: 'Burner Openings', text: 'Accurately detailed burner sleeves fitted with refractory throat rings.' },
+    { id: 6, pos: { x: 0, y: 3.2, z: -1.8 }, title: 'Explosion Relief Door', text: 'Gravity relief latches designed to open and vent pressure during surges.' }
   ],
   burnerfloor: [
     { id: 1, pos: { x: 0, y: 0, z: 1.2 }, title: 'Burner mounting sleeve', text: 'A36 floor casing plate cutout detailed to secure vertically-fired gas burners.' },
@@ -49,7 +55,9 @@ const HOTSPOTS_DATA = {
     { id: 1, pos: { x: 0, y: 2.0, z: 1.5 }, title: 'Finned tube bundle bank', text: 'High-density circular fin extensions to maximize convective heat recovery.' },
     { id: 2, pos: { x: 1.5, y: -0.5, z: 1.5 }, title: 'Intermediate support plates', text: 'High-temperature support sheets detailed to prevent pipe sagging.' },
     { id: 3, pos: { x: -1.2, y: 1.0, z: -1.2 }, title: 'Structural side columns', text: 'Heavy casing side channels designed to transfer bundle weight to firebox portal.' },
-    { id: 4, pos: { x: 0, y: -1.2, z: 1.0 }, title: 'Refractory lining blocks', text: 'Castable insulation layer detailed to protect structural casing plates.' }
+    { id: 4, pos: { x: 0, y: -1.2, z: 1.0 }, title: 'Refractory lining blocks', text: 'Castable insulation layer detailed to protect structural casing plates.' },
+    { id: 5, pos: { x: 0, y: 0.8, z: 1.5 }, title: 'Finned Tube Pitch Layout', text: 'Triangular tube pitch spacing optimized to maximize waste heat recovery.' },
+    { id: 6, pos: { x: -1.5, y: -0.5, z: 0 }, title: 'Tube Sheet Flange', text: 'Precision machined carbon steel tube sheet retaining convection tubes.' }
   ],
   sootblower: [
     { id: 1, pos: { x: 0, y: 1.5, z: 1.5 }, title: 'Catwalk support framing', text: 'Structural framework detailed to carry steam soot blower motorized carriage.' },
@@ -122,6 +130,14 @@ const HOTSPOTS_DATA = {
     { id: 2, pos: { x: 1.0, y: -0.5, z: 1.0 }, title: 'Gasket seal packing', text: 'High-temperature ceramic fiber ropes ensuring a smoke-tight casing seal.' },
     { id: 3, pos: { x: -0.8, y: 0.2, z: -0.8 }, title: 'Observation window glass', text: 'Fused quartz sight glass window for high-temperature flame viewing.' },
     { id: 4, pos: { x: 0.5, y: 0.5, z: -0.5 }, title: 'Door handle lock pin', text: 'Safety locking pin preventing accidental latch release under load.' }
+  ],
+  evaporator: [
+    { id: 1, pos: { x: -1.8, y: 0, z: 1.8 }, title: 'Primary Columns', text: 'IS 2062 heavy steel columns designed to transfer gravity loads and wind moments.' },
+    { id: 2, pos: { x: 0, y: 4, z: 1.8 }, title: 'Operating Platforms', text: 'Multi-level maintenance walkways with anti-slip grating and safety handrails.' },
+    { id: 3, pos: { x: 0, y: 2, z: 0 }, title: 'Evaporator Column', text: 'Central chemical processing evaporator vessel housed within the steel framing.' },
+    { id: 4, pos: { x: 2.2, y: -2, z: 0 }, title: 'Staircase Access', text: 'Continuous steel stair tower providing safe access to all platform levels.' },
+    { id: 5, pos: { x: 0, y: 8.2, z: 1.5 }, title: 'Roof Truss & Purlins', text: 'Triangular roof truss framing supporting the building canopy sheets.' },
+    { id: 6, pos: { x: -1.8, y: 2, z: 0 }, title: 'Side Cladding Sag Rods', text: 'Side wall cladding runners and sag rods supporting external sheeting.' }
   ],
   default: [
     { id: 1, pos: { x: 0, y: 2.5, z: 1.8 }, title: 'Refinery Section Coils', text: 'High-alloy convection tubes complying with API 560 thermal expansion limits.' },
@@ -218,6 +234,10 @@ function getCameraSettings(type) {
       settings.camPos.set(6, 4, 8);
       settings.lookAt.set(0, 0, 0);
       break;
+    case 'evaporator':
+      settings.camPos.set(12, 6, 16);
+      settings.lookAt.set(0, 0, 0);
+      break;
     default:
       settings.camPos.set(10, 8, 14);
       settings.lookAt.set(0, 0, 0);
@@ -247,7 +267,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
   const activeHotspots = getActiveHotspots();
   const updateHotspotsRef = useRef(null);
 
-  updateHotspotsRef.current = (camera, domElement) => {
+  updateHotspotsRef.current = (camera, domElement, modelGroup) => {
     if (!domElement) return;
     const width = domElement.clientWidth;
     const height = domElement.clientHeight;
@@ -256,6 +276,9 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
 
     activeHotspots.forEach((hs) => {
       tempV.set(hs.pos.x, hs.pos.y, hs.pos.z);
+      if (modelGroup) {
+        tempV.applyMatrix4(modelGroup.matrixWorld);
+      }
       tempV.project(camera);
 
       if (tempV.z > 1) {
@@ -1617,6 +1640,121 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           const lad = new THREE.Mesh(ladGeo, blueprintMat);
           lad.position.set(1.5, 4, -1.5);
           modelGroup.add(lad);
+          break;
+        }
+
+        case 'evaporator': { // Evaporator Building Structure
+          // 1. Evaporator Column Vessel in center (tall shiny cylinder)
+          const vesselGeo = new THREE.CylinderGeometry(0.8, 0.8, 14, 32);
+          const vesselMat = new THREE.MeshPhysicalMaterial({
+            color: 0x224466,
+            metalness: 0.8,
+            roughness: 0.2,
+            clearcoat: 0.5,
+            clearcoatRoughness: 0.1
+          });
+          const vessel = new THREE.Mesh(vesselGeo, vesselMat);
+          vessel.position.y = 0;
+          vessel.name = "vessel";
+          modelGroup.add(vessel);
+
+          // 2. Corner columns of the housing structure (I-beams)
+          for (let x of [-1.8, 1.8]) {
+            for (let z of [-1.8, 1.8]) {
+              const col = createIBeam(15, 0.22, 0.03, blueprintMat);
+              col.position.set(x, 0.5, z);
+              col.rotation.x = Math.PI / 2;
+              col.name = "columns";
+              modelGroup.add(col);
+            }
+          }
+
+          // 3. Multi-level operating platforms (floor frames at Y = -4, 0, 4, 8)
+          for (let h of [-4, 0, 4, 8]) {
+            // Horizontal framing girders
+            for (let z of [-1.8, 1.8]) {
+              const g = createIBeam(3.6, 0.18, 0.025, blueprintMat);
+              g.position.set(0, h, z);
+              modelGroup.add(g);
+            }
+            for (let x of [-1.8, 1.8]) {
+              const g = createIBeam(3.6, 0.18, 0.025, blueprintMat);
+              g.position.set(x, h, 0);
+              g.rotation.y = Math.PI / 2;
+              modelGroup.add(g);
+            }
+
+            // Platform walkway flooring (anti-slip transparent wire grids)
+            const floorPlatGeo = new THREE.BoxGeometry(3.6, 0.05, 3.6);
+            const floorPlat = new THREE.Mesh(floorPlatGeo, wireMat);
+            floorPlat.position.y = h;
+            modelGroup.add(floorPlat);
+
+            // Circular cutout for vessel on platforms
+            const cutGeo = new THREE.CylinderGeometry(1.0, 1.0, 0.1, 24);
+            const cut = new THREE.Mesh(cutGeo, shellMat);
+            cut.position.set(0, h, 0);
+            modelGroup.add(cut);
+          }
+
+          // 4. Diagonal side bracings
+          const braceGeo = new THREE.CylinderGeometry(0.04, 0.04, 5.2, 8);
+          for (let h of [-2, 2, 6]) {
+            // Side X-bracings
+            for (let z of [-1.8, 1.8]) {
+              const b1 = new THREE.Mesh(braceGeo, stackMat);
+              b1.position.set(0, h, z);
+              b1.rotation.z = 0.75;
+              b1.name = "bracings";
+              modelGroup.add(b1);
+
+              const b2 = b1.clone();
+              b2.rotation.z = -0.75;
+              modelGroup.add(b2);
+            }
+          }
+
+          // 5. Roof Truss structure (triangular frames at Y = 8 to 9.2)
+          for (let z of [-1.8, 1.8]) {
+            // Triangular truss side members
+            const t1 = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.0, 8), blueprintMat);
+            t1.position.set(-0.9, 8.6, z);
+            t1.rotation.z = -0.6;
+            modelGroup.add(t1);
+
+            const t2 = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.0, 8), blueprintMat);
+            t2.position.set(0.9, 8.6, z);
+            t2.rotation.z = 0.6;
+            modelGroup.add(t2);
+
+            const tBase = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 3.6, 8), blueprintMat);
+            tBase.position.set(0, 8.0, z);
+            tBase.rotation.z = Math.PI / 2;
+            modelGroup.add(tBase);
+          }
+
+          // Roof purlins (horizontal connecting rails)
+          for (let px of [-1.8, -0.9, 0, 0.9, 1.8]) {
+            const py = 8.0 + (1.2 - Math.abs(px) * 0.67);
+            const purlin = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 3.6, 8), stackMat);
+            purlin.position.set(px, py, 0);
+            purlin.rotation.x = Math.PI / 2;
+            modelGroup.add(purlin);
+          }
+
+          // 6. Staircase assembly (rising from Y = -4 to Y = 0)
+          const stairGeo = new THREE.BoxGeometry(0.6, 0.08, 4.0);
+          const stair = new THREE.Mesh(stairGeo, blueprintMat);
+          stair.position.set(2.1, -2, 0);
+          stair.rotation.x = 0.8;
+          stair.rotation.y = Math.PI / 2;
+          modelGroup.add(stair);
+
+          // Stair landing at Y = 0
+          const landGeo = new THREE.BoxGeometry(1.0, 0.1, 1.0);
+          const land = new THREE.Mesh(landGeo, blueprintMat);
+          land.position.set(2.1, 0, 1.3);
+          modelGroup.add(land);
           break;
         }
 

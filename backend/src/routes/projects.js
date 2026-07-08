@@ -567,6 +567,42 @@ const projects = [
     challenge: 'Sizing and alignment mapping for cross-country Air Separation Unit pipeline networks, navigating complex terrain and utility crossings.',
     solution: 'Developed detailed alignment sheets and pipe routing paths, incorporating crossing details for roads, railways, and other utilities.',
     slsAction: 'Conducted alignment surveys, prepared pipeline routing sheets, detailed utility crossing structures, and compiled engineering survey books.'
+  },
+  {
+    id: 48,
+    title: 'Evaporator Building Structure - SLS-1011-16',
+    description: 'Complete fabrication detailing and structural design for a multi-story chemical processing Evaporator Building.',
+    category: 'Structures',
+    client: 'Proprietary Chemical Client',
+    year: 2011,
+    image: '/gallery/evaporator_ga.png',
+    challenge: 'Designing a stable, multi-tier steel building to support a heavy, vertically suspended evaporator column vessel while resisting wind shears, floor vibrations, and accommodating thermal expansion growth.',
+    solution: 'Engineered a braced steel frame layout with circular platform cutouts at each elevation to house the column. Designed standard roof trusses and side wall runners to support the external sheet cladding, and lateral wind bracings under IS 800 standards.',
+    slsAction: 'Generated complete 15-drawing steel fabrication detailing package including Columns schedule, Floor beams framing plans, Roof trusses assembly, side wall runners, and Safety ladders.'
+  },
+  {
+    id: 49,
+    title: 'DHDT Fired Heater - EIL Specs',
+    description: 'Residual engineering and structural steel detailing for a grassroots Diesel Hydrotreater (DHDT) Fired Heater package.',
+    category: 'Fired Heaters',
+    client: 'Engineers India Limited (EIL) / Refinery Client',
+    year: 2012,
+    image: '/gallery/eil_ga_sheet1.png',
+    challenge: 'Detailing a massive 60-meter cylindrical fired heater under strict EIL specifications, requiring zero clash tolerance across radiant, convection, stack, and catwalk interfaces.',
+    solution: 'Modeled and detailed the heater casing plates, return bend header boxes, and platform systems. Conducted rigorous stress analysis on critical lifting lugs and high-temperature coil supports.',
+    slsAction: 'Delivered complete Tekla structural modeling, casing layouts, platforms details, and pipe support frames in full compliance with EIL specifications.'
+  },
+  {
+    id: 50,
+    title: 'HDS Fired Heater - EIL Specs',
+    description: 'Mechanical design, casing detailing, and platform engineering for a Hydrodesulfurization (HDS) Fired Heater.',
+    category: 'Fired Heaters',
+    client: 'Esteem / Refinery Client',
+    year: 2012,
+    image: '/gallery/hds_convection_sheet1.png',
+    challenge: 'Engineering the high-temperature radiant zone coils and convective waste heat recovery module, utilizing finned tubes to maximize heat transfer efficiency without overheating casing plates.',
+    solution: 'Designed stiffened casing panels backed by multi-layer monolithic refractory blocks. Integrated intermediate tube support plates to prevent horizontal coil sagging at 650°C operating temperatures.',
+    slsAction: 'Prepared comprehensive mechanical and detailing drawings for pressure parts, casing plates, platforms assemblies, header boxes, and self-supporting stack.'
   }
 ];
 
