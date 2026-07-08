@@ -395,7 +395,7 @@ const projects = [
     slsAction: 'Modeled the 3D steel frames in STAAD.Pro, detailed high-strength bolted connections, designed pile foundations, and generated fabrication drawings.'
   },
   {
-    id: 48,
+    id: 51,
     title: 'TANDA Thermal Power Project – Back End Duct',
     description: 'Detailing of back-end duct support steelwork for the 2x660 MW Tanda Thermal Power Project Stage-II using Tekla.',
     category: 'Boilers & Chimneys',
