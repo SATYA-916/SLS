@@ -1286,6 +1286,28 @@ export default function Gallery() {
   useEffect(() => {
     // Reset to very top of page on initial entry
     window.scrollTo(0, 0);
+
+    const params = new URLSearchParams(window.location.search);
+    const tabParam = params.get('tab');
+    const modelParam = params.get('model');
+
+    if (tabParam === 'models' || tabParam === 'illustrations') {
+      setActiveTab('illustrations');
+      if (modelParam) {
+        const found = illustrations.find(i => i.id === modelParam || i.threeType === modelParam);
+        if (found) {
+          setSelectedIll(found);
+          const groupName = getActiveGroup(found.id);
+          setOpenGroups(prev => ({ ...prev, [groupName]: true }));
+        }
+      }
+    } else if (tabParam === 'drawings') {
+      setActiveTab('drawings');
+      const sub = params.get('sub');
+      if (sub) {
+        setDrawingSubTab(sub);
+      }
+    }
   }, []);
 
   useEffect(() => {

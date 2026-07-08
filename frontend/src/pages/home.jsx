@@ -75,8 +75,32 @@ const industries = [
   { name: 'Chemical Plants', icon: <Factory className="w-5 h-5" /> },
   { name: 'Infrastructure', icon: <Building2 className="w-5 h-5" /> },
   { name: 'Steel Industry', icon: <Grid3X3 className="w-5 h-5" /> },
-  { name: 'Energy Systems', icon: <Wrench className="w-5 h-5" /> },
 ];
+
+const SPOTLIGHT_META = {
+  48: {
+    threeId: 'evaporator-structure',
+    blueprintRef: 'SLS-1011-16-GA-01',
+    drawingFile: 'evaporator_ga.png',
+    codes: 'IS 800 (Structural Design), IS 1893 (Seismic Loads)',
+    software: 'AutoCAD, STAAD.Pro, Tekla Structures'
+  },
+  49: {
+    threeId: 'complete-heater',
+    blueprintRef: 'EIL-6879-211-05-42-0102',
+    drawingFile: 'eil_ga_sheet1.png',
+    codes: 'API 560 (Fired Heaters), API 530, ASME Sec VIII',
+    software: 'STAAD.Pro, AutoCAD, ANSYS (FEA Thermal)'
+  },
+  50: {
+    threeId: 'complete-heater',
+    blueprintRef: 'EIL-6879-212-05-42-1202',
+    drawingFile: 'hds_convection_sheet1.png',
+    codes: 'API 560 (Fired Heaters), ASME Sec VIII, EIL Specs',
+    software: 'STAAD.Pro, AutoCAD, ANSYS (FEA Structural)'
+  }
+};
+
 
 function AnimatedSection({ children, className = '' }) {
   const ref = useRef(null);
@@ -144,7 +168,20 @@ export default function Home() {
     initialData: fallbackServices
   });
 
+  const [spotlightProject, setSpotlightProject] = useState(null);
+
+  useEffect(() => {
+    if (projects && projects.length > 0) {
+      const specialProjects = projects.filter(p => [48, 49, 50].includes(p.id));
+      if (specialProjects.length > 0) {
+        const randomProj = specialProjects[Math.floor(Math.random() * specialProjects.length)];
+        setSpotlightProject(randomProj);
+      }
+    }
+  }, [projects]);
+
   const featuredProjects = projects?.slice(0, 3);
+
 
   return (
     <div className="w-full bg-white">
@@ -382,7 +419,107 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. FEATURED PROJECTS */}
+      {/* 4. FEATURED CASE STUDY SPOTLIGHT (Randomized on every reload) */}
+      <section className="py-20 bg-slate-50 border-b border-gray-200">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <div className="text-center mb-12">
+              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-700 mb-3">Case Study Spotlight</p>
+              <h2 className="text-3xl font-bold text-[#0a1628]">Project Case Study in Focus</h2>
+              <p className="text-xs text-gray-500 max-w-xl mx-auto mt-2 leading-relaxed">
+                Highlighting our specialized mechanical detailing, structural design, and code compliance work. Reload the page to view a different case study focus.
+              </p>
+            </div>
+          </AnimatedSection>
+
+          {spotlightProject && SPOTLIGHT_META[spotlightProject.id] ? (
+            <div className="max-w-5xl mx-auto border border-gray-200 bg-white shadow-sm overflow-hidden flex flex-col lg:flex-row gap-8 lg:gap-0 rounded-sm">
+              {/* Left Column: Blueprint Image preview with slight blur */}
+              <div className="lg:w-1/2 relative bg-slate-100 border-b lg:border-b-0 lg:border-r border-gray-200 min-h-[320px] flex items-center justify-center overflow-hidden group">
+                <img 
+                  src={`/gallery/${SPOTLIGHT_META[spotlightProject.id].drawingFile}`} 
+                  alt={spotlightProject.title}
+                  className="absolute inset-0 w-full h-full object-cover filter blur-[1.5px] group-hover:blur-none transition-all duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-[#0a1628]/10 group-hover:bg-transparent transition-colors duration-300" />
+                <div className="absolute top-4 left-4 bg-blue-700 text-white text-[9px] font-bold uppercase tracking-widest px-3 py-1 shadow rounded-sm">
+                  Featured Case Study
+                </div>
+                <div className="absolute bottom-4 left-4 bg-[#0a1628]/80 backdrop-blur-sm text-white text-[9px] font-semibold px-2 py-1 rounded-sm">
+                  Drawing Ref: {SPOTLIGHT_META[spotlightProject.id].blueprintRef}
+                </div>
+              </div>
+
+              {/* Right Column: Case study details */}
+              <div className="lg:w-1/2 p-8 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between gap-4 mb-4">
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-blue-700 bg-blue-50 px-2 py-0.5 rounded-sm">
+                      {spotlightProject.category}
+                    </span>
+                    <span className="text-[10px] text-gray-400 font-bold uppercase">
+                      Est. {spotlightProject.year}
+                    </span>
+                  </div>
+                  
+                  <h3 className="text-xl md:text-2xl font-bold text-[#0a1628] leading-tight mb-4">
+                    {spotlightProject.title}
+                  </h3>
+                  
+                  <div className="space-y-4 mb-6">
+                    <div>
+                      <span className="text-[9px] font-black uppercase text-slate-400 tracking-wider block">The Challenge</span>
+                      <p className="text-xs text-gray-600 leading-relaxed mt-0.5">
+                        {spotlightProject.challenge}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="text-[9px] font-black uppercase text-slate-400 tracking-wider block">SLS Engineering Solution</span>
+                      <p className="text-xs text-gray-600 leading-relaxed mt-0.5">
+                        {spotlightProject.solution}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 border-t border-gray-200 pt-4 mb-6">
+                    <div>
+                      <span className="text-[8px] font-black uppercase text-slate-400 tracking-wider block">Applicable Codes</span>
+                      <span className="text-[10px] font-semibold text-slate-700 mt-0.5 block leading-tight">
+                        {SPOTLIGHT_META[spotlightProject.id].codes}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[8px] font-black uppercase text-slate-400 tracking-wider block">Design Software</span>
+                      <span className="text-[10px] font-semibold text-slate-700 mt-0.5 block leading-tight">
+                        {SPOTLIGHT_META[spotlightProject.id].software}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link href={`/case-study/${spotlightProject.id}`} className="flex-1">
+                    <button className="w-full bg-[#0a1628] hover:bg-[#1a2f4c] text-white py-3 text-xs font-bold uppercase tracking-wider transition-colors rounded-sm flex items-center justify-center gap-1 cursor-pointer">
+                      Read Technical Case Study &rarr;
+                    </button>
+                  </Link>
+                  <Link href={`/gallery?tab=models&model=${SPOTLIGHT_META[spotlightProject.id].threeId}`} className="flex-1">
+                    <button className="w-full bg-white hover:bg-slate-100 border border-gray-300 text-slate-700 py-3 text-xs font-bold uppercase tracking-wider transition-colors rounded-sm flex items-center justify-center gap-1 cursor-pointer">
+                      Open Interactive 3D Model
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="max-w-5xl mx-auto h-72 bg-gray-50 border border-gray-200 flex items-center justify-center rounded-sm">
+              <Skeleton className="w-full h-full animate-pulse" />
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* 5. FEATURED PROJECTS */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <AnimatedSection>
