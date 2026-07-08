@@ -13,6 +13,40 @@ export function getThreeModelIdForProject(project) {
   if (!project) return 'complete-heater';
   
   const id = project.id;
+
+  // Specific project-to-model mapping
+  if (id === 1) return 'canopy-millennium';
+  if (id === 2) return 'ac-shelter';
+  if (id === 3) return 'mt-pool-structure';
+  if (id === 4) return 'concrete-shield-wall';
+  if (id === 5) return 'sgp-lead-shield';
+  if (id === 6) return 'cseam-lead-shield';
+  if (id === 7) return 'marking-fixture';
+  if (id === 8) return 'cold-box-foundation';
+  if (id === 9) return 'compressor-foundation';
+  if (id === 10) return 'boiler-house-frame';
+  if (id === 11) return 'steel-chimney';
+  if (id === 12) return 'vfd-room';
+  if (id === 13) return 'retaining-wall';
+  if (id === 14) return 'air-duct';
+  if (id === 15) return 'monorail-hoist';
+  if (id === 16) return 'vessel-skid';
+  if (id === 17) return 'damper-assembly';
+  if (id === 18) return 'piping-manifold';
+  if (id === 19) return 'refractory-anchor';
+  if (id === 20) return 'tube-sheet';
+  if (id === 21) return 'crossover-piping';
+  if (id === 22) return 'sag-rod';
+  if (id === 23) return 'expansion-bellows';
+  if (id === 24) return 'breeching-casing';
+  if (id === 25) return 'skid-piping';
+  if (id === 27) return 'stair-tower';
+  if (id === 28) return 'cage-ladder';
+  if (id === 29) return 'piling-grid';
+  if (id === 30) return 'flare-tip';
+  if (id === 31) return 'preheater-rotor';
+
+  // Fallbacks for the rest of the 50 projects
   if (id === 48) return 'evaporator-structure';
   if (id === 49) return 'dhdt-heater';
   if (id === 50) return 'hds-heater';
@@ -20,6 +54,36 @@ export function getThreeModelIdForProject(project) {
   const cat = project.category || '';
   const title = (project.title || '').toLowerCase();
   const desc = (project.description || '').toLowerCase();
+
+  if (title.includes('canopy')) return 'canopy-millennium';
+  if (title.includes('shelter')) return 'ac-shelter';
+  if (title.includes('pool')) return 'mt-pool-structure';
+  if (title.includes('concrete') || title.includes('wall')) return 'concrete-shield-wall';
+  if (title.includes('sgp') || title.includes('generator')) return 'sgp-lead-shield';
+  if (title.includes('c-seam') || title.includes('seam')) return 'cseam-lead-shield';
+  if (title.includes('fixture') || title.includes('marking')) return 'marking-fixture';
+  if (title.includes('cold box') || title.includes('foundation')) return 'cold-box-foundation';
+  if (title.includes('compressor')) return 'compressor-foundation';
+  if (title.includes('boiler') || title.includes('power')) return 'boiler-house-frame';
+  if (title.includes('chimney') || title.includes('stack')) return 'steel-chimney';
+  if (title.includes('room') || title.includes('vfd')) return 'vfd-room';
+  if (title.includes('retaining')) return 'retaining-wall';
+  if (title.includes('duct') || title.includes('combustion')) return 'air-duct';
+  if (title.includes('hoist') || title.includes('monorail')) return 'monorail-hoist';
+  if (title.includes('skid') || title.includes('vessel')) return 'vessel-skid';
+  if (title.includes('damper')) return 'damper-assembly';
+  if (title.includes('manifold') || title.includes('header')) return 'piping-manifold';
+  if (title.includes('anchor')) return 'refractory-anchor';
+  if (title.includes('sheet') || title.includes('tubesheet')) return 'tube-sheet';
+  if (title.includes('crossover')) return 'crossover-piping';
+  if (title.includes('sag') || title.includes('purlin')) return 'sag-rod';
+  if (title.includes('bellows') || title.includes('expansion')) return 'expansion-bellows';
+  if (title.includes('breeching') || title.includes('casing')) return 'breeching-casing';
+  if (title.includes('stair') || title.includes('tower')) return 'stair-tower';
+  if (title.includes('ladder') || title.includes('cage')) return 'cage-ladder';
+  if (title.includes('pile') || title.includes('grid')) return 'piling-grid';
+  if (title.includes('flare') || title.includes('tip')) return 'flare-tip';
+  if (title.includes('rotor') || title.includes('preheater')) return 'preheater-rotor';
 
   // Fired Heaters
   if (cat === 'Fired Heaters' || title.includes('heater') || desc.includes('heater')) {
@@ -55,6 +119,7 @@ export function getThreeModelIdForProject(project) {
   
   return 'complete-frame';
 }
+
 
 const PROJECT_DRAWINGS = {
   48: [
