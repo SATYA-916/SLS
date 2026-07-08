@@ -86,14 +86,14 @@ const SPOTLIGHT_META = {
     software: 'AutoCAD, STAAD.Pro, Tekla Structures'
   },
   49: {
-    threeId: 'complete-heater',
+    threeId: 'dhdt-heater',
     blueprintRef: 'EIL-6879-211-05-42-0102',
     drawingFile: 'eil_ga_sheet1.png',
     codes: 'API 560 (Fired Heaters), API 530, ASME Sec VIII',
     software: 'STAAD.Pro, AutoCAD, ANSYS (FEA Thermal)'
   },
   50: {
-    threeId: 'complete-heater',
+    threeId: 'hds-heater',
     blueprintRef: 'EIL-6879-212-05-42-1202',
     drawingFile: 'hds_convection_sheet1.png',
     codes: 'API 560 (Fired Heaters), ASME Sec VIII, EIL Specs',

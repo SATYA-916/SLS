@@ -9,6 +9,12 @@ import {
   Tag, ShieldCheck, ClipboardList, CheckCircle2, ChevronRight 
 } from 'lucide-react';
 
+const PROJECT_THREE_MAP = {
+  48: 'evaporator-structure',
+  49: 'dhdt-heater',
+  50: 'hds-heater'
+};
+
 const PROJECT_DRAWINGS = {
   48: [
     {
@@ -384,6 +390,15 @@ export default function CaseStudy() {
                     <span className="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-1">Deliverables Log</span>
                     <span className="text-xs font-medium text-gray-700 leading-relaxed block">{specs.deliverables}</span>
                   </div>
+                  {PROJECT_THREE_MAP[projectId] && (
+                    <div className="pt-4 border-t border-slate-200">
+                      <Link href={`/gallery?tab=models&model=${PROJECT_THREE_MAP[projectId]}`}>
+                        <button className="w-full bg-[#43648e] hover:bg-[#0a1628] text-white py-2.5 text-[11px] font-bold uppercase tracking-wider transition-colors rounded-sm flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
+                          Open Interactive 3D Model &rarr;
+                        </button>
+                      </Link>
+                    </div>
+                  )}
                   <div className="pt-4 border-t border-slate-200">
                     <div className="bg-[#0a1628]/5 p-4 border border-[#0a1628]/10 rounded-sm">
                       <h4 className="text-xs font-bold text-[#0a1628] mb-1 flex items-center gap-1">

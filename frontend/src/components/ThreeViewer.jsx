@@ -139,6 +139,22 @@ const HOTSPOTS_DATA = {
     { id: 5, pos: { x: 0, y: 8.2, z: 1.5 }, title: 'Roof Truss & Purlins', text: 'Triangular roof truss framing supporting the building canopy sheets.' },
     { id: 6, pos: { x: -1.8, y: 2, z: 0 }, title: 'Side Cladding Sag Rods', text: 'Side wall cladding runners and sag rods supporting external sheeting.' }
   ],
+  dhdt: [
+    { id: 1, pos: { x: 0, y: -2, z: 1.5 }, title: 'DHDT Radiant Zone', text: 'Refractory-lined lower firebox chamber where alloy tube coils absorb intense radiant heat.' },
+    { id: 2, pos: { x: 0, y: 5.5, z: 1.5 }, title: 'EIL Convection Module', text: 'Upper waste heat recovery bank using finned tube bundles, conforming to EIL specs.' },
+    { id: 3, pos: { x: 0, y: 1.5, z: 1.0 }, title: 'DHDT Process Coils', text: 'High-alloy TP347H process tube loops designed for thermal expansion under API 530.' },
+    { id: 4, pos: { x: 0, y: 11.5, z: 0 }, title: 'EIL Exhaust Stack', text: 'Self-supporting stack fitted with helical wind strakes to mitigate vortex shedding.' },
+    { id: 5, pos: { x: -1.6, y: 5.5, z: 0 }, title: 'Header Access Box', text: 'Return bend enclosures featuring quick-open hinged doors for decoking sweeps.' },
+    { id: 6, pos: { x: 1.8, y: -4.8, z: 1.8 }, title: 'Column Base Plates', text: 'Heavy anchor plates securing structural columns against cyclonic wind forces.' }
+  ],
+  hds: [
+    { id: 1, pos: { x: 0, y: -3, z: 2.2 }, title: 'HDS Cabin Radiant Casing', text: 'Wide rectangular firebox casing fitted with vertical buckstays for structural strength.' },
+    { id: 2, pos: { x: -1.4, y: 1.5, z: 0 }, title: 'Twin Convection Modules', text: 'Dual convective modules side-by-side to optimize waste heat capture from cabin burners.' },
+    { id: 3, pos: { x: 1.4, y: 6.5, z: 0 }, title: 'Twin Exhaust Stacks', text: 'Dual self-supporting stacks fitted with helical wind strakes for wind loading stability.' },
+    { id: 4, pos: { x: 0, y: -0.5, z: 1.8 }, title: 'Process Header Manifold', text: 'Interconnecting piping manifolds linking the radiant section to dual convection banks.' },
+    { id: 5, pos: { x: 0, y: -2, z: -2.1 }, title: 'Refractory Wall Lining', text: 'High-density monolithic refractory lining backing the cabin casing plates.' },
+    { id: 6, pos: { x: 1.8, y: 0.8, z: -1.8 }, title: 'Moment Frame Connections', text: 'Heavy bolted structural beam-to-column joints providing high wind resistance.' }
+  ],
   default: [
     { id: 1, pos: { x: 0, y: 2.5, z: 1.8 }, title: 'Refinery Section Coils', text: 'High-alloy convection tubes complying with API 560 thermal expansion limits.' },
     { id: 2, pos: { x: 1.5, y: -2, z: 1.5 }, title: 'Structural Support Bracket', text: 'Detailed base plates carrying full dead loads of structural modules.' },
@@ -236,6 +252,14 @@ function getCameraSettings(type) {
       break;
     case 'evaporator':
       settings.camPos.set(12, 6, 16);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'dhdt':
+      settings.camPos.set(12, 8, 18);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'hds':
+      settings.camPos.set(14, 8, 20);
       settings.lookAt.set(0, 0, 0);
       break;
     default:
@@ -2263,6 +2287,271 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           stairGroupU.add(diagRailU);
 
           modelGroup.add(stairGroupU);
+
+          break;
+        }
+
+        case 'dhdt': { // DHDT Fired Heater - High Fidelity EIL Model
+          // 1. Radiant Section Casing
+          const radGeo = new THREE.CylinderGeometry(3.5, 3.5, 6, 32, 1, true);
+          const radMesh = new THREE.Mesh(radGeo, shellMat);
+          radMesh.position.y = -2;
+          radMesh.name = "radiant";
+          modelGroup.add(radMesh);
+
+          // Buckstays (vertical structural channels on outer radiant shell)
+          for (let i = 0; i < 8; i++) {
+            const angle = (i / 8) * Math.PI * 2;
+            const beam = createIBeam(6, 0.25, 0.04, blueprintMat);
+            beam.position.set(Math.cos(angle) * 3.62, -2, Math.sin(angle) * 3.62);
+            beam.rotation.y = -angle;
+            beam.rotation.x = Math.PI / 2;
+            modelGroup.add(beam);
+          }
+
+          // 2. Burner Plenum floor below Y = -5
+          const floorGeo = new THREE.CylinderGeometry(3.8, 3.8, 0.2, 32);
+          const floorMesh = new THREE.Mesh(floorGeo, blueprintMat);
+          floorMesh.position.y = -5.0;
+          modelGroup.add(floorMesh);
+
+          // Burner plenum box (A36 steel plenum)
+          const plenumGeo = new THREE.CylinderGeometry(3.2, 3.2, 0.8, 32);
+          const plenum = new THREE.Mesh(plenumGeo, shellMat);
+          plenum.position.y = -5.5;
+          modelGroup.add(plenum);
+
+          // 4x Burners: small cylinders protruding downwards
+          for (let bx of [-1.2, 1.2]) {
+            for (let bz of [-1.2, 1.2]) {
+              const burnerGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.6, 16);
+              const burner = new THREE.Mesh(burnerGeo, stackMat);
+              burner.position.set(bx, -6.0, bz);
+              modelGroup.add(burner);
+              
+              // Fuel pipe hookup
+              const pipeGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.6, 8);
+              const pipe = new THREE.Mesh(pipeGeo, coilMat); // orange
+              pipe.position.set(bx, -6.4, bz);
+              modelGroup.add(pipe);
+            }
+          }
+
+          // 3. Process coils inside radiant zone (revealed partially if exploded or wireframe)
+          // Circular coil array of 24 tubes inside the radiant shell
+          for (let c = 0; c < 24; c++) {
+            const angle = (c / 24) * Math.PI * 2;
+            const coilTubeGeo = new THREE.CylinderGeometry(0.08, 0.08, 5.8, 8);
+            const coilTube = new THREE.Mesh(coilTubeGeo, coilMat);
+            coilTube.position.set(Math.cos(angle) * 3.1, -2, Math.sin(angle) * 3.1);
+            modelGroup.add(coilTube);
+          }
+
+          // 4. Transition Cone
+          const transGeo = new THREE.CylinderGeometry(2, 3.5, 2, 32, 1, true);
+          const transMesh = new THREE.Mesh(transGeo, shellMat);
+          transMesh.position.y = 2;
+          modelGroup.add(transMesh);
+
+          // 5. Convection Module Bank
+          const convGeo = new THREE.BoxGeometry(3.2, 5, 3.2);
+          const convMesh = new THREE.Mesh(convGeo, shellMat);
+          convMesh.position.y = 5.5;
+          modelGroup.add(convMesh);
+
+          // Convection horizontal rib stiffeners
+          for (let cy of [3.5, 4.8, 6.1, 7.4]) {
+            const rib = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.12, 3.4), blueprintMat);
+            rib.position.y = cy;
+            modelGroup.add(rib);
+          }
+
+          // Header Box assemblies
+          const hBoxGeo = new THREE.BoxGeometry(0.6, 4.8, 3.2);
+          const hBoxL = new THREE.Mesh(hBoxGeo, shellMat);
+          hBoxL.position.set(-1.9, 5.5, 0);
+          modelGroup.add(hBoxL);
+          const hBoxR = hBoxL.clone();
+          hBoxR.position.x = 1.9;
+          modelGroup.add(hBoxR);
+
+          // Hinged door handles on DHDT header boxes
+          for (let dy of [4.0, 7.0]) {
+            const clampL = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.3, 8), stackMat);
+            clampL.position.set(-2.25, dy, 0.8);
+            clampL.rotation.z = Math.PI / 2;
+            modelGroup.add(clampL);
+
+            const clampR = clampL.clone();
+            clampR.position.x = 2.25;
+            modelGroup.add(clampR);
+          }
+
+          // 6. Exhaust stack with helical strakes
+          const stackGeo = new THREE.CylinderGeometry(1.0, 1.2, 10.0, 24);
+          const stackMesh = new THREE.Mesh(stackGeo, shellMat);
+          stackMesh.position.y = 13.0;
+          modelGroup.add(stackMesh);
+
+          // Helical wind strakes wrapping stack (a series of small tilted plates)
+          for (let sy = 9.0; sy <= 17.5; sy += 0.4) {
+            const angle = (sy - 9.0) * 0.8; // spiral angle
+            const strakeGeo = new THREE.BoxGeometry(0.3, 0.08, 0.03);
+            const strake = new THREE.Mesh(strakeGeo, stackMat);
+            strake.position.set(Math.cos(angle) * 1.2, sy, Math.sin(angle) * 1.2);
+            strake.rotation.y = -angle;
+            strake.rotation.x = 0.5; // spiral tilt
+            modelGroup.add(strake);
+          }
+
+          // Stack Platform Ring at Y = 11.0
+          const ringGeo = new THREE.CylinderGeometry(2.2, 2.2, 0.05, 24, 1, true);
+          const ring = new THREE.Mesh(ringGeo, wireMat);
+          ring.position.y = 11.0;
+          modelGroup.add(ring);
+          
+          // Handrail posts on stack platform
+          for (let j = 0; j < 8; j++) {
+            const angle = (j / 8) * Math.PI * 2;
+            const post = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 1.0, 8), blueprintMat);
+            post.position.set(Math.cos(angle) * 2.15, 11.5, Math.sin(angle) * 2.15);
+            modelGroup.add(post);
+          }
+
+          // 7. Circular platform rings at Y = -2, 2, 8
+          for (let py of [-2, 2, 8]) {
+            const pRingGeo = new THREE.CylinderGeometry(4.8, 4.8, 0.08, 32, 1, true);
+            const pRing = new THREE.Mesh(pRingGeo, wireMat);
+            pRing.position.y = py;
+            modelGroup.add(pRing);
+
+            // Handrail loops on platforms
+            const guardGeo = new THREE.CylinderGeometry(4.8, 4.8, 1.05, 32, 1, true);
+            const guard = new THREE.Mesh(guardGeo, blueprintMat);
+            guard.position.y = py + 0.52;
+            modelGroup.add(guard);
+          }
+
+          break;
+        }
+
+        case 'hds': { // HDS Fired Heater - Twin Cabin Box Model
+          // 1. Radiant Cabin: Rectangular box firebox at the bottom
+          const radBoxGeo = new THREE.BoxGeometry(7.0, 5.0, 4.5);
+          const radBox = new THREE.Mesh(radBoxGeo, shellMat);
+          radBox.position.y = -2.5;
+          radBox.name = "radiant_cabin";
+          modelGroup.add(radBox);
+
+          // Buckstays (vertical heavy I-beam framing on all sides of the box cabin)
+          const bLocations = [
+            // front/back faces
+            { x: -3.52, z: -1.8 }, { x: -3.52, z: 0 }, { x: -3.52, z: 1.8 },
+            { x: 3.52, z: -1.8 }, { x: 3.52, z: 0 }, { x: 3.52, z: 1.8 },
+            // left/right faces
+            { x: -1.8, z: -2.27 }, { x: 0, z: -2.27 }, { x: 1.8, z: -2.27 },
+            { x: -1.8, z: 2.27 }, { x: 0, z: 2.27 }, { x: 1.8, z: 2.27 }
+          ];
+          bLocations.forEach((pos) => {
+            const beam = createIBeam(5, 0.22, 0.035, blueprintMat);
+            beam.position.set(pos.x, -2.5, pos.z);
+            if (pos.z === -2.27 || pos.z === 2.27) {
+              beam.rotation.y = Math.PI / 2;
+            }
+            beam.rotation.x = Math.PI / 2;
+            modelGroup.add(beam);
+          });
+
+          // Burner plates at bottom floor of cabin
+          for (let bx of [-2, 0, 2]) {
+            const burner = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.5, 16), stackMat);
+            burner.position.set(bx, -5.2, 0);
+            modelGroup.add(burner);
+          }
+
+          // 2. Dual Convection Modules side-by-side on top of radiant cabin box
+          const convBoxGeo = new THREE.BoxGeometry(2.6, 4.0, 3.2);
+          
+          // Left Convection Box (at X = -1.6)
+          const convBoxL = new THREE.Mesh(convBoxGeo, shellMat);
+          convBoxL.position.set(-1.6, 2.0, 0);
+          modelGroup.add(convBoxL);
+
+          // Right Convection Box (at X = 1.6)
+          const convBoxR = new THREE.Mesh(convBoxGeo, shellMat);
+          convBoxR.position.set(1.6, 2.0, 0);
+          modelGroup.add(convBoxR);
+
+          // Convection horizontal rib stiffeners
+          for (let cy of [0.5, 2.0, 3.5]) {
+            const ribL = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.12, 3.4), blueprintMat);
+            ribL.position.set(-1.6, cy, 0);
+            modelGroup.add(ribL);
+
+            const ribR = ribL.clone();
+            ribR.position.x = 1.6;
+            modelGroup.add(ribR);
+          }
+
+          // 3. Twin Exhaust Stacks rising from each convection module
+          const stackLGeo = new THREE.CylinderGeometry(0.8, 0.9, 8.0, 16);
+          
+          // Left Stack (at X = -1.6, Y = 10)
+          const stackL = new THREE.Mesh(stackLGeo, shellMat);
+          stackL.position.set(-1.6, 8.0, 0);
+          modelGroup.add(stackL);
+
+          // Right Stack (at X = 1.6, Y = 10)
+          const stackR = new THREE.Mesh(stackLGeo, shellMat);
+          stackR.position.set(1.6, 8.0, 0);
+          modelGroup.add(stackR);
+
+          // Helical wind strakes wrapping both stacks
+          for (let sy = 5.0; sy <= 11.5; sy += 0.5) {
+            const angle = (sy - 5.0) * 0.9;
+            
+            // Left stack strakes
+            const strakeL = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.08, 0.03), stackMat);
+            strakeL.position.set(-1.6 + Math.cos(angle) * 0.95, sy, Math.sin(angle) * 0.95);
+            strakeL.rotation.y = -angle;
+            strakeL.rotation.x = 0.5;
+            modelGroup.add(strakeL);
+
+            // Right stack strakes
+            const strakeR = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.08, 0.03), stackMat);
+            strakeR.position.set(1.6 + Math.cos(angle) * 0.95, sy, Math.sin(angle) * 0.95);
+            strakeR.rotation.y = -angle;
+            strakeR.rotation.x = 0.5;
+            modelGroup.add(strakeR);
+          }
+
+          // Twin Platform Rings at base of stacks (Y = 4.1)
+          const platGeo = new THREE.BoxGeometry(6.5, 0.08, 4.2);
+          const platform = new THREE.Mesh(platGeo, wireMat);
+          platform.position.y = 4.1;
+          modelGroup.add(platform);
+
+          // Platforms Handrail Frame
+          const railFrame = new THREE.Mesh(new THREE.BoxGeometry(6.6, 1.05, 4.3), blueprintMat);
+          railFrame.position.y = 4.6;
+          const railWire = new THREE.BoxHelper(railFrame, 0x5c80a6);
+          modelGroup.add(railWire);
+
+          // 4. Interconnecting Process manifolds (orange coil piping)
+          const pipeLGeo = new THREE.CylinderGeometry(0.08, 0.08, 3.0, 12);
+          const manifoldL = new THREE.Mesh(pipeLGeo, coilMat);
+          manifoldL.position.set(-1.6, 0.5, 1.7);
+          manifoldL.rotation.z = Math.PI / 2;
+          modelGroup.add(manifoldL);
+
+          const manifoldR = manifoldL.clone();
+          manifoldR.position.x = 1.6;
+          modelGroup.add(manifoldR);
+
+          // Connection elbows
+          const el1 = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), stackMat);
+          el1.position.set(0, 0.5, 1.7);
+          modelGroup.add(el1);
 
           break;
         }

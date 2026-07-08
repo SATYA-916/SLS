@@ -767,11 +767,43 @@ const illustrations = [
     threeType: "evaporator",
     service: "Engineering & Architecture Design",
     icon: "completeframe"
+  },
+  {
+    id: "dhdt-heater",
+    title: "DHDT Fired Heater",
+    subtitle: "Cylindrical Fired Heater Structure",
+    description: "A high-fidelity cylindrical fired heater structure modeled in full compliance with EIL specifications. Features cylindrical radiant section, external buckstays, convection module, header boxes, burner floor, and safety platform railings.",
+    purpose: "Heats diesel feedstocks in grassroots Diesel Hydrotreater units up to reaction temperatures.",
+    function: "Combustion energy is transferred to diesel feedstocks circulating through radiant and convection tube coils under high-pressure parameters.",
+    materials: "ASTM A36 Casing steel, high-tensile structural bolts, refractory brick blocks",
+    discipline: "Structural Steel & Mechanical Engineering",
+    application: "Diesel Hydrotreater (DHDT) process furnaces",
+    scope: "Tekla structural modeling, casing arrangement, structural steel platform framing.",
+    deliverables: "General Arrangement drawings, casing panels details, platform structures, and construction detail packages.",
+    threeType: "dhdt",
+    service: "Industrial Design & Support",
+    icon: "heater"
+  },
+  {
+    id: "hds-heater",
+    title: "HDS Fired Heater",
+    subtitle: "Twin-Cabin Fired Box Heater",
+    description: "A premium twin-cabin rectangular box fired heater featuring dual convection boxes and twin exhaust stacks designed for heavy petroleum desulfurization units.",
+    purpose: "Heats hydrocarbon feeds in Hydrodesulfurization units to remove organic sulfur compounds.",
+    function: "Twin-cabin burner layout distributes heat fluxes evenly across double tube-banks to maximize fuel efficiency.",
+    materials: "ASTM A572 Grade 50 Steel, Alloy TP347H tubes, high-density monolithic refractory lining",
+    discipline: "Mechanical & High-Temperature Design",
+    application: "Hydrodesulfurization (HDS) process furnaces",
+    scope: "Pressure parts design, double convection box detailing, twin stack dynamic wind stability analysis.",
+    deliverables: "Mechanical calculations, coil layout drawing, twin stack shell detailing, anchor chairs sizing sheets.",
+    threeType: "hds",
+    service: "Industrial Design & Support",
+    icon: "heater"
   }
 ];
 
 const MODEL_GROUPS = [
-  { name: "Overall Assembly",  items: ["complete-heater", "complete-stack", "off-take-duct"] },
+  { name: "Overall Assembly",  items: ["complete-heater", "dhdt-heater", "hds-heater", "complete-stack", "off-take-duct"] },
   { name: "Radiant System",    items: ["radiant-section", "burner-floor", "header-box", "arch-plate-assembly"] },
   { name: "Convection System", items: ["convection-section", "soot-blower"] },
   { name: "Structural System", items: ["support-steel", "complete-frame", "roof-structure", "ets-structure", "evaporator-structure"] },
@@ -1088,7 +1120,7 @@ export default function Gallery() {
   const [activeWf, setActiveWf] = useState(workflows[0]);
   const [activeWfStep, setActiveWfStep] = useState(0);
   const [activeServiceToBook, setActiveServiceToBook] = useState(null);
-  const [_, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
 
   // Collapsible groups for 3D model list
   const [openGroups, setOpenGroups] = useState({
@@ -1190,7 +1222,7 @@ export default function Gallery() {
     if (targetIll) setSelectedIll(targetIll);
   };
 
-  const canExplode = selectedIll.id === 'complete-heater';
+  const canExplode = selectedIll.id === 'complete-heater' || selectedIll.id === 'dhdt-heater' || selectedIll.id === 'hds-heater';
 
   useEffect(() => {
     if (!canExplode && exploded) setExploded(false);
@@ -1308,7 +1340,7 @@ export default function Gallery() {
         setDrawingSubTab(sub);
       }
     }
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     if (isFirstMount.current) {
