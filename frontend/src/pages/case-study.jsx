@@ -9,11 +9,52 @@ import {
   Tag, ShieldCheck, ClipboardList, CheckCircle2, ChevronRight 
 } from 'lucide-react';
 
-const PROJECT_THREE_MAP = {
-  48: 'evaporator-structure',
-  49: 'dhdt-heater',
-  50: 'hds-heater'
-};
+export function getThreeModelIdForProject(project) {
+  if (!project) return 'complete-heater';
+  
+  const id = project.id;
+  if (id === 48) return 'evaporator-structure';
+  if (id === 49) return 'dhdt-heater';
+  if (id === 50) return 'hds-heater';
+
+  const cat = project.category || '';
+  const title = (project.title || '').toLowerCase();
+  const desc = (project.description || '').toLowerCase();
+
+  // Fired Heaters
+  if (cat === 'Fired Heaters' || title.includes('heater') || desc.includes('heater')) {
+    if (title.includes('convection')) return 'convection-section';
+    if (title.includes('radiant')) return 'radiant-section';
+    if (title.includes('stack') || title.includes('chimney')) return 'complete-stack';
+    if (title.includes('header')) return 'header-box';
+    if (title.includes('platform') || title.includes('stair')) return 'platform-system';
+    return 'complete-heater';
+  }
+
+  // Boilers & Chimneys
+  if (cat === 'Boilers & Chimneys' || title.includes('chimney') || title.includes('stack') || desc.includes('chimney') || desc.includes('stack')) {
+    if (title.includes('duct') || desc.includes('duct')) return 'off-take-duct';
+    return 'complete-stack';
+  }
+
+  // Cryogenic Plants
+  if (cat === 'Cryogenic Plants' || title.includes('cryogenic') || desc.includes('cryogenic') || title.includes('cold box') || desc.includes('cold box')) {
+    return 'support-steel';
+  }
+
+  // Special Structures
+  if (cat === 'Special Structures' || title.includes('shield') || title.includes('fixture') || desc.includes('shield') || desc.includes('fixture')) {
+    if (title.includes('door')) return 'breeching-door';
+    return 'maintenance-access-sys';
+  }
+
+  // Default fallback categories
+  if (title.includes('roof') || title.includes('truss')) return 'roof-structure';
+  if (title.includes('stair') || title.includes('ladder')) return 'stair-assembly';
+  if (title.includes('platform') || title.includes('grating')) return 'platform-system';
+  
+  return 'complete-frame';
+}
 
 const PROJECT_DRAWINGS = {
   48: [
@@ -390,9 +431,9 @@ export default function CaseStudy() {
                     <span className="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-1">Deliverables Log</span>
                     <span className="text-xs font-medium text-gray-700 leading-relaxed block">{specs.deliverables}</span>
                   </div>
-                  {PROJECT_THREE_MAP[projectId] && (
+                  {getThreeModelIdForProject(project) && (
                     <div className="pt-4 border-t border-slate-200">
-                      <Link href={`/gallery?tab=models&model=${PROJECT_THREE_MAP[projectId]}`}>
+                      <Link href={`/gallery?tab=models&model=${getThreeModelIdForProject(project)}`}>
                         <button className="w-full bg-[#43648e] hover:bg-[#0a1628] text-white py-2.5 text-[11px] font-bold uppercase tracking-wider transition-colors rounded-sm flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
                           Open Interactive 3D Model &rarr;
                         </button>
