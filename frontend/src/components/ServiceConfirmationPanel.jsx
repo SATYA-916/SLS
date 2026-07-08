@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
+import { useLocation } from 'wouter';
 import { X, CheckCircle2, ArrowRight, ShieldCheck, Briefcase, FileText } from 'lucide-react';
 import { getServices, getProjects } from '@/lib/api';
 import { fallbackServices } from '@/data/fallbackServices';
@@ -116,6 +117,7 @@ function getServiceSpecs(title) {
 }
 
 export default function ServiceConfirmationPanel({ serviceName, onClose, onConfirm }) {
+  const [, navigate] = useLocation();
   const { data: dbServices } = useQuery({
     queryKey: ['services'],
     queryFn: getServices,
@@ -258,23 +260,27 @@ export default function ServiceConfirmationPanel({ serviceName, onClose, onConfi
                 {matchedProjects.map((proj) => (
                   <div
                     key={proj.id}
-                    className="flex items-center gap-3 border border-slate-100 p-2 rounded-sm bg-slate-50/50"
+                    onClick={() => {
+                      navigate(`/projects/${proj.id}`);
+                      onClose();
+                    }}
+                    className="flex items-center gap-3 border border-slate-100 p-2 rounded-sm bg-slate-50/50 hover:bg-slate-100/70 hover:border-slate-200 transition-all cursor-pointer group"
                   >
                     {proj.image ? (
-                      <div className="w-12 h-9 bg-gray-100 overflow-hidden shrink-0 border border-slate-200">
+                      <div className="w-12 h-9 bg-gray-100 overflow-hidden shrink-0 border border-slate-200 group-hover:border-slate-300 transition-colors">
                         <img
                           src={proj.image}
                           alt={proj.title}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                         />
                       </div>
                     ) : (
-                      <div className="w-12 h-9 bg-gray-100 flex items-center justify-center shrink-0 border border-slate-200">
+                      <div className="w-12 h-9 bg-gray-100 flex items-center justify-center shrink-0 border border-slate-200 group-hover:border-slate-300 transition-colors">
                         <FileText className="w-4 h-4 text-gray-300" />
                       </div>
                     )}
                     <div className="min-w-0 flex-1">
-                      <h5 className="text-xs font-bold text-[#0a1628] truncate leading-tight">
+                      <h5 className="text-xs font-bold text-[#0a1628] group-hover:text-blue-700 transition-colors truncate leading-tight">
                         {proj.title}
                       </h5>
                       <span className="text-[9px] text-gray-400 font-medium">
