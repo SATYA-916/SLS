@@ -2559,66 +2559,126 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         }
 
         case 'canopy_millennium': { // Millennium Canopy Space Frame
-          // 7 support columns (tapered)
+          // 7 support columns with base plates, gussets, and anchor bolt details!
           const colPositions = [
             { x: -5, z: -2 }, { x: 0, z: -2 }, { x: 5, z: -2 },
             { x: -3, z: 2 }, { x: 3, z: 2 },
             { x: -5, z: 0 }, { x: 5, z: 0 }
           ];
           colPositions.forEach(pos => {
-            const colGeo = new THREE.CylinderGeometry(0.12, 0.22, 5.0, 16);
+            const colGeo = new THREE.CylinderGeometry(0.1, 0.22, 5.0, 16);
             const col = new THREE.Mesh(colGeo, blueprintMat);
             col.position.set(pos.x, -2.5, pos.z);
             modelGroup.add(col);
             
             // Base plate
-            const baseGeo = new THREE.BoxGeometry(0.6, 0.1, 0.6);
-            const base = new THREE.Mesh(baseGeo, stackMat);
+            const base = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.08, 0.6), stackMat);
             base.position.set(pos.x, -5.0, pos.z);
             modelGroup.add(base);
+
+            // 4 Base gussets (triangular ribs)
+            for (let a = 0; a < 4; a++) {
+              const angle = (a / 4) * Math.PI * 2;
+              const gusset = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.4, 0.16), blueprintMat);
+              gusset.position.set(pos.x + Math.cos(angle) * 0.18, -4.8, pos.z + Math.sin(angle) * 0.18);
+              gusset.rotation.y = -angle;
+              modelGroup.add(gusset);
+            }
           });
 
-          // Space frame canopy roof grid (Y = 0)
-          const roofFrame = new THREE.Mesh(new THREE.BoxGeometry(12.0, 0.5, 6.0), shellMat);
-          roofFrame.position.y = 0.25;
-          const gridWire = new THREE.BoxHelper(roofFrame, 0x5c80a6);
-          modelGroup.add(gridWire);
+          // Space frame truss canopy - actual structural node-and-member space frame grid!
+          // Grid points: 9x5 grid at Y = 0 and Y = 0.6
+          const gridNodeMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.9, roughness: 0.1 });
+          const gridStrutMat = new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.8, roughness: 0.2 });
 
-          // Roof panel sheets
-          const sheetGeo = new THREE.BoxGeometry(12.2, 0.05, 6.2);
-          const sheet = new THREE.Mesh(sheetGeo, new THREE.MeshStandardMaterial({ color: 0x334e68, roughness: 0.6, transparent: true, opacity: 0.85 }));
-          sheet.position.y = 0.5;
-          modelGroup.add(sheet);
+          const nodes = [];
+          for (let x = -6; x <= 6; x += 1.5) {
+            for (let z = -3; z <= 3; z += 1.5) {
+              for (let y of [0, 0.6]) {
+                nodes.push({ x, y, z });
+                const nodeMesh = new THREE.Mesh(new THREE.SphereGeometry(0.06, 8, 8), gridNodeMat);
+                nodeMesh.position.set(x, y, z);
+                modelGroup.add(nodeMesh);
+              }
+            }
+          }
+
+          // Draw diagonal struts connecting nodes (interlocking space frame grid!)
+          for (let i = 0; i < nodes.length; i++) {
+            const n1 = nodes[i];
+            for (let j = i + 1; j < nodes.length; j++) {
+              const n2 = nodes[j];
+              const distSqr = (n1.x - n2.x)**2 + (n1.y - n2.y)**2 + (n1.z - n2.z)**2;
+              if (distSqr > 0.05 && distSqr < 2.5) {
+                const dx = n2.x - n1.x;
+                const dy = n2.y - n1.y;
+                const dz = n2.z - n1.z;
+                const len = Math.sqrt(distSqr);
+                
+                const strutGeo = new THREE.CylinderGeometry(0.018, 0.018, len, 6);
+                const strut = new THREE.Mesh(strutGeo, gridStrutMat);
+                strut.position.set(n1.x + dx/2, n1.y + dy/2, n1.z + dz/2);
+                
+                const direction = new THREE.Vector3(dx, dy, dz).normalize();
+                strut.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
+                modelGroup.add(strut);
+              }
+            }
+          }
+
+          // Translucent roof sheets
+          const roofPanel = new THREE.Mesh(new THREE.BoxGeometry(12.5, 0.04, 6.5), new THREE.MeshPhysicalMaterial({
+            color: 0x5c80a6, roughness: 0.1, transmission: 0.6, opacity: 0.7, transparent: true, depthWrite: false
+          }));
+          roofPanel.position.y = 0.65;
+          modelGroup.add(roofPanel);
           break;
         }
 
         case 'ac_shelter': { // Movable AC Shelter
           // Main structural portal frame (length 8, width 5, height 12)
           for (let x of [-2.5, 2.5]) {
-            const col = createIBeam(10.0, 0.2, 0.035, blueprintMat);
+            const col = createIBeam(10.0, 0.22, 0.035, blueprintMat);
             col.position.set(x, 0, 0);
             col.rotation.x = Math.PI / 2;
             modelGroup.add(col);
+
+            // Double wheel casters on brackets at base of columns
+            for (let z of [-1.2, 1.2]) {
+              const bracket = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.4, 0.4), stackMat);
+              bracket.position.set(x, -5.2, z);
+              modelGroup.add(bracket);
+
+              for (let wx of [-0.15, 0.15]) {
+                const wheelGeo = new THREE.CylinderGeometry(0.35, 0.35, 0.08, 16);
+                const wheel = new THREE.Mesh(wheelGeo, stackMat);
+                wheel.position.set(x + wx, -5.4, z);
+                wheel.rotation.z = Math.PI / 2;
+                modelGroup.add(wheel);
+              }
+            }
           }
-          // Horizontal rafters
-          for (let y of [-5, 0, 5]) {
-            const beam = createIBeam(5.0, 0.16, 0.03, blueprintMat);
+          // Horizontal rafters and girts
+          for (let y of [-5, -2, 1, 4, 5]) {
+            const beam = createIBeam(5.0, 0.18, 0.03, blueprintMat);
             beam.position.set(0, y, 0);
             modelGroup.add(beam);
           }
-          // Wheel assembly at the base (4 wheels)
-          for (let x of [-2.5, 2.5]) {
-            for (let z of [-1.5, 1.5]) {
-              const wheelGeo = new THREE.CylinderGeometry(0.4, 0.4, 0.15, 16);
-              const wheel = new THREE.Mesh(wheelGeo, stackMat);
-              wheel.position.set(x, -5.2, z);
-              wheel.rotation.z = Math.PI / 2;
-              modelGroup.add(wheel);
-            }
+          // Structural diagonal wall cross-bracings
+          const braceGeo = new THREE.CylinderGeometry(0.03, 0.03, 11.2, 8);
+          for (let z of [-1.2, 1.2]) {
+            const brace1 = new THREE.Mesh(braceGeo, stackMat);
+            brace1.position.set(0, 0, z);
+            brace1.rotation.z = 1.1;
+            modelGroup.add(brace1);
+
+            const brace2 = brace1.clone();
+            brace2.rotation.z = -1.1;
+            modelGroup.add(brace2);
           }
           // Fabric tarpaulin cladding (semi-transparent green casing)
           const fabricGeo = new THREE.BoxGeometry(5.2, 10.2, 3.2);
-          const fabric = new THREE.Mesh(fabricGeo, new THREE.MeshStandardMaterial({ color: 0x1e5030, transparent: true, opacity: 0.35, wireframe: true }));
+          const fabric = new THREE.Mesh(fabricGeo, new THREE.MeshStandardMaterial({ color: 0x1e5030, transparent: true, opacity: 0.3, wireframe: true }));
           fabric.position.y = 0;
           modelGroup.add(fabric);
           break;
@@ -2628,51 +2688,69 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           // Rigid structural steel columns
           for (let x of [-4.5, 4.5]) {
             for (let z of [-3, 0, 3]) {
-              const col = createIBeam(8.0, 0.26, 0.04, blueprintMat);
+              const col = createIBeam(8.0, 0.28, 0.04, blueprintMat);
               col.position.set(x, -1, z);
               col.rotation.x = Math.PI / 2;
               modelGroup.add(col);
+
+              // Gusset knee brace at column top
+              const knee = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.4, 0.08), blueprintMat);
+              knee.position.set(x - (x > 0 ? 0.3 : -0.3), 3.0, z);
+              modelGroup.add(knee);
             }
           }
           // Heavy roof rafters crossing (X axis)
           for (let z of [-3, 0, 3]) {
-            const rafter = createIBeam(9.0, 0.22, 0.03, blueprintMat);
+            const rafter = createIBeam(9.0, 0.24, 0.03, blueprintMat);
             rafter.position.set(0, 3, z);
             modelGroup.add(rafter);
           }
+          // Purlins running along Z axis on top of rafters
+          for (let x = -4.0; x <= 4.0; x += 1.3) {
+            const purlin = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.16, 7.0), blueprintMat);
+            purlin.position.set(x, 3.2, 0);
+            modelGroup.add(purlin);
+          }
           // Diagonal stability wall bracings
-          const braceGeo = new THREE.CylinderGeometry(0.04, 0.04, 9.5, 8);
-          const brace1 = new THREE.Mesh(braceGeo, stackMat);
-          brace1.position.set(0, -1, -3);
-          brace1.rotation.z = 0.98;
-          modelGroup.add(brace1);
-          const brace2 = brace1.clone();
-          brace2.rotation.z = -0.98;
-          modelGroup.add(brace2);
+          const braceGeo = new THREE.CylinderGeometry(0.035, 0.035, 9.5, 8);
+          for (let x of [-4.5, 4.5]) {
+            const brace1 = new THREE.Mesh(braceGeo, stackMat);
+            brace1.position.set(x, -1, 0);
+            brace1.rotation.x = 0.98;
+            modelGroup.add(brace1);
+            
+            const brace2 = brace1.clone();
+            brace2.rotation.x = -0.98;
+            modelGroup.add(brace2);
+          }
           break;
         }
 
         case 'shield_wall': { // Concrete Radiography Shield Wall
-          // Stack of 6 modular concrete blocks
+          // Stack of 6 modular concrete blocks with beveled/grooved detailing
           for (let y = -4; y <= 2; y += 1.2) {
             const blockGeo = new THREE.BoxGeometry(6.0, 1.1, 0.8);
-            const block = new THREE.Mesh(blockGeo, new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.9 }));
+            const block = new THREE.Mesh(blockGeo, new THREE.MeshStandardMaterial({ color: 0x8a99ad, roughness: 0.9 }));
             block.position.set(0, y, 0);
             modelGroup.add(block);
 
-            // Interlocking guide pegs on top of each block
+            // Add joint panel grooves (small thin boxes around block edges)
+            const groove = new THREE.Mesh(new THREE.BoxGeometry(6.04, 0.04, 0.84), new THREE.MeshStandardMaterial({ color: 0x334155 }));
+            groove.position.set(0, y - 0.55, 0);
+            modelGroup.add(groove);
+
+            // Hoisting lifting loops (Torus on top of each block)
             for (let x of [-2, 2]) {
-              const pegGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.25, 12);
-              const peg = new THREE.Mesh(pegGeo, stackMat);
-              peg.position.set(x, y + 0.6, 0);
-              modelGroup.add(peg);
+              const hook = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.03, 8, 16), stackMat);
+              hook.position.set(x, y + 0.6, 0);
+              modelGroup.add(hook);
             }
           }
           break;
         }
 
         case 'sgp_shield': { // SGP Lead Shield
-          // L-shaped lead box (two boxes perpendicular)
+          // L-shaped lead box encased in bolted steel frames
           const baseLead = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.6, 2.0), shellMat);
           baseLead.position.set(0, -1.0, 0);
           modelGroup.add(baseLead);
@@ -2681,46 +2759,87 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           vertLead.position.set(-1.2, 0.8, 0);
           modelGroup.add(vertLead);
 
-          // Heavy lifting eyelets (Torus geometries)
-          const eyeGeo = new THREE.TorusGeometry(0.2, 0.06, 8, 24);
-          const eye1 = new THREE.Mesh(eyeGeo, blueprintMat);
-          eye1.position.set(-1.2, 2.5, 0);
-          eye1.rotation.y = Math.PI / 2;
-          modelGroup.add(eye1);
+          // Angle iron frames (perimeter edges)
+          for (let x of [-1.5, 1.5]) {
+            const angle = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.62, 2.02), blueprintMat);
+            angle.position.set(x, -1.0, 0);
+            modelGroup.add(angle);
+          }
+          for (let y of [-0.7, 2.3]) {
+            const angle = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.08, 2.02), blueprintMat);
+            angle.position.set(-1.2, y, 0);
+            modelGroup.add(angle);
+          }
 
-          // Locking quick-clamps
-          const clampGeo = new THREE.BoxGeometry(0.4, 0.4, 0.4);
-          const clampL = new THREE.Mesh(clampGeo, stackMat);
-          clampL.position.set(1.2, -1.0, 0.8);
-          modelGroup.add(clampL);
-          const clampR = clampL.clone();
-          clampR.position.z = -0.8;
-          modelGroup.add(clampR);
+          // Lifting lugs with reinforcing backing plates
+          const lugPlate = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.4, 0.4), blueprintMat);
+          lugPlate.position.set(-1.52, 2.1, 0);
+          modelGroup.add(lugPlate);
+
+          const eye = new THREE.Mesh(new THREE.TorusGeometry(0.18, 0.05, 8, 16), stackMat);
+          eye.position.set(-1.52, 2.3, 0);
+          eye.rotation.y = Math.PI / 2;
+          modelGroup.add(eye);
+
+          // Heavy toggle clamps (cylinder shafts and red vinyl grips)
+          for (let z of [-0.8, 0.8]) {
+            const clampBase = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.3, 0.3), stackMat);
+            clampBase.position.set(1.3, -1.0, z);
+            modelGroup.add(clampBase);
+
+            const clampHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.4, 8), new THREE.MeshStandardMaterial({ color: 0xd97706 })); // orange grip
+            clampHandle.position.set(1.35, -0.7, z);
+            clampHandle.rotation.z = -0.5;
+            modelGroup.add(clampHandle);
+          }
           break;
         }
 
         case 'cseam_shield': { // C-Seam Arc Shield on Carriage
-          // Curved arc lead shield (Cylinder slice)
-          const arcGeo = new THREE.CylinderGeometry(3.0, 3.0, 2.0, 24, 1, true, 0, Math.PI / 2);
+          // Curved 120-degree lead shield plate
+          const arcGeo = new THREE.CylinderGeometry(3.0, 3.0, 2.0, 32, 1, true, 0, Math.PI * 0.66);
           const arc = new THREE.Mesh(arcGeo, shellMat);
           arc.position.set(0, 1.0, 0);
-          arc.rotation.y = -Math.PI / 4;
+          arc.rotation.y = -Math.PI / 3;
           modelGroup.add(arc);
 
-          // Carriage support structure (Y = -1)
-          const carGeo = new THREE.BoxGeometry(3.2, 0.4, 3.2);
-          const carriage = new THREE.Mesh(carGeo, blueprintMat);
-          carriage.position.y = -0.5;
-          modelGroup.add(carriage);
+          // Outer stiffener vertical ribs on lead plate (5 channels)
+          for (let i = 0; i < 5; i++) {
+            const angle = (i / 4) * Math.PI * 0.66 - Math.PI / 3;
+            const rib = new THREE.Mesh(new THREE.BoxGeometry(0.06, 2.02, 0.1), blueprintMat);
+            rib.position.set(Math.cos(angle) * 3.05, 1.0, Math.sin(angle) * 3.05);
+            rib.rotation.y = -angle;
+            modelGroup.add(rib);
+          }
 
-          // Rolling steel wheels (4 wheels)
-          for (let x of [-1.3, 1.3]) {
-            for (let z of [-1.3, 1.3]) {
-              const wheelGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.12, 16);
-              const wheel = new THREE.Mesh(wheelGeo, stackMat);
+          // Carriage support structure (Y = -0.5)
+          const carFrame = new THREE.Group();
+          for (let x of [-1.5, 1.5]) {
+            const channel = createIBeam(3.2, 0.2, 0.03, blueprintMat);
+            channel.position.set(x, -0.5, 0);
+            carFrame.add(channel);
+          }
+          for (let z of [-1.5, 1.5]) {
+            const channel = createIBeam(3.0, 0.16, 0.025, blueprintMat);
+            channel.position.set(0, -0.5, z);
+            channel.rotation.z = Math.PI / 2;
+            carFrame.add(channel);
+          }
+          modelGroup.add(carFrame);
+
+          // Rolling steel flanged wheels (4 wheels)
+          for (let x of [-1.4, 1.4]) {
+            for (let z of [-1.4, 1.4]) {
+              const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.15, 16), stackMat);
               wheel.position.set(x, -1.0, z);
               wheel.rotation.z = Math.PI / 2;
               modelGroup.add(wheel);
+
+              // Wheel flange ring
+              const flange = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.03, 16), stackMat);
+              flange.position.set(x + (x > 0 ? 0.07 : -0.07), -1.0, z);
+              flange.rotation.z = Math.PI / 2;
+              modelGroup.add(flange);
             }
           }
           break;
@@ -2733,6 +2852,14 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           mandrel.rotation.x = Math.PI / 2;
           modelGroup.add(mandrel);
 
+          // Stiffening internal diaphragms (circles with holes)
+          for (let z of [-2.8, 2.8]) {
+            const plate = new THREE.Mesh(new THREE.CylinderGeometry(1.18, 1.18, 0.05, 24), blueprintMat);
+            plate.position.z = z;
+            plate.rotation.x = Math.PI / 2;
+            modelGroup.add(plate);
+          }
+
           // Circumferential alignment rings (Y = -2, 0, 2)
           for (let z of [-2, 0, 2]) {
             const ringGeo = new THREE.CylinderGeometry(1.35, 1.35, 0.15, 24, 1, true);
@@ -2741,14 +2868,21 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             ring.rotation.x = Math.PI / 2;
             modelGroup.add(ring);
 
-            // Radial locking toggle bolts
-            for (let a = 0; a < 4; a++) {
-              const angle = (a / 4) * Math.PI * 2;
-              const boltGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.4, 8);
+            // Radial locking toggle screws (6 per ring)
+            for (let a = 0; a < 6; a++) {
+              const angle = (a / 6) * Math.PI * 2;
+              const boltGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.5, 8);
               const bolt = new THREE.Mesh(boltGeo, stackMat);
-              bolt.position.set(Math.cos(angle) * 1.4, Math.sin(angle) * 1.4, z);
+              bolt.position.set(Math.cos(angle) * 1.45, Math.sin(angle) * 1.45, z);
               bolt.rotation.z = angle + Math.PI / 2;
               modelGroup.add(bolt);
+
+              // T-handle bar on each locking screw
+              const handleGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.25, 8);
+              const handle = new THREE.Mesh(handleGeo, new THREE.MeshStandardMaterial({ color: 0x475569 }));
+              handle.position.set(Math.cos(angle) * 1.7, Math.sin(angle) * 1.7, z);
+              handle.rotation.z = angle;
+              modelGroup.add(handle);
             }
           }
           break;
@@ -2756,148 +2890,284 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
 
         case 'cold_box_found': { // Cold Box pile foundation
           // Ground concrete slab (mat)
-          const matGeo = new THREE.BoxGeometry(8.0, 0.4, 8.0);
-          const slab = new THREE.Mesh(matGeo, new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.9 }));
+          const slab = new THREE.Mesh(new THREE.BoxGeometry(8.0, 0.5, 8.0), new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.9 }));
           slab.position.y = -4.0;
           modelGroup.add(slab);
 
-          // 4x Concrete Column Pedestals
-          for (let x of [-2.5, 2.5]) {
-            for (let z of [-2.5, 2.5]) {
-              const pedGeo = new THREE.BoxGeometry(1.2, 2.0, 1.2);
-              const ped = new THREE.Mesh(pedGeo, new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.9 }));
-              ped.position.set(x, -2.8, z);
-              modelGroup.add(ped);
-
-              // Anchor bolts grouping protruding out (4 bolts per pedestal)
-              for (let bx of [-0.4, 0.4]) {
-                for (let bz of [-0.4, 0.4]) {
-                  const boltGeo = new THREE.CylinderGeometry(0.02, 0.02, 0.4, 8);
-                  const bolt = new THREE.Mesh(boltGeo, stackMat);
-                  bolt.position.set(x + bx, -1.6, z + bz);
-                  modelGroup.add(bolt);
-                }
-              }
+          // Piles extending below slab
+          for (let x of [-3, 0, 3]) {
+            for (let z of [-3, 0, 3]) {
+              const pile = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 2.5, 12), new THREE.MeshStandardMaterial({ color: 0x475569 }));
+              pile.position.set(x, -5.5, z);
+              modelGroup.add(pile);
             }
           }
 
-          // Skeletal columns on pedestals
+          // 4x Raised Concrete Column Pedestals
           for (let x of [-2.5, 2.5]) {
             for (let z of [-2.5, 2.5]) {
-              const col = createIBeam(6.0, 0.22, 0.03, blueprintMat);
-              col.position.set(x, 1.2, z);
+              const ped = new THREE.Mesh(new THREE.BoxGeometry(1.3, 2.0, 1.3), new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.9 }));
+              ped.position.set(x, -2.8, z);
+              modelGroup.add(ped);
+
+              // Base plate on pedestal
+              const plate = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.08, 1.4), stackMat);
+              plate.position.set(x, -1.76, z);
+              modelGroup.add(plate);
+
+              // Anchor bolts grouping protruding out (4 bolts per pedestal)
+              for (let bx of [-0.45, 0.45]) {
+                for (let bz of [-0.45, 0.45]) {
+                  const bolt = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.35, 8), stackMat);
+                  bolt.position.set(x + bx, -1.6, z + bz);
+                  modelGroup.add(bolt);
+
+                  const nut = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.06, 6), stackMat);
+                  nut.position.set(x + bx, -1.45, z + bz);
+                  modelGroup.add(nut);
+                }
+              }
+
+              // Steel Columns rising up
+              const col = createIBeam(5.8, 0.24, 0.035, blueprintMat);
+              col.position.set(x, 1.1, z);
               col.rotation.x = Math.PI / 2;
               modelGroup.add(col);
+            }
+          }
+
+          // Horizontal portal beams connecting columns
+          for (let y of [0.5, 3.8]) {
+            for (let x of [-2.5, 2.5]) {
+              const beam = createIBeam(5.0, 0.22, 0.03, blueprintMat);
+              beam.position.set(x, y, 0);
+              modelGroup.add(beam);
+            }
+            for (let z of [-2.5, 2.5]) {
+              const beam = createIBeam(5.0, 0.22, 0.03, blueprintMat);
+              beam.position.set(0, y, z);
+              beam.rotation.z = Math.PI / 2;
+              modelGroup.add(beam);
             }
           }
           break;
         }
 
         case 'compressor_found': { // Compressor foundation block
-          // Foundation block concrete
-          const blockGeo = new THREE.BoxGeometry(6.0, 1.4, 4.0);
-          const block = new THREE.Mesh(blockGeo, new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.9 }));
+          // Concrete foundation block
+          const block = new THREE.Mesh(new THREE.BoxGeometry(6.2, 1.5, 4.2), new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.9 }));
           block.position.y = -2.5;
           modelGroup.add(block);
 
-          // Vibration isolation springs (coils) - 6 units
+          // Vibration isolation springs (6 heavy spring nests)
           for (let x of [-2.2, 0, 2.2]) {
             for (let z of [-1.4, 1.4]) {
-              // Cylinder as a spring housing
-              const springGeo = new THREE.CylinderGeometry(0.25, 0.25, 0.6, 12);
-              const spring = new THREE.Mesh(springGeo, stackMat);
-              spring.position.set(x, -3.5, z);
-              modelGroup.add(spring);
+              // Spring damper housing cylinder
+              const housing = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.6, 16), stackMat);
+              housing.position.set(x, -3.55, z);
+              modelGroup.add(housing);
+
+              // Helical spring coil inside (modeled as stacked thin toruses)
+              for (let sy = -0.2; sy <= 0.2; sy += 0.1) {
+                const coil = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.04, 8, 16), coilMat);
+                coil.position.set(x, -3.55 + sy, z);
+                coil.rotation.x = Math.PI / 2;
+                modelGroup.add(coil);
+              }
             }
           }
 
-          // Steel skid frame on concrete block
-          const skidFrame = new THREE.Mesh(new THREE.BoxGeometry(5.6, 0.2, 3.6), blueprintMat);
-          skidFrame.position.y = -1.7;
-          modelGroup.add(skidFrame);
+          // Heavy steel skid frame on top
+          for (let x of [-2.2, 2.2]) {
+            const beam = createIBeam(4.0, 0.25, 0.04, blueprintMat);
+            beam.position.set(x, -1.6, 0);
+            modelGroup.add(beam);
+          }
+          for (let z of [-1.8, 1.8]) {
+            const beam = createIBeam(4.4, 0.2, 0.03, blueprintMat);
+            beam.position.set(0, -1.6, z);
+            beam.rotation.z = Math.PI / 2;
+            modelGroup.add(beam);
+          }
+
+          // Compressor casing (procedurally modeled compressor cylinder blocks)
+          const casing = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 2.8, 16), shellMat);
+          casing.position.set(0, -0.3, 0);
+          casing.rotation.x = Math.PI / 2;
+          modelGroup.add(casing);
+
+          // Horizontal piston cylinders (2 units)
+          for (let z of [-0.8, 0.8]) {
+            const cyl = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 1.2, 12), shellMat);
+            cyl.position.set(1.0, -0.3, z);
+            cyl.rotation.z = Math.PI / 2;
+            modelGroup.add(cyl);
+
+            // Flanged cylinder heads
+            const head = new THREE.Mesh(new THREE.CylinderGeometry(0.56, 0.56, 0.15, 12), stackMat);
+            head.position.set(1.65, -0.3, z);
+            head.rotation.z = Math.PI / 2;
+            modelGroup.add(head);
+          }
           break;
         }
 
         case 'boiler_house': { // Boiler House Skeletal Structure
-          // Multi-level steel frame column array (3x3 grid)
+          // Multi-story steel frame column array (3x3 grid)
           for (let x of [-4.0, 0, 4.0]) {
             for (let z of [-3.0, 0, 3.0]) {
-              const col = createIBeam(15.0, 0.26, 0.04, blueprintMat);
+              const col = createIBeam(15.0, 0.28, 0.045, blueprintMat);
               col.position.set(x, -0.5, z);
               col.rotation.x = Math.PI / 2;
               modelGroup.add(col);
             }
           }
-          // Horizontal platforms levels (Y = -3, 1, 5)
+          // Horizontal platform levels (Y = -3, 1, 5) with grating and handrails
           for (let py of [-3, 1, 5]) {
-            const platform = new THREE.Mesh(new THREE.BoxGeometry(8.2, 0.08, 6.2), wireMat);
-            platform.position.y = py;
-            modelGroup.add(platform);
+            const platformFloor = new THREE.Mesh(new THREE.BoxGeometry(8.2, 0.05, 6.2), wireMat);
+            platformFloor.position.y = py;
+            modelGroup.add(platformFloor);
+
+            // Platform framing beams underneath
+            for (let x of [-4.0, 0, 4.0]) {
+              const beam = createIBeam(6.0, 0.2, 0.03, blueprintMat);
+              beam.position.set(x, py - 0.12, 0);
+              modelGroup.add(beam);
+            }
+
+            // Handrail loops around platforms
+            const railGeo = new THREE.BoxGeometry(8.2, 1.0, 6.2);
+            const rail = new THREE.Mesh(railGeo, new THREE.MeshStandardMaterial({ color: 0xd97706, wireframe: true })); // safety yellow/orange
+            rail.position.y = py + 0.5;
+            modelGroup.add(rail);
+          }
+
+          // Skeletal diagonal cross bracings
+          const braceGeo = new THREE.CylinderGeometry(0.04, 0.04, 6.4, 8);
+          for (let z of [-3.0, 3.0]) {
+            const brace1 = new THREE.Mesh(braceGeo, stackMat);
+            brace1.position.set(-2.0, -1.0, z);
+            brace1.rotation.z = 0.9;
+            modelGroup.add(brace1);
+
+            const brace2 = brace1.clone();
+            brace2.rotation.z = -0.9;
+            modelGroup.add(brace2);
+          }
+
+          // Steam separator drum on top (Y = 7.5)
+          const drum = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 5.0, 16), shellMat);
+          drum.position.set(0, 7.5, 0);
+          drum.rotation.z = Math.PI / 2;
+          modelGroup.add(drum);
+          
+          // Drum support saddles
+          for (let x of [-1.8, 1.8]) {
+            const saddle = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.6, 1.4), stackMat);
+            saddle.position.set(x, 7.0, 0);
+            modelGroup.add(saddle);
           }
           break;
         }
 
         case 'steel_chimney': { // Steel Stack/Chimney (Kochi/Bina style)
-          // Tapered base shell segment
-          const baseCylGeo = new THREE.CylinderGeometry(1.2, 1.8, 4.0, 24, 1, true);
+          // Base support anchor chairs and base ring (Y = -5)
+          const baseRing = new THREE.Mesh(new THREE.CylinderGeometry(1.9, 1.9, 0.15, 24), blueprintMat);
+          baseRing.position.y = -5.0;
+          modelGroup.add(baseRing);
+
+          // Tapered base shell segment (diameter 3.6 to 2.4, height 4)
+          const baseCylGeo = new THREE.CylinderGeometry(1.2, 1.8, 4.0, 32, 1, true);
           const baseCyl = new THREE.Mesh(baseCylGeo, shellMat);
           baseCyl.position.y = -3.0;
           modelGroup.add(baseCyl);
 
           // Upper stack column (diameter 1.2, height 12)
-          const stackCylGeo = new THREE.CylinderGeometry(1.2, 1.2, 12.0, 24, 1, true);
+          const stackCylGeo = new THREE.CylinderGeometry(1.2, 1.2, 12.0, 32, 1, true);
           const stackCyl = new THREE.Mesh(stackCylGeo, shellMat);
           stackCyl.position.y = 5.0;
           modelGroup.add(stackCyl);
 
-          // Helical wind strakes wrapping upper chimney
-          for (let sy = 0.0; sy <= 10.0; sy += 0.4) {
-            const angle = (sy - 0.0) * 0.95;
-            const strakeGeo = new THREE.BoxGeometry(0.25, 0.06, 0.03);
-            const strake = new THREE.Mesh(strakeGeo, stackMat);
-            strake.position.set(Math.cos(angle) * 1.35, sy, Math.sin(angle) * 1.35);
-            strake.rotation.y = -angle;
-            strake.rotation.x = 0.55;
-            modelGroup.add(strake);
+          // Helical wind strakes wrapping upper chimney (3-start helices)
+          for (let sy = 0.0; sy <= 10.0; sy += 0.3) {
+            for (let start = 0; start < 3; start++) {
+              const angle = (sy * 0.8) + (start * Math.PI * 2 / 3);
+              const strake = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.05, 0.02), stackMat);
+              strake.position.set(Math.cos(angle) * 1.32, sy, Math.sin(angle) * 1.32);
+              strake.rotation.y = -angle;
+              strake.rotation.x = 0.55;
+              modelGroup.add(strake);
+            }
           }
 
           // Anchor chairs ring (heavy gussets at base ring Y = -5)
-          for (let a = 0; a < 12; a++) {
-            const angle = (a / 12) * Math.PI * 2;
-            const chairGeo = new THREE.BoxGeometry(0.12, 0.5, 0.25);
-            const chair = new THREE.Mesh(chairGeo, blueprintMat);
-            chair.position.set(Math.cos(angle) * 1.85, -4.75, Math.sin(angle) * 1.85);
+          for (let a = 0; a < 16; a++) {
+            const angle = (a / 16) * Math.PI * 2;
+            const chair = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.6, 0.3), blueprintMat);
+            chair.position.set(Math.cos(angle) * 1.85, -4.7, Math.sin(angle) * 1.85);
             chair.rotation.y = -angle;
             modelGroup.add(chair);
+
+            // Anchor bolt pins
+            const pin = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.3, 8), stackMat);
+            pin.position.set(Math.cos(angle) * 1.85, -4.5, Math.sin(angle) * 1.85);
+            modelGroup.add(pin);
+          }
+
+          // Access catwalk platforms (Y = 1.0 and Y = 8.0)
+          for (let py of [1.0, 8.0]) {
+            const platFloor = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.3, 8, 32), stackMat);
+            platFloor.position.y = py;
+            platFloor.rotation.x = Math.PI / 2;
+            modelGroup.add(platFloor);
+
+            // Outer handrail ring
+            const handrail = new THREE.Mesh(new THREE.CylinderGeometry(1.9, 1.9, 1.0, 24, 1, true), new THREE.MeshStandardMaterial({ color: 0xd97706, wireframe: true }));
+            handrail.position.y = py + 0.5;
+            modelGroup.add(handrail);
           }
           break;
         }
 
         case 'vfd_room': { // VFD Room skid module
-          // Under-skid beam grid (X and Z)
-          for (let x of [-2.5, 0, 2.5]) {
-            const beam = createIBeam(6.0, 0.26, 0.04, blueprintMat);
+          // Under-skid beam grid (X and Z channels)
+          for (let x of [-2.4, -0.8, 0.8, 2.4]) {
+            const beam = createIBeam(6.2, 0.28, 0.04, blueprintMat);
             beam.position.set(x, -3.0, 0);
             beam.rotation.x = Math.PI / 2;
             modelGroup.add(beam);
           }
           for (let z of [-3.0, 0, 3.0]) {
-            const beam = createIBeam(5.0, 0.26, 0.04, blueprintMat);
+            const beam = createIBeam(5.0, 0.28, 0.04, blueprintMat);
             beam.position.set(0, -3.0, z);
+            beam.rotation.z = Math.PI / 2;
             modelGroup.add(beam);
           }
 
-          // Skid enclosure body (VFD room shelter)
-          const roomGeo = new THREE.BoxGeometry(5.0, 3.6, 6.0);
-          const room = new THREE.Mesh(roomGeo, new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.6, transparent: true, opacity: 0.85 }));
-          room.position.y = -1.2;
-          modelGroup.add(room);
+          // Skid enclosure body with wall corrugated ribs
+          const enclosure = new THREE.Mesh(new THREE.BoxGeometry(4.8, 3.6, 5.8), new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.6 }));
+          enclosure.position.y = -1.2;
+          modelGroup.add(enclosure);
 
-          // Dynamic lifting lugs on skid base corners
-          for (let x of [-2.6, 2.6]) {
+          // Wall corrugated stiffeners (modeled as vertical ribs along wall sides)
+          for (let z = -2.8; z <= 2.8; z += 0.4) {
+            for (let x of [-2.42, 2.42]) {
+              const rib = new THREE.Mesh(new THREE.BoxGeometry(0.04, 3.58, 0.08), blueprintMat);
+              rib.position.set(x, -1.2, z);
+              modelGroup.add(rib);
+            }
+          }
+
+          // Lifting lugs on skid base corners (Torus rings with baseplates)
+          for (let x of [-2.5, 2.5]) {
             for (let z of [-3.1, 3.1]) {
-              const lug = new THREE.Mesh(new THREE.TorusGeometry(0.15, 0.05, 8, 16), stackMat);
-              lug.position.set(x, -3.0, z);
+              const lugPlate = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.05), stackMat);
+              lugPlate.position.set(x, -2.85, z);
+              lugPlate.rotation.x = Math.PI / 2;
+              modelGroup.add(lugPlate);
+
+              const lug = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.04, 8, 16), stackMat);
+              lug.position.set(x, -2.75, z);
               lug.rotation.y = Math.PI / 4;
               modelGroup.add(lug);
             }
@@ -2906,7 +3176,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         }
 
         case 'retaining_wall': { // Stiffened Sheet Pile Retaining Wall
-          // Interlocking sheet pile corrugated panels (12 panels)
+          // Interlocking corrugated sheet pile panels (12 panels)
           for (let x = -5.0; x <= 5.0; x += 0.9) {
             // Z-shaped corrugation profile using two offset boxes
             const panel1 = new THREE.Mesh(new THREE.BoxGeometry(0.45, 6.0, 0.08), blueprintMat);
@@ -2918,306 +3188,515 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             modelGroup.add(panel2);
           }
 
-          // Waler guide channels running horizontally (Y = 1.0)
-          const walerGeo = new THREE.BoxGeometry(10.6, 0.2, 0.35);
-          const waler = new THREE.Mesh(walerGeo, stackMat);
-          waler.position.set(0, 1.0, 0.35);
+          // Capping channel running horizontally on top of piles (Y = 2.0)
+          const capChannel = new THREE.Mesh(new THREE.BoxGeometry(10.8, 0.12, 0.45), stackMat);
+          capChannel.position.set(0, 2.0, 0);
+          modelGroup.add(capChannel);
+
+          // Horizontal waler beams running along front (Y = -0.5)
+          const waler = createIBeam(10.8, 0.22, 0.03, blueprintMat);
+          waler.position.set(0, -0.5, 0.35);
+          waler.rotation.z = Math.PI / 2;
           modelGroup.add(waler);
 
-          // Tie-back rods extending backwards (Y = 1.0, 3 rods)
-          for (let rx of [-3.0, 0, 3.0]) {
-            const rodGeo = new THREE.CylinderGeometry(0.04, 0.04, 4.0, 8);
-            const rod = new THREE.Mesh(rodGeo, coilMat);
-            rod.position.set(rx, 1.0, -1.8);
+          // Tie-back rods extending backwards (Y = -0.5, 4 rods)
+          for (let rx of [-4.0, -1.2, 1.2, 4.0]) {
+            const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 5.0, 8), coilMat);
+            rod.position.set(rx, -0.5, -2.15);
             rod.rotation.x = Math.PI / 2;
             modelGroup.add(rod);
+
+            // Rod anchor washer assembly on waler face
+            const plate = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.3, 0.3), stackMat);
+            plate.position.set(rx, -0.5, 0.45);
+            modelGroup.add(plate);
+
+            const boltNut = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.12, 6), stackMat);
+            boltNut.position.set(rx, -0.5, 0.52);
+            boltNut.rotation.x = Math.PI / 2;
+            modelGroup.add(boltNut);
           }
           break;
         }
 
         case 'air_duct': { // Primary Combustion Air Ducting
           // Main rectangular duct shell
-          const ductGeo = new THREE.BoxGeometry(3.0, 2.2, 7.0);
-          const duct = new THREE.Mesh(ductGeo, shellMat);
+          const duct = new THREE.Mesh(new THREE.BoxGeometry(3.0, 2.2, 7.0), shellMat);
           modelGroup.add(duct);
 
-          // External reinforcement angle ribs
-          for (let z of [-2.5, -1.0, 0.5, 2.0]) {
-            const ribGeo = new THREE.BoxGeometry(3.2, 2.4, 0.1);
-            const rib = new THREE.Mesh(ribGeo, blueprintMat);
-            rib.position.set(0, 0, z);
-            // Render as wire outline of ribs
-            const ribOutline = new THREE.BoxHelper(rib, 0x5c80a6);
-            modelGroup.add(ribOutline);
+          // External reinforcement angle ribs (surrounding duct profile)
+          for (let z of [-2.6, -1.3, 0, 1.3, 2.6]) {
+            // Draw 4 perimeter box angles
+            const t = 0.08;
+            const w = 3.0;
+            const h = 2.2;
+
+            const rTop = new THREE.Mesh(new THREE.BoxGeometry(w + t*2, t, t), blueprintMat);
+            rTop.position.set(0, h/2 + t/2, z);
+            modelGroup.add(rTop);
+
+            const rBottom = rTop.clone();
+            rBottom.position.y = -(h/2 + t/2);
+            modelGroup.add(rBottom);
+
+            const rLeft = new THREE.Mesh(new THREE.BoxGeometry(t, h + t*2, t), blueprintMat);
+            rLeft.position.set(-(w/2 + t/2), 0, z);
+            modelGroup.add(rLeft);
+
+            const rRight = rLeft.clone();
+            rRight.position.x = w/2 + t/2;
+            modelGroup.add(rRight);
           }
 
-          // Expansion bellows section at center (Z = 0)
-          const bellowsGeo = new THREE.CylinderGeometry(1.8, 1.8, 0.6, 24);
-          const bellows = new THREE.Mesh(bellowsGeo, stackMat);
-          bellows.position.set(0, 0, -0.25);
-          bellows.rotation.x = Math.PI / 2;
-          modelGroup.add(bellows);
+          // Expansion bellows convolutions at center (Z = 0)
+          const bellowsGroup = new THREE.Group();
+          for (let bz of [-0.3, 0, 0.3]) {
+            const convolute = new THREE.Mesh(new THREE.BoxGeometry(3.2, 2.4, 0.15), stackMat);
+            convolute.position.set(0, 0, bz);
+            bellowsGroup.add(convolute);
+          }
+          modelGroup.add(bellowsGroup);
           break;
         }
 
         case 'monorail_hoist': { // Monorail Hoist & Runway beam
-          // Horizontal runway I-beam (length 8)
+          // Horizontal runway I-beam
           const runway = createIBeam(8.0, 0.32, 0.045, blueprintMat);
           runway.position.set(0, 3.0, 0);
           modelGroup.add(runway);
 
-          // Suspension hangers (3 hangers)
+          // Suspension hangers (3 structural plate hangers)
           for (let hx of [-3.0, 0, 3.0]) {
-            const hanger = new THREE.Mesh(new THREE.BoxGeometry(0.1, 1.2, 0.4), stackMat);
+            const hanger = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.2, 0.4), stackMat);
             hanger.position.set(hx, 3.8, 0);
             modelGroup.add(hanger);
+
+            // Connect bolts to roof structural supports
+            const pin = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.25, 8), stackMat);
+            pin.position.set(hx, 4.3, 0);
+            pin.rotation.z = Math.PI / 2;
+            modelGroup.add(pin);
           }
 
           // Hoist rolling trolley casing (on lower flange of beam)
-          const hoist = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.6, 0.8), shellMat);
-          hoist.position.set(1.5, 2.6, 0);
-          modelGroup.add(hoist);
+          const trolley = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.6, 0.7), shellMat);
+          trolley.position.set(1.2, 2.5, 0);
+          modelGroup.add(trolley);
 
-          // Steel lifting hook hanging below
-          const hookGeo = new THREE.TorusGeometry(0.18, 0.05, 8, 16, Math.PI * 1.5);
-          const hook = new THREE.Mesh(hookGeo, stackMat);
-          hook.position.set(1.5, 2.0, 0);
+          // Rolling wheels on trolley (4 wheels resting on I-beam flange)
+          for (let tx of [0.95, 1.45]) {
+            for (let tz of [-0.22, 0.22]) {
+              const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.06, 12), stackMat);
+              wheel.position.set(tx, 2.75, tz);
+              wheel.rotation.x = Math.PI / 2;
+              modelGroup.add(wheel);
+            }
+          }
+
+          // Wire rope hoist drum inside trolley
+          const drum = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.5, 12), coilMat);
+          drum.position.set(1.2, 2.3, 0);
+          drum.rotation.z = Math.PI / 2;
+          modelGroup.add(drum);
+
+          // Lifting steel hook block assembly hanging below (Y = 1.0)
+          const block = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.4, 0.2), stackMat);
+          block.position.set(1.2, 1.4, 0);
+          modelGroup.add(block);
+
+          const hook = new THREE.Mesh(new THREE.TorusGeometry(0.18, 0.05, 8, 16, Math.PI * 1.5), stackMat);
+          hook.position.set(1.2, 1.0, 0);
           modelGroup.add(hook);
           break;
         }
 
         case 'vessel_skid': { // Process Vessel Skid frame
-          // Twin skid channels (H-sections running on Z axis)
+          // Twin heavy skid channels (H-sections running on Z axis)
           for (let x of [-1.5, 1.5]) {
             const beam = createIBeam(6.5, 0.28, 0.04, blueprintMat);
             beam.position.set(x, -2.0, 0);
             modelGroup.add(beam);
           }
-          // Cross tie members
-          for (let z of [-2.5, 0, 2.5]) {
+          // Cross-tie members (4 channels crossing)
+          for (let z of [-2.8, -1.0, 1.0, 2.8]) {
             const tie = createIBeam(3.0, 0.2, 0.03, blueprintMat);
             tie.position.set(0, -2.0, z);
             tie.rotation.z = Math.PI / 2;
             modelGroup.add(tie);
           }
-          // Saddle support blocks on skid for vessel
+          // Saddles support blocks (gusseted plate saddles)
           for (let z of [-1.8, 1.8]) {
-            const saddleGeo = new THREE.BoxGeometry(2.4, 0.6, 0.3);
-            const saddle = new THREE.Mesh(saddleGeo, stackMat);
-            saddle.position.set(0, -1.5, z);
-            modelGroup.add(saddle);
+            const saddleBase = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.5, 0.3), stackMat);
+            saddleBase.position.set(0, -1.6, z);
+            modelGroup.add(saddleBase);
+
+            // Curved wear plate
+            const wearPlate = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.0, 0.32, 24, 1, false, 0, Math.PI), stackMat);
+            wearPlate.position.set(0, -1.4, z);
+            wearPlate.rotation.x = Math.PI / 2;
+            modelGroup.add(wearPlate);
+          }
+
+          // Cylindrical process vessel (diameter 1.8, length 5.5)
+          const shell = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 0.9, 5.5, 24), shellMat);
+          shell.position.set(0, -0.5, 0);
+          shell.rotation.x = Math.PI / 2;
+          modelGroup.add(shell);
+
+          // Dome heads on vessel ends
+          for (let z of [-2.75, 2.75]) {
+            const head = new THREE.Mesh(new THREE.SphereGeometry(0.9, 24, 24, 0, Math.PI * 2, 0, Math.PI / 2), shellMat);
+            head.position.set(0, -0.5, z);
+            head.rotation.x = z > 0 ? Math.PI / 2 : -Math.PI / 2;
+            modelGroup.add(head);
+          }
+
+          // Standard nozzle flange loops (3 units on top Y = 0.5)
+          for (let z of [-1.5, 0, 1.5]) {
+            const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.4, 12), coilMat);
+            nozzle.position.set(0, 0.6, z);
+            modelGroup.add(nozzle);
+
+            const flange = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.08, 12), stackMat);
+            flange.position.set(0, 0.8, z);
+            modelGroup.add(flange);
           }
           break;
         }
 
         case 'damper_assembly': { // Louver Damper Assembly
-          // Outer framing box (3.2 x 3.2 x 0.4)
-          const frameGeo = new THREE.BoxGeometry(3.2, 3.2, 0.4);
-          const frame = new THREE.Mesh(frameGeo, blueprintMat);
-          const frameWire = new THREE.BoxHelper(frame, 0x5c80a6);
-          modelGroup.add(frameWire);
+          // Outer framing channels box (3.2 x 3.2 x 0.4)
+          const frameGroup = new THREE.Group();
+          for (let x of [-1.6, 1.6]) {
+            const beam = createIBeam(3.2, 0.22, 0.03, blueprintMat);
+            beam.position.set(x, 0, 0);
+            beam.rotation.y = Math.PI / 2;
+            frameGroup.add(beam);
+          }
+          for (let y of [-1.6, 1.6]) {
+            const beam = createIBeam(3.0, 0.22, 0.03, blueprintMat);
+            beam.position.set(0, y, 0);
+            frameGroup.add(beam);
+          }
+          modelGroup.add(frameGroup);
 
           // 3 Louver blades with center shafts
           const bladePositions = [-1.0, 0, 1.0];
           bladePositions.forEach((pos) => {
-            const bladeGeo = new THREE.BoxGeometry(3.0, 0.8, 0.05);
-            const blade = new THREE.Mesh(bladeGeo, shellMat);
+            const blade = new THREE.Mesh(new THREE.BoxGeometry(2.9, 0.85, 0.04), shellMat);
             blade.position.set(0, pos, 0);
-            blade.rotation.x = 0.8; // half open louver angle
+            blade.rotation.x = 0.65; // Louver opening angle
             modelGroup.add(blade);
 
-            // Center shaft rod
-            const shaftGeo = new THREE.CylinderGeometry(0.04, 0.04, 3.4, 8);
-            const shaft = new THREE.Mesh(shaftGeo, stackMat);
+            // Center shaft rod extending past frame for linkage
+            const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 3.4, 8), stackMat);
             shaft.position.set(0, pos, 0);
             shaft.rotation.z = Math.PI / 2;
             modelGroup.add(shaft);
+
+            // Linkage lever arm on shaft end (X = 1.7)
+            const lever = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.3, 0.06), stackMat);
+            lever.position.set(1.7, pos + 0.1, 0);
+            lever.rotation.x = 0.65;
+            modelGroup.add(lever);
           });
+
+          // Mechanical drive bar connecting the three levers
+          const driveBar = new THREE.Mesh(new THREE.BoxGeometry(0.04, 2.2, 0.04), stackMat);
+          driveBar.position.set(1.7, 0, 0.15);
+          modelGroup.add(driveBar);
           break;
         }
 
         case 'piping_manifold': { // Piping header manifold
           // Main header pipeline (horizontal Z axis, diameter 0.4)
-          const mainPipeGeo = new THREE.CylinderGeometry(0.2, 0.2, 6.0, 16);
-          const mainPipe = new THREE.Mesh(mainPipeGeo, stackMat);
+          const mainPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 6.0, 16), stackMat);
           mainPipe.rotation.x = Math.PI / 2;
           modelGroup.add(mainPipe);
 
+          // Header end flanges
+          for (let z of [-3.0, 3.0]) {
+            const flange = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.1, 16), stackMat);
+            flange.position.set(0, 0, z);
+            flange.rotation.x = Math.PI / 2;
+            modelGroup.add(flange);
+          }
+
           // 3 Branch pipes extending vertically (Y axis)
           for (let z of [-1.8, 0, 1.8]) {
-            const branchGeo = new THREE.CylinderGeometry(0.12, 0.12, 1.8, 12);
-            const branch = new THREE.Mesh(branchGeo, coilMat);
+            const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 1.8, 12), coilMat);
             branch.position.set(0, 0.9, z);
             modelGroup.add(branch);
 
-            // Gate valve wheel on each branch
-            const valveGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.08, 12);
-            const valve = new THREE.Mesh(valveGeo, new THREE.MeshStandardMaterial({ color: 0xe11d48, roughness: 0.6 })); // red wheel
-            valve.position.set(0, 1.6, z);
-            valve.rotation.x = Math.PI / 2;
-            modelGroup.add(valve);
+            // Flange connection at header branch weld interface
+            const weldFlange = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.08, 12), stackMat);
+            weldFlange.position.set(0, 0.22, z);
+            modelGroup.add(weldFlange);
+
+            // Gate valve body
+            const valveBody = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.4, 0.32), stackMat);
+            valveBody.position.set(0, 1.0, z);
+            modelGroup.add(valveBody);
+
+            const valveBonnet = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.3, 8), stackMat);
+            valveBonnet.position.set(0, 1.35, z);
+            modelGroup.add(valveBonnet);
+
+            // Gate valve wheel on each branch (red wheel)
+            const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.05, 12), new THREE.MeshStandardMaterial({ color: 0xef4444, metalness: 0.8 }));
+            wheel.position.set(0, 1.5, z);
+            wheel.rotation.x = Math.PI / 2;
+            modelGroup.add(wheel);
           }
           break;
         }
 
         case 'refractory_anchor': { // Refractory Casing Anchor Grid
-          // Base backing plate
-          const plateGeo = new THREE.BoxGeometry(6.0, 4.0, 0.06);
-          const plate = new THREE.Mesh(plateGeo, blueprintMat);
+          // Base backing steel casing plate
+          const plate = new THREE.Mesh(new THREE.BoxGeometry(6.0, 4.0, 0.06), blueprintMat);
           modelGroup.add(plate);
+
+          // Stiffener ribs on casing backside (Y = -0.04)
+          for (let x of [-2.0, 0, 2.0]) {
+            const rib = new THREE.Mesh(new THREE.BoxGeometry(0.1, 4.0, 0.08), blueprintMat);
+            rib.position.set(x, 0, -0.07);
+            modelGroup.add(rib);
+          }
 
           // Grid pattern of V-shaped refractory wire anchors (16 anchors)
           for (let x = -2.25; x <= 2.25; x += 1.5) {
             for (let y = -1.5; y <= 1.5; y += 1.0) {
-              // Draw V-anchor: 2 cylinders intersecting at base
+              // Draw V-anchor: 2 cylinders intersecting at base plate
               const wireGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.4, 8);
               
               const leg1 = new THREE.Mesh(wireGeo, stackMat);
               leg1.position.set(x - 0.08, y, 0.2);
-              leg1.rotation.z = -0.3;
-              leg1.rotation.y = 0.2;
+              leg1.rotation.z = -0.35;
+              leg1.rotation.y = 0.15;
               modelGroup.add(leg1);
 
               const leg2 = new THREE.Mesh(wireGeo, stackMat);
               leg2.position.set(x + 0.08, y, 0.2);
-              leg2.rotation.z = 0.3;
-              leg2.rotation.y = 0.2;
+              leg2.rotation.z = 0.35;
+              leg2.rotation.y = 0.15;
               modelGroup.add(leg2);
+
+              // Welding washer base dot
+              const washer = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.02, 8), stackMat);
+              washer.position.set(x, y, 0.035);
+              washer.rotation.x = Math.PI / 2;
+              modelGroup.add(washer);
             }
           }
           break;
         }
 
-        case 'tube_sheet': { // Convection Tube Sheet plate
-          // Rectangular sheet plate
-          const sheetGeo = new THREE.BoxGeometry(4.0, 5.0, 0.12);
-          const sheet = new THREE.Mesh(sheetGeo, blueprintMat);
-          modelGroup.add(sheet);
+        case 'tube_sheet': { // Convection Section Tube Sheet
+          // Main structural tubesheet plate
+          const plate = new THREE.Mesh(new THREE.BoxGeometry(4.0, 5.0, 0.15), blueprintMat);
+          modelGroup.add(plate);
 
-          // Triangular pitch grid holes (24 cutouts - modeled as dark cylinders)
+          // Perimeter reinforcement flat bar frame
+          const frameWire = new THREE.BoxHelper(plate, 0x0a1628);
+          modelGroup.add(frameWire);
+
+          // Triangular pitch grid holes (24 tube guide sleeves)
           for (let row = 0; row < 6; row++) {
             const y = -1.8 + row * 0.7;
             const cols = row % 2 === 0 ? [-1.2, 0, 1.2] : [-0.6, 0.6];
             cols.forEach((x) => {
-              const holeGeo = new THREE.CylinderGeometry(0.15, 0.15, 0.16, 12);
-              const hole = new THREE.Mesh(holeGeo, new THREE.MeshStandardMaterial({ color: 0x07111f, roughness: 1.0 }));
-              hole.position.set(x, y, 0);
-              hole.rotation.x = Math.PI / 2;
-              modelGroup.add(hole);
+              // Guide sleeves/collars extending from plate
+              const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.3, 16), stackMat);
+              collar.position.set(x, y, 0);
+              collar.rotation.x = Math.PI / 2;
+              modelGroup.add(collar);
+
+              // Inside tube passage (dark core)
+              const tubeCore = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.32, 12), new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 1.0 }));
+              tubeCore.position.set(x, y, 0);
+              tubeCore.rotation.x = Math.PI / 2;
+              modelGroup.add(tubeCore);
             });
           }
           break;
         }
 
-        case 'crossover_piping': { // Crossover process loop
-          // Long piping lines running around columns
-          const pipeGeo = new THREE.CylinderGeometry(0.12, 0.12, 7.0, 16);
-          const pipe = new THREE.Mesh(pipeGeo, coilMat);
-          pipe.position.set(-1.0, 0, 0);
-          modelGroup.add(pipe);
+        case 'crossover_piping': { // Crossover Process Piping
+          // Long piping lines running between levels (diameter 0.24)
+          const run1 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 7.0, 16), coilMat);
+          run1.position.set(-1.2, 0, 0);
+          modelGroup.add(run1);
 
-          // 180-degree expansion loop (torus segment)
-          const loopGeo = new THREE.TorusGeometry(0.8, 0.12, 12, 24, Math.PI);
-          const loop = new THREE.Mesh(loopGeo, coilMat);
-          loop.position.set(-0.2, 3.5, 0);
+          const run2 = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 4.0, 16), coilMat);
+          run2.position.set(0.6, -1.5, 0);
+          modelGroup.add(run2);
+
+          // 180-degree expansion loop (torus segment Y = 3.5)
+          const loop = new THREE.Mesh(new THREE.TorusGeometry(0.9, 0.12, 12, 24, Math.PI), coilMat);
+          loop.position.set(-0.3, 3.5, 0);
           loop.rotation.z = Math.PI / 2;
           modelGroup.add(loop);
 
-          // Spring support hanger assembly
-          const supportBox = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.8, 0.4), stackMat);
-          supportBox.position.set(0.6, 4.2, 0);
-          modelGroup.add(supportBox);
+          // Standard 90-degree elbows connecting pipelines
+          const elb1 = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.12, 12, 16, Math.PI / 2), coilMat);
+          elb1.position.set(0.3, -3.5, 0);
+          elb1.rotation.z = 0;
+          modelGroup.add(elb1);
+
+          // Constant load spring hanger supports (cylinders + heavy spring cages)
+          const hangerRod = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 1.2, 8), stackMat);
+          hangerRod.position.set(0.6, 4.1, 0);
+          modelGroup.add(hangerRod);
+
+          const hangerCasing = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.8, 0.35), stackMat);
+          hangerCasing.position.set(0.6, 4.5, 0);
+          modelGroup.add(hangerCasing);
           break;
         }
 
         case 'sag_rod': { // Roof purlin sag rod assembly
-          // Horizontal purlin beams (Z axis)
-          for (let x of [-1.5, 1.5]) {
-            const purlin = createIBeam(5.0, 0.15, 0.02, blueprintMat);
+          // Horizontal purlin channel profiles running on Z axis
+          for (let x of [-1.8, 1.8]) {
+            const purlin = createIBeam(5.0, 0.18, 0.02, blueprintMat);
             purlin.position.set(x, 1.0, 0);
             modelGroup.add(purlin);
           }
 
-          // Sag rod connecting the purlins (X axis)
-          const rodGeo = new THREE.CylinderGeometry(0.015, 0.015, 3.0, 8);
-          const rod = new THREE.Mesh(rodGeo, stackMat);
+          // Diagonal and vertical sag rods connecting the purlins (X axis)
+          const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 3.6, 8), stackMat);
           rod.position.set(0, 1.0, 0);
           rod.rotation.z = Math.PI / 2;
           modelGroup.add(rod);
 
-          // Turnbuckle body at the center of the rod
-          const turnGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.4, 8);
-          const turnbuckle = new THREE.Mesh(turnGeo, stackMat);
+          // Turnbuckle body at the center of the rod (box sleeve)
+          const turnbuckle = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.08, 0.08), stackMat);
           turnbuckle.position.set(0, 1.0, 0);
-          turnbuckle.rotation.z = Math.PI / 2;
           modelGroup.add(turnbuckle);
+
+          // Hex lock nuts on each end of the turnbuckle
+          for (let tx of [-0.2, 0.2]) {
+            const nut = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.05, 6), stackMat);
+            nut.position.set(tx, 1.0, 0);
+            nut.rotation.z = Math.PI / 2;
+            modelGroup.add(nut);
+          }
           break;
         }
 
         case 'expansion_bellows': { // Duct expansion bellows
-          // Corrugated cylinder core (Z axis)
-          const bellowCore = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 2.0, 32), shellMat);
+          // Duct transition cones on each side of bellows
+          for (let z of [-1.5, 1.5]) {
+            const cone = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 2.0, 0.8, 32, 1, false), shellMat);
+            cone.position.set(0, 0, z);
+            cone.rotation.x = Math.PI / 2;
+            modelGroup.add(cone);
+          }
+
+          // Corrugated bellows core (Z axis)
+          const bellowCore = new THREE.Mesh(new THREE.CylinderGeometry(1.8, 1.8, 2.2, 32), shellMat);
           bellowCore.rotation.x = Math.PI / 2;
           modelGroup.add(bellowCore);
 
-          // Bellows rings (corrugations)
-          for (let z of [-0.6, -0.2, 0.2, 0.6]) {
-            const ring = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.1, 12, 32), stackMat);
+          // Bellows rings (5 corrugations torus loops)
+          for (let z = -0.8; z <= 0.8; z += 0.4) {
+            const ring = new THREE.Mesh(new THREE.TorusGeometry(1.9, 0.12, 12, 32), stackMat);
             ring.position.set(0, 0, z);
             modelGroup.add(ring);
           }
 
-          // 4x Limit tie-rods on perimeter flanges
+          // 4x Structural limit tie-rods running on perimeter (diameter 0.06)
           for (let a = 0; a < 4; a++) {
             const angle = (a / 4) * Math.PI * 2;
-            const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 2.8, 8), blueprintMat);
-            rod.position.set(Math.cos(angle) * 1.95, Math.sin(angle) * 1.95, 0);
+            const rx = Math.cos(angle) * 2.15;
+            const ry = Math.sin(angle) * 2.15;
+
+            const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 3.2, 8), blueprintMat);
+            rod.position.set(rx, ry, 0);
             rod.rotation.x = Math.PI / 2;
             modelGroup.add(rod);
+
+            // Double lock nuts on rod ends
+            for (let rz of [-1.6, 1.6]) {
+              const nut = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.08, 6), stackMat);
+              nut.position.set(rx, ry, rz);
+              nut.rotation.x = Math.PI / 2;
+              modelGroup.add(nut);
+            }
           }
           break;
         }
 
         case 'breeching_casing': { // Transition breeching casing box
           // Tapered transition casing box
-          const casingGeo = new THREE.CylinderGeometry(1.6, 2.8, 3.5, 4, 1, false, 0.785);
-          const casing = new THREE.Mesh(casingGeo, shellMat);
+          const casing = new THREE.Mesh(new THREE.CylinderGeometry(1.8, 3.0, 3.5, 4, 1, false, 0.785), shellMat);
           casing.rotation.y = Math.PI / 4;
           modelGroup.add(casing);
 
-          // Base perimeter mounting flange
-          const flangeGeo = new THREE.BoxGeometry(4.0, 0.12, 4.0);
-          const flange = new THREE.Mesh(flangeGeo, blueprintMat);
+          // External reinforcing structural angle channels
+          for (let y of [-1.2, 0, 1.2]) {
+            const stiffener = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.12, 4.2), blueprintMat);
+            stiffener.position.y = y;
+            const wire = new THREE.BoxHelper(stiffener, 0x5c80a6);
+            modelGroup.add(wire);
+          }
+
+          // Casing base perimeter bolted mounting flange
+          const flange = new THREE.Mesh(new THREE.BoxGeometry(4.4, 0.15, 4.4), blueprintMat);
           flange.position.y = -1.75;
           modelGroup.add(flange);
           break;
         }
 
-        case 'skid_piping': { // Skid mounted piping module
-          // Under-skid beam grid (X and Z)
-          for (let x of [-1.2, 1.2]) {
+        case 'skid_piping': { // Chemical Dosing Skid Piping
+          // Under-skid framing channels (X and Z)
+          for (let x of [-1.2, 0, 1.2]) {
             const beam = createIBeam(5.0, 0.18, 0.03, blueprintMat);
             beam.position.set(x, -2.0, 0);
             modelGroup.add(beam);
           }
-          // Lateral process piping loop
-          const loopPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 4.5, 12), coilMat);
-          loopPipe.position.set(0, -1.0, 0);
-          loopPipe.rotation.x = Math.PI / 2;
-          modelGroup.add(loopPipe);
 
-          // Dial pressure gauges (2 units)
-          for (let z of [-1.2, 1.2]) {
-            const gauge = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.06, 12), stackMat);
-            gauge.position.set(0, -0.6, z);
+          // Dosing pump motor body
+          const pumpMotor = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.6, 12), shellMat);
+          pumpMotor.position.set(-0.6, -1.6, -1.0);
+          modelGroup.add(pumpMotor);
+
+          const pumpHead = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.3, 0.3), stackMat);
+          pumpHead.position.set(-0.6, -1.6, -0.4);
+          modelGroup.add(pumpHead);
+
+          // Suction and discharge piping loops running around skid
+          const pipe = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 4.6, 12), coilMat);
+          pipe.position.set(0.4, -1.3, 0);
+          pipe.rotation.x = Math.PI / 2;
+          modelGroup.add(pipe);
+
+          // Pulsation damper bottle (dome cylinder Y = -0.5)
+          const damper = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.6, 12), stackMat);
+          damper.position.set(0.4, -0.8, -0.6);
+          modelGroup.add(damper);
+
+          const damperDome = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 12), stackMat);
+          damperDome.position.set(0.4, -0.5, -0.6);
+          modelGroup.add(damperDome);
+
+          // Dial pressure gauges (2 units with needles)
+          for (let z of [-1.0, 1.0]) {
+            const gauge = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.08, 12), stackMat);
+            gauge.position.set(0.4, -0.8, z);
             gauge.rotation.x = Math.PI / 2;
             modelGroup.add(gauge);
+
+            // Dial scale (dark circle inside face)
+            const dialFace = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.02, 12), new THREE.MeshStandardMaterial({ color: 0xf8fafc }));
+            dialFace.position.set(0.4, -0.75, z);
+            dialFace.rotation.x = Math.PI / 2;
+            modelGroup.add(dialFace);
           }
           break;
         }
 
         case 'stair_tower': { // Multi-level stair tower
-          // 4 Columns
+          // 4 Main Columns I-beams
           for (let x of [-1.5, 1.5]) {
             for (let z of [-1.5, 1.5]) {
               const col = createIBeam(12.0, 0.2, 0.03, blueprintMat);
@@ -3226,39 +3705,69 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
               modelGroup.add(col);
             }
           }
-          // Horizontal beams (3 levels)
+
+          // Horizontal portal beams (3 levels Y = -4, 0, 4)
           for (let y of [-4, 0, 4]) {
-            const beam = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.08, 3.0), wireMat);
-            beam.position.y = y;
-            modelGroup.add(beam);
+            const platformFrame = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.08, 3.0), wireMat);
+            platformFrame.position.y = y;
+            modelGroup.add(platformFrame);
+
+            // Access landing steel gratings (half block)
+            const grating = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.02, 3.0), stackMat);
+            grating.position.set(0.75, y, 0);
+            modelGroup.add(grating);
           }
+
+          // Stair flights winding between landing levels
+          const stairGroup = new THREE.Group();
+          for (let level = 0; level < 2; level++) {
+            const yOffset = -4.0 + level * 4.0;
+            // 8 treads per flight
+            for (let t = 0; t < 8; t++) {
+              const ty = yOffset + t * 0.5 + 0.25;
+              const tz = -1.2 + t * 0.3;
+              const tread = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.02, 0.25), stackMat);
+              tread.position.set(-0.75, ty, tz);
+              stairGroup.add(tread);
+
+              // Safety toe-plate
+              const toe = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.08, 0.25), stackMat);
+              toe.position.set(-0.16, ty + 0.04, tz);
+              stairGroup.add(toe);
+            }
+          }
+          modelGroup.add(stairGroup);
           break;
         }
 
         case 'cage_ladder': { // Cage Ladder assembly
-          // Vertical side rails (2 lines)
+          // Vertical side rails (2 channel bars)
           for (let x of [-0.25, 0.25]) {
-            const railGeo = new THREE.CylinderGeometry(0.02, 0.02, 8.0, 8);
-            const rail = new THREE.Mesh(railGeo, blueprintMat);
+            const rail = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 8.0, 8), blueprintMat);
             rail.position.set(x, 0, 0);
             modelGroup.add(rail);
           }
-          // Ladder Rungs (Y axis spacing)
+          // Ladder Rungs (Y axis spacing 0.3)
           for (let y = -3.8; y <= 3.8; y += 0.3) {
-            const rungGeo = new THREE.CylinderGeometry(0.012, 0.012, 0.5, 8);
-            const rung = new THREE.Mesh(rungGeo, stackMat);
+            const rung = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.5, 8), stackMat);
             rung.position.set(0, y, 0);
             rung.rotation.z = Math.PI / 2;
             modelGroup.add(rung);
           }
           // Circular safety hoops
           for (let y = -2.0; y <= 3.8; y += 0.9) {
-            const hoopGeo = new THREE.CylinderGeometry(0.48, 0.48, 0.04, 16, 1, true, 0, Math.PI * 1.5);
-            const hoop = new THREE.Mesh(hoopGeo, blueprintMat);
+            const hoop = new THREE.Mesh(new THREE.TorusGeometry(0.48, 0.04, 8, 24, Math.PI * 1.5), blueprintMat);
             hoop.position.set(0, y, 0.24);
             hoop.rotation.x = Math.PI / 2;
             hoop.rotation.z = -Math.PI / 4;
             modelGroup.add(hoop);
+          }
+          // Vertical straps connecting safety hoops (5 straps surrounding cage)
+          for (let s = 0; s < 5; s++) {
+            const angle = (s / 4) * Math.PI * 1.5 - Math.PI / 4;
+            const strap = new THREE.Mesh(new THREE.BoxGeometry(0.03, 5.8, 0.01), blueprintMat);
+            strap.position.set(Math.cos(angle) * 0.48, 0.9, 0.24 + Math.sin(angle) * 0.48);
+            modelGroup.add(strap);
           }
           break;
         }
@@ -3270,15 +3779,24 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             { x: -2.0, z: 1.5 }, { x: 0, z: 1.5 }, { x: 2.0, z: 1.5 }
           ];
           pilePositions.forEach((pos) => {
-            // Concrete pile cap (rectangular block)
+            // Concrete pile cap with chamfers
             const cap = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.6, 0.8), new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.9 }));
             cap.position.set(pos.x, -2.5, pos.z);
             modelGroup.add(cap);
 
-            // Circular pile shaft extending downwards (Y = -5)
+            // Concrete pile shaft extending downwards (Y = -5)
             const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 3.0, 16), new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.9 }));
             shaft.position.set(pos.x, -4.3, pos.z);
             modelGroup.add(shaft);
+
+            // Protruding rebar templates (4 steel rods extending from top of pile cap)
+            for (let rx of [-0.2, 0.2]) {
+              for (let rz of [-0.2, 0.2]) {
+                const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.4, 8), stackMat);
+                bar.position.set(pos.x + rx, -2.0, pos.z + rz);
+                modelGroup.add(bar);
+              }
+            }
           });
           break;
         }
@@ -3289,40 +3807,52 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           tipBody.position.y = 1.0;
           modelGroup.add(tipBody);
 
-          // Steam nozzle header ring (around top outlet Y = 2.5)
+          // Steam nozzle header ring (around top outlet Y = 2.4)
           const header = new THREE.Mesh(new THREE.TorusGeometry(0.92, 0.06, 8, 24), stackMat);
           header.position.y = 2.4;
           header.rotation.x = Math.PI / 2;
           modelGroup.add(header);
 
-          // Steam pilot lines (2 tubes running down stack sides)
-          for (let a of [0, Math.PI]) {
-            const lineGeo = new THREE.CylinderGeometry(0.03, 0.03, 3.0, 8);
-            const line = new THREE.Mesh(lineGeo, coilMat);
-            line.position.set(Math.cos(a) * 0.98, 1.0, Math.sin(a) * 0.98);
-            modelGroup.add(line);
+          // Steam injection pilot nozzle tubes (8 tubes)
+          for (let a = 0; a < 8; a++) {
+            const angle = (a / 8) * Math.PI * 2;
+            const rx = Math.cos(angle) * 0.92;
+            const rz = Math.sin(angle) * 0.92;
+
+            const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.4, 8), coilMat);
+            nozzle.position.set(rx, 2.6, rz);
+            modelGroup.add(nozzle);
           }
+
+          // Windshield shroud ring surrounding top header
+          const shroud = new THREE.Mesh(new THREE.CylinderGeometry(1.05, 1.05, 0.8, 24, 1, true), blueprintMat);
+          shroud.position.y = 2.2;
+          modelGroup.add(shroud);
           break;
         }
 
         case 'preheater_rotor': { // Air Preheater Rotor core sector
           // Center shaft cylindrical hub
-          const hubGeo = new THREE.CylinderGeometry(0.6, 0.6, 3.5, 24);
-          const hub = new THREE.Mesh(hubGeo, stackMat);
+          const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 3.5, 24), stackMat);
           modelGroup.add(hub);
 
-          // Outer frame rim (Y axis cylinder shell)
-          const rim = new THREE.Mesh(new THREE.CylinderGeometry(3.0, 3.0, 3.0, 24, 1, true), blueprintMat);
+          // Outer frame circular rim shell (diameter 6)
+          const rim = new THREE.Mesh(new THREE.CylinderGeometry(3.0, 3.0, 3.0, 32, 1, true), blueprintMat);
           modelGroup.add(rim);
 
-          // Radial diaphragms (sector divisions - 8 plates)
-          for (let i = 0; i < 8; i++) {
-            const angle = (i / 8) * Math.PI * 2;
-            const plateGeo = new THREE.BoxGeometry(0.04, 3.0, 2.4);
-            const plate = new THREE.Mesh(plateGeo, blueprintMat);
+          // Radial diaphragms (sector division plates - 12 plates)
+          for (let i = 0; i < 12; i++) {
+            const angle = (i / 12) * Math.PI * 2;
+            const plate = new THREE.Mesh(new THREE.BoxGeometry(0.04, 3.0, 2.4), blueprintMat);
             plate.position.set(Math.cos(angle) * 1.8, 0, Math.sin(angle) * 1.8);
             plate.rotation.y = -angle + Math.PI / 2;
             modelGroup.add(plate);
+
+            // Sector elements pack (heat transfer element sheets modeled as thin boxes)
+            const pack = new THREE.Mesh(new THREE.BoxGeometry(0.4, 2.9, 1.4), new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.8, wireframe: true }));
+            pack.position.set(Math.cos(angle + 0.26) * 1.8, 0, Math.sin(angle + 0.26) * 1.8);
+            pack.rotation.y = -angle + Math.PI / 2;
+            modelGroup.add(pack);
           }
           break;
         }
