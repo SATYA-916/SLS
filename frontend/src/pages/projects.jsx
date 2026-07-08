@@ -1,14 +1,15 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
 import { 
   Building2, X, CheckCircle2, ArrowRight, ArrowLeft, 
-  User, Calendar, MapPin, Briefcase, FileText 
+  User, Calendar, MapPin, Briefcase, FileText, Search 
 } from 'lucide-react';
 import { getProjects } from '@/lib/api';
 import { fallbackProjects } from '@/data/fallbackProjects';
+import { PageMeta } from '@/components/PageMeta';
 
 const categories = [
   'All',
@@ -60,10 +61,19 @@ export default function Projects() {
   });
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [, setLocation] = useLocation();
 
-  const filtered = projects?.filter(
-    (p) => selectedCategory === 'All' || p.category === selectedCategory
-  );
+  const filtered = projects?.filter((p) => {
+    const matchCat = selectedCategory === 'All' || p.category === selectedCategory;
+    const q = searchQuery.toLowerCase().trim();
+    const matchSearch = !q ||
+      p.title.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      (p.category || '').toLowerCase().includes(q) ||
+      (p.client || '').toLowerCase().includes(q);
+    return matchCat && matchSearch;
+  });
 
   const filteredList = useMemo(() => filtered || [], [filtered]);
 
@@ -134,6 +144,7 @@ export default function Projects() {
 
   return (
     <div className="w-full">
+      <PageMeta title="Projects" description="Explore 500+ structural and industrial engineering projects delivered by SLS Consultants since 2002 — fired heaters, cryogenic foundations, chimneys, and more." />
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
@@ -162,7 +173,7 @@ export default function Projects() {
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => { setSelectedCategory(cat); setSearchQuery(''); }}
                 className={`px-4 py-2 text-xs font-bold tracking-wider uppercase border transition-colors ${
                   selectedCategory === cat
                     ? 'bg-[#0a1628] text-white border-[#0a1628]'
@@ -173,6 +184,27 @@ export default function Projects() {
               </button>
             ))}
           </div>
+
+          <div className="relative mb-8 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search projects by name, client, category..."
+              className="w-full pl-10 pr-10 py-3 text-sm border border-gray-200 bg-gray-50 focus:bg-white focus:border-[#0a1628] focus:outline-none focus:ring-1 focus:ring-[#0a1628]/20 transition-colors"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                aria-label="Clear search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+          <p className="text-xs text-gray-400 mb-6">{filteredList.length} project{filteredList.length !== 1 ? 's' : ''} found</p>
 
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -190,7 +222,7 @@ export default function Projects() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: i * 0.05 }}
                   className="bg-white p-8 flex flex-col cursor-pointer hover:shadow-lg transition-shadow group"
-                  onClick={() => setSelectedProject(proj)}
+                  onClick={() => setLocation(`/projects/${proj.id}`)}
                 >
                   <div className="w-full h-44 bg-gray-50 mb-5 overflow-hidden border border-gray-200 group-hover:border-[#0a1628]/20 transition-colors relative flex items-center justify-center">
                     {proj.image ? (

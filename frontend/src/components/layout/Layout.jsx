@@ -1,5 +1,6 @@
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import { FloatingActions } from './FloatingActions';
 
 export function Layout({ children }) {
   return (
@@ -7,6 +8,7 @@ export function Layout({ children }) {
       <Navbar />
       <main className="flex-grow">{children}</main>
       <Footer />
+      <FloatingActions />
     </div>
   );
 }

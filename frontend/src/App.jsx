@@ -11,6 +11,8 @@ import NotFound from '@/pages/not-found';
 const About = lazy(() => import('@/pages/about'));
 const Expertise = lazy(() => import('@/pages/expertise'));
 const Projects = lazy(() => import('@/pages/projects'));
+const CaseStudy = lazy(() => import('@/pages/case-study'));
+const CodesDirectory = lazy(() => import('@/pages/codes-directory'));
 const Software = lazy(() => import('@/pages/software'));
 const Contact = lazy(() => import('@/pages/contact'));
 const Gallery = lazy(() => import('@/pages/gallery'));
@@ -89,8 +91,14 @@ function Router() {
             <Route path="/services">
               <Layout><Expertise /></Layout>
             </Route>
+            <Route path="/projects/:id">
+              <Layout><CaseStudy /></Layout>
+            </Route>
             <Route path="/projects">
               <Layout><Projects /></Layout>
+            </Route>
+            <Route path="/codes">
+              <Layout><CodesDirectory /></Layout>
             </Route>
             <Route path="/gallery">
               <Layout><Gallery /></Layout>

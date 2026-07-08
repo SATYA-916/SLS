@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.slsnexus.com/sitemap.xml
+
+# Block admin paths
+Disallow: /admin
+Disallow: /admin/

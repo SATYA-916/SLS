@@ -131,4 +131,100 @@ router.post('/forgot-password', async (req, res) => {
   res.json({ success: true, message: 'Recovery email sent if address matches our records' });
 });
 
+router.patch('/contacts/:id/status', requireAdmin, async (req, res) => {
+  const { status } = req.body;
+  if (!['new', 'replied', 'closed'].includes(status)) {
+    res.status(400).json({ error: 'Invalid status' });
+    return;
+  }
+  try {
+    await connectMongo();
+    const contact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    ).lean();
+    if (!contact) {
+      res.status(404).json({ error: 'Record not found' });
+      return;
+    }
+    res.json(contact);
+  } catch (err) {
+    req.log.error({ err }, 'Failed to update status');
+    res.status(500).json({ error: 'Failed to update status' });
+  }
+});
+
+router.post('/contacts/:id/notes', requireAdmin, async (req, res) => {
+  const { text } = req.body;
+  if (!text || text.trim() === '') {
+    res.status(400).json({ error: 'Note text is required' });
+    return;
+  }
+  try {
+    await connectMongo();
+    const contact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      { $push: { notes: { text: text.trim() } } },
+      { new: true }
+    ).lean();
+    if (!contact) {
+      res.status(404).json({ error: 'Record not found' });
+      return;
+    }
+    res.json(contact);
+  } catch (err) {
+    req.log.error({ err }, 'Failed to add note');
+    res.status(500).json({ error: 'Failed to add note' });
+  }
+});
+
+router.delete('/contacts/:id/notes/:noteId', requireAdmin, async (req, res) => {
+  try {
+    await connectMongo();
+    const contact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      { $pull: { notes: { _id: req.params.noteId } } },
+      { new: true }
+    ).lean();
+    if (!contact) {
+      res.status(404).json({ error: 'Record not found' });
+      return;
+    }
+    res.json(contact);
+  } catch (err) {
+    req.log.error({ err }, 'Failed to delete note');
+    res.status(500).json({ error: 'Failed to delete note' });
+  }
+});
+
+router.get('/contacts/export', requireAdmin, async (req, res) => {
+  try {
+    await connectMongo();
+    const contacts = await Contact.find().sort({ createdAt: -1 }).lean();
+    
+    let csv = 'Date,Name,Email,Phone,Company,Service,Status,Message\n';
+    
+    for (const c of contacts) {
+      const date = new Date(c.createdAt).toLocaleDateString('en-IN');
+      const name = (c.name || '').replace(/"/g, '""');
+      const email = (c.email || '').replace(/"/g, '""');
+      const phone = (c.phone || '').replace(/"/g, '""');
+      const company = (c.company || '').replace(/"/g, '""');
+      const service = (c.service || '').replace(/"/g, '""');
+      const status = (c.status || 'new').replace(/"/g, '""');
+      const message = (c.message || '').replace(/"/g, '""');
+      
+      csv += `"${date}","${name}","${email}","${phone}","${company}","${service}","${status}","${message}"\n`;
+    }
+    
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', 'attachment; filename="sls_inquiries_export.csv"');
+    res.send(csv);
+  } catch (err) {
+    req.log.error({ err }, 'Failed to export CSV');
+    res.status(500).json({ error: 'Failed to export CSV' });
+  }
+});
+
 export default router;

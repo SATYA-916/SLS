@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { Phone, Mail, Globe, MapPin, CheckCircle2, Clock, ShieldCheck, Zap, CalendarDays, X, Video, FileText } from 'lucide-react';
 import { submitContact, getServices } from '@/lib/api';
 import { toast } from '@/components/ui/toaster';
+import { PageMeta } from '@/components/PageMeta';
 
 // ── Calendly Configuration ──────────────────────────────────────────────────
 // Replace this URL with your actual Calendly link once you create a free account
@@ -109,8 +110,9 @@ export default function Contact() {
   const initialService = queryParams.get('service') || '';
   const initialMessage = initialService ? getInitialMessageForService(initialService) : '';
 
-  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', service: initialService, message: initialMessage });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', service: initialService, message: initialMessage, targetCodes: '' });
   const [errors, setErrors] = useState({});
+  const [wizardStep, setWizardStep] = useState(1);
 
   // Auto-scroll directly to form on service pre-selection
   useEffect(() => {
@@ -271,10 +273,39 @@ export default function Contact() {
     }
   };
 
+  const validateStep1 = () => {
+    const errs = {};
+    if (!form.name?.trim()) errs.name = 'Name is required';
+    if (!form.email?.trim()) errs.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Enter a valid email';
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const validateStep2 = () => {
+    const errs = {};
+    if (!form.service) errs.service = 'Please select a service';
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
   function handleSubmit(e) {
     e.preventDefault();
+    if (wizardStep === 1) {
+      if (validateStep1()) setWizardStep(2);
+      return;
+    }
+    if (wizardStep === 2) {
+      if (validateStep2()) setWizardStep(3);
+      return;
+    }
+
     const errs = validate(form);
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+
+    const messageWithCodes = form.targetCodes?.trim()
+      ? `${form.message}\n\n[Design Codes: ${form.targetCodes.trim()}]`
+      : form.message;
 
     const formData = new FormData();
     formData.append('name', form.name);
@@ -282,7 +313,7 @@ export default function Contact() {
     formData.append('phone', form.phone || '');
     formData.append('company', form.company || '');
     formData.append('service', form.service || '');
-    formData.append('message', form.message);
+    formData.append('message', messageWithCodes);
     
     if (file) {
       formData.append('file', file);
@@ -308,6 +339,7 @@ export default function Contact() {
 
   return (
     <div className="w-full">
+      <PageMeta title="Contact Us" description="Get in touch with SLS Consultants for structural engineering, fired heater design, RLA studies, and FEM analysis. Based in Visakhapatnam, India. Call +91 98495 98424 or email slsind@gmail.com." />
       {/* Hero Section */}
       <section className="bg-slate-50 text-[#0a1628] pt-20 pb-12 relative overflow-hidden border-b border-slate-100">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
@@ -362,7 +394,7 @@ export default function Contact() {
                 onClick={openPopup}
                 className="w-full bg-[#0a1628] hover:bg-[#13233c] text-white py-3.5 px-6 font-bold uppercase tracking-widest text-[10px] shadow-sm hover:shadow transition-all duration-200 text-center flex items-center justify-center gap-2 rounded-sm"
               >
-                <CalendarDays className="w-4 h-4" /> Book a Call &rarr;
+                <CalendarDays className="w-4 h-4" /> Book a Call →
               </button>
             </motion.div>
 
@@ -485,134 +517,188 @@ export default function Contact() {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Name *</label>
-                    <input
-                      name="name"
-                      value={form.name}
-                      onChange={handleChange}
-                      className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors"
-                      placeholder="Your name"
-                    />
-                    {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Email *</label>
-                    <input
-                      name="email"
-                      type="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors"
-                      placeholder="your@email.com"
-                    />
-                    {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Phone</label>
-                    <input
-                      name="phone"
-                      value={form.phone}
-                      onChange={handleChange}
-                      className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors"
-                      placeholder="+91 XXXXX XXXXX"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Company</label>
-                    <input
-                      name="company"
-                      value={form.company}
-                      onChange={handleChange}
-                      className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors"
-                      placeholder="Your company"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block flex items-center justify-between">
-                    <span>Service Required</span>
-                    {initialService && form.service === initialService && (
-                      <span className="text-[9px] font-extrabold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded animate-pulse">
-                        Pre-selected from Services
-                      </span>
-                    )}
-                  </label>
-                  <select
-                    ref={serviceSelectRef}
-                    name="service"
-                    value={form.service}
-                    onChange={handleChange}
-                    className={`w-full border px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors bg-white ${
-                      initialService && form.service === initialService
-                        ? 'border-blue-500 ring-2 ring-blue-500/10 font-medium text-blue-900 bg-blue-50/20'
-                        : 'border-gray-200 text-gray-800'
-                    }`}
-                  >
-                    <option value="">Select a service</option>
-                    {dropdownServices.map((s) => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">
-                    Upload Drawings & Specifications (Optional)
-                  </label>
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    className="hidden"
-                    accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg,.zip,.rar"
-                  />
-                  <div
-                    onClick={() => fileInputRef.current?.click()}
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    className="border border-dashed border-gray-300 p-5 text-center bg-gray-50 flex flex-col items-center justify-center rounded-sm hover:border-[#0a1628] transition-colors cursor-pointer"
-                  >
-                    {file ? (
-                      <div className="flex flex-col items-center">
-                        <CheckCircle2 className="w-6 h-6 text-green-600 mb-1.5" />
-                        <span className="text-xs font-semibold text-gray-700 block max-w-[280px] truncate">
-                          {file.name}
-                        </span>
-                        <span className="text-[10px] text-gray-400 mt-0.5">
-                          ({(file.size / (1024 * 1024)).toFixed(2)} MB)
-                        </span>
-                        <button
-                          type="button"
-                          onClick={handleRemoveFile}
-                          className="mt-2 text-[10px] text-red-500 hover:text-red-700 underline font-bold uppercase tracking-wider"
-                        >
-                          Remove File
-                        </button>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Stepped progress indicator */}
+                <div className="flex items-center justify-between pb-6 border-b border-slate-100">
+                  {[
+                    { nr: 1, label: 'Company Info' },
+                    { nr: 2, label: 'Engineering Scope' },
+                    { nr: 3, label: 'Message & Upload' }
+                  ].map((s) => (
+                    <div key={s.nr} className="flex items-center gap-2">
+                      <div
+                        className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold border transition-colors ${
+                          wizardStep === s.nr
+                            ? 'bg-[#0a1628] border-[#0a1628] text-white'
+                            : wizardStep > s.nr
+                            ? 'bg-green-600 border-green-600 text-white'
+                            : 'bg-white border-gray-200 text-gray-400'
+                        }`}
+                      >
+                        {wizardStep > s.nr ? '✓' : s.nr}
                       </div>
-                    ) : (
-                      <>
-                        <ShieldCheck className="w-6 h-6 text-gray-400 mb-1.5" />
-                        <span className="text-xs font-semibold text-gray-600 block">Drag & Drop files here, or browse</span>
-                        <span className="text-[10px] text-gray-400 mt-1">Confidential project information handled securely. Max size 15MB.</span>
-                      </>
-                    )}
+                      <span
+                        className={`text-[9px] font-extrabold uppercase tracking-wider hidden sm:inline ${
+                          wizardStep === s.nr ? 'text-[#0a1628]' : 'text-gray-400'
+                        }`}
+                      >
+                        {s.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Step 1: Company Profile */}
+                {wizardStep === 1 && (
+                  <div className="space-y-5 animate-fade-in">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Name *</label>
+                        <input
+                          name="name"
+                          value={form.name}
+                          onChange={handleChange}
+                          className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors"
+                          placeholder="Your name"
+                        />
+                        {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Email *</label>
+                        <input
+                          name="email"
+                          type="email"
+                          value={form.email}
+                          onChange={handleChange}
+                          className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors"
+                          placeholder="your@email.com"
+                        />
+                        {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Phone</label>
+                        <input
+                          name="phone"
+                          value={form.phone}
+                          onChange={handleChange}
+                          className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors"
+                          placeholder="+91 XXXXX XXXXX"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Company</label>
+                        <input
+                          name="company"
+                          value={form.company}
+                          onChange={handleChange}
+                          className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors"
+                          placeholder="Your company"
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Message *</label>
-                  <textarea
-                    name="message"
-                    value={form.message}
-                    onChange={handleChange}
-                    rows={5}
-                    className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors resize-none"
-                    placeholder="Describe your project or inquiry..."
-                  />
-                  {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message}</p>}
-                </div>
-                 {isUploading && (
+                )}
+
+                {/* Step 2: Engineering Scope */}
+                {wizardStep === 2 && (
+                  <div className="space-y-5 animate-fade-in">
+                    <div>
+                      <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block flex items-center justify-between">
+                        <span>Required Service *</span>
+                      </label>
+                      <select
+                        ref={serviceSelectRef}
+                        name="service"
+                        value={form.service}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors bg-white text-gray-800"
+                      >
+                        <option value="">Select a service</option>
+                        {dropdownServices.map((s) => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                      {errors.service && <p className="text-xs text-red-500 mt-1">{errors.service}</p>}
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">
+                        Target Codes &amp; Standards (e.g. ASME VIII, API 560, IS 800)
+                      </label>
+                      <input
+                        name="targetCodes"
+                        value={form.targetCodes}
+                        onChange={handleChange}
+                        className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors"
+                        placeholder="ASME Sec VIII, API 560, IS 800, EIL specs..."
+                      />
+                      <span className="text-[10px] text-gray-400 block mt-1">Conforming design criteria ensures project safety compliance.</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 3: Message & Drawings Upload */}
+                {wizardStep === 3 && (
+                  <div className="space-y-5 animate-fade-in">
+                    <div>
+                      <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">
+                        Upload Specifications / Drawings Layouts
+                      </label>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        className="hidden"
+                        accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg,.zip,.rar"
+                      />
+                      <div
+                        onClick={() => fileInputRef.current?.click()}
+                        onDragOver={handleDragOver}
+                        onDrop={handleDrop}
+                        className="border border-dashed border-gray-300 p-5 text-center bg-gray-50 flex flex-col items-center justify-center rounded-sm hover:border-[#0a1628] transition-colors cursor-pointer"
+                      >
+                        {file ? (
+                          <div className="flex flex-col items-center">
+                            <CheckCircle2 className="w-6 h-6 text-green-600 mb-1.5" />
+                            <span className="text-xs font-semibold text-gray-700 block max-w-[280px] truncate">
+                              {file.name}
+                            </span>
+                            <span className="text-[10px] text-gray-400 mt-0.5">
+                              ({(file.size / (1024 * 1024)).toFixed(2)} MB)
+                            </span>
+                            <button
+                              type="button"
+                              onClick={handleRemoveFile}
+                              className="mt-2 text-[10px] text-red-500 hover:text-red-700 underline font-bold uppercase tracking-wider"
+                            >
+                              Remove File
+                            </button>
+                          </div>
+                        ) : (
+                          <>
+                            <ShieldCheck className="w-6 h-6 text-gray-400 mb-1.5" />
+                            <span className="text-xs font-semibold text-gray-600 block">Drag &amp; Drop specification files here, or browse</span>
+                            <span className="text-[10px] text-gray-400 mt-1">Confidential project layouts handled securely. Max size 15MB.</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Inquiry Description *</label>
+                      <textarea
+                        name="message"
+                        value={form.message}
+                        onChange={handleChange}
+                        rows={4}
+                        className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors resize-none"
+                        placeholder="Describe your design parameters or scope requirements..."
+                      />
+                      {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message}</p>}
+                    </div>
+                  </div>
+                )}
+
+                {isUploading && (
                   <div className="space-y-1.5 pt-2">
                     <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#43648e]">
                       <span>Uploading Specifications...</span>
@@ -628,27 +714,44 @@ export default function Contact() {
                 )}
 
                 {mutation.isError && (
-                  <p className="text-xs text-red-500">Failed to send inquiry. Please try again or contact us directly.</p>
+                  <p className="text-xs text-red-500">Failed to submit enquiry. Please check your network and try again.</p>
                 )}
-                
-                <button
-                  type="submit"
-                  disabled={mutation.isPending}
-                  className={`w-full text-white py-4 px-6 text-xs font-bold uppercase tracking-widest shadow-md transition-all duration-200 flex items-center justify-center gap-2 rounded-sm ${
-                    mutation.isPending
-                      ? 'bg-slate-400 cursor-not-allowed opacity-80'
-                      : 'bg-[#0a1628] hover:bg-[#1a2f4c] active:scale-[0.99]'
-                  }`}
-                >
-                  {mutation.isPending ? (
-                    <>
-                      <div className="w-3.5 h-3.5 border-2 border-t-transparent border-white rounded-full animate-spin" />
-                      {isUploading ? 'Uploading Drawings...' : 'Submitting Enquiry...'}
-                    </>
+
+                {/* Navigation controls */}
+                <div className="flex justify-between items-center gap-4 pt-4 border-t border-slate-100">
+                  {wizardStep > 1 ? (
+                    <button
+                      type="button"
+                      onClick={() => setWizardStep((s) => s - 1)}
+                      className="border border-slate-300 text-gray-600 hover:bg-slate-50 py-3 px-6 text-xs font-bold uppercase tracking-wider transition-colors rounded-sm"
+                    >
+                      Back
+                    </button>
                   ) : (
-                    <>Request My Free Consultation &rarr;</>
+                    <div />
                   )}
-                </button>
+
+                  <button
+                    type="submit"
+                    disabled={mutation.isPending}
+                    className={`text-white py-3.5 px-8 text-xs font-bold uppercase tracking-widest transition-all duration-200 flex items-center justify-center gap-2 rounded-sm ${
+                      mutation.isPending
+                        ? 'bg-slate-400 cursor-not-allowed opacity-80'
+                        : 'bg-[#0a1628] hover:bg-[#1a2f4c]'
+                    }`}
+                  >
+                    {mutation.isPending ? (
+                      <>
+                        <div className="w-3.5 h-3.5 border-2 border-t-transparent border-white rounded-full animate-spin" />
+                        {isUploading ? 'Uploading Drawings...' : 'Submitting Enquiry...'}
+                      </>
+                    ) : wizardStep < 3 ? (
+                      'Next Step →'
+                    ) : (
+                      'Submit Inquiry →'
+                    )}
+                  </button>
+                </div>
               </form>
             )}
           </motion.div>

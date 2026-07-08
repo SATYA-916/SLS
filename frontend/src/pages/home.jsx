@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { useRef } from 'react';
 import ServiceConfirmationPanel from '@/components/ServiceConfirmationPanel';
+import { PageMeta } from '@/components/PageMeta';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getStats, getProjects, getServices } from '@/lib/api';
 import { fallbackProjects } from '@/data/fallbackProjects';
@@ -94,9 +94,43 @@ function AnimatedSection({ children, className = '' }) {
   );
 }
 
+// Animated counting number component
+function AnimatedCounter({ target, duration = 1500, suffix = '' }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-40px' });
+  const hasStarted = useRef(false);
+  useEffect(() => {
+    if (!isInView || hasStarted.current) return;
+    hasStarted.current = true;
+    const startTime = performance.now();
+    const step = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(eased * target));
+      if (progress < 1) requestAnimationFrame(step);
+      else setCount(target);
+    };
+    requestAnimationFrame(step);
+  }, [isInView, target, duration]);
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
 export default function Home() {
   const [activeServiceToBook, setActiveServiceToBook] = useState(null);
   const [, setLocation] = useLocation();
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const heroRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    if (!heroRef.current) return;
+    const rect = heroRef.current.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
 
   const { data: stats, isLoading: statsLoading } = useQuery({ queryKey: ['stats'], queryFn: getStats });
   const { data: projects, isLoading: projectsLoading } = useQuery({ 
@@ -114,9 +148,17 @@ export default function Home() {
 
   return (
     <div className="w-full bg-white">
+      <PageMeta
+        title="Home"
+        description="SLS Consultants — Expert structural, mechanical, and industrial engineering since 2002. Fired heater design, RLA studies, FEM analysis, Tekla steel detailing. Based in Visakhapatnam."
+      />
 
       {/* 1. HERO & STATS COMBINED */}
-      <section className="grid md:grid-cols-2 min-h-[480px]">
+      <section 
+        ref={heroRef}
+        onMouseMove={handleMouseMove}
+        className="grid md:grid-cols-2 min-h-[480px] relative overflow-hidden"
+      >
         <div className="bg-slate-50 text-[#0a1628] px-10 md:px-16 py-16 md:py-20 flex flex-col justify-center relative overflow-hidden border-b border-slate-200">
           <div className="absolute inset-0 opacity-[0.05] text-[#0a1628] pointer-events-none">
             <svg width="100%" height="100%">
@@ -128,6 +170,14 @@ export default function Home() {
               <rect width="100%" height="100%" fill="url(#herogrid)" />
             </svg>
           </div>
+          <div
+            className="absolute inset-0 pointer-events-none hidden md:block opacity-[0.12]"
+            style={{
+              backgroundImage: 'radial-gradient(circle 180px at var(--mouse-x, 0px) var(--mouse-y, 0px), rgb(67, 100, 142) 0%, transparent 100%)',
+              '--mouse-x': `${mousePos.x}px`,
+              '--mouse-y': `${mousePos.y}px`
+            }}
+          />
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }} className="relative z-10">
             <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 mb-5">
               Engineering Excellence Since 2002
@@ -139,16 +189,18 @@ export default function Home() {
               Providing full-scale mechanical and structural engineering consultancy designed in accordance with project-specific international and regional standards.
             </p>
 
-            {/* Inline Stats Counter inside Hero */}
+            {/* Inline Animated Stats Counter inside Hero */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-4 mb-8 border-t border-slate-200 pt-6 max-w-lg">
               {[
-                { value: `${stats?.yearsExperience || 20}+`, label: 'Years Exp', sub: 'Since 2002' },
-                { value: `${stats?.projectsCompleted || 500}+`, label: 'Projects', sub: 'Delivered' },
-                { value: `${stats?.clientsServed || 25}+`, label: 'Clients', sub: 'Satisfied' },
-                { value: `${stats?.softwarePlatforms || 5}+`, label: 'Software', sub: 'Platforms' }
+                { target: stats?.yearsExperience || 20, label: 'Years Exp', sub: 'Since 2002' },
+                { target: stats?.projectsCompleted || 500, label: 'Projects', sub: 'Delivered' },
+                { target: stats?.clientsServed || 25, label: 'Clients', sub: 'Satisfied' },
+                { target: stats?.softwarePlatforms || 5, label: 'Software', sub: 'Platforms' }
               ].map((stat, idx) => (
                 <div key={idx} className="min-w-0 flex flex-col justify-end">
-                  <div className="text-xl font-bold text-[#0a1628] leading-none mb-1.5">{stat.value}</div>
+                  <div className="text-2xl font-black text-[#0a1628] leading-none mb-1.5">
+                    <AnimatedCounter target={stat.target} suffix="+" duration={1200 + idx * 150} />
+                  </div>
                   <div className="text-[9px] font-bold uppercase tracking-wider text-slate-500 leading-none mb-0.5">{stat.label}</div>
                   <div className="text-[8px] text-slate-400 truncate leading-none">{stat.sub}</div>
                 </div>
@@ -215,6 +267,62 @@ export default function Home() {
                 <p className="text-[10px] text-gray-400 font-medium mt-1">Ex-BHEL (18 Yrs)&nbsp;&nbsp;|&nbsp;&nbsp;Ex-Doosan Babcock</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY SLS — DIFFERENTIATOR SECTION */}
+      <section className="py-20 bg-white border-b border-gray-100">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <div className="text-center mb-14">
+              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Why Choose SLS</p>
+              <h2 className="text-3xl font-bold text-[#0a1628] mb-4">The SLS Advantage</h2>
+              <p className="text-sm text-slate-500 max-w-xl mx-auto leading-relaxed">
+                We aren't a generalist firm. Everything we do is centred around one domain: heavy industrial engineering — where standards are strict and margins for error are zero.
+              </p>
+            </div>
+          </AnimatedSection>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: <ShieldCheck className="w-8 h-8" />,
+                title: 'Founder-Led Technical Depth',
+                desc: 'Every project is supervised by Mr. C. Subrahmanyam — 18 years at BHEL + Doosan Babcock. No junior hand-off, no diluted expertise.'
+              },
+              {
+                icon: <Layers className="w-8 h-8" />,
+                title: 'Multi-Discipline Under One Roof',
+                desc: 'Structural, mechanical, thermal, and steel detailing in one coordinated team. No coordination delays between sub-vendors.'
+              },
+              {
+                icon: <Briefcase className="w-8 h-8" />,
+                title: 'Code-Compliant Deliverables',
+                desc: 'All drawings and calculations produced under API 560, ASME Section VIII/I, IS 800, IS 6533, and EIL specifications.'
+              },
+              {
+                icon: <CheckCircle2 className="w-8 h-8" />,
+                title: '500+ Projects Delivered',
+                desc: 'Consistent track record for HPCL, L&T, BHEL, Air Liquide, and Doosan Babcock with zero statutory approvals failures.'
+              }
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.08 }}
+                className="bg-gray-50 border border-gray-200 p-6 flex flex-col gap-4"
+              >
+                <div className="w-14 h-14 bg-[#0a1628] text-white flex items-center justify-center shrink-0">
+                  {item.icon}
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#0a1628] text-sm mb-2 leading-snug">{item.title}</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

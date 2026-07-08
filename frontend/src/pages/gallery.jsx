@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import ThreeViewer from '@/components/ThreeViewer';
 import ServiceConfirmationPanel from '@/components/ServiceConfirmationPanel';
+import { PageMeta } from '@/components/PageMeta';
 
 // 1. Technical drawings (cropped screenshots)
 const drawings = [
@@ -1186,6 +1187,7 @@ export default function Gallery() {
 
   return (
     <div className="w-full bg-white">
+      <PageMeta title="Gallery & Technical Assets" description="Explore SLS Consultants' engineering gallery: structural drawing layouts, interactive 3D CAD models of fired heaters, and detailed engineering workflow diagrams." />
       {/* HEADER SECTION */}
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
@@ -1215,11 +1217,11 @@ export default function Gallery() {
       <div ref={tabsRef} />
       <section className="border-b border-gray-200 sticky top-16 bg-white z-40 shadow-sm">
         <div className="container mx-auto px-4">
-          <div className="flex gap-8">
+          <div className="flex gap-1 sm:gap-8 overflow-x-auto scrollbar-none pb-0">
             {[
-              { id: 'drawings', label: 'Technical Drawing Layouts' },
-              { id: 'illustrations', label: 'Interactive 3D CAD Models' },
-              { id: 'workflows', label: 'Engineering Workflows' }
+              { id: 'drawings', label: 'Technical Drawings', labelFull: 'Technical Drawing Layouts' },
+              { id: 'illustrations', label: '3D CAD Models', labelFull: 'Interactive 3D CAD Models' },
+              { id: 'workflows', label: 'Workflows', labelFull: 'Engineering Workflows' }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -1227,13 +1229,14 @@ export default function Gallery() {
                   setActiveTab(tab.id);
                   setSelectedImg(null);
                 }}
-                className={`py-5 text-xs font-bold uppercase tracking-wider border-b-2 transition-all relative ${
+                className={`shrink-0 py-5 px-2 sm:px-0 min-h-[52px] text-xs font-bold uppercase tracking-wider border-b-2 transition-all relative whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'border-b-[#0a1628] text-[#0a1628]'
                     : 'border-b-transparent text-gray-400 hover:text-gray-600'
                 }`}
               >
-                {tab.label}
+                <span className="sm:hidden">{tab.label}</span>
+                <span className="hidden sm:inline">{tab.labelFull}</span>
               </button>
             ))}
           </div>

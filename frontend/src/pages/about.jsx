@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { CheckCircle2, Award, Users, Clock, Eye, Target, Compass } from 'lucide-react';
+import { PageMeta } from '@/components/PageMeta';
 
 const values = [
   { title: 'Quality First', desc: 'Every deliverable meets or exceeds the client\'s technical and safety expectations.' },
@@ -20,6 +21,7 @@ const milestones = [
 export default function About() {
   return (
     <div className="w-full">
+      <PageMeta title="About Us" description="Learn about SLS Consultants — founded in 2002 by Ex-BHEL Principal Engineer Mr. C. Subrahmanyam. 20+ years of structural, mechanical, and industrial engineering excellence." />
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">

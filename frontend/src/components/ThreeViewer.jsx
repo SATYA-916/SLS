@@ -2,6 +2,135 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+const HOTSPOTS_DATA = {
+  heater: [
+    { id: 1, pos: { x: 0, y: 5.5, z: 1.5 }, title: 'Convection Section', text: 'Top convection module housing finned tubes bundle to capture residual flue heat.' },
+    { id: 2, pos: { x: 0, y: -2, z: 1.5 }, title: 'Radiant Firebox', text: 'Refractory-lined lower chamber where process coils absorb high radiant heat fluxes.' },
+    { id: 3, pos: { x: -1.5, y: 1.5, z: 1.5 }, title: 'Tube Header Boxes', text: 'Side return enclosures with quick-open hinges for decoking inspections.' },
+    { id: 4, pos: { x: 1.5, y: 0.0, z: -1.5 }, title: 'Burner Plenum Assembly', text: 'Secondary combustion air chamber distribution system at bottom floor.' }
+  ],
+  stack: [
+    { id: 1, pos: { x: 0, y: 8, z: 1.0 }, title: 'Vortex wind strakes', text: 'Mitigates crosswind vortex shedding oscillations conforming to ASME STS-1.' },
+    { id: 2, pos: { x: 0, y: -1, z: 1.8 }, title: 'Foundation Anchor Ring', text: 'Secures stack base plates against coastal cyclonic shear stresses.' },
+    { id: 3, pos: { x: 0, y: 4.0, z: -1.0 }, title: 'Stack Access Platform', text: 'Circular sampling platform segment detailed under OSHA standards.' },
+    { id: 4, pos: { x: -0.8, y: 1.5, z: 0.8 }, title: 'Counterweight Damper', text: 'Flue draft control damper balancing furnace air draft flow pressures.' }
+  ],
+  offtake: [
+    { id: 1, pos: { x: 0, y: 1.5, z: 1.2 }, title: 'Expansion joints bellows', text: 'Absorbs vertical and lateral thermal movements between stack and convection section.' },
+    { id: 2, pos: { x: 1.2, y: 0.5, z: 1.0 }, title: 'Breeching casing plates', text: 'Internal insulating castable lining designed to withstand hot flue gas flows.' },
+    { id: 3, pos: { x: -1.0, y: -0.5, z: -1.0 }, title: 'Rigging lifting lugs', text: 'Heavy crane hook points calculated with 2.0x dynamic load safety factors.' },
+    { id: 4, pos: { x: 0, y: 0.8, z: -1.2 }, title: 'Internal insulation liners', text: 'High-alloy anchor arrays securing monolithic ceramic blanket blocks.' }
+  ],
+  radiant: [
+    { id: 1, pos: { x: 0, y: 1.5, z: 1.8 }, title: 'Vertical process coils', text: 'High-alloy tube bundle designed for high temperatures conforming to API 530.' },
+    { id: 2, pos: { x: 1.8, y: -1.0, z: 1.5 }, title: 'Coil Hanger Brackets', text: 'Heat-resistant casting support hangers detailed to handle tube thermal growth.' },
+    { id: 3, pos: { x: -1.5, y: 0.0, z: 1.5 }, title: 'Skin Thermocouples', text: 'Precision temperature sensor sockets welded to coil outer boundaries.' },
+    { id: 4, pos: { x: 0, y: -2.5, z: -1.2 }, title: 'Refractory Floor blocks', text: 'Monolithic high-alumina block segments lined to insulate steel plates.' }
+  ],
+  burnerfloor: [
+    { id: 1, pos: { x: 0, y: 0, z: 1.2 }, title: 'Burner mounting sleeve', text: 'A36 floor casing plate cutout detailed to secure vertically-fired gas burners.' },
+    { id: 2, pos: { x: 1.5, y: -0.8, z: 1.5 }, title: 'Air register plenum', text: 'Plenum chamber ensuring uniform distribution of secondary combustion air.' },
+    { id: 3, pos: { x: -1.2, y: -0.5, z: -1.2 }, title: 'Air register levers', text: 'Secondary draft control arms regulating fresh combustion air intake.' },
+    { id: 4, pos: { x: 0.8, y: 0.2, z: -0.8 }, title: 'Refractory seal castable', text: 'Thermal seal barrier around burner neck joints to prevent heat leaks.' }
+  ],
+  headerbox: [
+    { id: 1, pos: { x: -1.8, y: 1.0, z: 1.2 }, title: 'Quick-open access doors', text: 'Allows routine tube decoking and mechanical cleaning inspections.' },
+    { id: 2, pos: { x: 0, y: -1.0, z: 1.5 }, title: 'Tube return bends (U-bends)', text: 'Process return fittings enclosed to prevent hazardous flue gas leakage.' },
+    { id: 3, pos: { x: 1.8, y: 0.5, z: -1.2 }, title: 'Thermal seal packing', text: 'Insulating rope seals fitted to prevent flue gas escaping to casing sides.' },
+    { id: 4, pos: { x: -0.8, y: -0.5, z: 0.8 }, title: 'Heavy duty toggle clamps', text: 'Toggle latch anchors locking the door panels securely against draft pressure.' }
+  ],
+  archplate: [
+    { id: 1, pos: { x: 0, y: 1.0, z: 1.5 }, title: 'Monolithic refractory arch', text: 'Grade 26 refractory lining detailed to insulate the heater transition zone.' },
+    { id: 2, pos: { x: 1.5, y: -0.5, z: 1.5 }, title: 'Insulation anchor pins', text: 'SS310 anchor hooks configured to retain monolithic castable block weight.' },
+    { id: 3, pos: { x: -1.2, y: 0.5, z: -1.2 }, title: 'Anchor pattern spacing', text: 'Configured hook arrays to transfer block load into framing sheets.' },
+    { id: 4, pos: { x: 0.8, y: 0.0, z: 0.8 }, title: 'Expansion joint packing', text: 'Compressed ceramic paper layers designed to yield during high temperature growth.' }
+  ],
+  convection: [
+    { id: 1, pos: { x: 0, y: 2.0, z: 1.5 }, title: 'Finned tube bundle bank', text: 'High-density circular fin extensions to maximize convective heat recovery.' },
+    { id: 2, pos: { x: 1.5, y: -0.5, z: 1.5 }, title: 'Intermediate support plates', text: 'High-temperature support sheets detailed to prevent pipe sagging.' },
+    { id: 3, pos: { x: -1.2, y: 1.0, z: -1.2 }, title: 'Structural side columns', text: 'Heavy casing side channels designed to transfer bundle weight to firebox portal.' },
+    { id: 4, pos: { x: 0, y: -1.2, z: 1.0 }, title: 'Refractory lining blocks', text: 'Castable insulation layer detailed to protect structural casing plates.' }
+  ],
+  sootblower: [
+    { id: 1, pos: { x: 0, y: 1.5, z: 1.5 }, title: 'Catwalk support framing', text: 'Structural framework detailed to carry steam soot blower motorized carriage.' },
+    { id: 2, pos: { x: 1.2, y: -0.5, z: 1.0 }, title: 'Lance penetration sleeve', text: 'Casing hole detailing allowing soot blower steam lance travel into tube banks.' },
+    { id: 3, pos: { x: -1.0, y: 0.5, z: -1.0 }, title: 'Track runway rails', text: 'Guide channels ensuring linear travel alignment of soot blower lance.' },
+    { id: 4, pos: { x: 0.8, y: -0.8, z: 0.8 }, title: 'Drive motor mount plate', text: 'Rigid base plate supporting heavy motor and chain drive system.' }
+  ],
+  framing: [
+    { id: 1, pos: { x: 0, y: 2.0, z: 1.8 }, title: 'Portal structural frames', text: 'Heavy section columns and beams configured under IS 800 code.' },
+    { id: 2, pos: { x: -1.8, y: -2.0, z: 1.8 }, title: 'Column splicing connection', text: 'Splicing joints designed to transfer vertical loads and wind moments.' },
+    { id: 3, pos: { x: 1.5, y: 0.0, z: -1.5 }, title: 'Cross structural struts', text: 'Channel and angle steel members configured to distribute structural loads.' },
+    { id: 4, pos: { x: -1.5, y: -1.0, z: -1.5 }, title: 'Gusset connection plate', text: 'Thick gusset plate connecting vertical columns to support girders.' }
+  ],
+  frame3d: [
+    { id: 1, pos: { x: 0, y: 3.0, z: 1.8 }, title: 'Braced steel framework', text: 'Cross bracing systems to resist seismic and cyclonic shear forces.' },
+    { id: 2, pos: { x: 1.8, y: -1.0, z: 1.8 }, title: 'Gusset plate connection', text: 'High-strength bolted connection detailing modeled using Tekla Structures.' },
+    { id: 3, pos: { x: -1.8, y: 1.0, z: -1.8 }, title: 'Piping support brackets', text: 'Heavy welded brackets carrying high-pressure piping manifolds.' },
+    { id: 4, pos: { x: 0, y: -2.5, z: 1.5 }, title: 'Anchor bolt shear ring', text: 'Reinforcing ring transfers base shear stress directly into concrete pedestal.' }
+  ],
+  roof: [
+    { id: 1, pos: { x: 0, y: 1.0, z: 1.5 }, title: 'Roof truss framing', text: 'Gable portal configurations detailed for wind and canopy sheeting loads.' },
+    { id: 2, pos: { x: 1.5, y: -1.0, z: 1.5 }, title: 'Purlins mounting clip', text: 'Secures horizontal purlins to truss members to support heavy roofing panels.' },
+    { id: 3, pos: { x: -1.2, y: 0.0, z: -1.2 }, title: 'Truss splice plate', text: 'Gusset splice joints connecting multi-section trusses for easy shipping.' },
+    { id: 4, pos: { x: 0.8, y: -0.5, z: 0.8 }, title: 'Canopy eave overhang', text: 'Calculated overhang to prevent rainwater ingress into furnace casing.' }
+  ],
+  ets: [
+    { id: 1, pos: { x: 0, y: 2.5, z: 1.5 }, title: 'AISC modular framing', text: 'Movable rigid frame structure designed for dynamic crane hoist loads.' },
+    { id: 2, pos: { x: 1.5, y: -3.0, z: 1.5 }, title: 'Rail wheel carriage', text: 'Double-flanged steel wheel base allowing shelter positioning along slip tracks.' },
+    { id: 3, pos: { x: -1.5, y: 0.5, z: -1.5 }, title: 'Casing roof panels', text: 'Corrugated sheeting templates mapped to protect internal hardware.' },
+    { id: 4, pos: { x: 0.8, y: -2.0, z: -0.8 }, title: 'Hydraulic slide cylinders', text: 'Mounting brackets for cylinders driving horizontal carriage slide movements.' }
+  ],
+  platforms: [
+    { id: 1, pos: { x: 0, y: 1.0, z: 1.8 }, title: 'Safety Handrails Splice', text: 'OSHA-compliant interlocking joints designed for structural continuity.' },
+    { id: 2, pos: { x: 1.5, y: -1.0, z: 1.5 }, title: 'Platform support hanger', text: 'Rigid cantilever brackets bolted to column face to carry live loads.' },
+    { id: 3, pos: { x: -1.5, y: 0.0, z: -1.5 }, title: 'Grating clip clamps', text: 'M-clips securing flooring panels to steel support channels.' },
+    { id: 4, pos: { x: 0.8, y: 0.5, z: 1.2 }, title: 'Handrail post socket', text: 'Welded angle brackets anchoring handrail upright posts to circular beams.' }
+  ],
+  staircase: [
+    { id: 1, pos: { x: 0.8, y: 2.0, z: 1.2 }, title: 'Stair landing support', text: 'Channel beams detailed to support modular landing platform grates.' },
+    { id: 2, pos: { x: -0.8, y: -2.0, z: 1.2 }, title: 'OSHA safety handrails', text: 'Continuous handrail pipes and kickplates ensuring safe vertical transit.' },
+    { id: 3, pos: { x: 0.0, y: 0.0, z: -1.2 }, title: 'Mid-landing framing', text: 'Splice bracket joints carrying the weight of the intermediate stair landing.' },
+    { id: 4, pos: { x: -0.5, y: 1.0, z: 0.5 }, title: 'Stringer connection joints', text: 'Double bolt splice plate linking staircase stringers to support frames.' }
+  ],
+  stackplatform: [
+    { id: 1, pos: { x: 0, y: 0.8, z: 1.5 }, title: 'Annular platform floor', text: 'Circular floor grates surrounding the stack shell, detailed in modular segments.' },
+    { id: 2, pos: { x: -1.2, y: -0.8, z: 1.2 }, title: 'Shell support brackets', text: 'Structural knee-braces welded directly to stack reinforcing rings.' },
+    { id: 3, pos: { x: 1.2, y: 0.0, z: -1.2 }, title: 'Access opening gate', text: 'Self-closing swing safety gate preventing accidental platform exit.' },
+    { id: 4, pos: { x: -0.8, y: 0.5, z: 0.8 }, title: 'Grating split joints', text: 'Bolted joints segmenting the circular platform for assembly installation.' }
+  ],
+  heatergrating: [
+    { id: 1, pos: { x: 0, y: 0.5, z: 1.2 }, title: 'Serrated steel grating', text: 'Welded steel bars designed to facilitate wind pass-through and maximize grip.' },
+    { id: 2, pos: { x: 1.2, y: -0.5, z: 1.2 }, title: 'Toe-plate border weld', text: '100mm border plate welded along edges to prevent objects from falling.' },
+    { id: 3, pos: { x: -1.0, y: 0.0, z: -1.0 }, title: 'Band bar weld joint', text: 'Reinforced perimeter band bars preventing grating grid deformation.' },
+    { id: 4, pos: { x: 0.5, y: 0.2, z: -0.5 }, title: 'Saddle clip fasteners', text: 'Galvanized clips locking the grate sheet down to supporting channels.' }
+  ],
+  ladders: [
+    { id: 1, pos: { x: 0, y: 4.0, z: 1.0 }, title: 'Safety cage hoop', text: 'Cages designed to protect workers during high climbs (conforms to OSHA).' },
+    { id: 2, pos: { x: 0, y: -2.0, z: 1.2 }, title: 'Shell mounting clip', text: 'Brackets anchoring ladder stringers directly to cylindrical casings.' },
+    { id: 3, pos: { x: 0, y: 1.0, z: -1.0 }, title: 'Side grab bars extension', text: 'Continuous pipe loops extending 1.1m above platform floor for safety.' },
+    { id: 4, pos: { x: -0.5, y: -1.0, z: 0.5 }, title: 'Expansion guide slots', text: 'Slotted support clips allowing ladder vertical expansion at high temperatures.' }
+  ],
+  breechingdoor: [
+    { id: 1, pos: { x: 0, y: 1.0, z: 1.2 }, title: 'Refractory door plug', text: 'Insulating plug cast with high-temperature refractory cement.' },
+    { id: 2, pos: { x: 1.2, y: -0.5, z: 1.0 }, title: 'Double hinge assembly', text: 'Heavy hinges ensuring tight seal closing to prevent flue gas leaks.' },
+    { id: 3, pos: { x: -1.0, y: 0.0, z: -1.0 }, title: 'Latch anchor brackets', text: 'Heavy wedge latch brackets securing the door against furnace pressure.' },
+    { id: 4, pos: { x: 0.5, y: 0.5, z: -0.5 }, title: 'Casing reinforcement ring', text: 'Stiffening frame plate surrounding door cutout to prevent distortion.' }
+  ],
+  maintenanceaccess: [
+    { id: 1, pos: { x: 0, y: 1.0, z: 1.2 }, title: 'Swing door latch', text: 'Quick-release clamp handles for rapid access during heater shutdown.' },
+    { id: 2, pos: { x: 1.0, y: -0.5, z: 1.0 }, title: 'Gasket seal packing', text: 'High-temperature ceramic fiber ropes ensuring a smoke-tight casing seal.' },
+    { id: 3, pos: { x: -0.8, y: 0.2, z: -0.8 }, title: 'Observation window glass', text: 'Fused quartz sight glass window for high-temperature flame viewing.' },
+    { id: 4, pos: { x: 0.5, y: 0.5, z: -0.5 }, title: 'Door handle lock pin', text: 'Safety locking pin preventing accidental latch release under load.' }
+  ],
+  default: [
+    { id: 1, pos: { x: 0, y: 2.5, z: 1.8 }, title: 'Refinery Section Coils', text: 'High-alloy convection tubes complying with API 560 thermal expansion limits.' },
+    { id: 2, pos: { x: 1.5, y: -2, z: 1.5 }, title: 'Structural Support Bracket', text: 'Detailed base plates carrying full dead loads of structural modules.' },
+    { id: 3, pos: { x: -1.5, y: 0.5, z: -1.5 }, title: 'Piping support anchor', text: 'Adjustable spring hanger anchors supporting hot process lines.' },
+    { id: 4, pos: { x: 0.8, y: -1.0, z: 0.8 }, title: 'Wind girder brackets', text: 'Horizontal stiffener members protecting shell from vacuum buckling.' }
+  ]
+};
+
 function getCameraSettings(type) {
   const settings = {
     camPos: new THREE.Vector3(10, 8, 14),
@@ -102,6 +231,62 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
   const [loading, setLoading] = useState(true);
   const [loadingText, setLoadingText] = useState("Loading Engineering Model...");
   const [touchInteracting, setTouchInteracting] = useState(false);
+  const [activeHotspot, setActiveHotspot] = useState(null);
+  const [projectedPositions, setProjectedPositions] = useState({});
+
+  useEffect(() => {
+    setActiveHotspot(null);
+    setProjectedPositions({});
+  }, [type]);
+
+  const getActiveHotspots = () => {
+    const t = type || 'default';
+    return HOTSPOTS_DATA[t] || HOTSPOTS_DATA.default;
+  };
+
+  const activeHotspots = getActiveHotspots();
+  const updateHotspotsRef = useRef(null);
+
+  updateHotspotsRef.current = (camera, domElement) => {
+    if (!domElement) return;
+    const width = domElement.clientWidth;
+    const height = domElement.clientHeight;
+    const tempV = new THREE.Vector3();
+    const newPositions = {};
+
+    activeHotspots.forEach((hs) => {
+      tempV.set(hs.pos.x, hs.pos.y, hs.pos.z);
+      tempV.project(camera);
+
+      if (tempV.z > 1) {
+        newPositions[hs.id] = { visible: false };
+        return;
+      }
+
+      const x = (tempV.x * 0.5 + 0.5) * width;
+      const y = (tempV.y * -0.5 + 0.5) * height;
+
+      newPositions[hs.id] = {
+        left: `${x}px`,
+        top: `${y}px`,
+        visible: x >= 0 && x <= width && y >= 0 && y <= height
+      };
+    });
+
+    setProjectedPositions((prev) => {
+      let changed = false;
+      for (const id in newPositions) {
+        if (!prev[id] ||
+            prev[id].left !== newPositions[id].left ||
+            prev[id].top !== newPositions[id].top ||
+            prev[id].visible !== newPositions[id].visible) {
+          changed = true;
+          break;
+        }
+      }
+      return changed ? newPositions : prev;
+    });
+  };
 
   // Refs for smooth camera interpolation
   const targetCamPos = useRef(new THREE.Vector3(12, 12, 18));
@@ -1562,6 +1747,9 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
       
       controls.update();
       renderer.render(scene, camera);
+      if (updateHotspotsRef.current) {
+        updateHotspotsRef.current(camera, renderer.domElement);
+      }
     };
     animate();
 
@@ -1617,10 +1805,57 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
 
       <div
         ref={containerRef}
+        onClick={() => setActiveHotspot(null)}
         className={`w-full h-full cursor-grab active:cursor-grabbing relative z-10 transition-opacity duration-500 ease-out ${
           loading ? 'opacity-0' : 'opacity-100'
         } ${touchInteracting ? 'touch-none' : 'touch-auto md:touch-none'}`}
       />
+
+      {/* 3D Hotspots Overlay */}
+      {!loading && activeHotspots.map((hs) => {
+        const pos = projectedPositions[hs.id];
+        if (!pos || !pos.visible) return null;
+        const isActive = activeHotspot?.id === hs.id;
+        return (
+          <div
+            key={hs.id}
+            className="absolute z-30 -translate-x-1/2 -translate-y-1/2"
+            style={{ top: pos.top, left: pos.left }}
+          >
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveHotspot(isActive ? null : hs);
+              }}
+              aria-label={`View detail: ${hs.title}`}
+              className="w-5 h-5 rounded-full bg-[#0a1628] border border-blue-400 text-blue-400 font-mono text-[9px] font-bold flex items-center justify-center relative cursor-pointer shadow-lg hover:scale-110 active:scale-95 transition-all duration-200"
+            >
+              <span className="absolute inset-0 rounded-full bg-blue-400/30 animate-ping pointer-events-none" />
+              {hs.id}
+            </button>
+
+            {/* Tooltip Card */}
+            {isActive && (
+              <div 
+                onClick={(e) => e.stopPropagation()}
+                className="absolute top-7 left-1/2 -translate-x-1/2 w-48 bg-slate-900/95 border border-slate-700 text-white p-3 shadow-2xl rounded-sm text-left"
+              >
+                <div className="flex items-center justify-between mb-1.5 border-b border-slate-800 pb-1">
+                  <span className="text-[9px] font-black uppercase tracking-wider text-blue-400">Spec Detail</span>
+                  <button 
+                    onClick={() => setActiveHotspot(null)}
+                    className="text-gray-400 hover:text-white text-[10px] leading-none"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <h4 className="text-xs font-bold text-white mb-1">{hs.title}</h4>
+                <p className="text-[10px] text-gray-300 leading-normal font-medium">{hs.text}</p>
+              </div>
+            )}
+          </div>
+        );
+      })}
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-[#050c18]/95 backdrop-blur-sm text-white z-20">
           <div className="text-center max-w-xs px-6">

@@ -23,6 +23,13 @@ const contactSchema = new mongoose.Schema(
     fileName: { type: String, default: null },
     filePath: { type: String, default: null },
     fileData: { type: Buffer, default: null },
+    status: { type: String, enum: ['new', 'replied', 'closed'], default: 'new' },
+    notes: [
+      {
+        text: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

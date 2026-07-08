@@ -2,21 +2,12 @@ import { useEffect, useState, useMemo } from 'react';
 import { Link, useLocation } from 'wouter';
 import {
   LogOut, Mail, Phone, Building2, RefreshCw, Home,
-  Copy, Check, Search, X, Tag, Inbox, Calendar, Clock
+  Copy, Check, Search, X, Tag, Inbox, Calendar, Clock, Download, Trash2
 } from 'lucide-react';
-import { getAdminContacts, adminLogout } from '@/lib/api';
-
-// Status stored in localStorage so it persists across sessions without backend changes
-const STATUS_KEY = 'sls_contact_status';
-
-function loadStatuses() {
-  try { return JSON.parse(localStorage.getItem(STATUS_KEY) || '{}'); }
-  catch { return {}; }
-}
-
-function saveStatuses(obj) {
-  localStorage.setItem(STATUS_KEY, JSON.stringify(obj));
-}
+import {
+  getAdminContacts, adminLogout, updateContactStatus,
+  addContactNote, deleteContactNote, getCSVExportUrl
+} from '@/lib/api';
 
 const STATUS_CONFIG = {
   new:     { label: 'New',     color: 'bg-blue-100 text-blue-700 border-blue-200' },
@@ -36,7 +27,8 @@ export default function AdminDashboard() {
   const [copied, setCopied]       = useState(false);
   const [search, setSearch]       = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
-  const [statuses, setStatuses]   = useState(loadStatuses);
+  const [noteText, setNoteText]   = useState('');
+  const [submittingNote, setSubmittingNote] = useState(false);
   const [, navigate] = useLocation();
 
   function copyEmail(email) {
@@ -68,28 +60,56 @@ export default function AdminDashboard() {
     navigate('/admin');
   }
 
-  function setStatus(id, status) {
-    const updated = { ...statuses, [id]: status };
-    setStatuses(updated);
-    saveStatuses(updated);
+  async function handleSetStatus(id, newStatus) {
+    try {
+      const updated = await updateContactStatus(id, newStatus);
+      setContacts(prev => prev.map(c => c._id === updated._id ? updated : c));
+      if (selected?._id === id) {
+        setSelected(updated);
+      }
+    } catch (err) {
+      alert('Failed to update status.');
+    }
   }
 
-  function getStatus(id) {
-    return statuses[id] || 'new';
+  async function handleAddNote(e) {
+    e.preventDefault();
+    if (!noteText.trim()) return;
+    setSubmittingNote(true);
+    try {
+      const updated = await addContactNote(selected._id, noteText);
+      setContacts(prev => prev.map(c => c._id === updated._id ? updated : c));
+      setSelected(updated);
+      setNoteText('');
+    } catch (err) {
+      alert('Failed to add note.');
+    } finally {
+      setSubmittingNote(false);
+    }
+  }
+
+  async function handleDeleteNote(noteId) {
+    if (!confirm('Are you sure you want to delete this note?')) return;
+    try {
+      const updated = await deleteContactNote(selected._id, noteId);
+      setContacts(prev => prev.map(c => c._id === updated._id ? updated : c));
+      setSelected(updated);
+    } catch (err) {
+      alert('Failed to delete note.');
+    }
   }
 
   useEffect(() => { fetchContacts(); }, []);
 
   // Stats
   const stats = useMemo(() => {
-    const now = Date.now();
     const thisMonth = contacts.filter(c =>
       new Date(c.createdAt).getMonth() === new Date().getMonth() &&
       new Date(c.createdAt).getFullYear() === new Date().getFullYear()
     ).length;
-    const awaiting = contacts.filter(c => getStatus(c._id) === 'new').length;
+    const awaiting = contacts.filter(c => (c.status || 'new') === 'new').length;
     return { total: contacts.length, thisMonth, awaiting };
-  }, [contacts, statuses]);
+  }, [contacts]);
 
   // Filtered list
   const filtered = useMemo(() => {
@@ -100,10 +120,10 @@ export default function AdminDashboard() {
         c.email?.toLowerCase().includes(q) ||
         c.service?.toLowerCase().includes(q) ||
         c.company?.toLowerCase().includes(q);
-      const matchStatus = filterStatus === 'all' || getStatus(c._id) === filterStatus;
+      const matchStatus = filterStatus === 'all' || (c.status || 'new') === filterStatus;
       return matchSearch && matchStatus;
     });
-  }, [contacts, search, filterStatus, statuses]);
+  }, [contacts, search, filterStatus]);
 
   return (
     <div className="min-h-screen bg-[#060c18] flex flex-col">
@@ -134,20 +154,29 @@ export default function AdminDashboard() {
       </header>
 
       {/* ── Stats Bar ── */}
-      <div className="bg-[#07111f] border-b border-white/10 px-6 py-3 flex items-center gap-8 shrink-0">
-        {[
-          { icon: <Inbox className="w-3.5 h-3.5" />, label: 'Total Inquiries', value: stats.total },
-          { icon: <Calendar className="w-3.5 h-3.5" />, label: 'This Month',  value: stats.thisMonth },
-          { icon: <Clock className="w-3.5 h-3.5" />,   label: 'Awaiting Reply', value: stats.awaiting, highlight: stats.awaiting > 0 },
-        ].map(s => (
-          <div key={s.label} className="flex items-center gap-2">
-            <span className={s.highlight ? 'text-amber-400' : 'text-white/30'}>{s.icon}</span>
-            <span className="text-white/30 text-[10px] uppercase tracking-wider">{s.label}</span>
-            <span className={`text-sm font-bold ${s.highlight ? 'text-amber-400' : 'text-white'}`}>
-              {s.value}
-            </span>
-          </div>
-        ))}
+      <div className="bg-[#07111f] border-b border-white/10 px-6 py-3 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-8">
+          {[
+            { icon: <Inbox className="w-3.5 h-3.5" />, label: 'Total Inquiries', value: stats.total },
+            { icon: <Calendar className="w-3.5 h-3.5" />, label: 'This Month',  value: stats.thisMonth },
+            { icon: <Clock className="w-3.5 h-3.5" />,   label: 'Awaiting Reply', value: stats.awaiting, highlight: stats.awaiting > 0 },
+          ].map(s => (
+            <div key={s.label} className="flex items-center gap-2">
+              <span className={s.highlight ? 'text-amber-400' : 'text-white/30'}>{s.icon}</span>
+              <span className="text-white/30 text-[10px] uppercase tracking-wider">{s.label}</span>
+              <span className={`text-sm font-bold ${s.highlight ? 'text-amber-400' : 'text-white'}`}>
+                {s.value}
+              </span>
+            </div>
+          ))}
+        </div>
+        <a
+          href={getCSVExportUrl()}
+          download
+          className="flex items-center gap-1.5 text-xs text-white/50 hover:text-white bg-white/5 hover:bg-white/10 px-3 py-1 border border-white/15 transition-all rounded-sm"
+        >
+          <Download className="w-3.5 h-3.5" /> Export CSV
+        </a>
       </div>
 
       {/* ── Body ── */}
@@ -204,7 +233,7 @@ export default function AdminDashboard() {
               </div>
             ) : (
               filtered.map(c => {
-                const status = getStatus(c._id);
+                const status = c.status || 'new';
                 const cfg = STATUS_CONFIG[status];
                 const recent = isRecent(c.createdAt);
                 const isActive = selected?._id === c._id;
@@ -300,11 +329,11 @@ export default function AdminDashboard() {
                 <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mr-2">Status</span>
                 {['new', 'replied', 'closed'].map(s => {
                   const cfg = STATUS_CONFIG[s];
-                  const active = getStatus(selected._id) === s;
+                  const active = (selected.status || 'new') === s;
                   return (
                     <button
                       key={s}
-                      onClick={() => setStatus(selected._id, s)}
+                      onClick={() => handleSetStatus(selected._id, s)}
                       className={`px-3 py-1 text-[10px] font-bold uppercase tracking-wider border rounded-sm transition-all ${
                         active ? cfg.color + ' shadow-sm' : 'text-gray-400 border-gray-200 hover:border-gray-400 bg-white'
                       }`}
@@ -350,9 +379,62 @@ export default function AdminDashboard() {
               )}
 
               {/* Message */}
-              <div className="bg-white border border-gray-200 p-5 rounded-sm">
+              <div className="bg-white border border-gray-200 p-5 rounded-sm mb-6">
                 <p className="text-[9px] font-bold tracking-widest uppercase text-gray-400 mb-3">Message</p>
                 <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{selected.message}</p>
+              </div>
+
+              {/* Internal Notes & Timeline */}
+              <div className="border-t border-gray-200 pt-6">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4 flex items-center gap-1.5">
+                  Internal Notes &amp; Activity Log
+                </h3>
+
+                <form onSubmit={handleAddNote} className="mb-6 flex gap-2">
+                  <input
+                    type="text"
+                    value={noteText}
+                    onChange={e => setNoteText(e.target.value)}
+                    placeholder="Add an internal log note (e.g. called client, sent quote)..."
+                    disabled={submittingNote}
+                    className="flex-1 px-3 py-2 text-xs border border-gray-200 focus:outline-none focus:border-[#0a1628] rounded-sm disabled:opacity-50"
+                  />
+                  <button
+                    type="submit"
+                    disabled={submittingNote || !noteText.trim()}
+                    className="bg-[#0a1628] hover:bg-[#1a2f4c] text-white px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors rounded-sm disabled:opacity-50"
+                  >
+                    Add Log
+                  </button>
+                </form>
+
+                {(!selected.notes || selected.notes.length === 0) ? (
+                  <p className="text-xs text-gray-400 italic">No notes or activity logs added to this inquiry yet.</p>
+                ) : (
+                  <div className="space-y-3.5">
+                    {selected.notes.map(note => (
+                      <div key={note._id} className="bg-white border border-gray-150 px-4 py-3 rounded-sm flex items-start justify-between gap-4 group">
+                        <div className="min-w-0">
+                          <p className="text-xs text-gray-700 leading-relaxed font-medium">{note.text}</p>
+                          <span className="text-[10px] text-gray-400 mt-1 block">
+                            {new Date(note.createdAt).toLocaleString('en-IN', {
+                              day: '2-digit', month: 'short', year: 'numeric',
+                              hour: '2-digit', minute: '2-digit'
+                            })}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteNote(note._id)}
+                          className="text-gray-300 hover:text-red-600 transition-colors self-start p-1"
+                          title="Delete note"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
             </div>

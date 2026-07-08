@@ -60,3 +60,28 @@ export function adminForgotPassword(email) {
     body: JSON.stringify({ email }),
   });
 }
+
+export function updateContactStatus(id, status) {
+  return apiFetch(`/api/admin/contacts/${id}/status`, {
+    method: 'PATCH',
+    body: JSON.stringify({ status }),
+  });
+}
+
+export function addContactNote(id, text) {
+  return apiFetch(`/api/admin/contacts/${id}/notes`, {
+    method: 'POST',
+    body: JSON.stringify({ text }),
+  });
+}
+
+export function deleteContactNote(id, noteId) {
+  return apiFetch(`/api/admin/contacts/${id}/notes/${noteId}`, {
+    method: 'DELETE',
+  });
+}
+
+export function getCSVExportUrl() {
+  return `${API_URL}/api/admin/contacts/export`;
+}
+

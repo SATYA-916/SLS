@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Building2, Factory, Grid3X3, Activity, ClipboardList, Layers, Monitor, Cpu, Workflow } from 'lucide-react';
 import { getServices } from '@/lib/api';
 import { fallbackServices } from '@/data/fallbackServices';
+import { PageMeta } from '@/components/PageMeta';
 
 const serviceIcons = {
   building: <Building2 className="w-10 h-10" />,
@@ -55,6 +56,7 @@ export default function Expertise() {
 
   return (
     <div className="w-full">
+      <PageMeta title="Our Services" description="Explore SLS Consultants' engineering services: structural design, fired heater packages (API 560), RLA studies, FEM analysis, Tekla steel detailing, and project consultancy for refineries and petrochemical plants." />
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
