@@ -298,8 +298,32 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     const tempV = new THREE.Vector3();
     const newPositions = {};
 
+    const box = modelGroup?.userData?.box;
+    const size = modelGroup?.userData?.size;
+    const center = modelGroup?.userData?.center;
+
     activeHotspots.forEach((hs) => {
-      tempV.set(hs.pos.x, hs.pos.y, hs.pos.z);
+      if (box && size && center) {
+        // Map original hotspot Y (range -5 to 8) to actual model bounding box Y
+        let normalizedY = (hs.pos.y + 5) / 13;
+        normalizedY = Math.max(0.1, Math.min(0.9, normalizedY));
+        const targetY = box.min.y + normalizedY * size.y;
+
+        // Map original X (range -2 to 2) to actual model bounding box X
+        let normalizedX = (hs.pos.x + 2) / 4;
+        normalizedX = Math.max(0.15, Math.min(0.85, normalizedX));
+        const targetX = box.min.x + normalizedX * size.x;
+
+        // Map original Z (range -2 to 2) to actual model bounding box Z
+        let normalizedZ = (hs.pos.z + 2) / 4;
+        normalizedZ = Math.max(0.15, Math.min(0.85, normalizedZ));
+        const targetZ = box.min.z + normalizedZ * size.z;
+
+        tempV.set(targetX, targetY, targetZ);
+      } else {
+        tempV.set(hs.pos.x, hs.pos.y, hs.pos.z);
+      }
+
       if (modelGroup) {
         tempV.applyMatrix4(modelGroup.matrixWorld);
       }
@@ -3909,6 +3933,38 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         }
       });
 
+      // Calculate model's true bounding box and auto-frame the camera
+      const box = new THREE.Box3().setFromObject(modelGroup);
+      const size = new THREE.Vector3();
+      box.getSize(size);
+      const center = new THREE.Vector3();
+      box.getCenter(center);
+
+      // Store model bounding box on modelGroup for the hotspot projection function
+      modelGroup.userData.box = box;
+      modelGroup.userData.size = size;
+      modelGroup.userData.center = center;
+
+      // Adjust grid position to sit exactly below the model
+      gridHelper.position.y = box.min.y - 0.05;
+
+      // Calculate perfect camera distance to frame the entire model
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const fov = camera.fov * (Math.PI / 180);
+      let cameraDistance = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+      
+      // Clamp camera distance dynamically between 6 and 60 units, with a safe 1.45x bounding buffer
+      cameraDistance = Math.max(6, Math.min(60, cameraDistance * 1.45));
+
+      // Position the camera at a nice isometric angle looking at center
+      const offsetDirection = new THREE.Vector3(1.2, 0.8, 1.4).normalize();
+      targetCamPos.current.copy(center).add(offsetDirection.multiplyScalar(cameraDistance));
+      targetLookAt.current.copy(center);
+
+      // Force camera interpolation to start
+      isTransitioningRef.current = true;
+      transitionFrames.current = 0;
+
       setLoading(false);
     };
 
@@ -3985,7 +4041,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
       controls.update();
       renderer.render(scene, camera);
       if (updateHotspotsRef.current) {
-        updateHotspotsRef.current(camera, renderer.domElement);
+        updateHotspotsRef.current(camera, renderer.domElement, modelGroup);
       }
     };
     animate();
