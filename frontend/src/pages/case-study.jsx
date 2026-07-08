@@ -14,46 +14,63 @@ export function getThreeModelIdForProject(project) {
   
   const id = project.id;
 
-  // Specific project-to-model mapping
-  if (id === 1) return 'canopy-millennium';
-  if (id === 2) return 'ac-shelter';
-  if (id === 3) return 'mt-pool-structure';
-  if (id === 4) return 'concrete-shield-wall';
-  if (id === 5) return 'sgp-lead-shield';
-  if (id === 6) return 'cseam-lead-shield';
-  if (id === 7) return 'marking-fixture';
-  if (id === 8) return 'cold-box-foundation';
-  if (id === 9) return 'compressor-foundation';
-  if (id === 10) return 'boiler-house-frame';
-  if (id === 11) return 'steel-chimney';
-  if (id === 12) return 'vfd-room';
-  if (id === 13) return 'retaining-wall';
-  if (id === 14) return 'air-duct';
-  if (id === 15) return 'monorail-hoist';
-  if (id === 16) return 'vessel-skid';
-  if (id === 17) return 'damper-assembly';
-  if (id === 18) return 'piping-manifold';
-  if (id === 19) return 'refractory-anchor';
-  if (id === 20) return 'tube-sheet';
-  if (id === 21) return 'crossover-piping';
-  if (id === 22) return 'sag-rod';
-  if (id === 23) return 'expansion-bellows';
-  if (id === 24) return 'breeching-casing';
-  if (id === 25) return 'skid-piping';
-  if (id === 27) return 'stair-tower';
-  if (id === 28) return 'cage-ladder';
-  if (id === 29) return 'piling-grid';
-  if (id === 30) return 'flare-tip';
-  if (id === 31) return 'preheater-rotor';
-
-  // Fallbacks for the rest of the 50 projects
-  if (id === 48) return 'evaporator-structure';
-  if (id === 49) return 'dhdt-heater';
-  if (id === 50) return 'hds-heater';
-
+  // Exact Project-to-Model ID Mappings (Aligned with fallbackProjects.js)
+  switch (id) {
+    case 1:  return 'canopy-millennium';       // Millennium Retail Canopy
+    case 2:  return 'ac-shelter';              // Environmental Control - AC Shelter
+    case 3:  return 'mt-pool-structure';       // MT Pool Support Frame
+    case 4:  return 'concrete-shield-wall';    // Concrete Shield Wall
+    case 5:  return 'sgp-lead-shield';         // SGP Shield Radiography
+    case 6:  return 'cseam-lead-shield';       // C-Seam RT Shield
+    case 7:  return 'marking-fixture';         // CAMBER & Cutting Fixtures
+    case 8:  return 'cseam-lead-shield';       // Container Coaming RT Shield (Mobile Shield)
+    case 9:  return 'complete-frame';          // Surya Residency apartments (residential RCC column structure)
+    case 11: return 'complete-frame';          // TAF Handling Structures
+    case 12: return 'marking-fixture';         // Main Shaft Handling Fixtures
+    case 13: return 'complete-frame';          // Visakha Govt College for Women (academic buildings)
+    case 14: return 'complete-frame';          // Residential School Complex for ITDA
+    case 15: return 'complete-frame';          // Bhaskar Residency Apartments
+    case 16: return 'complete-frame';          // Commercial Complex
+    case 17: return 'complete-frame';          // Apartment Complex at Yendada
+    case 18: return 'roof-structure';          // Bungalow at Yendada (residential roof trusses)
+    case 19: return 'stair-tower';             // College Buildings for PG Courses (structural staircase layout)
+    case 20: return 'piling-grid';             // Residential Complex at Visakhapatnam (pile cap foundations grid)
+    case 21: return 'piling-grid';             // Cryogenic Plant Foundations (Iran)
+    case 22: return 'compressor-foundation';   // Machine Foundations (Hyderabad)
+    case 23: return 'piling-grid';             // Cryogenic Plant Foundation (India)
+    case 24: return 'boiler-house-frame';      // Compressor House & Pipe Rack structural frame
+    case 25: return 'cold-box-foundation';     // Cold Box Foundation (Roorkee)
+    case 27: return 'cold-box-foundation';     // Foundations for Cryogenic Equipment (Bina)
+    case 28: return 'cold-box-foundation';     // Foundations for Cryogenic Equipment (Bhatinda)
+    case 29: return 'cold-box-foundation';     // Foundations for Cryogenic Equipment (Kochi)
+    case 30: return 'boiler-house-frame';      // 1X80 T/Hr Boiler Structures
+    case 31: return 'vfd-room';                // VFD Control Room & Retaining Wall
+    case 32: return 'steel-chimney';           // RLA of Steel Chimneys - Bhadrachalam
+    case 33: return 'air-duct';                // SOFA Ducting & Air Heater Design
+    case 34: return 'boiler-house-frame';      // 2X100 TPH Boiler House Structures
+    case 51: return 'air-duct';                // TANDA Thermal - Back End Duct
+    case 35: return 'hds-heater';              // Box Heaters - HPCL Mumbai
+    case 36: return 'dhdt-heater';             // Cylindrical Fired Heater - BORL Bina
+    case 37: return 'dhdt-heater';             // Cylindrical Heaters - CPCL Chennai
+    case 38: return 'complete-heater';         // Ketene Furnace - Jubilant Organics
+    case 39: return 'complete-heater';         // Ketene Furnace - IOL Chemicals
+    case 40: return 'complete-heater';         // Refinery Heater Packages - Nagarjuna
+    case 41: return 'complete-heater';         // CDU Heater Package - BPCL Kochi
+    case 42: return 'complete-heater';         // DCU Heater Package - BPCL Cochin
+    case 43: return 'mt-pool-structure';       // Maintenance Sheds - Kalpakkam
+    case 44: return 'vessel-skid';             // Steam Generator Receiving Structures (Skid)
+    case 45: return 'breeching-door';          // Vessel Cover Structures (Hinged Doors)
+    case 46: return 'complete-frame';          // TERN Distilleries Expansion Project
+    case 47: return 'piping-manifold';         // ASU Pipelines
+    case 48: return 'evaporator-structure';    // Evaporator Building Structure
+    case 49: return 'dhdt-heater';             // DHDT Fired Heater
+    case 50: return 'hds-heater';              // HDS Fired Heater
+    default: break;
+  }
+  
+  // Fallbacks based on category/keywords
   const cat = project.category || '';
   const title = (project.title || '').toLowerCase();
-  const desc = (project.description || '').toLowerCase();
 
   if (title.includes('canopy')) return 'canopy-millennium';
   if (title.includes('shelter')) return 'ac-shelter';
@@ -86,37 +103,9 @@ export function getThreeModelIdForProject(project) {
   if (title.includes('rotor') || title.includes('preheater')) return 'preheater-rotor';
 
   // Fired Heaters
-  if (cat === 'Fired Heaters' || title.includes('heater') || desc.includes('heater')) {
-    if (title.includes('convection')) return 'convection-section';
-    if (title.includes('radiant')) return 'radiant-section';
-    if (title.includes('stack') || title.includes('chimney')) return 'complete-stack';
-    if (title.includes('header')) return 'header-box';
-    if (title.includes('platform') || title.includes('stair')) return 'platform-system';
-    return 'complete-heater';
-  }
+  if (cat === 'Fired Heaters') return 'complete-heater';
 
-  // Boilers & Chimneys
-  if (cat === 'Boilers & Chimneys' || title.includes('chimney') || title.includes('stack') || desc.includes('chimney') || desc.includes('stack')) {
-    if (title.includes('duct') || desc.includes('duct')) return 'off-take-duct';
-    return 'complete-stack';
-  }
-
-  // Cryogenic Plants
-  if (cat === 'Cryogenic Plants' || title.includes('cryogenic') || desc.includes('cryogenic') || title.includes('cold box') || desc.includes('cold box')) {
-    return 'support-steel';
-  }
-
-  // Special Structures
-  if (cat === 'Special Structures' || title.includes('shield') || title.includes('fixture') || desc.includes('shield') || desc.includes('fixture')) {
-    if (title.includes('door')) return 'breeching-door';
-    return 'maintenance-access-sys';
-  }
-
-  // Default fallback categories
-  if (title.includes('roof') || title.includes('truss')) return 'roof-structure';
-  if (title.includes('stair') || title.includes('ladder')) return 'stair-assembly';
-  if (title.includes('platform') || title.includes('grating')) return 'platform-system';
-  
+  // General fallbacks
   return 'complete-frame';
 }
 
