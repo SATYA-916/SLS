@@ -978,10 +978,11 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             modelGroup.add(sheet);
           }
 
-          // Grid of 6x6 horizontal finned tubes (spanned longitudinally)
+          // Grid of 6x6 horizontal finned tubes (spanned longitudinally along X axis)
           for (let y = -2.0; y <= 2.0; y += 0.8) {
             for (let z = -1.5; z <= 1.5; z += 0.6) {
               const tube = createFinnedTube(5.7, 0.07, 0.12, 0.12);
+              tube.rotation.y = Math.PI / 2; // Align longitudinally with X axis
               tube.position.set(0, y, z);
               modelGroup.add(tube);
             }
@@ -1131,11 +1132,11 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
               hb.position.set(0, h, z);
               modelGroup.add(hb);
 
-              // Diagonal bracing members
-              const diagGeo = new THREE.BoxGeometry(3.8, 0.08, 0.08);
-              const diag = new THREE.Mesh(diagGeo, wireMat);
+              // Diagonal bracing members (connect columns at X = -1.5/1.5 and beams at Y = h/h+4)
+              const diagGeo = new THREE.BoxGeometry(5.0, 0.08, 0.08);
+              const diag = new THREE.Mesh(diagGeo, blueprintMat);
               diag.position.set(0, h + 2, z);
-              diag.rotation.z = 0.9;
+              diag.rotation.z = Math.atan(4.0 / 3.0); // Perfect diagonal angle (~0.93 rad)
               modelGroup.add(diag);
             }
             for (let x of [-1.5, 1.5]) {
@@ -1744,16 +1745,16 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             }
           }
 
-          // Diagonal cross bracing
-          const diagonalGeo = new THREE.BoxGeometry(0.1, 10.4, 0.1);
+          // Diagonal cross bracing (dimensioned to connect columns at X = -3 and 3 over Y = -4 to 6)
+          const diagonalGeo = new THREE.BoxGeometry(0.1, 11.7, 0.1);
           const d1 = new THREE.Mesh(diagonalGeo, blueprintMat);
           d1.position.set(0, 1, -2);
-          d1.rotation.z = Math.PI / 6;
+          d1.rotation.z = Math.atan(6.0 / 10.0); // Perfect diagonal angle (~0.54 rad)
           modelGroup.add(d1);
-
+ 
           const d2 = new THREE.Mesh(diagonalGeo, blueprintMat);
           d2.position.set(0, 1, -2);
-          d2.rotation.z = -Math.PI / 6;
+          d2.rotation.z = -Math.atan(6.0 / 10.0);
           modelGroup.add(d2);
           break;
         }
@@ -2766,7 +2767,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             for (let j = i + 1; j < nodes.length; j++) {
               const n2 = nodes[j];
               const distSqr = (n1.x - n2.x)**2 + (n1.y - n2.y)**2 + (n1.z - n2.z)**2;
-              if (distSqr > 0.05 && distSqr < 2.5) {
+              if (distSqr > 0.05 && distSqr < 2.9) {
                 const dx = n2.x - n1.x;
                 const dy = n2.y - n1.y;
                 const dz = n2.z - n1.z;
