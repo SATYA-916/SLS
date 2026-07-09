@@ -2406,20 +2406,19 @@ export default function Gallery() {
                         >
                           <Grid className="w-3 h-3" /> {wireframe ? 'Solid' : 'Wire'}
                         </button>
-                        <button
-                          onClick={() => canExplode && setExploded(!exploded)}
-                          disabled={!canExplode}
-                          className={`flex items-center gap-1.5 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border rounded-sm transition-colors ${
-                            !canExplode
-                              ? 'opacity-30 cursor-not-allowed text-white/40 border-white/5 bg-transparent'
-                              : exploded
+                        {canExplode && (
+                          <button
+                            onClick={() => setExploded(!exploded)}
+                            className={`flex items-center gap-1.5 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border rounded-sm transition-colors ${
+                              exploded
                                 ? 'bg-blue-600 text-white border-blue-500'
                                 : 'text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border-white/10'
-                          }`}
-                          title={canExplode ? 'Toggle exploded view' : 'Exploded view available on major assemblies only'}
-                        >
-                          <SplitSquareHorizontal className="w-3 h-3" /> {exploded ? 'Assembled' : 'Explode'}
-                        </button>
+                            }`}
+                            title="Toggle exploded view"
+                          >
+                            <SplitSquareHorizontal className="w-3 h-3" /> {exploded ? 'Assembled' : 'Explode'}
+                          </button>
+                        )}
                         <button
                           onClick={() => setAutoRotate(!autoRotate)}
                           className={`flex items-center gap-1.5 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border rounded-sm transition-colors ${
