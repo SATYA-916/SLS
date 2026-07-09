@@ -14,6 +14,55 @@ A world-class engineering portal developed for **SLS Consultants** to showcase a
 
 ---
 
+## 🔄 System Architecture & Data Flows
+
+### 1. WebGL 3D Model Render Flow
+This diagram illustrates how the `ThreeViewer` components parse routing parameters, initialize 3D assets, and apply custom interactive shaders.
+
+```mermaid
+flowchart TD
+    A[Case Study Link] -->|"?tab=models&model=mt-pool-structure"| B(gallery.jsx Routing useEffect)
+    B -->|normalizeModelParam| C[Normalized ID: mt_pool]
+    C -->|Set selectedIll State| D(ThreeViewer mounted in viewport)
+    D -->|Initialize Three.js WebGL Renderer| E[Group setup & default lighting]
+    E -->|Switch model type| F{Type select}
+    F -->|evaporator| G[RCC columns + structural slabs]
+    F -->|tarachand| H[Steel portal frame + gantry crane girders]
+    F -->|dhdt / hds| I[Finned convection tubes + radiant coils]
+    F -->|other cases| J[Skeletal structure geometry]
+    G & H & I & J -->|FEA stress mapping / World elevations| K[Shaders & materials compile]
+    K -->|Render viewport canvas| L[User interactive Controls: Explode / Blueprints / FEA heatmap]
+```
+
+### 2. Inquiry Scoping & Admin Rev Tracker Flow
+This sequence chart details the interaction from initial client engineering request to back-office drawing revisions and CSV exports.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Client
+    participant Frontend
+    participant Express_API
+    participant MongoDB
+    participant Admin
+
+    Client->>Frontend: Fills Contact Form with Target Design Codes
+    Frontend->>Express_API: POST /api/contact/submit
+    Express_API->>MongoDB: Save Inquiry Log
+    Express_API-->>Client: Auto-acknowledgment email (SMTP API)
+    
+    Admin->>Frontend: Authenticate via Admin portal
+    Frontend->>Express_API: GET /api/admin/contacts (requireAdmin check)
+    Express_API->>MongoDB: Fetch Inquiry Records
+    Express_API-->>Admin: Render Contacts Logs Table
+    
+    Admin->>Frontend: Log Drawing revision or Export Transmittals
+    Frontend->>Express_API: GET /api/admin/drawings/export
+    Express_API-->>Admin: Download CSV spreadsheet
+```
+
+---
+
 ## 🛠️ Tech Stack
 
 ### Frontend
