@@ -763,7 +763,7 @@ export default function CaseStudy() {
                 <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-700 block mb-2">Technical Registry</span>
                 <h2 className="text-2xl font-bold text-[#0a1628]">Technical Drawings & Layout References</h2>
                 <p className="text-xs text-gray-500 mt-2 max-w-2xl leading-relaxed">
-                  Referenced drawing sheets and general arrangement templates extracted directly from our design project folder: <code className="bg-slate-100 px-1 py-0.5 rounded text-[11px] text-[#0a1628] font-semibold">C:\DEVELOPMENT\sls\proprietary client</code>. All drawing titles, EIL document numbers, and descriptions are detailed below.
+                  Referenced drawing sheets and general arrangement templates compiled directly from our engineering design archives. In compliance with safety specifications and confidentiality guidelines, all layouts are cropped and blurred to protect proprietary project data. All drawing titles, technical reference codes, and descriptions are detailed below.
                 </p>
               </div>
               
