@@ -427,6 +427,50 @@ const drawings = [
     desc: "Vertical climbing safety ladder details showing cages and anchor clips.", 
     code: "OSHA / IS 800",
     service: "Blueprint Design"
+  },
+  // Santhipuram drawings
+  {
+    title: "Santhipuram - G.A. & Foundations Layout",
+    file: "santhipuram_ga.png",
+    desc: "General arrangement section layout of the concrete columns, lift shear walls, and footing offsets.",
+    code: "IS 456 / IS 1893 (Concrete)",
+    service: "Engineering & Architecture Design"
+  },
+  {
+    title: "Santhipuram - Column Layout & Reinforcement",
+    file: "santhipuram_columns.png",
+    desc: "Column grid schedules showing concrete column dimensions and rebar detailing specs.",
+    code: "IS 456 / IS 1893 (Concrete)",
+    service: "Engineering & Architecture Design"
+  },
+  {
+    title: "Santhipuram - Slab Reinforcement Detailing",
+    file: "santhipuram_slabs.png",
+    desc: "Cross-sectional slab reinforcement detailing showing mesh layouts and stirrups.",
+    code: "IS 456 (Concrete Design)",
+    service: "Engineering & Architecture Design"
+  },
+  // Tarachand drawings
+  {
+    title: "Tarachand - Portal Frame G.A. Layout",
+    file: "tarachand_ga.png",
+    desc: "General arrangement elevations of the steel portal framing bay spacing and bracing.",
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
+  },
+  {
+    title: "Tarachand - Roof Truss Assembly Detailing",
+    file: "tarachand_truss.png",
+    desc: "Welded gusset plates, rafters framing, and truss connector specifications.",
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
+  },
+  {
+    title: "Tarachand - Crane Gantry Girder Layout",
+    file: "tarachand_gantry.png",
+    desc: "Detailing of the heavy overhead gantry crane support runway girders and rail clamp connectors.",
+    code: "IS 800 (Structural Steel)",
+    service: "Engineering & Architecture Design"
   }
 ];
 
@@ -1778,6 +1822,9 @@ export default function Gallery() {
   const getDrawingCategory = (draw) => {
     if (draw.file.startsWith('eil_ga')) return 'EIL';
     if (draw.file.startsWith('pressure_parts') || draw.file.startsWith('hds_')) return 'HDS';
+    if (draw.file.startsWith('evaporator_')) return 'Evaporator';
+    if (draw.file.startsWith('santhipuram_')) return 'Santhipuram';
+    if (draw.file.startsWith('tarachand_')) return 'Tarachand';
     return 'DHDT';
   };
 
@@ -1934,7 +1981,7 @@ export default function Gallery() {
               Design Drawings &amp; Technical Assets
             </h1>
             <p className="mt-4 text-slate-600 max-w-xl text-sm leading-relaxed">
-              Explore the structural and mechanical detailing engineering database compiled from our recent hydrotreater (DHDT) and hydrodesulfurization (HDS) fired heater projects, executed under strict EIL specifications.
+              Explore the structural and mechanical detailing engineering database compiled from our recent hydrotreater (DHDT) and hydrodesulfurization (HDS) fired heater projects, Visakhapatnam evaporator building, and Santhipuram/Tarachand structural complexes, executed under strict EIL, concrete, and steel design specifications.
             </p>
           </motion.div>
         </div>
@@ -1984,9 +2031,9 @@ export default function Gallery() {
                   </p>
                 </div>
                 
-                {/* Sub-tabs for DHDT, HDS, EIL categorization */}
+                {/* Sub-tabs for DHDT, HDS, EIL, and structural projects categorization */}
                 <div className="flex flex-wrap gap-2 shrink-0">
-                  {['All', 'DHDT', 'HDS', 'EIL'].map((subcat) => (
+                  {['All', 'DHDT', 'HDS', 'EIL', 'Evaporator', 'Santhipuram', 'Tarachand'].map((subcat) => (
                     <button
                       key={subcat}
                       onClick={() => setDrawingSubTab(subcat)}
