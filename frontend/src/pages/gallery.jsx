@@ -1782,7 +1782,7 @@ export default function Gallery() {
     if (targetIll) setSelectedIll(targetIll);
   };
 
-  const canExplode = selectedIll.id === 'complete-heater' || selectedIll.id === 'dhdt-heater' || selectedIll.id === 'hds-heater';
+  const canExplode = selectedIll.id === 'complete-heater' || selectedIll.id === 'dhdt-heater' || selectedIll.id === 'hds-heater' || selectedIll.id === 'evaporator-structure' || selectedIll.id === 'santhipuram' || selectedIll.id === 'tarachand';
 
   useEffect(() => {
     if (!canExplode && exploded) setExploded(false);
@@ -2416,7 +2416,7 @@ export default function Gallery() {
                                 ? 'bg-blue-600 text-white border-blue-500'
                                 : 'text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border-white/10'
                           }`}
-                          title={canExplode ? 'Toggle exploded view' : 'Exploded view available on Complete Fired Heater only'}
+                          title={canExplode ? 'Toggle exploded view' : 'Exploded view available on major assemblies only'}
                         >
                           <SplitSquareHorizontal className="w-3 h-3" /> {exploded ? 'Assembled' : 'Explode'}
                         </button>
