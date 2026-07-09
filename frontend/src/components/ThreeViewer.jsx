@@ -2576,6 +2576,43 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           const el1 = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), stackMat);
           el1.position.set(0, 0.5, 1.7);
           modelGroup.add(el1);
+          // 5. Access staircase reaching the main platform (Y = 4.1)
+          const stairGroupU = new THREE.Group();
+          stairGroupU.position.set(2.8, -1.0, 2.2);
+          stairGroupU.rotation.y = -Math.PI / 4;
+
+          const strGeo = new THREE.BoxGeometry(0.05, 0.15, 6.0);
+          const strU1 = new THREE.Mesh(strGeo, blueprintMat);
+          strU1.position.set(-0.35, 0, 0);
+          strU1.rotation.x = -0.85;
+          stairGroupU.add(strU1);
+          
+          const strU2 = strU1.clone();
+          strU2.position.x = 0.35;
+          stairGroupU.add(strU2);
+
+          // Steps
+          for (let step = 0; step < 12; step++) {
+            const stepY = -2.2 + (step / 11) * 4.4;
+            const stepZ = -2.2 + (step / 11) * 4.4;
+            const stepMesh = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.015, 0.28), stackMat);
+            stepMesh.position.set(0, stepY, stepZ);
+            stairGroupU.add(stepMesh);
+          }
+
+          // Handrails
+          const stanchion1 = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.95, 8), blueprintMat);
+          stanchion1.position.set(0.35, -1.2, -1.2);
+          stairGroupU.add(stanchion1);
+
+          const stanchion2 = stanchion1.clone();
+          stanchion2.position.set(0.35, 1.2, 1.2);
+          stairGroupU.add(stanchion2);
+
+          const diagRailU = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 6.0, 8), blueprintMat);
+          diagRailU.position.set(0.35, 0.48, 0);
+          diagRailU.rotation.x = -0.85;
+          stairGroupU.add(diagRailU);
 
           modelGroup.add(stairGroupU);
 
