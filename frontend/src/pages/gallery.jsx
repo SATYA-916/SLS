@@ -1835,6 +1835,37 @@ export default function Gallery() {
     // Reset to very top of page on initial entry
     window.scrollTo(0, 0);
 
+    const normalizeModelParam = (param) => {
+      if (!param) return '';
+      let p = param.toLowerCase().trim();
+      if (p === 'complete-heater') return 'heater';
+      if (p === 'mt-pool-structure') return 'mt_pool';
+      if (p === 'concrete-shield-wall') return 'shield_wall';
+      if (p === 'sgp-lead-shield') return 'sgp_shield';
+      if (p === 'cseam-lead-shield') return 'cseam_shield';
+      if (p === 'marking-fixture') return 'marking_fixture';
+      if (p === 'complete-frame') return 'frame3d';
+      if (p === 'roof-structure') return 'roof';
+      if (p === 'stair-tower') return 'stair_tower';
+      if (p === 'piling-grid') return 'piling_grid';
+      if (p === 'compressor-foundation') return 'compressor_found';
+      if (p === 'boiler-house-frame') return 'boiler_house';
+      if (p === 'cold-box-foundation') return 'cold_box_found';
+      if (p === 'vfd-room') return 'vfd_room';
+      if (p === 'air-duct') return 'air_duct';
+      if (p === 'hds-heater') return 'hds';
+      if (p === 'dhdt-heater') return 'dhdt';
+      if (p === 'vessel-skid') return 'vessel_skid';
+      if (p === 'piping-manifold') return 'piping_manifold';
+      if (p === 'evaporator-structure') return 'evaporator';
+      if (p === 'preheater-rotor') return 'preheater_rotor';
+      if (p === 'breeching-door') return 'breechingdoor';
+      if (p === 'ac-shelter') return 'ac_shelter';
+      if (p === 'canopy-millennium') return 'canopy_millennium';
+      if (p === 'steel-chimney') return 'steel_chimney';
+      return p.replace(/-/g, '_');
+    };
+
     const params = new URLSearchParams(window.location.search);
     const tabParam = params.get('tab');
     const modelParam = params.get('model');
@@ -1842,7 +1873,12 @@ export default function Gallery() {
     if (tabParam === 'models' || tabParam === 'illustrations') {
       setActiveTab('illustrations');
       if (modelParam) {
-        const found = illustrations.find(i => i.id === modelParam || i.threeType === modelParam);
+        const normalized = normalizeModelParam(modelParam);
+        const found = illustrations.find(
+          i => i.id === modelParam || 
+               i.threeType === modelParam || 
+               i.threeType === normalized
+        );
         if (found) {
           setSelectedIll(found);
           const groupName = getActiveGroup(found.id);

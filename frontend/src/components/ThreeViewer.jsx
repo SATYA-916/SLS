@@ -3200,16 +3200,16 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             modelGroup.add(rail);
           }
 
-          // Skeletal diagonal cross bracings
-          const braceGeo = new THREE.CylinderGeometry(0.04, 0.04, 6.4, 8);
+          // Skeletal diagonal cross bracings (connect columns at X = -4/0/4 and Y = -3/1)
+          const braceGeo = new THREE.CylinderGeometry(0.04, 0.04, Math.sqrt(32), 8);
           for (let z of [-3.0, 3.0]) {
             const brace1 = new THREE.Mesh(braceGeo, stackMat);
             brace1.position.set(-2.0, -1.0, z);
-            brace1.rotation.z = 0.9;
+            brace1.rotation.z = Math.PI / 4; // Perfect 45-degree angle
             modelGroup.add(brace1);
 
             const brace2 = brace1.clone();
-            brace2.rotation.z = -0.9;
+            brace2.rotation.z = -Math.PI / 4;
             modelGroup.add(brace2);
           }
 
