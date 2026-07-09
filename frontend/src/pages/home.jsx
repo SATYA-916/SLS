@@ -22,7 +22,14 @@ const GLOBE_MARKERS = [
   { id: 30, name: "1x80 T/Hr Boiler Structures", location: "Kochi, India", lat: 9.931, lon: 76.267, desc: "Utility boiler structure casing, support pillars, and connection joint detailing." },
   { id: 36, name: "Cylindrical Fired Heater", location: "Bina, India", lat: 24.168, lon: 78.204, desc: "Detailing of cylindrical radiant heater firebox with external buckstays and stack wind strakes." },
   { id: 21, name: "Cryogenic Plant Foundations", location: "Abadan, Iran", lat: 30.342, lon: 48.278, desc: "Subterranean piling grid template and pile cap concrete structures designed for heavy cryogenic equipment." },
-  { id: 25, name: "Cold Box Foundation", location: "Roorkee, India", lat: 29.854, lon: 77.888, desc: "High-load concrete foundation mat, piles coordinate grid, and heavy base anchor templates." }
+  { id: 25, name: "Cold Box Foundation", location: "Roorkee, India", lat: 29.854, lon: 77.888, desc: "High-load concrete foundation mat, piles coordinate grid, and heavy base anchor templates." },
+  // Additional international project locations representing global consulting deliveries
+  { id: 36, name: "Refinery Fired Heater Thermal Validation", location: "Houston, USA", lat: 29.760, lon: -95.369, desc: "Thermal analysis and structural casing design verification under ASME Sec VIII / API 560 guidelines." },
+  { id: 34, name: "Refinery Utility Support Structure", location: "Rotterdam, Netherlands", lat: 51.924, lon: 4.477, desc: "Piping load optimization and steel support structure design under European Standards (EN 1993)." },
+  { id: 21, name: "Cryogenic Vessel Piling Layout", location: "Singapore", lat: 1.352, lon: 103.819, desc: "Deep pile cap concrete foundation engineering and anchor coordinates validation for LNG storage terminal." },
+  { id: 36, name: "Industrial Heater Casing Detailing", location: "Jubail, Saudi Arabia", lat: 27.011, lon: 49.658, desc: "Detailing of cylindrical fired heater casing, buckstays, and process burner registers." },
+  { id: 34, name: "Boiler Support Framing", location: "Baku, Azerbaijan", lat: 40.409, lon: 49.867, desc: "Tekla steel detailing and portal framing plans for high-pressure boiler house installations." },
+  { id: 36, name: "Convection Section Modules detailing", location: "Dusseldorf, Germany", lat: 51.227, lon: 6.773, desc: "Modular piping design, tubes thickness validation under API 530, and shop drawings check." }
 ];
 
 function GlobeCanvas({ onSelectMarker, activeId }) {
@@ -869,7 +876,7 @@ export default function Home() {
             <div className="lg:col-span-5 flex flex-col justify-center">
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={selectedMarker.id}
+                  key={`${selectedMarker.id}-${selectedMarker.location}`}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
