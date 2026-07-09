@@ -37,3 +37,152 @@
     animation: spin 4s linear infinite;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────
+   SLS CONSULTANTS PREMIUM DARK THEME STYLING
+   ───────────────────────────────────────────────────────────────── */
+.dark {
+  background-color: #07111f;
+  color: #e2e8f0;
+}
+
+.dark body {
+  background-color: #07111f !important;
+  color: #e2e8f0 !important;
+}
+
+/* Main background containers and panels */
+.dark section,
+.dark header,
+.dark nav,
+.dark footer,
+.dark main,
+.dark form,
+.dark dialog,
+.dark div.bg-white,
+.dark div.bg-gray-50,
+.dark div.bg-slate-50,
+.dark div.bg-slate-100,
+.dark .bg-white,
+.dark .bg-gray-50,
+.dark .bg-slate-50,
+.dark .bg-slate-100,
+.dark .bg-slate-50\/50,
+.dark .bg-slate-50\/80 {
+  background-color: #0d1e36 !important;
+  color: #f8fafc !important;
+}
+
+/* Secondary nested divs / alternate dark shade */
+.dark div.bg-gray-100,
+.dark div.bg-slate-100,
+.dark .bg-gray-100,
+.dark .bg-gray-50,
+.dark .bg-slate-50,
+.dark .bg-gray-50\/50,
+.dark .bg-slate-50\/30 {
+  background-color: #07111f !important;
+}
+
+/* High contrast elements */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6,
+.dark strong,
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark .text-gray-900,
+.dark .text-gray-800,
+.dark .text-\[\#0a1628\] {
+  color: #ffffff !important;
+}
+
+/* Normal reading text */
+.dark p, .dark li, .dark a,
+.dark td, .dark th,
+.dark .text-slate-700,
+.dark .text-slate-600,
+.dark .text-gray-700,
+.dark .text-gray-600 {
+  color: #e2e8f0 !important;
+}
+
+/* Muted text labels */
+.dark .text-slate-500,
+.dark .text-slate-400,
+.dark .text-gray-500,
+.dark .text-gray-400,
+.dark .text-slate-400\/90 {
+  color: #94a3b8 !important;
+}
+
+/* Text links on hover */
+.dark a:hover,
+.dark .hover\:text-blue-600:hover {
+  color: #3b82f6 !important;
+}
+
+/* Form input elements */
+.dark input,
+.dark textarea,
+.dark select,
+.dark input.bg-gray-50,
+.dark input.bg-white,
+.dark select.bg-white,
+.dark textarea.bg-white {
+  background-color: #07111f !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #475569 !important;
+}
+
+.dark input:focus,
+.dark textarea:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Global borders */
+.dark,
+.dark *,
+.dark .border,
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-slate-300,
+.dark .border-gray-300 {
+  border-color: #1e293b !important;
+}
+
+/* Primary dark-blue button mapping */
+.dark button.bg-\[\#0a1628\],
+.dark a.bg-\[\#0a1628\],
+.dark .bg-\[\#0a1628\] {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+}
+
+.dark button.bg-\[\#0a1628\]:hover,
+.dark a.bg-\[\#0a1628\]:hover,
+.dark .bg-\[\#0a1628\]:hover {
+  background-color: #1d4ed8 !important;
+}
+
+/* Hover background resets */
+.dark .hover\:bg-slate-50:hover,
+.dark .hover\:bg-gray-50:hover,
+.dark .hover\:bg-slate-100:hover {
+  background-color: #07111f !important;
+}
+
+/* Cookie banner configuration */
+.dark #cookie-banner,
+.dark .cookie-banner {
+  background-color: #07111f !important;
+  border-top: 1px solid #1e293b !important;
+}
+
