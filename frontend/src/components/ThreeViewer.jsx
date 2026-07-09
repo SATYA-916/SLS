@@ -315,26 +315,7 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     const center = modelGroup?.userData?.center;
 
     activeHotspots.forEach((hs) => {
-      if (box && size && center) {
-        // Map original hotspot Y (range -5 to 8) to actual model bounding box Y
-        let normalizedY = (hs.pos.y + 5) / 13;
-        normalizedY = Math.max(0.1, Math.min(0.9, normalizedY));
-        const targetY = box.min.y + normalizedY * size.y;
-
-        // Map original X (range -2 to 2) to actual model bounding box X
-        let normalizedX = (hs.pos.x + 2) / 4;
-        normalizedX = Math.max(0.15, Math.min(0.85, normalizedX));
-        const targetX = box.min.x + normalizedX * size.x;
-
-        // Map original Z (range -2 to 2) to actual model bounding box Z
-        let normalizedZ = (hs.pos.z + 2) / 4;
-        normalizedZ = Math.max(0.15, Math.min(0.85, normalizedZ));
-        const targetZ = box.min.z + normalizedZ * size.z;
-
-        tempV.set(targetX, targetY, targetZ);
-      } else {
-        tempV.set(hs.pos.x, hs.pos.y, hs.pos.z);
-      }
+      tempV.set(hs.pos.x, hs.pos.y, hs.pos.z);
 
       if (modelGroup) {
         tempV.applyMatrix4(modelGroup.matrixWorld);
