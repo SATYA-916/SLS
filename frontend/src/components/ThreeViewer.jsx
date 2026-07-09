@@ -461,21 +461,44 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           }
         } else if (feaMode) {
           // FEA Stress Heatmap styling: color gradient based on elevation/names
-          const y = child.position.y;
+          let nameToTest = '';
+          let temp = child;
+          while (temp && temp !== activeScene.current) {
+            if (temp.name) {
+              nameToTest = temp.name.toLowerCase();
+              break;
+            }
+            temp = temp.parent;
+          }
+
           let stressColor = 0x3b82f6; // Blue (low stress)
           
-          if (child.name && (
-            child.name.includes('col') || 
-            child.name.includes('column') || 
-            child.name.includes('beam') || 
-            child.name.includes('support') ||
-            child.name.includes('stanchion')
-          )) {
-            stressColor = 0xef4444; // High stress at joints (red)
-          } else if (y < -3.5) {
-            stressColor = 0xef4444; // High stress at ground bases
-          } else if (y < 2.5) {
+          if (nameToTest.includes('col') || 
+              nameToTest.includes('column') || 
+              nameToTest.includes('beam') || 
+              nameToTest.includes('support') ||
+              nameToTest.includes('stanchion') ||
+              nameToTest.includes('truss') ||
+              nameToTest.includes('brace') ||
+              nameToTest.includes('bracket') ||
+              nameToTest.includes('gantry')
+          ) {
+            stressColor = 0xef4444; // High stress load paths (red)
+          } else if (nameToTest.includes('footing') || nameToTest.includes('pilecap') || nameToTest.includes('base')) {
+            stressColor = 0xef4444; // Red for contact stress
+          } else if (nameToTest.includes('slab') || nameToTest.includes('plate') || nameToTest.includes('purlin')) {
             stressColor = 0x10b981; // Medium stress (green)
+          } else {
+            // Elevation height-based FEA stress map using true scene height coordinates
+            const worldPos = new THREE.Vector3();
+            child.getWorldPosition(worldPos);
+            const worldY = worldPos.y;
+            
+            if (worldY < -3.5) {
+              stressColor = 0xef4444; // High base stress (red)
+            } else if (worldY < 2.5) {
+              stressColor = 0x10b981; // Medium structural stress (green)
+            }
           }
 
           child.material = new THREE.MeshStandardMaterial({
@@ -4414,6 +4437,69 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           child.position.x = child.userData.origPos.x + x * factor;
           child.position.y = child.userData.origPos.y + y * factor;
           child.position.z = child.userData.origPos.z + z * factor;
+        }
+
+        // 3. Custom model-type based explosions for newly added structures
+        const factor = explodedFactor.current;
+        if (type === 'evaporator') {
+          if (!child.userData.origPos) {
+            child.userData.origPos = child.position.clone();
+          }
+          if (child.name !== 'vessel_body' && !child.name.includes('nozzle') && !child.name.includes('flange') && child.isMesh) {
+            const dirX = child.userData.origPos.x > 0.1 ? 1.8 : (child.userData.origPos.x < -0.1 ? -1.8 : 0);
+            const dirZ = child.userData.origPos.z > 0.1 ? 1.8 : (child.userData.origPos.z < -0.1 ? -1.8 : 0);
+            const dirY = child.userData.origPos.y > 6.0 ? 3.0 : (child.userData.origPos.y < -3.0 ? -2.0 : 0);
+            child.position.x = child.userData.origPos.x + dirX * factor;
+            child.position.z = child.userData.origPos.z + dirZ * factor;
+            child.position.y = child.userData.origPos.y + dirY * factor;
+          }
+        } else if (type === 'santhipuram') {
+          if (!child.userData.origPos) {
+            child.userData.origPos = child.position.clone();
+          }
+          const origY = child.userData.origPos.y;
+          let dirY = 0;
+          if (origY > 2.0) dirY = 3.5;
+          else if (origY < -2.0) dirY = -3.5;
+
+          let dirX = child.userData.origPos.x > 0.1 ? 2.0 : (child.userData.origPos.x < -0.1 ? -2.0 : 0);
+          let dirZ = child.userData.origPos.z > 0.1 ? 2.0 : (child.userData.origPos.z < -0.1 ? -2.0 : 0);
+
+          child.position.y = child.userData.origPos.y + dirY * factor;
+          child.position.x = child.userData.origPos.x + dirX * factor;
+          child.position.z = child.userData.origPos.z + dirZ * factor;
+        } else if (type === 'tarachand') {
+          if (!child.userData.origPos) {
+            child.userData.origPos = child.position.clone();
+          }
+          let dirY = 0;
+          let dirX = 0;
+
+          const origY = child.userData.origPos.y;
+          const origX = child.userData.origPos.x;
+
+          let nameToTest = '';
+          let temp = child;
+          while (temp && temp !== activeScene.current) {
+            if (temp.name) {
+              nameToTest = temp.name.toLowerCase();
+              break;
+            }
+            temp = temp.parent;
+          }
+
+          if (nameToTest.includes('pilecap')) {
+            dirY = -2.5;
+          } else if (nameToTest.includes('gantry') || nameToTest.includes('bracket')) {
+            dirX = origX > 0 ? 1.5 : -1.5;
+          } else if (nameToTest.includes('column')) {
+            dirX = origX > 0 ? 2.5 : -2.5;
+          } else if (origY > 3.0) {
+            dirY = 3.5;
+          }
+
+          child.position.y = child.userData.origPos.y + dirY * factor;
+          child.position.x = child.userData.origPos.x + dirX * factor;
         }
       });
 
