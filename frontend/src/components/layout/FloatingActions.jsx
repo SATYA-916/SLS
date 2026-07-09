@@ -44,19 +44,6 @@ export function FloatingActions() {
   return (
     <div className="fixed bottom-6 right-4 z-50 flex flex-col items-end gap-3">
 
-      {/* Dark Theme Toggle Button */}
-      <motion.button
-        whileTap={{ scale: 0.9 }}
-        onClick={() => setDarkMode(prev => !prev)}
-        aria-label="Toggle dark mode"
-        className="w-10 h-10 bg-white border border-slate-200 shadow-md dark:bg-[#0d1e36] dark:border-slate-800 flex items-center justify-center hover:bg-slate-50 dark:hover:bg-[#1a2f4c] transition-all duration-200 rounded-full"
-      >
-        {darkMode ? (
-          <Sun className="w-5 h-5 text-yellow-400" />
-        ) : (
-          <Moon className="w-5 h-5 text-slate-700" />
-        )}
-      </motion.button>
 
       {/* Back to Top */}
       <AnimatePresence>
