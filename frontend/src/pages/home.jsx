@@ -53,12 +53,96 @@ function GlobeCanvas({ onSelectMarker, activeId }) {
     const globeGroup = new THREE.Group();
     scene.add(globeGroup);
 
-    const sphereGeo = new THREE.SphereGeometry(2.5, 32, 32);
-    const sphereMat = new THREE.MeshBasicMaterial({
-      color: 0x0a1c36,
-      transparent: true,
-      opacity: 0.15,
-      wireframe: false
+    // Generate a procedural high-fidelity earth continent map texture on-the-fly
+    const createEarthTexture = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024;
+      canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+
+      // Ocean background - deep industrial slate navy
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, 1024, 512);
+
+      // Continent land color - clean textured mid-slate steel blue
+      ctx.fillStyle = '#1e293b';
+      ctx.strokeStyle = '#38bdf8'; // Glowing sky-blue borders
+      ctx.lineWidth = 1.5;
+
+      const mapX = (lon) => (lon + 180) * (1024 / 360);
+      const mapY = (lat) => (90 - lat) * (512 / 180);
+
+      const drawLand = (coords) => {
+        ctx.beginPath();
+        coords.forEach((pt, idx) => {
+          const x = mapX(pt[0]);
+          const y = mapY(pt[1]);
+          if (idx === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+      };
+
+      // Simplified continental polygons for clean CAD earth representation
+      // North America
+      drawLand([
+        [-168, 65], [-120, 70], [-80, 70], [-60, 60], [-50, 48],
+        [-80, 25], [-80, 9], [-90, 15], [-100, 20], [-110, 23],
+        [-120, 33], [-125, 48], [-160, 55]
+      ]);
+
+      // Greenland
+      drawLand([
+        [-60, 80], [-40, 83], [-20, 75], [-40, 60], [-55, 60]
+      ]);
+
+      // South America
+      drawLand([
+        [-80, 9], [-72, 10], [-50, -5], [-40, -5], [-35, -7],
+        [-40, -20], [-60, -40], [-70, -55], [-75, -50], [-70, -40],
+        [-80, -15], [-80, -5]
+      ]);
+
+      // Africa
+      drawLand([
+        [-17, 32], [-5, 36], [10, 32], [30, 30], [32, 15],
+        [51, 11], [40, -15], [20, -34], [15, -34], [10, -10],
+        [0, 5], [-15, 15]
+      ]);
+
+      // Eurasia (Europe + Asia)
+      drawLand([
+        [-10, 65], [10, 70], [30, 72], [60, 75], [90, 77],
+        [120, 77], [160, 75], [170, 65], [140, 35], [120, 20],
+        [105, 20], [90, 10], [80, 8], [75, 20], [60, 25],
+        [45, 15], [35, 30], [25, 40], [10, 40], [0, 50],
+        [-10, 60]
+      ]);
+      
+      // India sub-polygon
+      drawLand([
+        [68, 24], [72, 33], [78, 31], [88, 27], [92, 27],
+        [88, 22], [80, 10], [77, 8], [72, 20]
+      ]);
+
+      // Australia
+      drawLand([
+        [113, -22], [115, -14], [125, -12], [135, -11], [142, -11],
+        [148, -20], [153, -28], [150, -35], [140, -37], [130, -32],
+        [115, -32]
+      ]);
+
+      return new THREE.CanvasTexture(canvas);
+    };
+
+    const globeTexture = createEarthTexture();
+    const sphereGeo = new THREE.SphereGeometry(2.5, 48, 48);
+    const sphereMat = new THREE.MeshStandardMaterial({
+      map: globeTexture,
+      roughness: 0.7,
+      metalness: 0.15
     });
     const sphere = new THREE.Mesh(sphereGeo, sphereMat);
     globeGroup.add(sphere);
