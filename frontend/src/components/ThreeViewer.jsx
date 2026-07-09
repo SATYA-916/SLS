@@ -1318,16 +1318,16 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           }
 
           // Tubular Diagonal cross bracings with detailed gusset junctions
-          const braceGeo = new THREE.CylinderGeometry(0.08, 0.08, 6.2, 8);
+          const braceGeo = new THREE.CylinderGeometry(0.08, 0.08, Math.sqrt(50.08), 8);
           const diagonalPlacements = [
-            { x: 0, y: 2.1, z: -2.4, rotY: 0, rotZ: 0.65 },
-            { x: 0, y: 2.1, z: -2.4, rotY: 0, rotZ: -0.65 },
-            { x: 0, y: 2.1, z: 2.4, rotY: 0, rotZ: 0.65 },
-            { x: 0, y: 2.1, z: 2.4, rotY: 0, rotZ: -0.65 },
-            { x: -2.4, y: 2.1, z: 0, rotY: Math.PI / 2, rotZ: 0.65 },
-            { x: -2.4, y: 2.1, z: 0, rotY: Math.PI / 2, rotZ: -0.65 },
-            { x: 2.4, y: 2.1, z: 0, rotY: Math.PI / 2, rotZ: 0.65 },
-            { x: 2.4, y: 2.1, z: 0, rotY: Math.PI / 2, rotZ: -0.65 }
+            { x: 0, y: 2.1, z: -2.4, rotY: 0, rotZ: Math.atan(4.8 / 5.2) },
+            { x: 0, y: 2.1, z: -2.4, rotY: 0, rotZ: -Math.atan(4.8 / 5.2) },
+            { x: 0, y: 2.1, z: 2.4, rotY: 0, rotZ: Math.atan(4.8 / 5.2) },
+            { x: 0, y: 2.1, z: 2.4, rotY: 0, rotZ: -Math.atan(4.8 / 5.2) },
+            { x: -2.4, y: 2.1, z: 0, rotY: Math.PI / 2, rotZ: Math.atan(4.8 / 5.2) },
+            { x: -2.4, y: 2.1, z: 0, rotY: Math.PI / 2, rotZ: -Math.atan(4.8 / 5.2) },
+            { x: 2.4, y: 2.1, z: 0, rotY: Math.PI / 2, rotZ: Math.atan(4.8 / 5.2) },
+            { x: 2.4, y: 2.1, z: 0, rotY: Math.PI / 2, rotZ: -Math.atan(4.8 / 5.2) }
           ];
 
           diagonalPlacements.forEach(dp => {
