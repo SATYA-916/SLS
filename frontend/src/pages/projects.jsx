@@ -74,15 +74,15 @@ export default function Projects() {
     // 2. Search query filter
     const q = searchQuery.toLowerCase().trim();
     const matchSearch = !q ||
-      p.title.toLowerCase().includes(q) ||
-      p.description.toLowerCase().includes(q) ||
+      (p.title || '').toLowerCase().includes(q) ||
+      (p.description || '').toLowerCase().includes(q) ||
       (p.category || '').toLowerCase().includes(q) ||
       (p.client || '').toLowerCase().includes(q);
 
     // 3. Discipline filter
     let matchDiscipline = true;
     if (selectedDiscipline !== 'All') {
-      const pText = (p.title + ' ' + p.description + ' ' + (p.category || '')).toLowerCase();
+      const pText = ((p.title || '') + ' ' + (p.description || '') + ' ' + (p.category || '')).toLowerCase();
       if (selectedDiscipline === 'Civil & Structural') {
         matchDiscipline = p.category === 'Civil & Structural' || pText.includes('civil') || pText.includes('structural') || pText.includes('foundation') || pText.includes('concrete') || pText.includes('pile') || pText.includes('building') || pText.includes('apartments') || pText.includes('residency');
       } else if (selectedDiscipline === 'Mechanical & Piping') {
@@ -97,7 +97,7 @@ export default function Projects() {
     // 4. Code filter
     let matchCode = true;
     if (selectedCode !== 'All') {
-      const pText = (p.title + ' ' + p.description + ' ' + (p.challenge || '') + ' ' + (p.codesUsed || '')).toLowerCase();
+      const pText = ((p.title || '') + ' ' + (p.description || '') + ' ' + (p.challenge || '') + ' ' + (p.codesUsed || '')).toLowerCase();
       if (selectedCode === 'ASME') {
         matchCode = pText.includes('asme') || pText.includes('sts-1') || pText.includes('section viii') || pText.includes('vessel');
       } else if (selectedCode === 'API') {
@@ -110,7 +110,7 @@ export default function Projects() {
     // 5. Client filter
     let matchClient = true;
     if (selectedClient !== 'All') {
-      const pText = (p.title + ' ' + p.description + ' ' + (p.client || '')).toLowerCase();
+      const pText = ((p.title || '') + ' ' + (p.description || '') + ' ' + (p.client || '')).toLowerCase();
       if (selectedClient === 'HPCL') {
         matchClient = pText.includes('hpcl');
       } else if (selectedClient === 'BPCL') {
@@ -161,7 +161,7 @@ export default function Projects() {
 
   const getProjectLocation = (proj) => {
     if (!proj) return 'Visakhapatnam, India';
-    const text = (proj.title + ' ' + proj.description + ' ' + (proj.challenge || '')).toLowerCase();
+    const text = ((proj.title || '') + ' ' + (proj.description || '') + ' ' + (proj.challenge || '')).toLowerCase();
     if (text.includes('kochi')) return 'Kochi, Kerala';
     if (text.includes('iran')) return 'Iran (International)';
     if (text.includes('bina')) return 'Bina, Madhya Pradesh';
