@@ -262,6 +262,14 @@ function getCameraSettings(type) {
       settings.camPos.set(14, 8, 20);
       settings.lookAt.set(0, 0, 0);
       break;
+    case 'santhipuram':
+      settings.camPos.set(12, 10, 16);
+      settings.lookAt.set(0, 0, 0);
+      break;
+    case 'tarachand':
+      settings.camPos.set(14, 8, 16);
+      settings.lookAt.set(0, 0, 0);
+      break;
     default:
       settings.camPos.set(10, 8, 14);
       settings.lookAt.set(0, 0, 0);
@@ -4021,6 +4029,267 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
               const d2 = d1.clone();
               d2.rotation.z = -0.8;
               modelGroup.add(d2);
+            }
+          }
+          break;
+        }
+
+        case 'santhipuram': { // Santhipuram Residential Complex - RCC structure
+          const concreteMat = new THREE.MeshStandardMaterial({
+            color: 0x94a3b8,
+            roughness: 0.9,
+            metalness: 0.1,
+            wireframe: wireframeRef.current
+          });
+          const rebarMat = new THREE.MeshStandardMaterial({
+            color: 0xd97706,
+            roughness: 0.4,
+            metalness: 0.7,
+            wireframe: wireframeRef.current
+          });
+
+          // 1. Grid of columns: 4x4 columns (spaced at x = -3, -1, 1, 3 and z = -3, -1, 1, 3)
+          // Height of columns = 9.0m, centered at Y = 0
+          const colGeo = new THREE.BoxGeometry(0.24, 9.0, 0.24);
+          const colPositions = [];
+          for (let x of [-3.0, -1.0, 1.0, 3.0]) {
+            for (let z of [-3.0, -1.0, 1.0, 3.0]) {
+              const col = new THREE.Mesh(colGeo, concreteMat);
+              col.position.set(x, 0, z);
+              col.name = "column";
+              modelGroup.add(col);
+              colPositions.push({ x, z });
+
+              // Isolated concrete footings (pads) at base of every column (Y = -4.5)
+              const footingGeo = new THREE.BoxGeometry(0.7, 0.4, 0.7);
+              const footing = new THREE.Mesh(footingGeo, concreteMat);
+              footing.position.set(x, -4.5, z);
+              footing.name = "footing";
+              modelGroup.add(footing);
+            }
+          }
+
+          // 2. Floor beams linking the columns (3 levels: Y = -3, 0, 3)
+          const beamLength = 2.0;
+          const beamGeoX = new THREE.BoxGeometry(beamLength, 0.18, 0.12);
+          const beamGeoZ = new THREE.BoxGeometry(0.12, 0.18, beamLength);
+
+          for (let y of [-3.0, 0, 3.0]) {
+            // Horizontal beams in X direction
+            for (let z of [-3.0, -1.0, 1.0, 3.0]) {
+              for (let x = -2.0; x <= 2.0; x += 2.0) {
+                const beam = new THREE.Mesh(beamGeoX, concreteMat);
+                beam.position.set(x, y + 0.4, z); // sit slightly below floor level
+                beam.name = "beam";
+                modelGroup.add(beam);
+              }
+            }
+
+            // Horizontal beams in Z direction
+            for (let x of [-3.0, -1.0, 1.0, 3.0]) {
+              for (let z = -2.0; z <= 2.0; z += 2.0) {
+                const beam = new THREE.Mesh(beamGeoZ, concreteMat);
+                beam.position.set(x, y + 0.4, z);
+                beam.name = "beam";
+                modelGroup.add(beam);
+              }
+            }
+
+            // 3. Concrete floor slabs (thin plates with central cutout for stair/liftwell)
+            // Left slab: from X = -3.0 to 1.0, Z = -3.0 to 3.0
+            const slabGeoLeft = new THREE.BoxGeometry(4.0, 0.08, 6.0);
+            const slabLeft = new THREE.Mesh(slabGeoLeft, concreteMat);
+            slabLeft.position.set(-1.0, y + 0.5, 0);
+            slabLeft.name = "slab";
+            modelGroup.add(slabLeft);
+
+            // Right slab: X = 1.0 to 3.0, Z = -3.0 to 3.0 (with stair cutout at X=1 to 3, Z=-1 to 1)
+            const slabGeoRight1 = new THREE.BoxGeometry(2.0, 0.08, 2.0); // Z = 1 to 3
+            const slabRight1 = new THREE.Mesh(slabGeoRight1, concreteMat);
+            slabRight1.position.set(2.0, y + 0.5, 2.0);
+            slabRight1.name = "slab";
+            modelGroup.add(slabRight1);
+
+            const slabGeoRight2 = new THREE.BoxGeometry(2.0, 0.08, 2.0); // Z = -3 to -1
+            const slabRight2 = new THREE.Mesh(slabGeoRight2, concreteMat);
+            slabRight2.position.set(2.0, y + 0.5, -2.0);
+            slabRight2.name = "slab";
+            modelGroup.add(slabRight2);
+          }
+
+          // 4. Central lift-well/stair shear wall core
+          // Concrete shear walls around center (X = 1.0 to 3.0, Z = -1.0 to 1.0)
+          // We can construct three walls: Back wall (X=3), Left wall (Z=-1), Right wall (Z=1)
+          const wallGeoBack = new THREE.BoxGeometry(0.12, 9.0, 2.0);
+          const wallBack = new THREE.Mesh(wallGeoBack, concreteMat);
+          wallBack.position.set(3.0, 0, 0);
+          wallBack.name = "shearwall";
+          modelGroup.add(wallBack);
+
+          const wallGeoSide = new THREE.BoxGeometry(2.0, 9.0, 0.12);
+          const wallSideL = new THREE.Mesh(wallGeoSide, concreteMat);
+          wallSideL.position.set(2.0, 0, -1.0);
+          wallSideL.name = "shearwall";
+          modelGroup.add(wallSideL);
+
+          const wallSideR = new THREE.Mesh(wallGeoSide, concreteMat);
+          wallSideR.position.set(2.0, 0, 1.0);
+          wallSideR.name = "shearwall";
+          modelGroup.add(wallSideR);
+
+          // 5. Some structural details: rebars poking out from columns at top (Y = 4.7m)
+          for (let pos of colPositions) {
+            for (let rx of [-0.08, 0.08]) {
+              for (let rz of [-0.08, 0.08]) {
+                const rebarGeo = new THREE.CylinderGeometry(0.01, 0.01, 0.5, 8);
+                const rebar = new THREE.Mesh(rebarGeo, rebarMat);
+                rebar.position.set(pos.x + rx, 4.75, pos.z + rz);
+                rebar.name = "rebar";
+                modelGroup.add(rebar);
+              }
+            }
+          }
+          break;
+        }
+
+        case 'tarachand': { // Tarachand Logistics Hub - Heavy steel warehouse framing
+          const concreteMat = new THREE.MeshStandardMaterial({
+            color: 0x8a9ba8,
+            roughness: 0.9,
+            metalness: 0.1,
+            wireframe: wireframeRef.current
+          });
+
+          // 1. Heavy steel columns: 2 rows of 6 columns (spaced at X = -3.5, 3.5; Z = -5.0 to 5.0 with step 2.0)
+          // Height of columns = 7.0m, Y centered at 0
+          const colsCount = 6;
+          const zStep = 2.0;
+          const colPositions = [];
+          for (let x of [-3.5, 3.5]) {
+            for (let i = 0; i < colsCount; i++) {
+              const z = -5.0 + i * zStep;
+              const col = createIBeam(7.0, 0.3, 0.04, blueprintMat);
+              col.position.set(x, 0, z);
+              col.rotation.x = Math.PI / 2;
+              col.name = "column";
+              modelGroup.add(col);
+              colPositions.push({ x, z });
+
+              // Concrete Pile Caps at the base of columns (Y = -3.5)
+              const capGeo = new THREE.BoxGeometry(0.8, 0.5, 0.8);
+              const cap = new THREE.Mesh(capGeo, concreteMat);
+              cap.position.set(x, -3.75, z);
+              cap.name = "pilecap";
+              modelGroup.add(cap);
+
+              // 4 anchor bolts on columns bases
+              const bolts = createBoltCircle(0.2, 4, 0.15, 0.03);
+              bolts.position.set(x, -3.5, z);
+              modelGroup.add(bolts);
+            }
+          }
+
+          // 2. Gantry crane runway girders (heavy I-beams spanning longitudinally at Y = 2.0m)
+          // Left crane girder
+          const craneGirderL = createIBeam(10.2, 0.35, 0.05, stackMat);
+          craneGirderL.position.set(-3.25, 2.0, 0);
+          craneGirderL.rotation.y = Math.PI / 2;
+          craneGirderL.name = "gantry_girder";
+          modelGroup.add(craneGirderL);
+
+          // Right crane girder
+          const craneGirderR = createIBeam(10.2, 0.35, 0.05, stackMat);
+          craneGirderR.position.set(3.25, 2.0, 0);
+          craneGirderR.rotation.y = Math.PI / 2;
+          craneGirderR.name = "gantry_girder";
+          modelGroup.add(craneGirderR);
+
+          // Cantilever support brackets connecting columns to crane girders
+          for (let pos of colPositions) {
+            const bracket = createIBeam(0.4, 0.2, 0.02, blueprintMat);
+            const dir = pos.x > 0 ? -1 : 1;
+            bracket.position.set(pos.x + dir * 0.2, 1.8, pos.z);
+            bracket.rotation.y = pos.x > 0 ? Math.PI : 0;
+            bracket.name = "bracket";
+            modelGroup.add(bracket);
+          }
+
+          // 3. Triangular Roof Trusses spanning across columns at Y = 3.5m (6 trusses total)
+          for (let i = 0; i < colsCount; i++) {
+            const z = -5.0 + i * zStep;
+            const truss = new THREE.Group();
+            truss.position.set(0, 3.5, z);
+
+            // Bottom chord spanning from column to column
+            const bottomChord = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 7.0, 8), blueprintMat);
+            bottomChord.rotation.z = Math.PI / 2;
+            bottomChord.name = "truss_chord";
+            truss.add(bottomChord);
+
+            // Sloped top chords rafters meeting in peak at Y = 1.5m
+            const rafterL = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 3.9, 8), blueprintMat);
+            rafterL.position.set(-1.75, 0.75, 0);
+            rafterL.rotation.z = -0.4;
+            rafterL.name = "truss_rafter";
+            truss.add(rafterL);
+
+            const rafterR = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 3.9, 8), blueprintMat);
+            rafterR.position.set(1.75, 0.75, 0);
+            rafterR.rotation.z = 0.4;
+            rafterR.name = "truss_rafter";
+            truss.add(rafterR);
+
+            // Vertical King post in center
+            const king = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 1.5, 8), blueprintMat);
+            king.position.set(0, 0.75, 0);
+            king.name = "truss_web";
+            truss.add(king);
+
+            // W-web diagonal struts (4 struts)
+            for (let dir of [-1, 1]) {
+              const strut1 = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.8, 8), blueprintMat);
+              strut1.position.set(dir * 0.9, 0.4, 0);
+              strut1.rotation.z = -dir * 0.5;
+              strut1.name = "truss_web";
+              truss.add(strut1);
+
+              const strut2 = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 2.0, 8), blueprintMat);
+              strut2.position.set(dir * 2.5, 0.5, 0);
+              strut2.rotation.z = -dir * 0.35;
+              strut2.name = "truss_web";
+              truss.add(strut2);
+            }
+
+            modelGroup.add(truss);
+          }
+
+          // 4. Roof purlins (longitudinal bars spanning over trusses)
+          const purlinXPositions = [-3.5, -2.1, -0.7, 0.7, 2.1, 3.5];
+          purlinXPositions.forEach((px) => {
+            const py = 3.5 + (1.5 - Math.abs(px) * 0.43);
+            const purlin = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 10.2, 8), blueprintMat);
+            purlin.position.set(px, py, 0);
+            purlin.rotation.x = Math.PI / 2;
+            purlin.name = "purlin";
+            modelGroup.add(purlin);
+          });
+
+          // 5. Diagonal bracing on wall sides (X = -3.5 & 3.5, spanning Z bays)
+          const braceGeo = new THREE.CylinderGeometry(0.03, 0.03, 2.8, 8);
+          for (let x of [-3.5, 3.5]) {
+            for (let i = 0; i < colsCount - 1; i++) {
+              if (i % 2 === 0) {
+                const zCenter = -4.0 + i * zStep;
+                const b1 = new THREE.Mesh(braceGeo, blueprintMat);
+                b1.position.set(x, 0, zCenter);
+                b1.rotation.x = 0.78;
+                b1.name = "bracing";
+                modelGroup.add(b1);
+
+                const b2 = b1.clone();
+                b2.rotation.x = -0.78;
+                modelGroup.add(b2);
+              }
             }
           }
           break;

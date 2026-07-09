@@ -65,6 +65,8 @@ export function getThreeModelIdForProject(project) {
     case 48: return 'evaporator-structure';    // Evaporator Building Structure
     case 49: return 'dhdt-heater';             // DHDT Fired Heater
     case 50: return 'hds-heater';              // HDS Fired Heater
+    case 53: return 'santhipuram';             // Santhipuram Residential Complex
+    case 54: return 'tarachand';               // Tara Chand Logistics Hub
     default: break;
   }
   
@@ -332,6 +334,101 @@ const PROJECT_DRAWINGS = {
       ref: "BR-40053-03-A-101-SHT5",
       desc: "Casing details for return bend header boxes, hinged access door frames, locking bolts, and ceramic fiber gaskets.",
       modelId: "header-box"
+    }
+  ],
+  53: [
+    {
+      file: "santhipuram_layout.png",
+      title: "Ground Floor Architectural Plan",
+      ref: "SLS-2122-19-DW-1901",
+      desc: "Architectural floor arrangement, partitioning walls, column coordinate offsets, and entrance detailing.",
+      modelId: "santhipuram"
+    },
+    {
+      file: "santhipuram_beams.png",
+      title: "RCC Floor Beams Layout & Framing",
+      ref: "SLS-2122-19-DW-1902",
+      desc: "First floor framing layout specifying primary girders, concrete beam sections, and reinforcement profiles.",
+      modelId: "santhipuram"
+    },
+    {
+      file: "santhipuram_columns.png",
+      title: "Columns Coordinates & Reinforcement",
+      ref: "SLS-2122-19-DW-1903",
+      desc: "Column spacing coordinates, cross section rebars sizing, and stirrups pitch intervals conforming to IS 456.",
+      modelId: "santhipuram"
+    },
+    {
+      file: "santhipuram_foundation.png",
+      title: "Isolated Concrete Footings Details",
+      ref: "SLS-2122-19-DW-1904",
+      desc: "Sub-grade concrete footing mats geometry, thickness steps, excavations details, and steel mesh spacing.",
+      modelId: "santhipuram"
+    },
+    {
+      file: "santhipuram_details.png",
+      title: "RCC Floor Slabs Reinforcement Schedules",
+      ref: "SLS-2122-19-DW-1905",
+      desc: "Structural detailing of concrete slabs including bottom/top reinforcement meshes and cranked bars.",
+      modelId: "santhipuram"
+    },
+    {
+      file: "santhipuram_drainage.png",
+      title: "Roof Slope & Drainage Scheme",
+      ref: "SLS-2122-19-DW-1926",
+      desc: "Roof slopes, rainwater collection gutter coordinates, and downtake pipe location drawings.",
+      modelId: "santhipuram"
+    },
+    {
+      file: "santhipuram_liftwell.png",
+      title: "Shear Wall lift-well Reinforcement",
+      ref: "SLS-2122-19-SK-1901",
+      desc: "Sketch detailing the concrete lift shaft shear wall thickness, vertical rebars, and lintel beams.",
+      modelId: "santhipuram"
+    }
+  ],
+  54: [
+    {
+      file: "tarachand_ga.png",
+      title: "General Arrangement of Steel Structure",
+      ref: "SLS-2324-01-DW-101",
+      desc: "General elevations and plan drawings specifying bays spacing, column heights, and gantry crane paths.",
+      modelId: "tarachand"
+    },
+    {
+      file: "tarachand_columns.png",
+      title: "Main Columns Steel Framing",
+      ref: "SLS-2324-01-DW-102",
+      desc: "Built-up H-beams column schedules, base anchor plate designs, gusset stiffeners, and splices.",
+      modelId: "tarachand"
+    },
+    {
+      file: "tarachand_trusses.png",
+      title: "Roof Truss Structural Assembly",
+      ref: "SLS-2324-01-DW-103",
+      desc: "General configuration of roof trusses with detail drawings for welded joint gusset connections.",
+      modelId: "tarachand"
+    },
+    {
+      file: "tarachand_purlins.png",
+      title: "Purlins & Side Girts Layout",
+      ref: "SLS-2324-01-DW-104",
+      desc: "Cold-formed Z-purlin spacings, eave strut dimensions, and sag rods hole alignments.",
+      modelId: "tarachand"
+    },
+    {
+      file: "tarachand_gantry.png",
+      title: "Gantry Runway Girder Details",
+      ref: "SLS-2324-01-DW-105",
+      desc: "Structural detailing of crane runways, splice joints, and runway beam bracket moment connections.",
+      modelId: "tarachand"
+    },
+    {
+      file: "tarachand_foundations.png",
+      title: "Heavy Piling Foundations Template",
+      ref: "SLS-2324-01-DW-120",
+      desc: "Foundation concrete layout showing locations of concrete piles, piling caps, and heavy anchor bolts.",
+      modelId: "tarachand"
     }
   ]
 };

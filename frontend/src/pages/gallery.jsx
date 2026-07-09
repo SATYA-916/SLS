@@ -1279,6 +1279,38 @@ const illustrations = [
     threeType: "preheater_rotor",
     service: "Industrial Design & Support",
     icon: "completeframe"
+  },
+  {
+    id: "santhipuram",
+    title: "Santhipuram Residential Complex",
+    subtitle: "Multi-Story Concrete Structure",
+    description: "Detailed reinforced concrete building framing model featuring foundation slabs, column rows, floor beams, and multi-tier concrete deck slab grids.",
+    purpose: "Provides structural housing, gravity load support, and wind/seismic resistance for the residential block.",
+    function: "Distributes dead and live loads safely down into the deep pile foundation template.",
+    materials: "M30 Grade Concrete, Fe500 reinforcement steel bars",
+    discipline: "Civil Concrete Design & Detailing",
+    application: "Multi-story residential and commercial buildings",
+    scope: "Structural RCC framing design, isolated concrete footing calculations, slab load distribution modeling under IS 456.",
+    deliverables: "General Arrangement drawings, column spacing coordinates layout, concrete beam detail schedules.",
+    threeType: "santhipuram",
+    service: "Engineering & Architecture Design",
+    icon: "completeframe"
+  },
+  {
+    id: "tarachand",
+    title: "Tara Chand Logistics Hub",
+    subtitle: "Heavy Steel Warehouse Framing",
+    description: "Massive industrial steel framing model showing built-up portal columns, heavy gantry crane runway girders, triangular roof trusses, and foundation pile caps.",
+    purpose: "Houses heavy steel logistics warehousing operations and supports heavy-tonnage moving gantry cranes.",
+    function: "Carries high dynamic load moments from crane runway rails and distributes horizontal wind forces.",
+    materials: "IS 2062 Grade B Structural Steel, High-tensile connection bolts",
+    discipline: "Heavy Structural Steel Detailing",
+    application: "Logistics hubs, heavy manufacturing warehouses, crane bays",
+    scope: "Portal moment frames modeling, crane runways fatigue check, wind load calculations under IS 875/ASME.",
+    deliverables: "Steel framing layouts, roof truss details, gantry runway moment connections details.",
+    threeType: "tarachand",
+    service: "Steel Detailing (Tekla)",
+    icon: "completeframe"
   }
 ];
 
@@ -1286,7 +1318,7 @@ const MODEL_GROUPS = [
   { name: "Overall Assembly",  items: ["complete-heater", "dhdt-heater", "hds-heater", "complete-stack", "off-take-duct"] },
   { name: "Radiant System",    items: ["radiant-section", "burner-floor", "header-box", "arch-plate-assembly", "refractory-anchor", "marking-fixture"] },
   { name: "Convection System", items: ["convection-section", "soot-blower", "tube-sheet", "preheater-rotor", "air-duct"] },
-  { name: "Structural System", items: ["support-steel", "complete-frame", "roof-structure", "ets-structure", "evaporator-structure", "canopy-millennium", "ac-shelter", "mt-pool-structure", "concrete-shield-wall", "vfd-room", "retaining-wall", "boiler-house-frame"] },
+  { name: "Structural System", items: ["support-steel", "complete-frame", "roof-structure", "ets-structure", "evaporator-structure", "canopy-millennium", "ac-shelter", "mt-pool-structure", "concrete-shield-wall", "vfd-room", "retaining-wall", "boiler-house-frame", "santhipuram", "tarachand"] },
   { name: "Access System",     items: ["platform-system", "stair-assembly", "stack-platform", "heater-grating", "stack-ladders", "breeching-door", "maintenance-access-sys", "stair-tower", "cage-ladder"] },
   { name: "Auxiliary Piping",  items: ["vessel-skid", "damper-assembly", "piping-manifold", "crossover-piping", "sag-rod", "expansion-bellows", "breeching-casing", "skid-piping", "piling-grid", "flare-tip"] }
 ];

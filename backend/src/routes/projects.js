@@ -603,6 +603,30 @@ const projects = [
     challenge: 'Engineering the high-temperature radiant zone coils and convective waste heat recovery module, utilizing finned tubes to maximize heat transfer efficiency without overheating casing plates.',
     solution: 'Designed stiffened casing panels backed by multi-layer monolithic refractory blocks. Integrated intermediate tube support plates to prevent horizontal coil sagging at 650°C operating temperatures.',
     slsAction: 'Prepared comprehensive mechanical and detailing drawings for pressure parts, casing plates, platforms assemblies, header boxes, and self-supporting stack.'
+  },
+  {
+    id: 53,
+    title: 'Santhipuram Residential Complex',
+    description: 'Detailed structural design, foundation sizing, and RCC framing plans for a multi-story residential apartment complex comprising 27 drawing sheets.',
+    category: 'Structures',
+    client: 'Santhipuram Developers',
+    year: 2022,
+    image: '/projects/proj17.png',
+    challenge: 'Designing a safe, seismically resilient multi-story concrete structure with soft-story ground floor stilt parking in a coastal area, requiring careful ductility and shear wall designs.',
+    solution: 'Designed robust shear wall enclosures around the central lift wells and stairs to absorb lateral earthquake/wind shear forces. Optimized column dimensions and reinforcement schedules to prevent soft-story failures under IS 1893 guidelines.',
+    slsAction: 'Conducted structural concrete design, prepared detailed columns spacing coordinates, floor slabs reinforcement details, staircase steel maps, and generated a 27-drawing construction drawing register.'
+  },
+  {
+    id: 54,
+    title: 'Tara Chand Logistics Hub & Heavy Equipment Warehouse',
+    description: 'Structural steel engineering, roof truss optimization, and gantry crane runway girder detailing for a massive industrial logistics warehouse.',
+    category: 'Industrial',
+    client: 'Tara Chand Infralogistics Ltd.',
+    year: 2023,
+    image: '/projects/proj18.png',
+    challenge: 'Optimizing a long-span steel truss framework to provide massive clear, column-free interior spaces for material handling while supporting high-capacity overhead gantry cranes.',
+    solution: 'Engineered a built-up steel portal frame structure with lateral knee-braces. Modeled and analyzed gantry girders to withstand dynamic crane impact loads, fatigue, and base overturning moments under IS 800 standards.',
+    slsAction: 'Prepared steel framing layouts, structural calculations for columns, roof trusses, gantry crane run beams, and detailed deep pile concrete foundation cap templates.'
   }
 ];
 
