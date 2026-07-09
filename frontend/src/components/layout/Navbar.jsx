@@ -3,7 +3,7 @@ import { Link, useLocation } from 'wouter';
 import { Menu, X, CalendarDays } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const CALENDLY_URL = 'https://calendly.com/zywu801/30min';
+const CALENDLY_URL = 'https://calendly.com/sls-consultants/30min';
 
 function useCalendly() {
   const [ready, setReady] = useState(false);
