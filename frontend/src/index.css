@@ -186,3 +186,65 @@
   border-top: 1px solid #1e293b !important;
 }
 
+/* Print Media Overrides for Corporate Case Study PDF Exports */
+@media print {
+  /* Hide unnecessary interactive website chrome */
+  header,
+  footer,
+  nav,
+  iframe,
+  canvas,
+  button,
+  .print\:hidden,
+  #cookie-banner,
+  .cookie-banner,
+  #floating-actions-hub,
+  .floating-actions-hub,
+  .floating-action-button,
+  .three-control-bar,
+  .modal-overlay-close {
+    display: none !important;
+  }
+
+  /* Force high-contrast white background and black text for crisp printing */
+  body, html, #root, main, section, div, article {
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Expand containers to full width */
+  .container, .max-w-7xl, .max-w-5xl, .max-w-3xl {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Force layout to simple flows (avoid grid columns wrapping poorly) */
+  .grid {
+    display: block !important;
+  }
+
+  .grid > * {
+    margin-bottom: 2rem !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Structure page breaks on major parts */
+  h1, h2 {
+    page-break-after: avoid !important;
+  }
+
+  /* Push the drawings register to start on a fresh page */
+  .drawings-register-section {
+    page-break-before: always !important;
+  }
+
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid !important;
+  }
+}
+

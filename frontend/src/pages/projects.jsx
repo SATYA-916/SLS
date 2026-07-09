@@ -62,17 +62,69 @@ export default function Projects() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDiscipline, setSelectedDiscipline] = useState('All');
+  const [selectedCode, setSelectedCode] = useState('All');
+  const [selectedClient, setSelectedClient] = useState('All');
   const [, setLocation] = useLocation();
 
   const filtered = projects?.filter((p) => {
+    // 1. Category tab filter
     const matchCat = selectedCategory === 'All' || p.category === selectedCategory;
+
+    // 2. Search query filter
     const q = searchQuery.toLowerCase().trim();
     const matchSearch = !q ||
       p.title.toLowerCase().includes(q) ||
       p.description.toLowerCase().includes(q) ||
       (p.category || '').toLowerCase().includes(q) ||
       (p.client || '').toLowerCase().includes(q);
-    return matchCat && matchSearch;
+
+    // 3. Discipline filter
+    let matchDiscipline = true;
+    if (selectedDiscipline !== 'All') {
+      const pText = (p.title + ' ' + p.description + ' ' + (p.category || '')).toLowerCase();
+      if (selectedDiscipline === 'Civil & Structural') {
+        matchDiscipline = p.category === 'Civil & Structural' || pText.includes('civil') || pText.includes('structural') || pText.includes('foundation') || pText.includes('concrete') || pText.includes('pile') || pText.includes('building') || pText.includes('apartments') || pText.includes('residency');
+      } else if (selectedDiscipline === 'Mechanical & Piping') {
+        matchDiscipline = p.category === 'Mechanical & Piping' || pText.includes('mechanical') || pText.includes('piping') || pText.includes('process') || pText.includes('manifold') || pText.includes('pipeline') || pText.includes('duct') || pText.includes('heater') || pText.includes('furnace') || pText.includes('bellows') || pText.includes('cover');
+      } else if (selectedDiscipline === 'Detailing') {
+        matchDiscipline = pText.includes('detailing') || pText.includes('drawing') || pText.includes('drafting') || pText.includes('tekla') || pText.includes('fabrication');
+      } else if (selectedDiscipline === 'RLA Studies') {
+        matchDiscipline = p.category === 'RLA Studies' || pText.includes('rla') || pText.includes('remaining life') || pText.includes('chimneys') || pText.includes('stack') || pText.includes('integrity') || pText.includes('assessment');
+      }
+    }
+
+    // 4. Code filter
+    let matchCode = true;
+    if (selectedCode !== 'All') {
+      const pText = (p.title + ' ' + p.description + ' ' + (p.challenge || '') + ' ' + (p.codesUsed || '')).toLowerCase();
+      if (selectedCode === 'ASME') {
+        matchCode = pText.includes('asme') || pText.includes('sts-1') || pText.includes('section viii') || pText.includes('vessel');
+      } else if (selectedCode === 'API') {
+        matchCode = pText.includes('api') || pText.includes('560') || pText.includes('530') || pText.includes('refinery');
+      } else if (selectedCode === 'IS') {
+        matchCode = pText.includes('is ') || pText.includes('is-800') || pText.includes('is 800') || pText.includes('is 875') || pText.includes('is-875') || pText.includes('is 456') || pText.includes('is-456') || pText.includes('is2062') || pText.includes('is 2062') || pText.includes('itda') || pText.includes('govt');
+      }
+    }
+
+    // 5. Client filter
+    let matchClient = true;
+    if (selectedClient !== 'All') {
+      const pText = (p.title + ' ' + p.description + ' ' + (p.client || '')).toLowerCase();
+      if (selectedClient === 'HPCL') {
+        matchClient = pText.includes('hpcl');
+      } else if (selectedClient === 'BPCL') {
+        matchClient = pText.includes('bpcl') || pText.includes('cochin') || pText.includes('kochi');
+      } else if (selectedClient === 'BHEL') {
+        matchClient = pText.includes('bhel');
+      } else if (selectedClient === 'L&T') {
+        matchClient = pText.includes('l&t') || pText.includes('larsen');
+      } else if (selectedClient === 'BORL') {
+        matchClient = pText.includes('borl') || pText.includes('bina');
+      }
+    }
+
+    return matchCat && matchSearch && matchDiscipline && matchCode && matchClient;
   });
 
   const filteredList = useMemo(() => filtered || [], [filtered]);
@@ -173,7 +225,13 @@ export default function Projects() {
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => { setSelectedCategory(cat); setSearchQuery(''); }}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setSearchQuery('');
+                  setSelectedDiscipline('All');
+                  setSelectedCode('All');
+                  setSelectedClient('All');
+                }}
                 className={`px-4 py-2 text-xs font-bold tracking-wider uppercase border transition-colors ${
                   selectedCategory === cat
                     ? 'bg-[#0a1628] text-white border-[#0a1628]'
@@ -185,24 +243,72 @@ export default function Projects() {
             ))}
           </div>
 
-          <div className="relative mb-8 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search projects by name, client, category..."
-              className="w-full pl-10 pr-10 py-3 text-sm border border-gray-200 bg-gray-50 focus:bg-white focus:border-[#0a1628] focus:outline-none focus:ring-1 focus:ring-[#0a1628]/20 transition-colors"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                aria-label="Clear search"
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mb-8 max-w-5xl">
+            {/* Search Input */}
+            <div className="relative md:col-span-2">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search projects..."
+                className="w-full pl-10 pr-10 py-3 text-sm border border-gray-200 bg-gray-50 focus:bg-white focus:border-[#0a1628] focus:outline-none focus:ring-1 focus:ring-[#0a1628]/20 transition-colors rounded-sm"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  aria-label="Clear search"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+
+            {/* Discipline Dropdown */}
+            <div>
+              <select
+                value={selectedDiscipline}
+                onChange={(e) => setSelectedDiscipline(e.target.value)}
+                className="w-full px-3 py-3 text-xs border border-gray-200 bg-gray-50 focus:bg-white focus:border-[#0a1628] focus:outline-none transition-colors rounded-sm font-bold text-gray-600 dark:text-gray-200"
               >
-                <X className="w-4 h-4" />
-              </button>
-            )}
+                <option value="All">All Disciplines</option>
+                <option value="Civil & Structural">Civil & Structural</option>
+                <option value="Mechanical & Piping">Mechanical & Piping</option>
+                <option value="Detailing">Steel Detailing</option>
+                <option value="RLA Studies">RLA Assessment</option>
+              </select>
+            </div>
+
+            {/* Code Dropdown */}
+            <div>
+              <select
+                value={selectedCode}
+                onChange={(e) => setSelectedCode(e.target.value)}
+                className="w-full px-3 py-3 text-xs border border-gray-200 bg-gray-50 focus:bg-white focus:border-[#0a1628] focus:outline-none transition-colors rounded-sm font-bold text-gray-600 dark:text-gray-200"
+              >
+                <option value="All">All Standards</option>
+                <option value="ASME">ASME Codes</option>
+                <option value="API">API Codes</option>
+                <option value="IS">Indian Standards (IS)</option>
+              </select>
+            </div>
+
+            {/* Client Dropdown */}
+            <div>
+              <select
+                value={selectedClient}
+                onChange={(e) => setSelectedClient(e.target.value)}
+                className="w-full px-3 py-3 text-xs border border-gray-200 bg-gray-50 focus:bg-white focus:border-[#0a1628] focus:outline-none transition-colors rounded-sm font-bold text-gray-600 dark:text-gray-200"
+              >
+                <option value="All">All Clients</option>
+                <option value="HPCL">HPCL</option>
+                <option value="BPCL">BPCL / Cochin</option>
+                <option value="BHEL">BHEL</option>
+                <option value="L&T">Larsen & Toubro</option>
+                <option value="BORL">BORL / Bina</option>
+              </select>
+            </div>
           </div>
           <p className="text-xs text-gray-400 mb-6">{filteredList.length} project{filteredList.length !== 1 ? 's' : ''} found</p>
 

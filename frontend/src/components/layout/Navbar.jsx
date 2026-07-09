@@ -50,6 +50,7 @@ const navLinks = [
   { href: '/projects', label: 'Projects' },
   { href: '/codes',    label: 'Codes'    },
   { href: '/gallery',  label: 'Gallery'  },
+  { href: '/client-portal', label: 'Client Portal' },
   { href: '/contact',  label: 'Contact'  },
 ];
 

@@ -13,6 +13,182 @@ import {
   Phone, Mail, Globe, MapPin, ArrowRight, CheckCircle2,
   Clock, Briefcase, Users, Monitor, ShieldCheck, Zap, Fuel, FlaskConical, Wrench
 } from 'lucide-react';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
+const GLOBE_MARKERS = [
+  { id: 48, name: "Evaporator Building Structure", location: "Visakhapatnam, India", lat: 17.686, lon: 83.218, desc: "Design & detailing of multi-level evaporator structure with complex structural columns, stairs, and platform layouts." },
+  { id: 34, name: "2x100 TPH Boiler House Structures", location: "Mumbai, India", lat: 19.076, lon: 72.877, desc: "Civil and structural design for utility boiler house framing, de-aerator towers, and pipe racks under EIL specifications." },
+  { id: 30, name: "1x80 T/Hr Boiler Structures", location: "Kochi, India", lat: 9.931, lon: 76.267, desc: "Utility boiler structure casing, support pillars, and connection joint detailing." },
+  { id: 36, name: "Cylindrical Fired Heater", location: "Bina, India", lat: 24.168, lon: 78.204, desc: "Detailing of cylindrical radiant heater firebox with external buckstays and stack wind strakes." },
+  { id: 21, name: "Cryogenic Plant Foundations", location: "Abadan, Iran", lat: 30.342, lon: 48.278, desc: "Subterranean piling grid template and pile cap concrete structures designed for heavy cryogenic equipment." },
+  { id: 25, name: "Cold Box Foundation", location: "Roorkee, India", lat: 29.854, lon: 77.888, desc: "High-load concrete foundation mat, piles coordinate grid, and heavy base anchor templates." }
+];
+
+function GlobeCanvas({ onSelectMarker, activeId }) {
+  const mountRef = useRef(null);
+
+  useEffect(() => {
+    if (!mountRef.current) return;
+
+    const width = mountRef.current.clientWidth;
+    const height = mountRef.current.clientHeight;
+    const scene = new THREE.Scene();
+    
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    camera.position.set(0, 0, 7.5);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    mountRef.current.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0xd0dff0, 1.2);
+    scene.add(ambientLight);
+
+    const keyLight = new THREE.DirectionalLight(0xf0f5ff, 1.8);
+    keyLight.position.set(5, 5, 5);
+    scene.add(keyLight);
+
+    const globeGroup = new THREE.Group();
+    scene.add(globeGroup);
+
+    const sphereGeo = new THREE.SphereGeometry(2.5, 32, 32);
+    const sphereMat = new THREE.MeshBasicMaterial({
+      color: 0x0a1c36,
+      transparent: true,
+      opacity: 0.15,
+      wireframe: false
+    });
+    const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+    globeGroup.add(sphere);
+
+    const gridGeo = new THREE.SphereGeometry(2.51, 18, 18);
+    const gridMat = new THREE.MeshBasicMaterial({
+      color: 0x3b82f6,
+      transparent: true,
+      opacity: 0.25,
+      wireframe: true
+    });
+    const globeGrid = new THREE.Mesh(gridGeo, gridMat);
+    globeGroup.add(globeGrid);
+
+    for (let h = -2.2; h <= 2.2; h += 0.3) {
+      const radius = Math.sqrt(2.5 * 2.5 - h * h);
+      const ringGeo = new THREE.RingGeometry(radius, radius + 0.02, 32);
+      const ringMat = new THREE.MeshBasicMaterial({ color: 0x1e3a8a, side: THREE.DoubleSide, transparent: true, opacity: 0.3 });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.y = h;
+      ring.rotation.x = Math.PI / 2;
+      globeGroup.add(ring);
+    }
+
+    const pinGroup = new THREE.Group();
+    globeGroup.add(pinGroup);
+
+    const pinsList = [];
+    GLOBE_MARKERS.forEach((m) => {
+      const latRad = (m.lat * Math.PI) / 180;
+      const lonRad = (-m.lon * Math.PI) / 180;
+      const r = 2.5;
+      const x = r * Math.cos(latRad) * Math.cos(lonRad);
+      const y = r * Math.sin(latRad);
+      const z = r * Math.cos(latRad) * Math.sin(lonRad);
+
+      const pinGeo = new THREE.ConeGeometry(0.12, 0.35, 8);
+      const isSelected = m.id === activeId;
+      const pinMat = new THREE.MeshStandardMaterial({
+        color: isSelected ? 0xef4444 : 0x10b981,
+        emissive: isSelected ? 0xef4444 : 0x10b981,
+        emissiveIntensity: 0.8,
+        roughness: 0.2,
+        metalness: 0.8
+      });
+      const pin = new THREE.Mesh(pinGeo, pinMat);
+      pin.position.set(x, y, z);
+
+      const normal = new THREE.Vector3(x, y, z).normalize();
+      pin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), normal);
+
+      pinGroup.add(pin);
+      pinsList.push({ mesh: pin, data: m });
+    });
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.enableZoom = false;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 1.0;
+
+    let userInteracting = false;
+    const onStart = () => {
+      userInteracting = true;
+      controls.autoRotate = false;
+    };
+    const onEnd = () => {
+      userInteracting = false;
+      setTimeout(() => {
+        if (!userInteracting) controls.autoRotate = true;
+      }, 3000);
+    };
+    controls.addEventListener('start', onStart);
+    controls.addEventListener('end', onEnd);
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    const handleClick = (event) => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(pinGroup.children);
+
+      if (intersects.length > 0) {
+        const hitPin = pinsList.find(p => p.mesh === intersects[0].object);
+        if (hitPin) {
+          onSelectMarker(hitPin.data);
+        }
+      }
+    };
+
+    renderer.domElement.addEventListener('click', handleClick);
+
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      if (!mountRef.current) return;
+      const w = mountRef.current.clientWidth;
+      const h = mountRef.current.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      controls.removeEventListener('start', onStart);
+      controls.removeEventListener('end', onEnd);
+      if (renderer.domElement && renderer.domElement.parentNode) {
+        renderer.domElement.parentNode.removeChild(renderer.domElement);
+      }
+      controls.dispose();
+      renderer.dispose();
+    };
+  }, [onSelectMarker, activeId]);
+
+  return <div ref={mountRef} className="w-full h-[400px] cursor-grab active:cursor-grabbing" />;
+}
 
 const serviceIcons = {
   building: <Building2 className="w-8 h-8" />,
@@ -142,6 +318,7 @@ function AnimatedCounter({ target, duration = 1500, suffix = '' }) {
 }
 
 export default function Home() {
+  const [selectedMarker, setSelectedMarker] = useState(GLOBE_MARKERS[0]);
   const [activeServiceToBook, setActiveServiceToBook] = useState(null);
   const [, setLocation] = useLocation();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -582,6 +759,60 @@ export default function Home() {
         </div>
       </section>
 
+      {/* GLOBAL FOOTPRINT SECTION */}
+      <section className="py-20 bg-gray-50 border-t border-b border-gray-150">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <div className="text-center mb-12">
+              <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Global Footprint</p>
+              <h2 className="text-3xl font-bold text-[#0a1628]">Our Interactive Project Map</h2>
+            </div>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Globe Canvas Container */}
+            <div className="lg:col-span-7 bg-white border border-gray-200/80 p-4 rounded-sm shadow-xs relative overflow-hidden flex items-center justify-center">
+              <div className="absolute top-4 left-4 z-20 pointer-events-none">
+                <span className="text-[8px] font-black uppercase tracking-widest text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">Drag to rotate globe · Click pins</span>
+              </div>
+              <GlobeCanvas
+                activeId={selectedMarker.id}
+                onSelectMarker={(marker) => setSelectedMarker(marker)}
+              />
+            </div>
+
+            {/* Selected Location Card */}
+            <div className="lg:col-span-5 flex flex-col justify-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedMarker.id}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.25 }}
+                  className="bg-white border border-gray-200 p-6 md:p-8 rounded-sm shadow-sm relative flex flex-col justify-between min-h-[300px]"
+                >
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <MapPin className="w-4 h-4 text-red-500 shrink-0" />
+                      <span className="text-[10px] font-extrabold uppercase tracking-widest text-gray-400">{selectedMarker.location}</span>
+                    </div>
+                    <h3 className="text-sm font-bold text-[#0a1628] mb-3 leading-tight">{selectedMarker.name}</h3>
+                    <p className="text-xs text-gray-500 leading-relaxed mb-6">{selectedMarker.desc}</p>
+                  </div>
+                  <div>
+                    <Link href={`/case-study/${selectedMarker.id}`}>
+                      <button className="w-full bg-[#0a1628] hover:bg-[#1a2f4c] text-white py-3 text-xs font-bold uppercase tracking-wider transition-colors rounded-sm flex items-center justify-center gap-2 cursor-pointer">
+                        Explore Case Study <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </Link>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* 5. CLIENT TESTIMONIALS (EXACTLY 2 CARDS SIDE-BY-SIDE) */}
       <section className="py-20 bg-gray-50 border-t border-gray-100">
         <div className="container mx-auto px-4 max-w-5xl">

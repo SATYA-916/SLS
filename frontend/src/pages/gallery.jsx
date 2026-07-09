@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'wouter';
 import { 
@@ -7,7 +7,7 @@ import {
   Search, Maximize2, Minimize2, RotateCcw, MousePointer2, ZoomIn, ChevronLeft, X, SplitSquareHorizontal,
   Info, Lightbulb, PanelLeftClose, PanelLeft
 } from 'lucide-react';
-import ThreeViewer from '@/components/ThreeViewer';
+const ThreeViewer = lazy(() => import('@/components/ThreeViewer'));
 import ServiceConfirmationPanel from '@/components/ServiceConfirmationPanel';
 import { PageMeta } from '@/components/PageMeta';
 
@@ -2189,14 +2189,20 @@ export default function Gallery() {
                   <div className="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-blue-500/50 pointer-events-none z-20" />
 
                   {activeTab === 'illustrations' && (
-                    <ThreeViewer
-                      type={selectedIll.threeType}
-                      exploded={exploded}
-                      wireframe={wireframe}
-                      resetKey={resetKey}
-                      autoRotate={autoRotate}
-                      modelName={selectedIll.title}
-                    />
+                    <Suspense fallback={
+                      <div className="absolute inset-0 flex items-center justify-center bg-[#050c18] text-white">
+                        <div className="w-6 h-6 border-2 border-t-blue-500 border-slate-700 rounded-full animate-spin" />
+                      </div>
+                    }>
+                      <ThreeViewer
+                        type={selectedIll.threeType}
+                        exploded={exploded}
+                        wireframe={wireframe}
+                        resetKey={resetKey}
+                        autoRotate={autoRotate}
+                        modelName={selectedIll.title}
+                      />
+                    </Suspense>
                   )}
 
                   {/* Top overlay — model identity */}

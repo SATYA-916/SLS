@@ -19,6 +19,7 @@ const Gallery = lazy(() => import('@/pages/gallery'));
 const AdminLogin = lazy(() => import('@/pages/admin-login'));
 const Legal = lazy(() => import('@/pages/legal'));
 const AdminDashboard = lazy(() => import('@/pages/admin-dashboard'));
+const ClientPortal = lazy(() => import('@/pages/client-portal'));
 
 function PageLoader() {
   return (
@@ -111,6 +112,9 @@ function Router() {
             </Route>
             <Route path="/contact">
               <Layout><Contact /></Layout>
+            </Route>
+            <Route path="/client-portal">
+              <Layout><ClientPortal /></Layout>
             </Route>
             <Route path="/privacy">
               <Layout><Legal /></Layout>

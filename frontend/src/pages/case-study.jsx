@@ -336,6 +336,142 @@ const PROJECT_DRAWINGS = {
   ]
 };
 
+function PipelineProfiler() {
+  const [hoverIndex, setHoverIndex] = useState(null);
+
+  const data = [
+    { dist: 0, ground: 24.2, pipe: 22.7, soil: "Clayey Silt" },
+    { dist: 250, ground: 23.8, pipe: 22.3, soil: "Clayey Silt" },
+    { dist: 500, ground: 25.1, pipe: 23.6, soil: "Soft Rock" },
+    { dist: 750, ground: 27.5, pipe: 25.5, soil: "Hard Granite" },
+    { dist: 1000, ground: 28.2, pipe: 26.2, soil: "Hard Granite" },
+    { dist: 1250, ground: 26.0, pipe: 24.2, soil: "Fissured Rock" },
+    { dist: 1500, ground: 23.5, pipe: 22.0, soil: "Sandy Clay" },
+    { dist: 1750, ground: 22.8, pipe: 21.3, soil: "Sandy Clay" },
+    { dist: 2000, ground: 24.0, pipe: 22.5, soil: "Alluvial soil" }
+  ];
+
+  const width = 600;
+  const height = 220;
+  const padding = 40;
+
+  const minX = 0;
+  const maxX = 2000;
+  const minY = 18;
+  const maxY = 32;
+
+  const getX = (dist) => padding + ((dist - minX) / (maxX - minX)) * (width - 2 * padding);
+  const getY = (elev) => height - padding - ((elev - minY) / (maxY - minY)) * (height - 2 * padding);
+
+  const groundPoints = data.map(d => `${getX(d.dist)},${getY(d.ground)}`).join(' ');
+  const pipePoints = data.map(d => `${getX(d.dist)},${getY(d.pipe)}`).join(' ');
+
+  return (
+    <div className="bg-slate-900 border border-slate-800 p-6 my-8 rounded-sm shadow-md text-white print:hidden">
+      <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+        <div>
+          <span className="text-[9px] font-black uppercase tracking-widest text-blue-400">Engineering Tool</span>
+          <h3 className="text-xs font-bold text-white mt-1">Cross-Country Pipeline Elevation Profile</h3>
+        </div>
+        <span className="text-[10px] bg-blue-900/60 text-blue-300 border border-blue-800 px-2.5 py-0.5 rounded-full font-mono">Chainage: 0.0 - 2.0 km</span>
+      </div>
+
+      <div className="relative overflow-x-auto">
+        <svg viewBox={`0 0 ${width} ${height}`} className="w-full min-w-[500px] select-none">
+          {[20, 24, 28, 32].map((yVal) => (
+            <g key={yVal}>
+              <line 
+                x1={padding} 
+                y1={getY(yVal)} 
+                x2={width - padding} 
+                y2={getY(yVal)} 
+                stroke="#1e293b" 
+                strokeWidth="1" 
+                strokeDasharray="4 4"
+              />
+              <text x={padding - 10} y={getY(yVal) + 4} textAnchor="end" fontSize="9" fill="#64748b" className="font-mono">{yVal}m</text>
+            </g>
+          ))}
+
+          {[0, 500, 1000, 1500, 2000].map((xVal) => (
+            <text key={xVal} x={getX(xVal)} y={height - padding + 15} textAnchor="middle" fontSize="9" fill="#64748b" className="font-mono">{xVal}m</text>
+          ))}
+
+          <polyline
+            fill="none"
+            stroke="#10b981"
+            strokeWidth="2.5"
+            points={groundPoints}
+          />
+
+          <polyline
+            fill="none"
+            stroke="#3b82f6"
+            strokeWidth="3.5"
+            strokeDasharray="1"
+            points={pipePoints}
+          />
+
+          {data.map((d, idx) => (
+            <g key={idx}>
+              {hoverIndex === idx && (
+                <line 
+                  x1={getX(d.dist)} 
+                  y1={padding} 
+                  x2={getX(d.dist)} 
+                  y2={height - padding} 
+                  stroke="#ef4444" 
+                  strokeWidth="1.5" 
+                  strokeDasharray="2 2"
+                />
+              )}
+              <rect
+                x={getX(d.dist) - 15}
+                y={padding}
+                width="30"
+                height={height - 2 * padding}
+                fill="transparent"
+                className="cursor-crosshair pointer-events-auto"
+                onMouseEnter={() => setHoverIndex(idx)}
+                onMouseLeave={() => setHoverIndex(null)}
+              />
+              <circle cx={getX(d.dist)} cy={getY(d.ground)} r={hoverIndex === idx ? 5 : 3.5} fill="#10b981" />
+              <circle cx={getX(d.dist)} cy={getY(d.pipe)} r={hoverIndex === idx ? 5 : 3.5} fill="#3b82f6" />
+            </g>
+          ))}
+        </svg>
+      </div>
+
+      <div className="bg-slate-950/80 border border-slate-800 p-4 mt-4 rounded-sm flex items-center justify-between min-h-[70px]">
+        {hoverIndex !== null ? (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full text-left">
+            <div>
+              <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block">Chainage</span>
+              <p className="text-xs font-mono font-bold text-white">{data[hoverIndex].dist} meters</p>
+            </div>
+            <div>
+              <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block">Ground Elev.</span>
+              <p className="text-xs font-mono font-bold text-emerald-400">{(data[hoverIndex].ground).toFixed(1)} m</p>
+            </div>
+            <div>
+              <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block">Pipe Invert Elev.</span>
+              <p className="text-xs font-mono font-bold text-blue-400">{(data[hoverIndex].pipe).toFixed(1)} m</p>
+            </div>
+            <div>
+              <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest block">Soil Strata</span>
+              <p className="text-xs font-bold text-amber-400">{data[hoverIndex].soil}</p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-[10px] text-slate-400 italic text-center w-full">
+            Hover cursor over profile nodes to inspect elevation offsets and soil layers.
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function getProjectTechnicalSpecs(proj) {
   const category = proj.category || '';
   const title = proj.title || '';
@@ -402,9 +538,17 @@ export default function CaseStudy() {
 
       <section className="bg-slate-50 border-b border-slate-200 py-12">
         <div className="container mx-auto px-4">
-          <Link href="/projects" className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-[#0a1628] transition-colors mb-6 cursor-pointer">
-            <ArrowLeft className="w-3.5 h-3.5" /> Back to Projects
-          </Link>
+          <div className="flex items-center justify-between gap-4 mb-6 print:hidden">
+            <Link href="/projects" className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-[#0a1628] transition-colors cursor-pointer">
+              <ArrowLeft className="w-3.5 h-3.5" /> Back to Projects
+            </Link>
+            <button
+              onClick={() => window.print()}
+              className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-700 hover:text-blue-900 transition-colors cursor-pointer border border-blue-200 bg-blue-50/50 hover:bg-blue-50 px-3 py-1.5 rounded-sm shadow-xs"
+            >
+              <span>📄</span> Export PDF Report
+            </button>
+          </div>
           <div className="max-w-3xl">
             <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-700 block mb-2">{project.category}</span>
             <h1 className="text-3xl md:text-5xl font-bold text-[#0a1628] leading-tight mb-4">{project.title}</h1>
@@ -462,6 +606,7 @@ export default function CaseStudy() {
                     <p className="text-sm text-gray-600 leading-relaxed bg-blue-50/10 border border-blue-100 p-4 rounded-sm">{project.slsAction}</p>
                   </div>
                 )}
+                {projectId === 47 && <PipelineProfiler />}
               </div>
             </div>
 
@@ -516,7 +661,7 @@ export default function CaseStudy() {
 
           {/* Technical Drawings Register full-width block */}
           {PROJECT_DRAWINGS[projectId] && (
-            <div className="mt-16 border-t border-gray-200 pt-16">
+            <div className="mt-16 border-t border-gray-200 pt-16 drawings-register-section">
               <div className="mb-8">
                 <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-700 block mb-2">Technical Registry</span>
                 <h2 className="text-2xl font-bold text-[#0a1628]">Technical Drawings & Layout References</h2>

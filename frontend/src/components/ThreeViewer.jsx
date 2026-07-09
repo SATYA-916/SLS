@@ -275,12 +275,16 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
   const [loading, setLoading] = useState(true);
   const [loadingText, setLoadingText] = useState("Loading Engineering Model...");
   const [touchInteracting, setTouchInteracting] = useState(false);
+  const [blueprintMode, setBlueprintMode] = useState(false);
+  const [feaMode, setFeaMode] = useState(false);
   const [activeHotspot, setActiveHotspot] = useState(null);
   const [projectedPositions, setProjectedPositions] = useState({});
 
   useEffect(() => {
     setActiveHotspot(null);
     setProjectedPositions({});
+    setBlueprintMode(false);
+    setFeaMode(false);
   }, [type]);
 
   const getActiveHotspots = () => {
@@ -417,15 +421,76 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
     }
   }, [resetKey, type]);
 
-  // Handle wireframe changes dynamically
+  // Handle wireframe, blueprintMode, and feaMode changes dynamically
   useEffect(() => {
     if (!activeScene.current) return;
+    
+    // Adjust scene background based on blueprint mode
+    if (blueprintMode) {
+      activeScene.current.background = new THREE.Color(0x0a182f);
+    } else {
+      activeScene.current.background = new THREE.Color(0x07111f);
+    }
+
     activeScene.current.traverse(child => {
       if (child.isMesh) {
-        child.material.wireframe = wireframe;
+        // Retrieve original material if not stored
+        if (!child.userData.origMaterial) {
+          child.userData.origMaterial = child.material;
+        }
+
+        if (blueprintMode) {
+          // CAD Blueprint styling: dark semi-transparent blue solid + white line outlines
+          child.material = new THREE.MeshBasicMaterial({
+            color: 0x091d36,
+            transparent: true,
+            opacity: 0.65,
+            wireframe: false
+          });
+          if (child.userData.edgeHelper) {
+            child.userData.edgeHelper.visible = true;
+            child.userData.edgeHelper.material.color.setHex(0xffffff);
+          }
+        } else if (feaMode) {
+          // FEA Stress Heatmap styling: color gradient based on elevation/names
+          const y = child.position.y;
+          let stressColor = 0x3b82f6; // Blue (low stress)
+          
+          if (child.name && (
+            child.name.includes('col') || 
+            child.name.includes('column') || 
+            child.name.includes('beam') || 
+            child.name.includes('support') ||
+            child.name.includes('stanchion')
+          )) {
+            stressColor = 0xef4444; // High stress at joints (red)
+          } else if (y < -3.5) {
+            stressColor = 0xef4444; // High stress at ground bases
+          } else if (y < 2.5) {
+            stressColor = 0x10b981; // Medium stress (green)
+          }
+
+          child.material = new THREE.MeshStandardMaterial({
+            color: stressColor,
+            roughness: 0.4,
+            metalness: 0.1,
+            wireframe: false
+          });
+          if (child.userData.edgeHelper) {
+            child.userData.edgeHelper.visible = true;
+            child.userData.edgeHelper.material.color.setHex(stressColor);
+          }
+        } else {
+          // Standard Mode: restore original material
+          child.material = child.userData.origMaterial;
+          child.material.wireframe = wireframe;
+          if (child.userData.edgeHelper) {
+            child.userData.edgeHelper.visible = false;
+          }
+        }
       }
     });
-  }, [wireframe]);
+  }, [blueprintMode, feaMode, wireframe]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -3962,11 +4027,24 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
         }
       }
 
-      // Add shadow settings for all models
+      // Add shadow settings and prepare blueprint/FEA properties for all models
       modelGroup.traverse(child => {
         if (child.isMesh) {
           child.castShadow = true;
           child.receiveShadow = true;
+
+          // Store the original material for toggles
+          if (!child.userData.origMaterial) {
+            child.userData.origMaterial = child.material;
+          }
+
+          // Generate an EdgesGeometry outline helper
+          const edgesGeo = new THREE.EdgesGeometry(child.geometry);
+          const edgesMat = new THREE.LineBasicMaterial({ color: 0xffffff });
+          const edgesMesh = new THREE.LineSegments(edgesGeo, edgesMat);
+          edgesMesh.visible = false;
+          child.add(edgesMesh);
+          child.userData.edgeHelper = edgesMesh;
         }
       });
 
@@ -4108,6 +4186,49 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
       ref={wrapperRef}
       className="w-full h-full relative"
     >
+      {/* Dynamic CAD & FEA Control Overlay */}
+      {!loading && (
+        <div className="absolute top-3 left-3 z-30 flex flex-wrap gap-2 pointer-events-auto">
+          {/* CAD Blueprint Toggle */}
+          <button
+            onClick={() => {
+              setBlueprintMode(prev => {
+                const next = !prev;
+                if (next) setFeaMode(false);
+                return next;
+              });
+            }}
+            title="Toggle Technical CAD Blueprint Mode"
+            className={`px-2.5 py-1.5 rounded-sm border text-[9px] font-extrabold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+              blueprintMode
+                ? 'bg-blue-600 border-blue-500 text-white shadow-md'
+                : 'bg-slate-900/90 border-slate-700/80 text-blue-400 hover:text-white'
+            }`}
+          >
+            <span>📐</span> {blueprintMode ? 'Blueprint On' : 'CAD Blueprint'}
+          </button>
+
+          {/* FEA Stress Toggle */}
+          <button
+            onClick={() => {
+              setFeaMode(prev => {
+                const next = !prev;
+                if (next) setBlueprintMode(false);
+                return next;
+              });
+            }}
+            title="Toggle FEM/FEA Stress Heatmap Simulation"
+            className={`px-2.5 py-1.5 rounded-sm border text-[9px] font-extrabold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+              feaMode
+                ? 'bg-red-600 border-red-500 text-white shadow-md'
+                : 'bg-slate-900/90 border-slate-700/80 text-red-400 hover:text-white'
+            }`}
+          >
+            <span>🔥</span> {feaMode ? 'FEA Stress On' : 'FEA Stress Sim'}
+          </button>
+        </div>
+      )}
+
       {/* Mobile Touch Interaction Overlay Selector */}
       {!touchInteracting && !loading && (
         <div 
