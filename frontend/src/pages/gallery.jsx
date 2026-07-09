@@ -431,7 +431,7 @@ const drawings = [
   // Santhipuram drawings
   {
     title: "Santhipuram - G.A. & Foundations Layout",
-    file: "santhipuram_ga.png",
+    file: "santhipuram_layout.png",
     desc: "General arrangement section layout of the concrete columns, lift shear walls, and footing offsets.",
     code: "IS 456 / IS 1893 (Concrete)",
     service: "Engineering & Architecture Design"
@@ -445,7 +445,7 @@ const drawings = [
   },
   {
     title: "Santhipuram - Slab Reinforcement Detailing",
-    file: "santhipuram_slabs.png",
+    file: "santhipuram_details.png",
     desc: "Cross-sectional slab reinforcement detailing showing mesh layouts and stirrups.",
     code: "IS 456 (Concrete Design)",
     service: "Engineering & Architecture Design"
@@ -460,7 +460,7 @@ const drawings = [
   },
   {
     title: "Tarachand - Roof Truss Assembly Detailing",
-    file: "tarachand_truss.png",
+    file: "tarachand_trusses.png",
     desc: "Welded gusset plates, rafters framing, and truss connector specifications.",
     code: "IS 800 (Structural Steel)",
     service: "Engineering & Architecture Design"
