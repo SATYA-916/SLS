@@ -165,6 +165,32 @@ export function getMatchingProjectsForService(serviceName, projects) {
     ).slice(0, 2);
   }
   
+  if (cleanedService.includes('boiler') || cleanedService.includes('vessel design')) {
+    return projects.filter(p => 
+      p.title.toLowerCase().includes('vessel') || 
+      p.description.toLowerCase().includes('vessel') ||
+      p.title.toLowerCase().includes('boiler') || 
+      p.description.toLowerCase().includes('boiler') ||
+      p.title.toLowerCase().includes('exchanger') ||
+      p.description.toLowerCase().includes('exchanger') ||
+      p.title.toLowerCase().includes('reformer') ||
+      p.description.toLowerCase().includes('reformer')
+    ).slice(0, 2);
+  }
+  
+  if (cleanedService.includes('refractory') || cleanedService.includes('insulation')) {
+    return projects.filter(p => 
+      p.title.toLowerCase().includes('refractory') || 
+      p.description.toLowerCase().includes('refractory') ||
+      p.title.toLowerCase().includes('insulation') || 
+      p.description.toLowerCase().includes('insulation') ||
+      p.title.toLowerCase().includes('anchor') || 
+      p.description.toLowerCase().includes('anchor') ||
+      p.title.toLowerCase().includes('heater') || 
+      p.description.toLowerCase().includes('heater')
+    ).slice(0, 2);
+  }
+  
   return [];
 }
 
@@ -204,6 +230,10 @@ function getServiceSpecs(title) {
     specs = { codes: 'ASME B31.3, ASME B31.1', software: 'CAESAR II, AutoCAD' };
   } else if (cleaned.includes('software & ai') || cleaned.includes('software')) {
     specs = { codes: 'Tekla Open API, AutoCAD LISP', software: 'Python, C#, Tekla Structures' };
+  } else if (cleaned.includes('boiler') || cleaned.includes('vessel design')) {
+    specs = { codes: 'ASME Sec VIII Div 1 & 2, TEMA', software: 'STAAD.Pro, AutoCAD' };
+  } else if (cleaned.includes('refractory') || cleaned.includes('insulation')) {
+    specs = { codes: 'API 936, ASTM C64', software: 'AutoCAD, SolidWorks' };
   }
   return specs;
 }

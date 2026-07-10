@@ -98,25 +98,21 @@ export default function Expertise() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200">
-              {services?.map((svc, i) => {
-                const isLast = services && i === services.length - 1 && services.length % 3 !== 0;
-                return (
-                  <motion.div
-                    key={svc.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.07 }}
-                    className={`bg-white p-10 border border-gray-200 shadow-sm flex flex-col justify-between ${
-                      isLast ? 'lg:col-span-3' : ''
-                    }`}
-                  >
-                    <div>
-                      <div className="text-[#43648e] mb-6">
-                        {serviceIcons[svc.icon] || <Building2 className="w-10 h-10" />}
-                      </div>
-                      <h3 className="text-xl font-bold text-[#0a1628] mb-4">{svc.title}</h3>
-                      <p className="text-sm text-gray-500 leading-relaxed mb-6 max-w-2xl">{svc.description}</p>
+              {services?.map((svc, i) => (
+                <motion.div
+                  key={svc.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.07 }}
+                  className="bg-white p-10 border border-gray-200 shadow-sm flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="text-[#43648e] mb-6">
+                      {serviceIcons[svc.icon] || <Building2 className="w-10 h-10" />}
+                    </div>
+                    <h3 className="text-xl font-bold text-[#0a1628] mb-4">{svc.title}</h3>
+                    <p className="text-sm text-gray-500 leading-relaxed mb-6">{svc.description}</p>
                     
                     {/* Dynamic Technical Specifications block for service cards */}
                     {(() => {
@@ -154,6 +150,10 @@ export default function Expertise() {
                         specs = { codes: 'ASME B31.3, ASME B31.1', software: 'CAESAR II, AutoCAD' };
                       } else if (cleaned.includes('software & ai') || cleaned.includes('software')) {
                         specs = { codes: 'Tekla Open API, AutoCAD LISP', software: 'Python, C#, Tekla Structures' };
+                      } else if (cleaned.includes('boiler') || cleaned.includes('vessel design')) {
+                        specs = { codes: 'ASME Sec VIII Div 1 & 2, TEMA', software: 'STAAD.Pro, AutoCAD' };
+                      } else if (cleaned.includes('refractory') || cleaned.includes('insulation')) {
+                        specs = { codes: 'API 936, ASTM C64', software: 'AutoCAD, SolidWorks' };
                       }
                       
                       if (!specs) return null;
@@ -181,8 +181,7 @@ export default function Expertise() {
                     </button>
                   </div>
                 </motion.div>
-                );
-              })}
+              ))}
             </div>
           )}
         </div>

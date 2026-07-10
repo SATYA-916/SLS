@@ -81,7 +81,7 @@ const drawings = [
     file: "convection_sheet5.png", 
     desc: "Internal refractory lining anchor layouts and plate welding schedules for the convection module casing.", 
     code: "ASME Sec VIII / Refractory Specs",
-    service: "Industrial Fired Heater Engineering"
+    service: "Refractory & Insulation Engineering"
   },
   { 
     title: "Structural Steel Support Tower - GA", 
@@ -214,14 +214,14 @@ const drawings = [
     file: "pressure_parts_sheet1.png", 
     desc: "High pressure fluid tubing loop arrangement, weld joint detailing, and expansion elbow layouts.", 
     code: "ASME B31.3 / API 530",
-    service: "Industrial Equipment Engineering"
+    service: "ASME Boiler & Pressure Vessel Design"
   },
   { 
     title: "Pressure Piping Layout - Sheet 2", 
     file: "pressure_parts_sheet2.png", 
     desc: "High-pressure hydrocarbon nozzle schedules, flange ratings, and testing specifications.", 
     code: "ASME B31.3 / API 530",
-    service: "Industrial Equipment Engineering"
+    service: "ASME Boiler & Pressure Vessel Design"
   },
   // 6 additional EIL drawings
   { 
@@ -1145,7 +1145,7 @@ const illustrations = [
     scope: "Anchor spacing grid design, thermal calculations.",
     deliverables: "Anchor layout drawings, welding details sheets, insulation bill of materials.",
     threeType: "refractory_anchor",
-    service: "Industrial Fired Heater Engineering",
+    service: "Refractory & Insulation Engineering",
     icon: "completeframe"
   },
   {
