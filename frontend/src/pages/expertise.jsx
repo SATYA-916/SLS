@@ -30,6 +30,10 @@ const activities = [
   'Piping stress analysis and nozzle loading checking',
   'Preparation of Approved for Construction (AFC) Shop Drawings',
   'Erection Staging & Rigging Crane Support Engineering',
+  'General Arrangement (GA) Drawings',
+  'Fabrication & Shop Drawings',
+  'Structural Steel Detailing',
+  'Industrial Heater Structural Design',
 ];
 
 const specialisms = [
@@ -42,6 +46,8 @@ const specialisms = [
   'Refining Cold Box and Compressor Dynamic Concrete Foundations',
   'Heavy Industrial Warehouse Sheds & Crane Runway Girders',
   'Multi-tier Circular Platforms & Staircase Access support towers',
+  'Pipe Racks & Equipment Supporting Structures',
+  'Industrial Access Platforms & Stair Towers',
 ];
 
 export default function Expertise() {
@@ -132,7 +138,7 @@ export default function Expertise() {
                         specs = { codes: 'ASME STS-1, IS 6533, IS 875', software: 'STAAD.Pro, AutoCAD' };
                       } else if (cleaned.includes('foundation')) {
                         specs = { codes: 'IS 456, IS 2911, IS 1893', software: 'STAAD.Pro, AutoCAD' };
-                      } else if (cleaned.includes('supervision')) {
+                      } else if (cleaned.includes('construction') || cleaned.includes('supervision')) {
                         specs = { codes: 'AWS D1.1, ASME Sec IX, WPS/PQR', software: 'Quality Inspection' };
                       } else if (cleaned.includes('municipality')) {
                         specs = { codes: 'National Building Code (NBC), VMRDA', software: 'Regulatory Approvals' };
@@ -213,7 +219,7 @@ export default function Expertise() {
             <h2 className="text-3xl font-bold text-[#0a1628]">Industry-Leading Tools</h2>
           </motion.div>
           <div className="flex flex-wrap items-center justify-center gap-10">
-            {['STAAD.Pro', 'ANSYS', 'Tekla Structures', 'AutoCAD', 'CATIA'].map((tool, i) => (
+            {['AutoCAD', 'STAAD.Pro', 'Tekla Structures', 'ANSYS', 'CATIA'].map((tool, i) => (
               <motion.div
                 key={tool}
                 initial={{ opacity: 0, y: 10 }}
@@ -245,7 +251,7 @@ export default function Expertise() {
           <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Start Your Project Today</p>
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Need Professional Engineering Services?</h2>
           <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8">
-            Whether you need a structural analysis, engineering drawings & shop drawings, or construction supervision, our engineering team is ready to deliver cost-effective and quality solutions.
+            Whether you require industrial engineering, structural design, fabrication drawings, or engineering consultancy, our experienced engineering team is ready to deliver reliable, cost-effective, and standards-compliant solutions.
           </p>
           <Link href="/contact">
             <button className="bg-white text-[#0a1628] px-8 py-4 text-sm font-bold uppercase tracking-wider hover:bg-white/90 transition-colors shadow-lg">

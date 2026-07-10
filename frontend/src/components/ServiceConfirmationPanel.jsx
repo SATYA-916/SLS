@@ -99,7 +99,7 @@ export function getMatchingProjectsForService(serviceName, projects) {
     ).slice(0, 2);
   }
   
-  if (cleanedService.includes('supervision')) {
+  if (cleanedService.includes('construction') || cleanedService.includes('supervision')) {
     return projects.filter(p => 
       p.title.toLowerCase().includes('supervision') || 
       p.description.toLowerCase().includes('supervision') ||
@@ -159,7 +159,7 @@ function getServiceSpecs(title) {
     specs = { codes: 'ASME STS-1, IS 6533, IS 875', software: 'STAAD.Pro, AutoCAD' };
   } else if (cleaned.includes('foundation')) {
     specs = { codes: 'IS 456, IS 2911, IS 1893', software: 'STAAD.Pro, AutoCAD' };
-  } else if (cleaned.includes('supervision')) {
+  } else if (cleaned.includes('construction') || cleaned.includes('supervision')) {
     specs = { codes: 'AWS D1.1, ASME Sec IX, WPS/PQR', software: 'Quality Inspection' };
   } else if (cleaned.includes('municipality')) {
     specs = { codes: 'National Building Code (NBC), VMRDA', software: 'Regulatory Approvals' };

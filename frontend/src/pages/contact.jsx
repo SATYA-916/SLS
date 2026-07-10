@@ -165,12 +165,12 @@ export default function Contact() {
       'Platform, Staircase, Ladder & Access Structure Design',
       'Chimney & Stack Engineering',
       'Foundation Engineering',
-      'Construction Supervision',
-      'Municipality Relation Services',
+      'Construction Engineering Support',
       'Remaining Life Assessment (RLA)',
       'Finite Element Analysis (FEA)',
       'Piping Support & Structural Support Design',
-      'Software & AI Solutions'
+      'Software & AI Solutions',
+      'Municipality Relation Services'
     ];
     coreServices.forEach(s => list.add(s));
 
