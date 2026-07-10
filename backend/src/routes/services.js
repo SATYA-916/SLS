@@ -93,6 +93,12 @@ const services = [
     description: 'Comprehensive 3D piping routing, isometric drawing generation, pipe rack design, and piping flexibility/stress analysis under ASME B31.3 process piping codes to verify nozzle load limits.',
     icon: 'pipeline',
   },
+  {
+    id: 16,
+    title: 'Software & AI Solutions',
+    description: 'Developing custom automation scripts for structural analysis, drafting plugins, Tekla macros, and BIM model coordination using Autodesk Navisworks to automate steel detailing, detect spatial clashes, and optimize part lists.',
+    icon: 'monitor',
+  },
 ];
 
 router.get('/', (_req, res) => {

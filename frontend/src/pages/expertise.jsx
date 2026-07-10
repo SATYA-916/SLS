@@ -142,6 +142,8 @@ export default function Expertise() {
                         specs = { codes: 'ASME Sec VIII Div 2, API 579', software: 'ANSYS, STAAD.Pro (FEA)' };
                       } else if (cleaned.includes('piping support') || cleaned.includes('piping design')) {
                         specs = { codes: 'ASME B31.3, ASME B31.1', software: 'CAESAR II, AutoCAD' };
+                      } else if (cleaned.includes('software & ai') || cleaned.includes('software')) {
+                        specs = { codes: 'Tekla Open API, AutoCAD LISP', software: 'Python, C#, Tekla Structures' };
                       }
                       
                       if (!specs) return null;

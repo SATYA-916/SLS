@@ -89,4 +89,10 @@ export const fallbackServices = [
     description: 'Piping support layout design, pipe rack structure optimization, spring hanger selection, and piping flex stress analysis under ASME B31.3.',
     icon: 'pipeline',
   },
+  {
+    id: 16,
+    title: 'Software & AI Solutions',
+    description: 'Developing custom automation scripts for structural analysis, drafting plugins, Tekla macros, and BIM model coordination using Autodesk Navisworks to automate steel detailing, detect spatial clashes, and optimize part lists.',
+    icon: 'monitor',
+  },
 ];

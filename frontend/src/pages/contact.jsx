@@ -169,7 +169,8 @@ export default function Contact() {
       'Municipality Relation Services',
       'Remaining Life Assessment (RLA)',
       'Finite Element Analysis (FEA)',
-      'Piping Support & Structural Support Design'
+      'Piping Support & Structural Support Design',
+      'Software & AI Solutions'
     ];
     coreServices.forEach(s => list.add(s));
 
