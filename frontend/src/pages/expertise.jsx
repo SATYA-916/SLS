@@ -150,10 +150,6 @@ export default function Expertise() {
                         specs = { codes: 'ASME B31.3, ASME B31.1', software: 'CAESAR II, AutoCAD' };
                       } else if (cleaned.includes('software & ai') || cleaned.includes('software')) {
                         specs = { codes: 'Tekla Open API, AutoCAD LISP', software: 'Python, C#, Tekla Structures' };
-                      } else if (cleaned.includes('boiler') || cleaned.includes('vessel design')) {
-                        specs = { codes: 'ASME Sec VIII Div 1 & 2, TEMA', software: 'STAAD.Pro, AutoCAD' };
-                      } else if (cleaned.includes('refractory') || cleaned.includes('insulation')) {
-                        specs = { codes: 'API 936, ASTM C64', software: 'AutoCAD, SolidWorks' };
                       }
                       
                       if (!specs) return null;

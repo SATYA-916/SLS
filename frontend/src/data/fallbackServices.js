@@ -91,18 +91,6 @@ export const fallbackServices = [
   },
   {
     id: 16,
-    title: 'ASME Boiler & Pressure Vessel Design',
-    description: 'Mechanical design, shell thickness calculations, nozzle reinforcement checks, flange design, and structural safety verification for process columns and boilers under ASME Section VIII.',
-    icon: 'factory',
-  },
-  {
-    id: 17,
-    title: 'Refractory & Insulation Engineering',
-    description: 'Thermal calculations, lining thickness analysis, anchor layout design, and hook detailing for refractory dry-out systems in fired heaters and high-temperature ducts.',
-    icon: 'layers',
-  },
-  {
-    id: 18,
     title: 'Municipality Relation Services',
     description: 'Complete regulatory liaisoning, building authorization layouts, fire safety NOC processing, and municipal approval compliance. We compile and verify structural safety certificates and civil drawings to accelerate legal clearance and commissioning.',
     icon: 'activity',

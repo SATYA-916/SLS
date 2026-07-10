@@ -170,8 +170,6 @@ export default function Contact() {
       'Finite Element Analysis (FEA)',
       'Piping Support & Structural Support Design',
       'Software & AI Solutions',
-      'ASME Boiler & Pressure Vessel Design',
-      'Refractory & Insulation Engineering',
       'Municipality Relation Services'
     ];
     coreServices.forEach(s => list.add(s));
