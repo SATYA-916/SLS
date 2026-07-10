@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronUp, Phone, Sun, Moon } from 'lucide-react';
+import { ChevronUp, Phone } from 'lucide-react';
 
 // WhatsApp SVG
 function WhatsAppIcon({ className }) {
@@ -14,30 +14,12 @@ function WhatsAppIcon({ className }) {
 export function FloatingActions() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theme');
-      if (saved) return saved === 'dark';
-    }
-    return false;
-  });
 
   useEffect(() => {
     const onScroll = () => setShowBackToTop(window.scrollY > 400);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-    if (darkMode) {
-      root.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      root.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [darkMode]);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
