@@ -98,21 +98,25 @@ export default function Expertise() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200">
-              {services?.filter(svc => !svc.title.toLowerCase().includes('municipality')).map((svc, i) => (
-                <motion.div
-                  key={svc.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.07 }}
-                  className="bg-white p-10 border border-gray-200 shadow-sm flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="text-[#43648e] mb-6">
-                      {serviceIcons[svc.icon] || <Building2 className="w-10 h-10" />}
-                    </div>
-                    <h3 className="text-xl font-bold text-[#0a1628] mb-4">{svc.title}</h3>
-                    <p className="text-sm text-gray-500 leading-relaxed mb-6">{svc.description}</p>
+              {services?.map((svc, i) => {
+                const isLast = services && i === services.length - 1 && services.length % 3 !== 0;
+                return (
+                  <motion.div
+                    key={svc.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: i * 0.07 }}
+                    className={`bg-white p-10 border border-gray-200 shadow-sm flex flex-col justify-between ${
+                      isLast ? 'lg:col-span-3' : ''
+                    }`}
+                  >
+                    <div>
+                      <div className="text-[#43648e] mb-6">
+                        {serviceIcons[svc.icon] || <Building2 className="w-10 h-10" />}
+                      </div>
+                      <h3 className="text-xl font-bold text-[#0a1628] mb-4">{svc.title}</h3>
+                      <p className="text-sm text-gray-500 leading-relaxed mb-6 max-w-2xl">{svc.description}</p>
                     
                     {/* Dynamic Technical Specifications block for service cards */}
                     {(() => {
@@ -177,7 +181,8 @@ export default function Expertise() {
                     </button>
                   </div>
                 </motion.div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -235,101 +240,29 @@ export default function Expertise() {
         </div>
       </section>
 
-      {/* SPECIALIZED & REGULATORY SERVICES */}
-      <section className="py-20 bg-white border-t border-gray-100">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <motion.div 
-            initial={{ opacity: 0, y: 16 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
-            viewport={{ once: true }} 
-            transition={{ duration: 0.5 }} 
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl font-bold text-[#0a1628]">Specialized &amp; Regulatory Services</h2>
-          </motion.div>
-
-          {/* Municipality Relation Services premium horizontal card */}
-          {(() => {
-            const muniSvc = services?.find(svc => svc.title.toLowerCase().includes('municipality'));
-            if (!muniSvc) return null;
-            return (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="bg-slate-50 p-8 md:p-12 border border-slate-200 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-20"
-              >
-                <div className="flex-1">
-                  <div className="text-[#43648e] mb-6">
-                    {serviceIcons[muniSvc.icon] || <Building2 className="w-10 h-10" />}
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#0a1628] mb-4">{muniSvc.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed max-w-3xl mb-6">{muniSvc.description}</p>
-                  
-                  {/* Dynamic specs for Municipality */}
-                  <div className="border-t border-slate-200/60 pt-4 space-y-2 text-xs text-left max-w-md">
-                    <div>
-                      <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block">Codes &amp; Compliance</span>
-                      <span className="font-semibold text-gray-700">National Building Code (NBC), VMRDA</span>
-                    </div>
-                    <div>
-                      <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block">Design Environment</span>
-                      <span className="font-semibold text-gray-700">Regulatory Approvals</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="shrink-0">
-                  <button
-                    onClick={() => setActiveServiceToBook(muniSvc.title)}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#43648e] hover:text-[#0a1628] transition-colors cursor-pointer border-b border-transparent hover:border-current pb-0.5"
-                  >
-                    Book Service &rarr;
-                  </button>
-                </div>
-              </motion.div>
-            );
-          })()}
-
-          {/* Professional Call-to-Action Panel */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-gradient-to-br from-[#0a1628] to-[#12233c] text-white p-12 md:p-16 text-center relative overflow-hidden border border-white/5 shadow-xl"
-          >
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-              <svg width="100%" height="100%">
-                <defs>
-                  <pattern id="grid_cta_new" width="60" height="60" patternUnits="userSpaceOnUse">
-                    <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="1" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid_cta_new)" />
-              </svg>
-            </div>
-            <div className="relative z-10 max-w-2xl mx-auto">
-              <h3 className="text-3xl font-bold mb-6">Need a Custom Engineering Solution?</h3>
-              <p className="text-white/75 text-sm md:text-base leading-relaxed mb-8">
-                Our multidisciplinary engineering team delivers project-specific mechanical, structural, and industrial engineering solutions designed in accordance with international standards.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button
-                  onClick={() => setActiveServiceToBook('General Inquiry')}
-                  className="w-full sm:w-auto bg-white text-[#0a1628] px-8 py-4 text-xs font-bold uppercase tracking-wider hover:bg-white/95 transition-colors shadow-lg cursor-pointer"
-                >
-                  Book a Consultation
-                </button>
-                <Link href="/contact" className="w-full sm:w-auto">
-                  <button className="w-full sm:w-auto bg-transparent border border-white/30 text-white px-8 py-4 text-xs font-bold uppercase tracking-wider hover:bg-white/10 hover:border-white transition-colors cursor-pointer">
-                    Contact Us
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </motion.div>
+      {/* BOOK CONSULTATION CTA */}
+      <section className="py-20 bg-gradient-to-br from-[#0a1628] to-[#12233c] text-white border-t border-white/10 text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]">
+          <svg width="100%" height="100%">
+            <defs>
+              <pattern id="grid_cta" width="60" height="60" patternUnits="userSpaceOnUse">
+                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="1" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid_cta)" />
+          </svg>
+        </div>
+        <div className="container mx-auto px-4 relative z-10 max-w-2xl">
+          <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Start Your Project Today</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Need Professional Engineering Services?</h2>
+          <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8">
+            Whether you require industrial engineering, structural design, fabrication drawings, or engineering consultancy, our experienced engineering team is ready to deliver reliable, cost-effective, and standards-compliant solutions.
+          </p>
+          <Link href="/contact">
+            <button className="bg-white text-[#0a1628] px-8 py-4 text-sm font-bold uppercase tracking-wider hover:bg-white/90 transition-colors shadow-lg">
+              Book a Free Consultation Now &rarr;
+            </button>
+          </Link>
         </div>
       </section>
 
