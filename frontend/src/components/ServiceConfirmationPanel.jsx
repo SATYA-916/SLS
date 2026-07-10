@@ -11,106 +11,163 @@ import { fallbackProjects } from '@/data/fallbackProjects';
 export function getMatchingProjectsForService(serviceName, projects) {
   if (!projects || !serviceName) return [];
   
-  const cleanedService = serviceName.trim();
+  const cleanedService = serviceName.trim().toLowerCase();
   
-  if (cleanedService === 'Blueprint Design') {
+  if (cleanedService.includes('fired heater')) {
     return projects.filter(p => 
-      p.category === 'Structures' || 
-      p.category === 'Special Structures' || 
+      p.category === 'Fired Heaters' || 
+      p.title.toLowerCase().includes('heater') || 
+      p.description.toLowerCase().includes('heater')
+    ).slice(0, 2);
+  }
+  
+  if (cleanedService.includes('civil') || cleanedService === 'civil & structural engineering') {
+    return projects.filter(p => 
+      p.category === 'Civil & Structural' || 
+      p.title.toLowerCase().includes('civil') ||
+      p.title.toLowerCase().includes('structural')
+    ).slice(0, 2);
+  }
+  
+  if (cleanedService.includes('building') || cleanedService === 'building structural design') {
+    return projects.filter(p => 
+      p.category === 'Buildings' || 
+      p.title.toLowerCase().includes('building') ||
+      p.title.toLowerCase().includes('apartments') ||
+      p.title.toLowerCase().includes('residency')
+    ).slice(0, 2);
+  }
+  
+  if (cleanedService.includes('equipment') || cleanedService === 'industrial equipment engineering') {
+    return projects.filter(p => 
+      p.title.toLowerCase().includes('vessel') || 
+      p.description.toLowerCase().includes('vessel') ||
+      p.title.toLowerCase().includes('exchanger') || 
+      p.title.toLowerCase().includes('reformer') ||
+      p.title.toLowerCase().includes('manifold')
+    ).slice(0, 2);
+  }
+  
+  if (cleanedService.includes('engineering drawings') || cleanedService.includes('blueprint')) {
+    return projects.filter(p => 
       p.title.toLowerCase().includes('drawing') || 
       p.description.toLowerCase().includes('drawing') ||
       p.title.toLowerCase().includes('layout') || 
-      p.description.toLowerCase().includes('layout') ||
-      p.title.toLowerCase().includes('isometric') || 
-      p.description.toLowerCase().includes('isometric')
+      p.description.toLowerCase().includes('layout')
     ).slice(0, 2);
   }
   
-  if (cleanedService === 'Industrial Design & Support') {
+  if (cleanedService.includes('steel design') || cleanedService.includes('detailing')) {
     return projects.filter(p => 
-      p.category === 'Fired Heaters' || 
+      p.title.toLowerCase().includes('detailing') || 
+      p.description.toLowerCase().includes('detailing') ||
+      p.title.toLowerCase().includes('tekla') ||
+      p.title.toLowerCase().includes('steel')
+    ).slice(0, 2);
+  }
+  
+  if (cleanedService.includes('fabrication') || cleanedService.includes('shop drawing')) {
+    return projects.filter(p => 
+      p.title.toLowerCase().includes('fabrication') || 
+      p.description.toLowerCase().includes('fabrication') ||
+      p.title.toLowerCase().includes('shop drawing')
+    ).slice(0, 2);
+  }
+  
+  if (cleanedService.includes('platform') || cleanedService.includes('stair') || cleanedService.includes('ladder')) {
+    return projects.filter(p => 
+      p.title.toLowerCase().includes('platform') || 
+      p.title.toLowerCase().includes('stair') || 
+      p.title.toLowerCase().includes('ladder')
+    ).slice(0, 2);
+  }
+  
+  if (cleanedService.includes('chimney') || cleanedService.includes('stack')) {
+    return projects.filter(p => 
       p.category === 'Boilers & Chimneys' || 
-      p.category === 'Industrial Structures'
+      p.title.toLowerCase().includes('stack') || 
+      p.title.toLowerCase().includes('chimney')
     ).slice(0, 2);
   }
   
-  if (cleanedService === 'Engineering & Architecture Design') {
+  if (cleanedService.includes('foundation') || cleanedService === 'foundation engineering') {
     return projects.filter(p => 
-      p.category === 'Buildings'
+      p.title.toLowerCase().includes('foundation') || 
+      p.description.toLowerCase().includes('foundation') ||
+      p.title.toLowerCase().includes('footing') || 
+      p.title.toLowerCase().includes('pile')
     ).slice(0, 2);
   }
   
-  if (cleanedService === 'Construction Supervision') {
+  if (cleanedService.includes('supervision')) {
     return projects.filter(p => 
       p.title.toLowerCase().includes('supervision') || 
       p.description.toLowerCase().includes('supervision') ||
       p.title.toLowerCase().includes('audit') || 
-      p.description.toLowerCase().includes('audit') ||
-      p.title.toLowerCase().includes('erection') || 
-      p.description.toLowerCase().includes('erection')
+      p.title.toLowerCase().includes('erection')
     ).slice(0, 2);
   }
   
-  if (cleanedService === 'Remaining Life Assessment (RLA)') {
+  if (cleanedService.includes('remaining life') || cleanedService.includes('rla')) {
     return projects.filter(p => 
       p.title.toLowerCase().includes('rla') || 
-      p.description.toLowerCase().includes('rla') ||
-      p.title.toLowerCase().includes('remaining life') || 
-      p.description.toLowerCase().includes('remaining life') ||
-      p.title.toLowerCase().includes('assessment') || 
-      p.description.toLowerCase().includes('assessment')
+      p.title.toLowerCase().includes('remaining life') ||
+      p.title.toLowerCase().includes('assessment')
     ).slice(0, 2);
   }
   
-  if (cleanedService === 'Finite Element Analysis (FEA)') {
+  if (cleanedService.includes('finite element') || cleanedService.includes('fea')) {
     return projects.filter(p => 
       p.title.toLowerCase().includes('fea') || 
-      p.description.toLowerCase().includes('fea') ||
-      p.title.toLowerCase().includes('finite element') || 
-      p.description.toLowerCase().includes('finite element') ||
-      p.title.toLowerCase().includes('stress analysis') || 
-      p.description.toLowerCase().includes('stress analysis') ||
-      p.title.toLowerCase().includes('ansys') || 
-      p.description.toLowerCase().includes('ansys')
+      p.title.toLowerCase().includes('stress analysis') ||
+      p.title.toLowerCase().includes('finite element')
     ).slice(0, 2);
   }
   
-  if (cleanedService === 'Piping Design & Stress Analysis') {
+  if (cleanedService.includes('piping support') || cleanedService.includes('piping design')) {
     return projects.filter(p => 
       p.title.toLowerCase().includes('pipeline') || 
-      p.description.toLowerCase().includes('pipeline') ||
       p.title.toLowerCase().includes('piping') || 
-      p.description.toLowerCase().includes('piping') ||
-      p.title.toLowerCase().includes('duct') || 
-      p.description.toLowerCase().includes('duct')
+      p.title.toLowerCase().includes('duct')
     ).slice(0, 2);
   }
   
-  // "Municipality Relation Services" and "Software & AI Solutions" map to 0 projects as approved
   return [];
 }
 
 function getServiceSpecs(title) {
   let specs = { codes: '', software: '' };
-  const cleaned = title ? title.trim() : '';
+  const cleaned = title ? title.trim().toLowerCase() : '';
 
-  if (cleaned === 'Blueprint Design') {
-    specs = { codes: 'ASME Sec VIII, API 560, BS EN', software: 'AutoCAD, SolidWorks' };
-  } else if (cleaned === 'Industrial Design & Support') {
+  if (cleaned.includes('fired heater')) {
     specs = { codes: 'API 560, API 530, ASME Sec VIII', software: 'STAAD.Pro, AutoCAD' };
-  } else if (cleaned === 'Engineering & Architecture Design') {
-    specs = { codes: 'IS 800, IS 456, IS 1893 (Seismic)', software: 'STAAD.Pro, AutoCAD' };
-  } else if (cleaned === 'Construction Supervision') {
+  } else if (cleaned.includes('civil & structural') || cleaned.includes('civil & structural engineering')) {
+    specs = { codes: 'IS 800, IS 875, IS 1893', software: 'STAAD.Pro, AutoCAD' };
+  } else if (cleaned.includes('building structural')) {
+    specs = { codes: 'IS 456, IS 1893, IS 875', software: 'STAAD.Pro, AutoCAD' };
+  } else if (cleaned.includes('equipment engineering')) {
+    specs = { codes: 'ASME Sec VIII Div 1 & 2, TEMA', software: 'STAAD.Pro, SolidWorks' };
+  } else if (cleaned.includes('engineering drawings') || cleaned.includes('blueprint')) {
+    specs = { codes: 'ASME, API, IS, OSHA', software: 'AutoCAD, MicroStation' };
+  } else if (cleaned.includes('steel design') || cleaned.includes('steel detailing')) {
+    specs = { codes: 'AISC 360, IS 800, BS EN', software: 'Tekla Structures, STAAD.Pro' };
+  } else if (cleaned.includes('fabrication') || cleaned.includes('shop drawings & fabrication')) {
+    specs = { codes: 'AISC, IS 800, ASME', software: 'Tekla Structures, AutoCAD' };
+  } else if (cleaned.includes('platform') || cleaned.includes('staircase')) {
+    specs = { codes: 'OSHA 1910.27, IS 800, BS EN', software: 'AutoCAD, Tekla Structures' };
+  } else if (cleaned.includes('chimney') || cleaned.includes('stack')) {
+    specs = { codes: 'ASME STS-1, IS 6533, IS 875', software: 'STAAD.Pro, AutoCAD' };
+  } else if (cleaned.includes('foundation')) {
+    specs = { codes: 'IS 456, IS 2911, IS 1893', software: 'STAAD.Pro, AutoCAD' };
+  } else if (cleaned.includes('supervision')) {
     specs = { codes: 'AWS D1.1, ASME Sec IX, WPS/PQR', software: 'Quality Inspection' };
-  } else if (cleaned === 'Municipality Relation Services') {
+  } else if (cleaned.includes('municipality')) {
     specs = { codes: 'National Building Code (NBC), VMRDA', software: 'Regulatory Approvals' };
-  } else if (cleaned === 'Remaining Life Assessment (RLA)') {
+  } else if (cleaned.includes('remaining life') || cleaned.includes('rla')) {
     specs = { codes: 'API 579 (FFS), ASME FFS-1', software: 'STAAD.Pro, UT Gauging' };
-  } else if (cleaned === 'Software & AI Solutions') {
-    specs = { codes: 'Tekla Open API, AutoCAD LISP', software: 'Python, C#, Tekla Structures' };
-  } else if (cleaned === 'Finite Element Analysis (FEA)') {
-    specs = { codes: 'ASME Sec VIII Div 2, API 579, IS 1893', software: 'ANSYS, STAAD.Pro (FEA)' };
-  } else if (cleaned === 'Piping Design & Stress Analysis') {
+  } else if (cleaned.includes('finite element') || cleaned.includes('fea')) {
+    specs = { codes: 'ASME Sec VIII Div 2, API 579', software: 'ANSYS, STAAD.Pro (FEA)' };
+  } else if (cleaned.includes('piping support') || cleaned.includes('piping design')) {
     specs = { codes: 'ASME B31.3, ASME B31.1', software: 'CAESAR II, AutoCAD' };
   }
   return specs;

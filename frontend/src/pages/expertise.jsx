@@ -111,23 +111,36 @@ export default function Expertise() {
                     {/* Dynamic Technical Specifications block for service cards */}
                     {(() => {
                       let specs = null;
-                      if (svc.title === 'Blueprint Design') {
-                        specs = { codes: 'ASME Sec VIII, API 560, BS EN', software: 'AutoCAD, SolidWorks' };
-                      } else if (svc.title === 'Industrial Design & Support') {
+                      const cleaned = svc.title ? svc.title.trim().toLowerCase() : '';
+                      if (cleaned.includes('fired heater')) {
                         specs = { codes: 'API 560, API 530, ASME Sec VIII', software: 'STAAD.Pro, AutoCAD' };
-                      } else if (svc.title === 'Engineering & Architecture Design') {
-                        specs = { codes: 'IS 800, IS 456, IS 1893 (Seismic)', software: 'STAAD.Pro, AutoCAD' };
-                      } else if (svc.title === 'Construction Supervision') {
+                      } else if (cleaned.includes('civil & structural') || cleaned.includes('civil & structural engineering')) {
+                        specs = { codes: 'IS 800, IS 875, IS 1893', software: 'STAAD.Pro, AutoCAD' };
+                      } else if (cleaned.includes('building structural')) {
+                        specs = { codes: 'IS 456, IS 1893, IS 875', software: 'STAAD.Pro, AutoCAD' };
+                      } else if (cleaned.includes('equipment engineering')) {
+                        specs = { codes: 'ASME Sec VIII Div 1 & 2, TEMA', software: 'STAAD.Pro, SolidWorks' };
+                      } else if (cleaned.includes('engineering drawings') || cleaned.includes('blueprint')) {
+                        specs = { codes: 'ASME, API, IS, OSHA', software: 'AutoCAD, MicroStation' };
+                      } else if (cleaned.includes('steel design') || cleaned.includes('steel detailing')) {
+                        specs = { codes: 'AISC 360, IS 800, BS EN', software: 'Tekla Structures, STAAD.Pro' };
+                      } else if (cleaned.includes('fabrication') || cleaned.includes('shop drawings & fabrication')) {
+                        specs = { codes: 'AISC, IS 800, ASME', software: 'Tekla Structures, AutoCAD' };
+                      } else if (cleaned.includes('platform') || cleaned.includes('staircase')) {
+                        specs = { codes: 'OSHA 1910.27, IS 800, BS EN', software: 'AutoCAD, Tekla Structures' };
+                      } else if (cleaned.includes('chimney') || cleaned.includes('stack')) {
+                        specs = { codes: 'ASME STS-1, IS 6533, IS 875', software: 'STAAD.Pro, AutoCAD' };
+                      } else if (cleaned.includes('foundation')) {
+                        specs = { codes: 'IS 456, IS 2911, IS 1893', software: 'STAAD.Pro, AutoCAD' };
+                      } else if (cleaned.includes('supervision')) {
                         specs = { codes: 'AWS D1.1, ASME Sec IX, WPS/PQR', software: 'Quality Inspection' };
-                      } else if (svc.title === 'Municipality Relation Services') {
+                      } else if (cleaned.includes('municipality')) {
                         specs = { codes: 'National Building Code (NBC), VMRDA', software: 'Regulatory Approvals' };
-                      } else if (svc.title === 'Remaining Life Assessment (RLA)') {
+                      } else if (cleaned.includes('remaining life') || cleaned.includes('rla')) {
                         specs = { codes: 'API 579 (FFS), ASME FFS-1', software: 'STAAD.Pro, UT Gauging' };
-                      } else if (svc.title === 'Software & AI Solutions') {
-                        specs = { codes: 'Tekla Open API, AutoCAD LISP', software: 'Python, C#, Tekla Structures' };
-                      } else if (svc.title === 'Finite Element Analysis (FEA)') {
-                        specs = { codes: 'ASME Sec VIII Div 2, API 579, IS 1893', software: 'ANSYS, STAAD.Pro (FEA)' };
-                      } else if (svc.title === 'Piping Design & Stress Analysis') {
+                      } else if (cleaned.includes('finite element') || cleaned.includes('fea')) {
+                        specs = { codes: 'ASME Sec VIII Div 2, API 579', software: 'ANSYS, STAAD.Pro (FEA)' };
+                      } else if (cleaned.includes('piping support') || cleaned.includes('piping design')) {
                         specs = { codes: 'ASME B31.3, ASME B31.1', software: 'CAESAR II, AutoCAD' };
                       }
                       
@@ -230,7 +243,7 @@ export default function Expertise() {
           <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Start Your Project Today</p>
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Need Professional Engineering Services?</h2>
           <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8">
-            Whether you need a structural analysis, blueprint design, or construction supervision, our engineering team is ready to deliver cost-effective and quality solutions.
+            Whether you need a structural analysis, engineering drawings & shop drawings, or construction supervision, our engineering team is ready to deliver cost-effective and quality solutions.
           </p>
           <Link href="/contact">
             <button className="bg-white text-[#0a1628] px-8 py-4 text-sm font-bold uppercase tracking-wider hover:bg-white/90 transition-colors shadow-lg">

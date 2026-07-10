@@ -155,15 +155,21 @@ export default function Contact() {
     
     // 2. Add fallback services from fallbackServices data file (the core ones)
     const coreServices = [
-      'Blueprint Design',
-      'Industrial Design & Support',
-      'Engineering & Architecture Design',
+      'Industrial Fired Heater Engineering',
+      'Civil & Structural Engineering',
+      'Building Structural Design',
+      'Industrial Equipment Engineering',
+      'Engineering Drawings & Shop Drawings',
+      'Structural Steel Design & Detailing',
+      'Shop Drawings & Fabrication Drawings',
+      'Platform, Staircase, Ladder & Access Structure Design',
+      'Chimney & Stack Engineering',
+      'Foundation Engineering',
       'Construction Supervision',
       'Municipality Relation Services',
       'Remaining Life Assessment (RLA)',
-      'Software & AI Solutions',
       'Finite Element Analysis (FEA)',
-      'Piping Design & Stress Analysis'
+      'Piping Support & Structural Support Design'
     ];
     coreServices.forEach(s => list.add(s));
 

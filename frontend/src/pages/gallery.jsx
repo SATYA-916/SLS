@@ -18,210 +18,210 @@ const drawings = [
     file: "eil_ga_sheet1.png", 
     desc: "Cross-sectional elevation of the fired heater showing radiant and convection chambers, platform elevations, and foundation connections.", 
     code: "API STD 530 / EIL Specs",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "General Arrangement Section - Plan View", 
     file: "eil_ga_sheet2.png", 
     desc: "Detailed plan view layout of the refinery fired heater system highlighting spacing, clearances, and equipment alignments.", 
     code: "API STD 530 / EIL Specs",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Radiant Casing Plate Arrangement", 
     file: "radiant_sheet1.png", 
     desc: "Detailed structural framing and casing plate arrangement of the bottom radiant combustion zone.", 
     code: "ASME Sec VIII / IS 800",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Radiant Tube Hangers Detailing", 
     file: "radiant_sheet2.png", 
     desc: "Mechanical detail drawings of high-alloy heat resistant radiant tube sheets and hanger assemblies.", 
     code: "ASME Sec VIII / API 530",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Radiant Chamber Coil Assembly", 
     file: "radiant_sheet3.png", 
     desc: "General arrangement and engineering sections of the vertical radiant piping coils.", 
     code: "ASME B31.3 / API 530",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Convection Module Section - Sheet 1", 
     file: "convection_sheet1.png", 
     desc: "Arrangement of tube bundles, structural tube sheets, and intermediate support plates within the convection bank.", 
     code: "ASME Sec II & VIII",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Convection Module Section - Sheet 2", 
     file: "convection_sheet2.png", 
     desc: "End cover plate and structural details of the convection module casing box.", 
     code: "IS 800 / ASME Sec VIII",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Convection Intermediate Tube Support", 
     file: "convection_sheet3.png", 
     desc: "Thermal analysis support plates and intermediate baffles to prevent tube sagging at high flue temperatures.", 
     code: "ASME Sec VIII / EIL Spec",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Convection Finned Tube Pitch Layout", 
     file: "convection_sheet4.png", 
     desc: "Arrangement details and spacing of high-efficiency finned tubes inside the convection section bank.", 
     code: "ASME Sec VIII / Refinery Specs",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Convection Casing & Insulation", 
     file: "convection_sheet5.png", 
     desc: "Internal refractory lining anchor layouts and plate welding schedules for the convection module casing.", 
     code: "ASME Sec VIII / Refractory Specs",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Structural Steel Support Tower - GA", 
     file: "sss_sheet1.png", 
     desc: "Heavy portal frames, column bracing systems, and anchor bolt details designed to stabilize the 60-meter high assembly.", 
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "Structural Steel Bracing Details", 
     file: "sss_sheet2.png", 
     desc: "Tekla steel detailing connection configurations, gusset plates, and high-strength bolted connection details.", 
     code: "IS 800 / AISC Standards",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "Self-Supporting Stack Layout - Sheet 1", 
     file: "stack_sheet1.png", 
     desc: "Exhaust stack detailing including helical strakes for wind vortex shedding, damper controls, and platform hangers.", 
     code: "IS 6533 (Steel Chimneys)",
-    service: "Industrial Design & Support"
+    service: "Chimney & Stack Engineering"
   },
   { 
     title: "Self-Supporting Stack Layout - Sheet 2", 
     file: "stack_sheet2.png", 
     desc: "Damper mechanism, counterweights, and stack base plate anchoring details.", 
     code: "IS 6533 / ASME Steel Chimneys",
-    service: "Industrial Design & Support"
+    service: "Chimney & Stack Engineering"
   },
   { 
     title: "Tube Header Box Enclosure - Sheet 1", 
     file: "header_box_sheet1.png", 
     desc: "Detailed structural enclosure for pipe return bends, including quick-acting access doors and heat seal plates.", 
     code: "ASME Sec VIII / Refinery Standard",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Tube Header Box Enclosure - Sheet 2", 
     file: "header_box_sheet2.png", 
     desc: "Structural door hinge calculations and layout details for header box inspection access.", 
     code: "ASME Sec VIII / Refinery Standard",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Heater Platforms Arrangement - GA", 
     file: "platforms_sheet1.png", 
     desc: "Layout and detailing of circular maintenance platforms at various elevations, incorporating anti-slip gratings.", 
     code: "OSHA / IS 800",
-    service: "Blueprint Design"
+    service: "Platform, Staircase, Ladder & Access Structure Design"
   },
   { 
     title: "Heater Platform Details - Sheet 2", 
     file: "platforms_sheet2.png", 
     desc: "Handrail configurations, toe plates, and circular grating layout sheets.", 
     code: "OSHA / IS 800",
-    service: "Blueprint Design"
+    service: "Platform, Staircase, Ladder & Access Structure Design"
   },
   { 
     title: "Heater Platform Hangers - Sheet 3", 
     file: "platforms_sheet3.png", 
     desc: "Structural platform supports, brackets, and structural welding connection details.", 
     code: "IS 800 / AISC Standards",
-    service: "Blueprint Design"
+    service: "Platform, Staircase, Ladder & Access Structure Design"
   },
   { 
     title: "Stair Case Detailing - GA", 
     file: "stair_sheet1.png", 
     desc: "Isometric and elevation drawings of the structural stair tower detailing stringers, treads, and handrail mounts.", 
     code: "IS 800 / OSHA Guidelines",
-    service: "Blueprint Design"
+    service: "Platform, Staircase, Ladder & Access Structure Design"
   },
   { 
     title: "Stair Case Structural Joint Details", 
     file: "stair_sheet2.png", 
     desc: "Tekla joint details for the stair tower column base, landing supports, and connection plates.", 
     code: "IS 800 / OSHA Guidelines",
-    service: "Blueprint Design"
+    service: "Platform, Staircase, Ladder & Access Structure Design"
   },
   { 
     title: "Arch Plate Details", 
     file: "arch_plate_sheet1.png", 
     desc: "Monolithic refractory arch plate lining and retaining anchors designed to withstand high operating temperatures.", 
     code: "ASME Sec VIII / Refractory Spec",
-    service: "Industrial Design & Support"
+    service: "Industrial Equipment Engineering"
   },
   { 
     title: "Breeching Access Door Detailing", 
     file: "breeching_door_sheet1.png", 
     desc: "Fabricated double-hinge hot gas inspection door showing refractory plug casting anchors.", 
     code: "ASME Sec VIII / Refinery Standards",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Observation Port & Sight Glass Details", 
     file: "observation_door_sheet1.png", 
     desc: "High temperature flame inspection doors and sight glass assemblies for heater radiant chamber monitoring.", 
     code: "API 560 / ASME Sec VIII",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Off-take Duct Arrangement", 
     file: "offtake_duct_sheet1.png", 
     desc: "Transition duct detailing connecting the convection section module to the self-supporting stack.", 
     code: "IS 800 / ASME Steel Chimneys",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Burner Floor Plate Arrangement", 
     file: "floor_plate_sheet1.png", 
     desc: "Floor segment plates, burner openings, air register cutouts, and bottom structural floor beam systems.", 
     code: "IS 800 / API 560",
-    service: "Industrial Design & Support"
+    service: "Industrial Equipment Engineering"
   },
   { 
     title: "Heater Vertical Climbing Ladders", 
     file: "heater_ladders_sheet1.png", 
     desc: "Vertical climbing steel ladders with safety cages, hoops, and shell mounting clips.", 
     code: "OSHA / IS 800 Standards",
-    service: "Blueprint Design"
+    service: "Platform, Staircase, Ladder & Access Structure Design"
   },
   { 
     title: "Soot Blower Structure Steel detailing", 
     file: "soot_blower_sheet1.png", 
     desc: "Structural framework and catwalk layout designed to support soot blower mechanical lances.", 
     code: "IS 800 / AISC Standards",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Pressure Piping Layout - Sheet 1", 
     file: "pressure_parts_sheet1.png", 
     desc: "High pressure fluid tubing loop arrangement, weld joint detailing, and expansion elbow layouts.", 
     code: "ASME B31.3 / API 530",
-    service: "Industrial Design & Support"
+    service: "Industrial Equipment Engineering"
   },
   { 
     title: "Pressure Piping Layout - Sheet 2", 
     file: "pressure_parts_sheet2.png", 
     desc: "High-pressure hydrocarbon nozzle schedules, flange ratings, and testing specifications.", 
     code: "ASME B31.3 / API 530",
-    service: "Industrial Design & Support"
+    service: "Industrial Equipment Engineering"
   },
   // 6 additional EIL drawings
   { 
@@ -229,42 +229,42 @@ const drawings = [
     file: "eil_ga_sheet3.png", 
     desc: "Detailed structural arrangement drawing of the heater frame, columns, and bracing system.", 
     code: "EIL Specs / IS 800",
-    service: "Engineering & Architecture Design"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Convection Section Detail - Section View", 
     file: "eil_ga_sheet4.png", 
     desc: "Cross-sectional engineering view of convection tube sheets, tube supports, and baffle plate settings.", 
     code: "EIL Specs / ASME Sec VIII",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "Self-Supporting Stack Flange Details", 
     file: "eil_ga_sheet5.png", 
     desc: "Base plate and structural anchor details for the 45-meter self-supporting chimney.", 
     code: "EIL Specs / IS 6533",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "HDS Heater Structural Frame Layout", 
     file: "eil_ga_sheet6.png", 
     desc: "Structural portal frames, columns, and wind-girder detaling for the HDS unit heater tower.", 
     code: "EIL Specs / AISC Standards",
-    service: "Engineering & Architecture Design"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "HDS Heater Convection Module GA", 
     file: "eil_ga_sheet7.png", 
     desc: "General arrangement section layout of the HDS heater convection tube bank module.", 
     code: "EIL Specs / ASME Sec VIII",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "HDS Heater Piping Assembly Details", 
     file: "eil_ga_sheet8.png", 
     desc: "Piping layouts, header connections, and high-pressure manifold joints detailing.", 
     code: "EIL Specs / ASME B31.3",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   // 8 additional HDS drawings
   { 
@@ -272,161 +272,161 @@ const drawings = [
     file: "hds_parts_sheet1.png", 
     desc: "Details of critical pressure tubing weld joints, support clips, and temperature nozzle installations.", 
     code: "ASME B31.3 / API 530",
-    service: "Industrial Design & Support"
+    service: "Industrial Equipment Engineering"
   },
   { 
     title: "HDS Radiant Section Plate Detailing - Sheet 1", 
     file: "hds_radiant_sheet1.png", 
     desc: "Casing plate segments, structural stiffeners, and burner register sleeve weld details.", 
     code: "ASME Sec VIII / IS 800",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "HDS Radiant Coil Hanger Assemblies", 
     file: "hds_radiant_sheet2.png", 
     desc: "High-alloy casting support hooks and coil guides designed to accommodate vertical thermal growth.", 
     code: "ASME Sec VIII / API 560",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "HDS Convection Casing Layout", 
     file: "hds_convection_sheet1.png", 
     desc: "Casing modules framing details, refractory anchor layouts, and lifting lug locations.", 
     code: "IS 800 / ASME Sec VIII",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "HDS Convection Tube Sheet Details", 
     file: "hds_convection_sheet2.png", 
     desc: "Tube sheet hole pitches, tube guide plates, and baffle plate spacing layout.", 
     code: "ASME Sec VIII / EIL Specs",
-    service: "Industrial Design & Support"
+    service: "Industrial Fired Heater Engineering"
   },
   { 
     title: "HDS Structural Steel Support Frames", 
     file: "hds_sss_sheet1.png", 
     desc: "Connection joints detailing, gusset plates, and heavy portal bracing systems for the HDS unit.", 
     code: "IS 800 / AISC Standards",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "HDS Exhaust Stack Layout & GA", 
     file: "hds_stack_sheet1.png", 
     desc: "Exhaust stack section drawing including rain hood, sampling ports, and structural platform mounts.", 
     code: "IS 6533 / ASME Steel Chimneys",
-    service: "Industrial Design & Support"
+    service: "Chimney & Stack Engineering"
   },
   { 
     title: "HDS Tube Header Box Details", 
     file: "hds_header_sheet1.png", 
     desc: "Casing plates, return bend spaces, inspection doors, and seal weld schedules for HDS header boxes.", 
     code: "ASME Sec VIII / Refinery Specs",
-    service: "Industrial Design & Support"
+    service: "Industrial Equipment Engineering"
   },
   { 
     title: "Evaporator - G.A. of Structure", 
     file: "evaporator_ga.png", 
     desc: "General arrangement elevations showing building column spacings, platform heights, and vertical bracing schemes.", 
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "Evaporator - Column Detailing", 
     file: "evaporator_columns.png", 
     desc: "Structural detailing of vertical column members, splice connections, and gusset configurations.", 
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "Evaporator - Beam Detailing & Framing", 
     file: "evaporator_beams.png", 
     desc: "Floor framing layout showing beam member section sizes and typical platform framing joints.", 
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "Evaporator - Column Vertical Bracing", 
     file: "evaporator_bracing.png", 
     desc: "Diagonal cross bracing system details designed to resist cyclonic and seismic lateral wind loads.", 
     code: "IS 800 / IS 1893",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "Evaporator - Operating Platforms Layout", 
     file: "evaporator_platforms.png", 
     desc: "Detailed circular platform layouts around the vessel and handrail upright connections.", 
     code: "IS 800 / OSHA Standards",
-    service: "Blueprint Design"
+    service: "Platform, Staircase, Ladder & Access Structure Design"
   },
   { 
     title: "Evaporator - Floor Gratings Layout", 
     file: "evaporator_grating.png", 
     desc: "Serrated safety steel floor grating layouts and panel fixing schedules.", 
     code: "IS 800 / OSHA Standards",
-    service: "Blueprint Design"
+    service: "Platform, Staircase, Ladder & Access Structure Design"
   },
   { 
     title: "Evaporator - Staircase Detailing", 
     file: "evaporator_staircase.png", 
     desc: "Stair tower details including stringer sizes, checker-plate treads, and landing platform connections.", 
     code: "IS 800 / OSHA Standards",
-    service: "Blueprint Design"
+    service: "Platform, Staircase, Ladder & Access Structure Design"
   },
   { 
     title: "Evaporator - Roof Truss & Purlins G.A.", 
     file: "evaporator_truss_ga.png", 
     desc: "Roof truss layout showing member frames, gables, and purlin pitches for sheet roofing.", 
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "Evaporator - Roof Truss Details", 
     file: "evaporator_truss_detail.png", 
     desc: "Detailed structural fabrication sheet for welded gusset connections of the roof truss.", 
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "Evaporator - Truss Vertical Bracing", 
     file: "evaporator_truss_bracing.png", 
     desc: "Horizontal and vertical truss wind bracings detailed to stabilize roof arches.", 
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "Evaporator - False Rafter Details", 
     file: "evaporator_false_rafter.png", 
     desc: "False rafter overhang templates and structural joints at roof eaves.", 
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "Evaporator - Side Wall Cladding Runners", 
     file: "evaporator_side_runners.png", 
     desc: "Wall girts and sag rods framing layouts designed to carry building sheet cladding.", 
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "Evaporator - Purlin Typical Connections", 
     file: "evaporator_purlin.png", 
     desc: "Detailed typical connections and spacing for cold-formed steel roof purlins.", 
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   { 
     title: "Evaporator - Sag Rods Details", 
     file: "evaporator_sag_rods.png", 
     desc: "Sag rod sizes, tensioners, and girt connection brackets detailing.", 
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Platform, Staircase, Ladder & Access Structure Design"
   },
   { 
     title: "Evaporator - Safety Ladder & Cage", 
     file: "evaporator_ladder.png", 
     desc: "Vertical climbing safety ladder details showing cages and anchor clips.", 
     code: "OSHA / IS 800",
-    service: "Blueprint Design"
+    service: "Platform, Staircase, Ladder & Access Structure Design"
   },
   // Santhipuram drawings
   {
@@ -434,21 +434,21 @@ const drawings = [
     file: "santhipuram_layout.png",
     desc: "General arrangement section layout of the concrete columns, lift shear walls, and footing offsets.",
     code: "IS 456 / IS 1893 (Concrete)",
-    service: "Engineering & Architecture Design"
+    service: "Building Structural Design"
   },
   {
     title: "Santhipuram - Column Layout & Reinforcement",
     file: "santhipuram_columns.png",
     desc: "Column grid schedules showing concrete column dimensions and rebar detailing specs.",
     code: "IS 456 / IS 1893 (Concrete)",
-    service: "Engineering & Architecture Design"
+    service: "Building Structural Design"
   },
   {
     title: "Santhipuram - Slab Reinforcement Detailing",
     file: "santhipuram_details.png",
     desc: "Cross-sectional slab reinforcement detailing showing mesh layouts and stirrups.",
     code: "IS 456 (Concrete Design)",
-    service: "Engineering & Architecture Design"
+    service: "Building Structural Design"
   },
   // Tarachand drawings
   {
@@ -456,21 +456,21 @@ const drawings = [
     file: "tarachand_ga.png",
     desc: "General arrangement elevations of the steel portal framing bay spacing and bracing.",
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   {
     title: "Tarachand - Roof Truss Assembly Detailing",
     file: "tarachand_trusses.png",
     desc: "Welded gusset plates, rafters framing, and truss connector specifications.",
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   },
   {
     title: "Tarachand - Crane Gantry Girder Layout",
     file: "tarachand_gantry.png",
     desc: "Detailing of the heavy overhead gantry crane support runway girders and rail clamp connectors.",
     code: "IS 800 (Structural Steel)",
-    service: "Engineering & Architecture Design"
+    service: "Civil & Structural Engineering"
   }
 ];
 
@@ -489,7 +489,7 @@ const illustrations = [
     scope: "Full-scale mechanical calculations, structural design, Tekla detailing, and connection design.",
     deliverables: "General Arrangement drawings, structural loading sheets, anchor bolt details, fabrication packages.",
     threeType: "heater",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "heater"
   },
   {
@@ -505,7 +505,7 @@ const illustrations = [
     scope: "Dynamic wind analysis, strake pitch calculations, anchor flange detailing.",
     deliverables: "Stack shell details, helical strake templates, flange connection designs.",
     threeType: "stack",
-    service: "Industrial Design & Support",
+    service: "Chimney & Stack Engineering",
     icon: "stack"
   },
   {
@@ -521,7 +521,7 @@ const illustrations = [
     scope: "Thermal casing stress analysis, expansion joint sizing, internal support detailing.",
     deliverables: "Duct plate layouts, expansion joint details, guide brackets, load tables.",
     threeType: "offtake",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "offtake"
   },
   {
@@ -537,7 +537,7 @@ const illustrations = [
     scope: "Tube wall thickness calculations, hanger alloy design, refractory anchor layout.",
     deliverables: "Radiant casing details, coil hanger layouts, skin thermocouple piping details.",
     threeType: "radiant",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "radiant"
   },
   {
@@ -553,7 +553,7 @@ const illustrations = [
     scope: "Air register cutout detailing, floor beam structural joints, burner bolt circle layouts.",
     deliverables: "Plenum fabrication drawings, burner floor layouts, support steel details.",
     threeType: "burnerfloor",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "burnerfloor"
   },
   {
@@ -569,7 +569,7 @@ const illustrations = [
     scope: "Hinge load calculations, seal gasket specs, door latch detailing.",
     deliverables: "Header box assembly drawings, hinge details, seal plate configurations.",
     threeType: "headerbox",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "headerbox"
   },
   {
@@ -585,7 +585,7 @@ const illustrations = [
     scope: "Thermal expansion gap calculations, structural joint details, lift lug detailing.",
     deliverables: "Arch plate segments, thermal seal drawings.",
     threeType: "archplate",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "archplate"
   },
   {
@@ -601,7 +601,7 @@ const illustrations = [
     scope: "Finned tube pitch design, intermediate support plate spacing, flue gas velocity analysis.",
     deliverables: "Convection bundle detail plans, finned tube schedules, support plate drawings.",
     threeType: "convection",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "convection"
   },
   {
@@ -617,7 +617,7 @@ const illustrations = [
     scope: "Cantilever bending analysis, structural bracing details, mechanical rail load supports.",
     deliverables: "Catwalk frame details, structural bracing layouts, steel bill of materials.",
     threeType: "sootblower",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "sootblower"
   },
   {
@@ -633,7 +633,7 @@ const illustrations = [
     scope: "Finite element frame analysis, connection moment design, base plate sizing.",
     deliverables: "Erection diagrams, column detail sheets, base plate moment connection designs.",
     threeType: "framing",
-    service: "Engineering & Architecture Design",
+    service: "Civil & Structural Engineering",
     icon: "supportsteel"
   },
   {
@@ -649,7 +649,7 @@ const illustrations = [
     scope: "Tekla structural detailing, lifting weight checks, bolted joint layout optimization.",
     deliverables: "Erection sequence plans, field bolt listings, shipping package drawings.",
     threeType: "frame3d",
-    service: "Engineering & Architecture Design",
+    service: "Civil & Structural Engineering",
     icon: "completeframe"
   },
   {
@@ -665,7 +665,7 @@ const illustrations = [
     scope: "Stack base moment transfer calculations, thermal expansion joint designs.",
     deliverables: "Roof rafter layouts, rafter connection details, center ring weld details.",
     threeType: "roof",
-    service: "Engineering & Architecture Design",
+    service: "Civil & Structural Engineering",
     icon: "roof"
   },
   {
@@ -681,7 +681,7 @@ const illustrations = [
     scope: "Truss load distribution calculations, modular splice detailing, node stress checks.",
     deliverables: "ETS framing plans, module support joints, bracing details.",
     threeType: "ets",
-    service: "Engineering & Architecture Design",
+    service: "Civil & Structural Engineering",
     icon: "ets"
   },
   {
@@ -697,7 +697,7 @@ const illustrations = [
     scope: "OSHA clearance checks, platform bracket weld sizes, handrail layout plans.",
     deliverables: "Circular platform details, bracket fabrication sheets, handrail designs.",
     threeType: "platforms",
-    service: "Blueprint Design",
+    service: "Platform, Staircase, Ladder & Access Structure Design",
     icon: "platforms"
   },
   {
@@ -713,7 +713,7 @@ const illustrations = [
     scope: "Tekla structural detailing, foundation loads check, safety rise/run checks.",
     deliverables: "Stair stringer designs, tread fabrication plans, foundation load specifications.",
     threeType: "staircase",
-    service: "Blueprint Design",
+    service: "Platform, Staircase, Ladder & Access Structure Design",
     icon: "staircase"
   },
   {
@@ -729,7 +729,7 @@ const illustrations = [
     scope: "High wind gust load analysis, bracket shear checks, OSHA safety hoops.",
     deliverables: "Stack platform drawings, support bracket details, handrail layouts.",
     threeType: "stackplatform",
-    service: "Blueprint Design",
+    service: "Platform, Staircase, Ladder & Access Structure Design",
     icon: "stackplatform"
   },
   {
@@ -745,7 +745,7 @@ const illustrations = [
     scope: "Span load calculations, circular grating segment detailing, clip installation layouts.",
     deliverables: "Grating layout sheets, grating bills of materials, fixing clip locations.",
     threeType: "heatergrating",
-    service: "Blueprint Design",
+    service: "Platform, Staircase, Ladder & Access Structure Design",
     icon: "heatergrating"
   },
   {
@@ -761,7 +761,7 @@ const illustrations = [
     scope: "OSHA cage clearance layout, shell clip design, mounting weld specs.",
     deliverables: "Ladder details, safety cage assembly sheets, clip welding designs.",
     threeType: "ladders",
-    service: "Blueprint Design",
+    service: "Platform, Staircase, Ladder & Access Structure Design",
     icon: "ladders"
   },
   {
@@ -777,7 +777,7 @@ const illustrations = [
     scope: "Refractory anchor layouts, door hinge stress calculations, thermal seal designs.",
     deliverables: "Fabricated door assemblies, door lock details, insulation layer schedules.",
     threeType: "breechingdoor",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "breechingdoor"
   },
   {
@@ -793,7 +793,7 @@ const illustrations = [
     scope: "OSHA conformance reviews, ladder-to-stairway transition designs, structural safety checking.",
     deliverables: "Access general arrangement drawings, ladder-to-platform detailing sheets.",
     threeType: "maintenanceaccess",
-    service: "Blueprint Design",
+    service: "Industrial Fired Heater Engineering",
     icon: "maintenanceaccess"
   },
   {
@@ -809,7 +809,7 @@ const illustrations = [
     scope: "Tekla structural detailing, dynamic load analysis, joint connection calculations under IS 800.",
     deliverables: "General Arrangement drawings, floor framing plan, column details, connection details, stair layouts.",
     threeType: "evaporator",
-    service: "Engineering & Architecture Design",
+    service: "Civil & Structural Engineering",
     icon: "completeframe"
   },
   {
@@ -825,7 +825,7 @@ const illustrations = [
     scope: "Tekla structural modeling, casing arrangement, structural steel platform framing.",
     deliverables: "General Arrangement drawings, casing panels details, platform structures, and construction detail packages.",
     threeType: "dhdt",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "heater"
   },
   {
@@ -841,7 +841,7 @@ const illustrations = [
     scope: "Pressure parts design, double convection box detailing, twin stack dynamic wind stability analysis.",
     deliverables: "Mechanical calculations, coil layout drawing, twin stack shell detailing, anchor chairs sizing sheets.",
     threeType: "hds",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "heater"
   },
   {
@@ -857,7 +857,7 @@ const illustrations = [
     scope: "Structural space frame modeling, wind loads analysis under IS 875.",
     deliverables: "General Arrangement drawings, structural connection shop details.",
     threeType: "canopy_millennium",
-    service: "Structural Engineering",
+    service: "Civil & Structural Engineering",
     icon: "completeframe"
   },
   {
@@ -873,7 +873,7 @@ const illustrations = [
     scope: "Dynamic wheel assembly detailing, crane rigging structural check.",
     deliverables: "Assembly drawings, wheel housing shop sheets, rigging plans.",
     threeType: "ac_shelter",
-    service: "Special Products Design & Manufacturing",
+    service: "Civil & Structural Engineering",
     icon: "completeframe"
   },
   {
@@ -953,7 +953,7 @@ const illustrations = [
     scope: "Circumferential tolerance calculation, clamp torque requirements.",
     deliverables: "Tooling arrangement drawing, clamping templates, machining tolerances sheets.",
     threeType: "marking_fixture",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "completeframe"
   },
   {
@@ -1001,7 +1001,7 @@ const illustrations = [
     scope: "Portal moment frames calculation, platform safety check under IS 800.",
     deliverables: "Steel columns detail sheets, platform floor plans, connection detail bundle.",
     threeType: "boiler_house",
-    service: "Steel Detailing (Tekla)",
+    service: "Civil & Structural Engineering",
     icon: "completeframe"
   },
   {
@@ -1017,7 +1017,7 @@ const illustrations = [
     scope: "Vortex shedding calculations under ASME STS-1, anchor chairs stress FEA.",
     deliverables: "Stack shell detailing drawings, base ring anchor details, platform arrangement templates.",
     threeType: "steel_chimney",
-    service: "Industrial Design & Support",
+    service: "Industrial Equipment Engineering",
     icon: "stack"
   },
   {
@@ -1033,7 +1033,7 @@ const illustrations = [
     scope: "Skid beam deflection analysis, lifting log stress calculations under AISC.",
     deliverables: "Skid framing plans, lift rigging guides, wall panel connection drawings.",
     threeType: "vfd_room",
-    service: "Special Products Design & Manufacturing",
+    service: "Civil & Structural Engineering",
     icon: "completeframe"
   },
   {
@@ -1049,7 +1049,7 @@ const illustrations = [
     scope: "Active earth pressure modeling, tie-back anchor length calculations.",
     deliverables: "Piling layout plan, waler attachment details, anchor installation details.",
     threeType: "retaining_wall",
-    service: "Structural Engineering",
+    service: "Civil & Structural Engineering",
     icon: "completeframe"
   },
   {
@@ -1065,7 +1065,7 @@ const illustrations = [
     scope: "Rib stiffener spacing design, bellows thermal expansion calculations.",
     deliverables: "Duct panel layouts, bellows attachment drawings, support bracket details.",
     threeType: "air_duct",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "completeframe"
   },
   {
@@ -1097,7 +1097,7 @@ const illustrations = [
     scope: "Skid framing design, anchor saddle stress calculations under ASME.",
     deliverables: "Skid detail drawings, saddle layout sheets, anchor bolt schedules.",
     threeType: "vessel_skid",
-    service: "Industrial Design & Support",
+    service: "Piping Support & Structural Support Design",
     icon: "completeframe"
   },
   {
@@ -1113,7 +1113,7 @@ const illustrations = [
     scope: "Blade torque calculations, linkage tolerance design.",
     deliverables: "Damper assembly blueprint, linkage details, actuator hookup details.",
     threeType: "damper_assembly",
-    service: "Industrial Design & Support",
+    service: "Chimney & Stack Engineering",
     icon: "completeframe"
   },
   {
@@ -1129,7 +1129,7 @@ const illustrations = [
     scope: "Pipe wall thickness calculations under ASME B31.3.",
     deliverables: "Piping isometric drawings, valve schedule, manifold details sheet.",
     threeType: "piping_manifold",
-    service: "Industrial Design & Support",
+    service: "Piping Support & Structural Support Design",
     icon: "completeframe"
   },
   {
@@ -1145,7 +1145,7 @@ const illustrations = [
     scope: "Anchor spacing grid design, thermal calculations.",
     deliverables: "Anchor layout drawings, welding details sheets, insulation bill of materials.",
     threeType: "refractory_anchor",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "completeframe"
   },
   {
@@ -1161,7 +1161,7 @@ const illustrations = [
     scope: "Tubesheet thickness sizing under API 560 rules.",
     deliverables: "Tubesheet machining drawings, tube hole layout blueprint.",
     threeType: "tube_sheet",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "completeframe"
   },
   {
@@ -1177,7 +1177,7 @@ const illustrations = [
     scope: "Piping thermal stress analysis, spring hanger selections.",
     deliverables: "Crossover piping isometric blueprints, hanger schedule, weld logs.",
     threeType: "crossover_piping",
-    service: "Industrial Design & Support",
+    service: "Piping Support & Structural Support Design",
     icon: "completeframe"
   },
   {
@@ -1193,7 +1193,7 @@ const illustrations = [
     scope: "Sag rod diameter calculation, purlin lateral stability analysis.",
     deliverables: "Roof purlins layout plans, sag rod assembly details.",
     threeType: "sag_rod",
-    service: "Steel Detailing (Tekla)",
+    service: "Piping Support & Structural Support Design",
     icon: "completeframe"
   },
   {
@@ -1209,7 +1209,7 @@ const illustrations = [
     scope: "Bellows spring rate calculations, limit rod load sizing.",
     deliverables: "Expansion joint blueprint, limit rod assembly detail sheet.",
     threeType: "expansion_bellows",
-    service: "Industrial Design & Support",
+    service: "Piping Support & Structural Support Design",
     icon: "completeframe"
   },
   {
@@ -1225,7 +1225,7 @@ const illustrations = [
     scope: "Casing plate reinforcement design, lining anchors layout.",
     deliverables: "Breeching casing fabrication drawings, lining layout sheets.",
     threeType: "breeching_casing",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "completeframe"
   },
   {
@@ -1241,7 +1241,7 @@ const illustrations = [
     scope: "Skid piping structural stress check, valve selections.",
     deliverables: "Skid piping arrangement, instrumentation isometric layout sheet.",
     threeType: "skid_piping",
-    service: "Industrial Design & Support",
+    service: "Piping Support & Structural Support Design",
     icon: "completeframe"
   },
   {
@@ -1257,7 +1257,7 @@ const illustrations = [
     scope: "Stair flight load checks, handrail stanchion calculations.",
     deliverables: "Stair tower framing plan, flights shop detailing sheet.",
     threeType: "stair_tower",
-    service: "Steel Detailing (Tekla)",
+    service: "Platform, Staircase, Ladder & Access Structure Design",
     icon: "completeframe"
   },
   {
@@ -1273,7 +1273,7 @@ const illustrations = [
     scope: "OSHA cage ladder compliance check, anchor bracket calculations.",
     deliverables: "Safety ladder detailing sheet, hoop template drawings.",
     threeType: "cage_ladder",
-    service: "Steel Detailing (Tekla)",
+    service: "Platform, Staircase, Ladder & Access Structure Design",
     icon: "completeframe"
   },
   {
@@ -1305,7 +1305,7 @@ const illustrations = [
     scope: "Tip thermal expansion checks, nozzle load analysis.",
     deliverables: "Flare tip mechanical assembly sheets, ignition line details.",
     threeType: "flare_tip",
-    service: "Industrial Design & Support",
+    service: "Chimney & Stack Engineering",
     icon: "completeframe"
   },
   {
@@ -1321,7 +1321,7 @@ const illustrations = [
     scope: "Rotor diaphragms stress checks, hub bearing alignment detailing.",
     deliverables: "Rotor sector detailing drawing, hub machining details.",
     threeType: "preheater_rotor",
-    service: "Industrial Design & Support",
+    service: "Industrial Fired Heater Engineering",
     icon: "completeframe"
   },
   {
@@ -1337,7 +1337,7 @@ const illustrations = [
     scope: "Structural RCC framing design, isolated concrete footing calculations, slab load distribution modeling under IS 456.",
     deliverables: "General Arrangement drawings, column spacing coordinates layout, concrete beam detail schedules.",
     threeType: "santhipuram",
-    service: "Engineering & Architecture Design",
+    service: "Building Structural Design",
     icon: "completeframe"
   },
   {
@@ -1353,7 +1353,7 @@ const illustrations = [
     scope: "Portal moment frames modeling, crane runways fatigue check, wind load calculations under IS 875/ASME.",
     deliverables: "Steel framing layouts, roof truss details, gantry runway moment connections details.",
     threeType: "tarachand",
-    service: "Steel Detailing (Tekla)",
+    service: "Civil & Structural Engineering",
     icon: "completeframe"
   }
 ];
