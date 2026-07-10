@@ -25,7 +25,11 @@ export function getMatchingProjectsForService(serviceName, projects) {
     return projects.filter(p => 
       p.category === 'Civil & Structural' || 
       p.title.toLowerCase().includes('civil') ||
-      p.title.toLowerCase().includes('structural')
+      p.title.toLowerCase().includes('structural') ||
+      p.title.toLowerCase().includes('structure') ||
+      p.description.toLowerCase().includes('civil') ||
+      p.description.toLowerCase().includes('structural') ||
+      p.description.toLowerCase().includes('structure')
     ).slice(0, 2);
   }
   
@@ -34,7 +38,10 @@ export function getMatchingProjectsForService(serviceName, projects) {
       p.category === 'Buildings' || 
       p.title.toLowerCase().includes('building') ||
       p.title.toLowerCase().includes('apartments') ||
-      p.title.toLowerCase().includes('residency')
+      p.title.toLowerCase().includes('residency') ||
+      p.description.toLowerCase().includes('building') ||
+      p.description.toLowerCase().includes('apartments') ||
+      p.description.toLowerCase().includes('residency')
     ).slice(0, 2);
   }
   
@@ -43,8 +50,11 @@ export function getMatchingProjectsForService(serviceName, projects) {
       p.title.toLowerCase().includes('vessel') || 
       p.description.toLowerCase().includes('vessel') ||
       p.title.toLowerCase().includes('exchanger') || 
+      p.description.toLowerCase().includes('exchanger') ||
       p.title.toLowerCase().includes('reformer') ||
-      p.title.toLowerCase().includes('manifold')
+      p.description.toLowerCase().includes('reformer') ||
+      p.title.toLowerCase().includes('manifold') ||
+      p.description.toLowerCase().includes('manifold')
     ).slice(0, 2);
   }
   
@@ -62,7 +72,9 @@ export function getMatchingProjectsForService(serviceName, projects) {
       p.title.toLowerCase().includes('detailing') || 
       p.description.toLowerCase().includes('detailing') ||
       p.title.toLowerCase().includes('tekla') ||
-      p.title.toLowerCase().includes('steel')
+      p.description.toLowerCase().includes('tekla') ||
+      p.title.toLowerCase().includes('steel') ||
+      p.description.toLowerCase().includes('steel')
     ).slice(0, 2);
   }
   
@@ -70,15 +82,19 @@ export function getMatchingProjectsForService(serviceName, projects) {
     return projects.filter(p => 
       p.title.toLowerCase().includes('fabrication') || 
       p.description.toLowerCase().includes('fabrication') ||
-      p.title.toLowerCase().includes('shop drawing')
+      p.title.toLowerCase().includes('shop drawing') ||
+      p.description.toLowerCase().includes('shop drawing')
     ).slice(0, 2);
   }
   
   if (cleanedService.includes('platform') || cleanedService.includes('stair') || cleanedService.includes('ladder')) {
     return projects.filter(p => 
       p.title.toLowerCase().includes('platform') || 
+      p.description.toLowerCase().includes('platform') ||
       p.title.toLowerCase().includes('stair') || 
-      p.title.toLowerCase().includes('ladder')
+      p.description.toLowerCase().includes('stair') ||
+      p.title.toLowerCase().includes('ladder') ||
+      p.description.toLowerCase().includes('ladder')
     ).slice(0, 2);
   }
   
@@ -86,7 +102,9 @@ export function getMatchingProjectsForService(serviceName, projects) {
     return projects.filter(p => 
       p.category === 'Boilers & Chimneys' || 
       p.title.toLowerCase().includes('stack') || 
-      p.title.toLowerCase().includes('chimney')
+      p.description.toLowerCase().includes('stack') ||
+      p.title.toLowerCase().includes('chimney') ||
+      p.description.toLowerCase().includes('chimney')
     ).slice(0, 2);
   }
   
@@ -95,7 +113,9 @@ export function getMatchingProjectsForService(serviceName, projects) {
       p.title.toLowerCase().includes('foundation') || 
       p.description.toLowerCase().includes('foundation') ||
       p.title.toLowerCase().includes('footing') || 
-      p.title.toLowerCase().includes('pile')
+      p.description.toLowerCase().includes('footing') ||
+      p.title.toLowerCase().includes('pile') ||
+      p.description.toLowerCase().includes('pile')
     ).slice(0, 2);
   }
   
@@ -104,31 +124,44 @@ export function getMatchingProjectsForService(serviceName, projects) {
       p.title.toLowerCase().includes('supervision') || 
       p.description.toLowerCase().includes('supervision') ||
       p.title.toLowerCase().includes('audit') || 
-      p.title.toLowerCase().includes('erection')
+      p.description.toLowerCase().includes('audit') ||
+      p.title.toLowerCase().includes('erection') || 
+      p.description.toLowerCase().includes('erection') ||
+      p.title.toLowerCase().includes('construction') ||
+      p.description.toLowerCase().includes('construction')
     ).slice(0, 2);
   }
   
   if (cleanedService.includes('remaining life') || cleanedService.includes('rla')) {
     return projects.filter(p => 
       p.title.toLowerCase().includes('rla') || 
-      p.title.toLowerCase().includes('remaining life') ||
-      p.title.toLowerCase().includes('assessment')
+      p.description.toLowerCase().includes('rla') ||
+      p.title.toLowerCase().includes('remaining life') || 
+      p.description.toLowerCase().includes('remaining life') ||
+      p.title.toLowerCase().includes('assessment') ||
+      p.description.toLowerCase().includes('assessment')
     ).slice(0, 2);
   }
   
   if (cleanedService.includes('finite element') || cleanedService.includes('fea')) {
     return projects.filter(p => 
       p.title.toLowerCase().includes('fea') || 
-      p.title.toLowerCase().includes('stress analysis') ||
-      p.title.toLowerCase().includes('finite element')
+      p.description.toLowerCase().includes('fea') ||
+      p.title.toLowerCase().includes('stress analysis') || 
+      p.description.toLowerCase().includes('stress analysis') ||
+      p.title.toLowerCase().includes('finite element') ||
+      p.description.toLowerCase().includes('finite element')
     ).slice(0, 2);
   }
   
   if (cleanedService.includes('piping support') || cleanedService.includes('piping design')) {
     return projects.filter(p => 
       p.title.toLowerCase().includes('pipeline') || 
+      p.description.toLowerCase().includes('pipeline') ||
       p.title.toLowerCase().includes('piping') || 
-      p.title.toLowerCase().includes('duct')
+      p.description.toLowerCase().includes('piping') ||
+      p.title.toLowerCase().includes('duct') ||
+      p.description.toLowerCase().includes('duct')
     ).slice(0, 2);
   }
   
