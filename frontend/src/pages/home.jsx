@@ -187,8 +187,8 @@ export default function Home() {
   return (
     <div className="w-full bg-white">
       <PageMeta
-        title="Home"
-        description="SLS Consultants — Expert structural, mechanical, and industrial engineering since 2002. Fired heater design, RLA studies, FEM analysis, Tekla steel detailing. Based in Visakhapatnam."
+        title="SLS Nexus | Engineering &amp; Detailing Portal"
+        description="SLS Nexus (by SLS Consultants) — The central engineering portal for structural, mechanical, and industrial engineering since 2002. Fired heater design, RLA studies, FEM analysis, Tekla steel detailing. Based in Visakhapatnam."
       />
 
       {/* 1. HERO & STATS COMBINED */}
@@ -218,7 +218,7 @@ export default function Home() {
           />
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }} className="relative z-10">
             <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 mb-5">
-              Engineering Excellence Since 2002
+              SLS Nexus | Engineering Excellence Since 2002
             </span>
             <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-6">
               Industrial Fired Heaters & Structural Engineering
