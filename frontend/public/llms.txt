@@ -1,0 +1,27 @@
+# SLS Nexus
+
+> The official digital database and technical portal of SLS Consultants.
+
+SLS Consultants is a structural, mechanical, and industrial engineering consultancy established in 2002. They provide high-fidelity engineering design, structural steel detailing, and industrial fired heater packages (API 560) for global refineries and petrochemical facilities.
+
+## Services
+- **Industrial Fired Heater Engineering**: Thermal and structural casing designs under API 560/530.
+- **Civil & Structural Engineering**: Heavy structural framing, pipe racks, and warehouses.
+- **Building Structural Design**: RCC residential, commercial, and college complexes (IS 456).
+- **Industrial Equipment Engineering**: Pressure vessels, reformers, heat exchangers (ASME Sec VIII).
+- **Engineering Drawings & Shop Drawings**: Precision AutoCAD detailing, nozzles, and GA layouts.
+- **Structural Steel Detailing**: Tekla modeling and MTO take-offs.
+- **Foundation Engineering**: Isolated footings, piles, and dynamic machinery concrete blocks.
+- **Construction Engineering Support**: Site support, coordination, and structural verification.
+- **Remaining Life Assessment (RLA)**: Inspection of aging stacks and columns (API 579).
+- **Finite Element Analysis (FEA)**: Stress, fatigue, and vibration simulation.
+- **Piping Support Design**: Piping layout routing and racks stress analysis.
+- **Software & AI Solutions**: Custom Tekla/CAD plugins and automation scripts.
+
+## Links
+- [About Us](https://www.slsnexus.com/about)
+- [Expertise & Services](https://www.slsnexus.com/services)
+- [Projects Registry](https://www.slsnexus.com/projects)
+- [Gallery of Technical Drawings](https://www.slsnexus.com/gallery)
+- [Codes & Standards](https://www.slsnexus.com/codes)
+- [Contact & Booking](https://www.slsnexus.com/contact)

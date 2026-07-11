@@ -158,11 +158,11 @@ export default function App() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+      <main className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="w-full max-w-md bg-white border border-slate-100 shadow-2xl p-8 rounded-sm text-[#0a1628]">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-black tracking-wider uppercase mb-2">SLS Consultants</h1>
-            <p className="text-xs font-bold uppercase tracking-widest text-[#43648e]">Engineering Portal Access</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-slate-700">Engineering Portal Access</p>
           </div>
           
           <form onSubmit={handleLogin} className="space-y-6">
@@ -173,8 +173,9 @@ export default function App() {
             )}
             
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">Username</label>
+              <label htmlFor="temp-username" className="text-[10px] font-black uppercase tracking-wider text-slate-600 block">Username</label>
               <input
+                id="temp-username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -185,8 +186,9 @@ export default function App() {
             </div>
             
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">Password</label>
+              <label htmlFor="temp-password" className="text-[10px] font-black uppercase tracking-wider text-slate-600 block">Password</label>
               <input
+                id="temp-password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -204,7 +206,7 @@ export default function App() {
             </button>
           </form>
         </div>
-      </div>
+      </main>
     );
   }
 
