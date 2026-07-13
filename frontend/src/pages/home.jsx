@@ -221,10 +221,10 @@ export default function Home() {
               SLS Nexus | Engineering Excellence Since 2002
             </span>
             <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-6">
-              Industrial Fired Heaters & Structural Engineering
+              Multidisciplinary Industrial Engineering &amp; Global Solutions
             </h1>
-            <p className="text-slate-600 text-sm leading-relaxed mb-8 max-w-sm">
-              Providing full-scale mechanical and structural engineering consultancy designed in accordance with project-specific international and regional standards.
+            <p className="text-slate-600 text-sm leading-relaxed mb-8 max-w-xl">
+              Led by ex-BHEL and ex-Doosan Babcock expert Mr. C. Subrahmanyam since 2002, SLS Nexus delivers high-fidelity engineering, project consulting, and RLA studies. Guided by our comprehensive corporate profile, our services range from API 560 fired heaters, boilers, heat exchangers, and storage vessels to dynamic foundations, chimneys, and piping stress analysis. We also pioneer custom Software &amp; AI Solutions, developing custom CAD/Tekla automation plugins and digital systems.
             </p>
 
             {/* Inline Animated Stats Counter inside Hero */}
@@ -247,13 +247,21 @@ export default function Home() {
 
             <div className="flex flex-wrap gap-3">
               <Link href="/contact">
-                <button className="flex items-center gap-2 bg-[#0a1628] text-white px-6 py-3 text-sm font-semibold hover:bg-[#1a2f4c] transition-colors rounded-sm shadow-sm">
-                  Request a Consultation <ArrowRight className="w-4 h-4" />
+                <button className="flex items-center gap-2 bg-[#0a1628] text-white px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-[#1a2f4c] transition-colors rounded-sm shadow-sm">
+                  Request a Consultation <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </Link>
+              <a
+                href="/SLSPROFILE.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 border border-slate-300 text-[#0a1628] px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-slate-100 transition-colors rounded-sm shadow-sm"
+              >
+                Download Profile (PDF)
+              </a>
               <Link href="/projects">
-                <button className="flex items-center gap-2 border border-slate-300 text-[#0a1628] px-6 py-3 text-sm font-semibold hover:bg-slate-100 transition-colors rounded-sm">
-                  View Our Projects <ArrowRight className="w-4 h-4" />
+                <button className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#43648e] hover:text-[#0a1628] transition-colors px-3 py-3">
+                  View Projects &rarr;
                 </button>
               </Link>
             </div>
@@ -283,11 +291,25 @@ export default function Home() {
               <p className="text-[#0a1628] text-sm md:text-base leading-relaxed mb-4">
                 Established in 2002, SLS Consultants provides premium structural design, stress analysis, and steel detailing solutions for heavy industrial refineries, boilers, and petrochemical facilities across India and global markets.
               </p>
-              <Link href="/about">
-                <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-[#43648e] cursor-pointer hover:text-[#0a1628] transition-colors">
-                  Learn More About SLS &rarr;
-                </span>
-              </Link>
+              <div className="flex flex-wrap gap-4 items-center">
+                <Link href="/about">
+                  <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-[#43648e] cursor-pointer hover:text-[#0a1628] transition-colors">
+                    Learn More About SLS &rarr;
+                  </span>
+                </Link>
+                <span className="text-gray-300 hidden sm:inline">|</span>
+                <a
+                  href="/SLSPROFILE.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                  </svg>
+                  Download Corporate Profile (PDF)
+                </a>
+              </div>
             </div>
             
             <div className="flex items-center gap-4 border-t md:border-t-0 md:border-l border-gray-200 pt-6 md:pt-0 md:pl-8 shrink-0 w-full md:w-auto">

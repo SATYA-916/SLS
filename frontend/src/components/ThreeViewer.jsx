@@ -1128,12 +1128,12 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             }
           }
 
-          // Landing platforms (rectangular grids)
-          const landingGeo = new THREE.BoxGeometry(1.4, 0.08, 1.4);
+          // Landing platforms (rectangular grids - widened to 2.9m along Z to span both flights)
+          const landingGeo = new THREE.BoxGeometry(1.4, 0.08, 2.9);
           const landings = [
-            { x: -0.75, y: -4.0, z: -0.75 },
-            { x: 0.75, y: 0, z: 0.75 },
-            { x: -0.75, y: 4.0, z: -0.75 }
+            { x: -0.75, y: -4.0, z: 0 },
+            { x: 0.75, y: 0, z: 0 },
+            { x: -0.75, y: 4.0, z: 0 }
           ];
           landings.forEach(l => {
             const platform = new THREE.Mesh(landingGeo, stackMat);
@@ -1173,8 +1173,8 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
           };
 
           createStairRun(-6.0, -4.0, 0.8, -0.8, -0.75);
-          createStairRun(-4.0, 0, -0.8, 0.8, 0.0);
-          createStairRun(0, 4.0, 0.8, -0.8, 0.75);
+          createStairRun(-4.0, 0, -0.8, 0.8, 0.75);
+          createStairRun(0, 4.0, 0.8, -0.8, -0.75);
           break;
         }
 
@@ -1492,9 +1492,9 @@ export default function ThreeViewer({ type, exploded, wireframe, resetKey, autoR
             modelGroup.add(hoop);
           }
 
-          // Vertical safety straps tying hoops together
+          // Vertical safety straps tying hoops together (aligned with the 180° hoop arc)
           const strapGeo = new THREE.BoxGeometry(0.02, 9.0, 0.04);
-          for (let angle = -Math.PI / 2; angle <= Math.PI / 2; angle += Math.PI / 4) {
+          for (let angle = 0; angle <= Math.PI; angle += Math.PI / 4) {
             const strap = new THREE.Mesh(strapGeo, blueprintMat);
             strap.position.set(Math.cos(angle) * 0.48, 1.4, 0.24 + Math.sin(angle) * 0.48);
             modelGroup.add(strap);

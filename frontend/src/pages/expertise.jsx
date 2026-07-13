@@ -40,7 +40,7 @@ const specialisms = [
   'Hydrotreater (DHDT) & Hydrodesulfurization (HDS) Fired Heaters',
   'Vertical Cylindrical & Box Fired Heater Casing structures',
   'Finned Convection Sections & Intermediate Tube Support Plates',
-  'Refinery Piping Isometric & Nozzle orientaton layouts',
+  'Refinery Piping Isometric & Nozzle orientation layouts',
   'Self-Supporting Stack Chimneys with Helical Wind Strakes',
   'High-Temperature Header Boxes & Quick-Access swing doors',
   'Refining Cold Box and Compressor Dynamic Concrete Foundations',

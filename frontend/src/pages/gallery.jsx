@@ -248,7 +248,7 @@ const drawings = [
   { 
     title: "HDS Heater Structural Frame Layout", 
     file: "eil_ga_sheet6.png", 
-    desc: "Structural portal frames, columns, and wind-girder detaling for the HDS unit heater tower.", 
+    desc: "Structural portal frames, columns, and wind-girder detailing for the HDS unit heater tower.", 
     code: "EIL Specs / AISC Standards",
     service: "Industrial Fired Heater Engineering"
   },
@@ -2345,9 +2345,15 @@ export default function Gallery() {
                       </AnimatePresence>
                       <p className="text-[10px] text-white/45 uppercase tracking-wide truncate">{selectedIll.subtitle}</p>
                     </div>
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 shrink-0">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span className="text-[8px] font-bold uppercase tracking-widest text-emerald-400">WebGL</span>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300" title="This model displays a symmetric cutaway view to show internal structural and mechanical detailing.">
+                        <Info className="w-2.5 h-2.5" />
+                        <span className="text-[7px] font-bold uppercase tracking-widest">Cutaway View</span>
+                      </div>
+                      <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                        <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                        <span className="text-[7px] font-bold uppercase tracking-widest">WebGL</span>
+                      </div>
                     </div>
                   </div>
 
@@ -2528,6 +2534,14 @@ export default function Gallery() {
                             <div className="mb-6">
                               <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Description</h4>
                               <p className="text-xs text-gray-500 leading-relaxed">{selectedIll.description}</p>
+                              {selectedIll.threeType && (
+                                <div className="mt-4 p-3 bg-blue-50/50 border border-blue-100/60 rounded-sm flex items-start gap-2.5">
+                                  <Info className="w-4 h-4 text-blue-700 shrink-0 mt-0.5" />
+                                  <div className="text-[11px] text-blue-900 leading-normal">
+                                    <span className="font-bold">Symmetric Cutaway Presentation:</span> This 3D model is intentionally rendered with a partial cutaway section to expose the internal structural framework, tube banks, refractory lining, and dynamic supports that are otherwise concealed inside the solid steel casing.
+                                  </div>
+                                </div>
+                              )}
                             </div>
                             <div className="grid sm:grid-cols-2 gap-6">
                               <div>
