@@ -22,32 +22,32 @@ const categories = [
 ];
 
 function getProjectTechnicalSpecs(proj) {
+  if (!proj) return { software: '', deliverables: '' };
+  
   const category = proj.category || '';
   const title = proj.title || '';
   const desc = proj.description || '';
 
   const specs = {
-    codes: 'IS 800 (Structural Design), IS 456 (Plain & Reinforced Concrete)',
     software: 'AutoCAD, STAAD.Pro',
     deliverables: 'Structural Design Calculations & Construction-Ready Fabrication Drawings'
   };
 
   if (category === 'Fired Heaters' || title.toLowerCase().includes('heater') || desc.toLowerCase().includes('heater')) {
-    specs.codes = 'API 560 (Fired Heaters), API 530 (Tube Thickness Calc), ASME Section VIII (Pressure Parts)';
-    specs.software = 'AutoCAD, STAAD.Pro, ANSYS (FEA Thermal Modeling)';
-    specs.deliverables = 'Thermal & Structural Calculations, General Arrangement & Shell Detail Drawings, Nozzle Load Verification Reports';
+    specs.software = 'AutoCAD, STAAD.Pro, ANSYS (FEA Structural Modeling)';
+    specs.deliverables = 'Structural Calculations, General Arrangement & Shell Detail Drawings, Nozzle Load Verification Reports';
   } else if (category === 'Cryogenic Plants' || desc.toLowerCase().includes('cryogenic') || desc.toLowerCase().includes('cold box')) {
-    specs.codes = 'ASME Section VIII Div 1, AD 2000, IS 1893 (Seismic Design)';
     specs.software = 'STAAD.Pro, ANSYS (Dynamic foundation FEA)';
     specs.deliverables = 'Heavy Dynamic Foundation design reports, Anchor Bolt layout drawings, RCC Pile load capacity analysis';
   } else if (category === 'Boilers & Chimneys' || title.toLowerCase().includes('stack') || title.toLowerCase().includes('chimney') || desc.toLowerCase().includes('chimney')) {
-    specs.codes = 'IS 6533 (Steel Chimneys), IS 875 Part 3 (Wind Loads), ASME STS-1 (Steel Stacks)';
     specs.software = 'AutoCAD, STAAD.Pro (Finite element chimney shell model)';
     specs.deliverables = 'Vortex shedding dynamic analysis reports, Helical strake layout sheets, Foundation reaction reports';
   } else if (category === 'Special Structures' || desc.toLowerCase().includes('shield') || desc.toLowerCase().includes('fixture')) {
-    specs.codes = 'ASME Section VIII, AISC 360, IS 800 (Steel structures)';
     specs.software = 'AutoCAD, ANSYS (Lifting & structural integrity FEA)';
     specs.deliverables = 'Radiographic cordoning shielding design sheets, Heavy lifting rigging plans, FEA structural stress verification reports';
+  } else if (category === 'Buildings' || title.toLowerCase().includes('building') || desc.toLowerCase().includes('apartment') || desc.toLowerCase().includes('school')) {
+    specs.software = 'AutoCAD, STAAD.Pro, ETABS';
+    specs.deliverables = 'RCC structural framing plans, Foundation reinforcement drawings, Slab rebar schedules';
   }
 
   return specs;
@@ -63,7 +63,6 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDiscipline, setSelectedDiscipline] = useState('All');
-  const [selectedCode, setSelectedCode] = useState('All');
   const [selectedClient, setSelectedClient] = useState('All');
   const [, setLocation] = useLocation();
 
@@ -94,20 +93,7 @@ export default function Projects() {
       }
     }
 
-    // 4. Code filter
-    let matchCode = true;
-    if (selectedCode !== 'All') {
-      const pText = ((p.title || '') + ' ' + (p.description || '') + ' ' + (p.challenge || '') + ' ' + (p.codesUsed || '')).toLowerCase();
-      if (selectedCode === 'ASME') {
-        matchCode = pText.includes('asme') || pText.includes('sts-1') || pText.includes('section viii') || pText.includes('vessel');
-      } else if (selectedCode === 'API') {
-        matchCode = pText.includes('api') || pText.includes('560') || pText.includes('530') || pText.includes('refinery');
-      } else if (selectedCode === 'IS') {
-        matchCode = pText.includes('is ') || pText.includes('is-800') || pText.includes('is 800') || pText.includes('is 875') || pText.includes('is-875') || pText.includes('is 456') || pText.includes('is-456') || pText.includes('is2062') || pText.includes('is 2062') || pText.includes('itda') || pText.includes('govt');
-      }
-    }
-
-    // 5. Client filter
+    // 4. Client filter
     let matchClient = true;
     if (selectedClient !== 'All') {
       const pText = ((p.title || '') + ' ' + (p.description || '') + ' ' + (p.client || '')).toLowerCase();
@@ -124,7 +110,7 @@ export default function Projects() {
       }
     }
 
-    return matchCat && matchSearch && matchDiscipline && matchCode && matchClient;
+    return matchCat && matchSearch && matchDiscipline && matchClient;
   });
 
   const filteredList = useMemo(() => filtered || [], [filtered]);
@@ -196,7 +182,7 @@ export default function Projects() {
 
   return (
     <div className="w-full">
-      <PageMeta title="Projects" description="Explore 500+ structural and industrial engineering projects delivered by SLS Consultants since 2002 — fired heaters, cryogenic foundations, chimneys, and more." />
+      <PageMeta title="Projects" description="Explore 500+ structural and industrial engineering projects delivered by SLS Structo-Mech Consultants since 2002 — fired heaters, cryogenic foundations, chimneys, and more." />
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
@@ -229,7 +215,6 @@ export default function Projects() {
                   setSelectedCategory(cat);
                   setSearchQuery('');
                   setSelectedDiscipline('All');
-                  setSelectedCode('All');
                   setSelectedClient('All');
                 }}
                 className={`px-4 py-2 text-xs font-bold tracking-wider uppercase border transition-colors ${
@@ -245,7 +230,7 @@ export default function Projects() {
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mb-8 max-w-5xl">
             {/* Search Input */}
-            <div className="relative md:col-span-2">
+            <div className="relative md:col-span-3">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               <input
                 type="text"
@@ -277,20 +262,6 @@ export default function Projects() {
                 <option value="Mechanical & Piping">Mechanical & Piping</option>
                 <option value="Detailing">Steel Detailing</option>
                 <option value="RLA Studies">RLA Assessment</option>
-              </select>
-            </div>
-
-            {/* Code Dropdown */}
-            <div>
-              <select
-                value={selectedCode}
-                onChange={(e) => setSelectedCode(e.target.value)}
-                className="w-full px-3 py-3 text-xs border border-gray-200 bg-gray-50 focus:bg-white focus:border-[#0a1628] focus:outline-none transition-colors rounded-sm font-bold text-gray-600 dark:text-gray-200"
-              >
-                <option value="All">All Standards</option>
-                <option value="ASME">ASME Codes</option>
-                <option value="API">API Codes</option>
-                <option value="IS">Indian Standards (IS)</option>
               </select>
             </div>
 
@@ -588,28 +559,13 @@ export default function Projects() {
                       </div>
                     </div>
 
-                    {/* Specifications Badges */}
                     {(() => {
                       const specs = getProjectTechnicalSpecs(selectedProject);
-                      const codesList = specs.codes.split(',').map((s) => s.trim());
-                      const softwareList = specs.software.split(',').map((s) => s.trim());
-                      const deliverablesList = specs.deliverables.split(',').map((s) => s.trim());
+                      const softwareList = (specs.software || '').split(',').map((s) => s.trim());
+                      const deliverablesList = (specs.deliverables || '').split(',').map((s) => s.trim());
 
                       return (
                         <div className="space-y-6">
-                          <div className="space-y-2">
-                            <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-gray-100 pb-1.5 block">
-                              Codes &amp; Standards
-                            </h4>
-                            <div className="flex flex-wrap gap-1.5">
-                              {codesList.map((code) => (
-                                <span key={code} className="bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded-sm text-[9px] font-medium font-mono">
-                                  {code}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-
                           <div className="space-y-2">
                             <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-gray-100 pb-1.5 block">
                               Software Used

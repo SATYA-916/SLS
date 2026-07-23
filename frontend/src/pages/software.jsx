@@ -36,7 +36,7 @@ const solutions = [
 
 const softwareTools = [
   { name: 'STAAD.Pro', desc: 'Primary structural analysis and design software for steel and RCC structures.' },
-  { name: 'ANSYS', desc: 'Advanced FEM analysis for complex structural and thermal simulations.' },
+  { name: 'ANSYS', desc: 'Advanced FEM analysis for complex structural and mechanical simulations.' },
   { name: 'Tekla Structures', desc: '3D structural modelling and steel detailing, shop and erection drawings.' },
   { name: 'AutoCAD', desc: '2D drafting, civil and layout drawings for all project types.' },
   { name: 'CATIA', desc: 'High-precision 3D modelling for complex industrial components.' },

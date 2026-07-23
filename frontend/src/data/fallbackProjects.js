@@ -80,7 +80,7 @@ export const fallbackProjects = [
     client: 'Larsen & Toubro Ltd.',
     year: 2003,
     image: '/projects/proj7.png',
-    challenge: 'L&T required specialized fixtures to offset thermal distortion when welding heavy nozzles to pressure vessels, along with a high-precision guide for circumferential shell plate cutting.',
+    challenge: 'L&T required specialized fixtures to offset welding distortion when welding heavy nozzles to pressure vessels, along with a high-precision guide for circumferential shell plate cutting.',
     solution: 'Engineered a pre-camber mechanical clamping fixture that applies counter-deflection forces during nozzle welding. Designed a track-mounted magnetic cutting carriage guide for precise circumferential torch travel.',
     slsAction: 'Developed mechanical concepts, calculated pre-deflection forces, detailed mechanical clamping mechanisms, and delivered manufacturing drawings.'
   },
@@ -106,7 +106,7 @@ export const fallbackProjects = [
     image: '/projects/proj9.png',
     challenge: 'Architectural planning and structural design of a multi-story residential complex in sandy coastal soil conditions, requiring high load capacity foundations resistant to moisture.',
     solution: 'Implemented a deep RCC pile foundation design to reach stable soil strata, combined with concrete framing designed for coastal wind and seismic conditions.',
-    slsAction: 'Handled complete architectural layout design, structural RCC calculations under Indian Standard codes, foundation pile detailing, and on-site construction supervision.'
+    slsAction: 'Handled complete architectural layout design, structural RCC calculations under engineering standards, foundation pile detailing, and on-site construction supervision.'
   },
   {
     id: 11,
@@ -161,12 +161,12 @@ export const fallbackProjects = [
   {
     id: 15,
     title: 'Design of Bhaskar Residency Apartments',
-    description: 'Architectural layout planning and RCC structural design of a premium residential apartment building under IS seismic codes.',
+    description: 'Architectural layout planning and RCC structural design of a premium residential apartment building under seismic guidelines.',
     category: 'Buildings',
     client: 'Bhaskar Residency',
     year: 2005,
     image: '/projects/proj15.png',
-    challenge: 'RCC structural engineering for a premium apartment building in a seismically active coastal zone, requiring compliance with wind and earthquake safety codes.',
+    challenge: 'RCC structural engineering for a premium apartment building in a seismically active coastal zone, requiring compliance with wind and earthquake safety guidelines.',
     solution: 'Designed a shear wall-frame interactive system to resist lateral wind and earthquake forces under IS 1893 and IS 875.',
     slsAction: 'Conducted lateral load analysis using STAAD.Pro, detailed ductile frame reinforcement, and prepared complete building construction drawings.'
   },
@@ -240,9 +240,9 @@ export const fallbackProjects = [
     client: 'Air Liquide France',
     year: 2003,
     image: '/projects/proj21.png',
-    challenge: 'Air Liquide India required civil foundation engineering for three cryogenic air separation cold boxes in Iran. The foundations had to handle extreme thermal gradients and dynamic vibration loads under strict Air Liquide France specifications.',
-    solution: 'Engineered pile-supported reinforced concrete mat foundations. Developed thermal isolation layers between the cryogenic vessel skirts and the concrete pads to prevent concrete freeze-thaw damage.',
-    slsAction: 'Conducted dynamic pile capacity analysis, thermal gradient FEA, detailed the rebar configurations, and obtained engineering approvals from Air Liquide France.'
+    challenge: 'Air Liquide India required civil foundation engineering for three cryogenic air separation cold boxes in Iran. The foundations had to handle extreme structural gradients and dynamic vibration loads under strict Air Liquide France specifications.',
+    solution: 'Engineered pile-supported reinforced concrete mat foundations. Developed isolation barriers between the cryogenic vessel skirts and the concrete pads to prevent concrete freeze-thaw damage.',
+    slsAction: 'Conducted dynamic pile capacity analysis, stress FEA, detailed the rebar configurations, and obtained engineering approvals from Air Liquide France.'
   },
   {
     id: 22,
@@ -264,7 +264,7 @@ export const fallbackProjects = [
     client: 'Air Liquide India',
     year: 2004,
     image: '/projects/proj23.png',
-    challenge: 'Sizing foundations for tall cryogenic cold boxes and air compressors subject to high thermal expansion forces and continuous dynamic machine vibrations.',
+    challenge: 'Sizing foundations for tall cryogenic cold boxes and air compressors subject to high operating forces and continuous dynamic machine vibrations.',
     solution: 'Designed a heavy monolithic concrete foundation with deep pile supports, utilizing high-grade concrete and dense reinforcement meshes to distribute dynamic loads.',
     slsAction: 'Calculated dynamic load combinations, performed soil-structure interaction modeling, and prepared detailed foundation drawing sets.'
   },
@@ -277,7 +277,7 @@ export const fallbackProjects = [
     year: 2005,
     image: '/projects/proj24.png',
     challenge: 'Structural engineering for a steel-framed compressor house and high-span interconnecting refinery pipe racks, designed for seismic and wind load combinations.',
-    solution: 'Developed a braced steel frame structure with moment-resisting base connections, optimizing steel beam and column sections under Indian refinery safety codes.',
+    solution: 'Developed a braced steel frame structure with moment-resisting base connections, optimizing steel beam and column sections under refinery safety guidelines.',
     slsAction: 'Conducted 3D structural analysis, detailed moment connections, designed steel frame members, and prepared fabrication shop drawings.'
   },
   {
@@ -301,7 +301,7 @@ export const fallbackProjects = [
     year: 2008,
     image: '/projects/proj27.png',
     challenge: 'Foundation design for cryogenic storage tanks at BORL Bina Refinery, requiring resistance to low-temperature cryogenic liquid spills.',
-    solution: 'Implemented specialized cryogenic-resistant concrete mixes and designed perlite-insulating concrete bases to prevent direct thermal transfer from the tanks to the foundations.',
+    solution: 'Implemented specialized cryogenic-resistant concrete mixes and designed perlite-insulating concrete bases to prevent direct heat transfer from the tanks to the foundations.',
     slsAction: 'Designed foundation slab reinforcement, specified low-temp concrete grades, detailed insulation joints, and delivered civil drawings.'
   },
   {
@@ -313,20 +313,20 @@ export const fallbackProjects = [
     year: 2008,
     image: '/projects/proj28.png',
     challenge: 'Detailing reinforced concrete foundations for cryogenic cold boxes and compressors at GGSRL Bhatinda Refinery, subject to strict refinery safety and quality audits.',
-    solution: 'Engineered pile-supported concrete blocks designed to withstand combined wind, seismic, thermal, and dynamic operating loads.',
+    solution: 'Engineered pile-supported concrete blocks designed to withstand combined wind, seismic, and dynamic operating loads.',
     slsAction: 'Conducted pile group settlement analysis, designed concrete reinforcement, and delivered detailed engineering drawings checked against refinery specs.'
   },
   {
     id: 29,
     title: 'Foundations for Cryogenic Equipment (Kochi)',
-    description: 'Monolithic concrete foundations for cryogenic equipment BPCL Kochi Refinery, supporting high thermal cycling loads.',
+    description: 'Monolithic concrete foundations for cryogenic equipment BPCL Kochi Refinery, supporting high cyclic operating loads.',
     category: 'Cryogenic Plants',
     client: 'Air Liquide India',
     year: 2010,
     image: '/projects/proj29.png',
-    challenge: 'Sizing foundations for heavy cryogenic machinery at BPCL Kochi Refinery, ensuring long-term integrity under continuous thermal cycling.',
-    solution: 'Engineered monolithic concrete pads with expansion joints and thermal barriers to accommodate soil movement and thermal stress.',
-    slsAction: 'Performed load analysis, designed concrete reinforcing mats, detailed thermal barriers, and prepared structural drawings.'
+    challenge: 'Sizing foundations for heavy cryogenic machinery at BPCL Kochi Refinery, ensuring long-term integrity under continuous cycling.',
+    solution: 'Engineered monolithic concrete pads with expansion joints and isolation barriers to accommodate soil movement and cyclic stress.',
+    slsAction: 'Performed load analysis, designed concrete reinforcing mats, detailed isolation barriers, and prepared structural drawings.'
   },
 
   // BOILERS & CHIMNEYS
@@ -351,7 +351,7 @@ export const fallbackProjects = [
     year: 2005,
     image: '/projects/proj31.png',
     challenge: 'Civil and structural design for a VFD electrical control room and surrounding RCC retaining walls at Hindalco, managing high soil pressures and ventilation structures.',
-    solution: 'Designed reinforced concrete cantilever retaining walls to resist soil thrust, and framed the control room with thermal insulation and cable-trench paths.',
+    solution: 'Designed reinforced concrete cantilever retaining walls to resist soil thrust, and framed the control room with insulation and cable-trench paths.',
     slsAction: 'Performed earth pressure calculations, designed concrete retaining walls, detailed control room concrete framing, and prepared civil blueprints.'
   },
   {
@@ -369,14 +369,14 @@ export const fallbackProjects = [
   {
     id: 33,
     title: 'SOFA Ducting & Air Heater Design',
-    description: 'Detailed design of Separated Overfire Air ducting and air preheaters, incorporating high-temp thermal expansion bellows.',
+    description: 'Detailed design of Separated Overfire Air ducting and air preheaters, incorporating high-temp expansion bellows.',
     category: 'Boilers & Chimneys',
     client: 'Doosan Babcock',
     year: 2008,
     image: '/projects/proj33.png',
-    challenge: 'Detailed engineering of Separated Overfire Air (SOFA) ducting and air preheater (APH) structures for utility boilers, managing thermal expansions up to 350°C.',
-    solution: 'Incorporated thermal expansion bellows, sliding support saddles, and structural hanger systems to allow free thermal movement of ducting without overloading support frames.',
-    slsAction: 'Modeled thermal duct expansions, designed steel duct plates and stiffeners, detailed hanger assemblies, and prepared fabrication shop drawings.'
+    challenge: 'Detailed engineering of Separated Overfire Air (SOFA) ducting and air preheater (APH) structures for utility boilers, managing expansions up to 350°C.',
+    solution: 'Incorporated thermal expansion bellows, sliding support saddles, and structural hanger systems to allow free movement of ducting without overloading support frames.',
+    slsAction: 'Modeled duct expansions, designed steel duct plates and stiffeners, detailed hanger assemblies, and prepared fabrication shop drawings.'
   },
   {
     id: 34,
@@ -387,18 +387,18 @@ export const fallbackProjects = [
     year: 2010,
     image: '/projects/proj34.jpeg',
     challenge: 'Civil and structural design for a utility boiler house, including 2x100 TPH boiler steel structures, de-aerator towers, and interconnecting pipe racks at HPCL Mumbai.',
-    solution: 'Designed a heavy-duty moment-resisting steel portal frame with horizontal bracing, supported on deep RCC pile foundations to handle boiler thermal and dead loads.',
+    solution: 'Designed a heavy-duty moment-resisting steel portal frame with horizontal bracing, supported on deep RCC pile foundations to handle boiler dead loads.',
     slsAction: 'Modeled the 3D steel frames in STAAD.Pro, detailed high-strength bolted connections, designed pile foundations, and generated fabrication drawings.'
   },
   {
     id: 51,
-    title: 'TANDA Thermal Power Project – Back End Duct',
-    description: 'Detailing of back-end duct support steelwork for the 2x660 MW Tanda Thermal Power Project Stage-II using Tekla.',
+    title: 'Tanda Power Project – Back End Duct',
+    description: 'Detailing of back-end duct support steelwork for the 2x660 MW Tanda Power Project Stage-II using Tekla.',
     category: 'Boilers & Chimneys',
     client: 'L&T MHPS Boilers',
     year: 2015,
-    image: '/projects/tanda_thermal_project_1.png',
-    challenge: 'Structural detailing of back-end duct support steelwork for the Tanda Thermal Power Project Stage-II (2x660 MW) under strict NTPC and L&T specifications, requiring zero-clash steel model assembly.',
+    image: '/projects/tanda_power_project_1.png',
+    challenge: 'Structural detailing of back-end duct support steelwork for the Tanda Power Project Stage-II (2x660 MW) under strict NTPC and L&T specifications, requiring zero-clash steel model assembly.',
     solution: 'Modeled the entire backend duct support structure in 3D using Tekla Structures, verifying bolt clearances and weld orientations.',
     slsAction: 'Executed 3D Tekla modeling, generated shop fabrication drawings, material bill of quantities (BOQ), and erection plans.'
   },
@@ -407,14 +407,14 @@ export const fallbackProjects = [
   {
     id: 35,
     title: 'Box Heaters - HPCL Mumbai & Vizag',
-    description: 'Residual engineering, thermal expansion analysis, and fabrication drawing detailing for heavy box fired heaters.',
+    description: 'Residual engineering, structural stress analysis, and fabrication drawing detailing for heavy box fired heaters.',
     category: 'Fired Heaters',
     client: 'BHPV / HPCL',
     year: 2006,
     image: '/projects/proj35.png',
     challenge: 'HPCL required residual engineering and detailing for heavy box-type fired heaters. The casing steel plates and convection tube supports had to maintain mechanical integrity under 750°C internal operating temperatures.',
-    solution: 'Designed structural steel casings stiffened with external plate ribs, and engineered tube support sheets with heat-resistant castings to allow thermal expansion of heater tubes.',
-    slsAction: 'Performed thermal expansion analysis, detailed casing plate stiffeners, designed convection section tube support plates, and delivered fabrication drawings.'
+    solution: 'Designed structural steel casings stiffened with external plate ribs, and engineered tube support sheets with heat-resistant castings to allow expansion of heater tubes.',
+    slsAction: 'Performed structural stress analysis, detailed casing plate stiffeners, designed convection section tube support plates, and delivered fabrication drawings.'
   },
   {
     id: 36,
@@ -426,7 +426,7 @@ export const fallbackProjects = [
     image: '/projects/proj36.jpeg',
     challenge: 'Detailing a large vertical cylindrical fired heater, including stack, wind girders, and internal tube coil supports for BORL Bina Refinery, meeting strict seismic and wind specs.',
     solution: 'Designed a cylindrical casing shell reinforced with external wind girders (girth rings), and engineered internal coil support brackets from ASTM heat-resistant steel.',
-    slsAction: 'Performed seismic and wind load analysis under IS codes, designed cylindrical casing joints, and generated detailed shop fabrication drawings.'
+    slsAction: 'Performed seismic and wind load analysis under engineering guidelines, designed cylindrical casing joints, and generated detailed shop fabrication drawings.'
   },
   {
     id: 37,
@@ -448,9 +448,9 @@ export const fallbackProjects = [
     client: 'Esteem / Jubilant',
     year: 2009,
     image: '/projects/proj38.jpeg',
-    challenge: 'Specialty Ketene cracking furnace design requiring precise thermal refractory anchor layouts and structural casing design to handle high-temperature cracking gradients.',
+    challenge: 'Specialty Ketene cracking furnace design requiring precise refractory anchor layouts and structural casing design to handle high-temperature gradients.',
     solution: 'Designed a dual-layer refractory lining (insulating + firebrick) with custom anchor layouts, and detailed casing expansion joints to prevent plate buckling.',
-    slsAction: 'Calculated thermal heat transfer gradients, designed refractory anchor spacings, detailed furnace casing steelwork, and prepared shop drawings.'
+    slsAction: 'Calculated heat transfer gradients, designed refractory anchor spacings, detailed furnace casing steelwork, and prepared shop drawings.'
   },
   {
     id: 39,
@@ -461,7 +461,7 @@ export const fallbackProjects = [
     year: 2011,
     image: '/projects/proj39.png',
     challenge: 'Mechanical detailing for a Ketene furnace package, managing mechanical connections between high-temperature alloy tubes and carbon steel casings.',
-    solution: 'Utilized ASTM heat-resistant steel grades for high-temp zones, detailing expansion loops and guide brackets to isolate thermal stresses from the casing.',
+    solution: 'Utilized ASTM heat-resistant steel grades for high-temp zones, detailing expansion loops and guide brackets to isolate operating stresses from the casing.',
     slsAction: 'Prepared detailed material specs, detailed furnace casing, generated isometric piping drawings, and delivered shop fabrication blueprints.'
   },
   {
@@ -495,7 +495,7 @@ export const fallbackProjects = [
     category: 'Fired Heaters',
     client: 'Heurtey / BPCL',
     year: 2014,
-    image: '/projects/tanda_thermal_project_2.jpeg',
+    image: '/projects/tanda_power_project_2.jpeg',
     challenge: 'Detailed engineering for a Delayed Coker Unit (DCU) Fired Heater with high operating pressure and temperature, requiring structural casing design and extensive maintenance platform systems.',
     solution: 'Designed the heater casing panels stiffened with external steel ribs, and engineered multi-level circumferential platforms with structural escape stair systems.',
     slsAction: 'Modeled casing structures, detailed structural platforms, designed pipe support frames, and generated complete shop fabrication and erection drawing packages.'
@@ -572,7 +572,7 @@ export const fallbackProjects = [
     client: 'Proprietary Chemical Client',
     year: 2011,
     image: '/gallery/evaporator_ga.png',
-    challenge: 'Designing a stable, multi-tier steel building to support a heavy, vertically suspended evaporator column vessel while resisting wind shears, floor vibrations, and accommodating thermal expansion growth.',
+    challenge: 'Designing a stable, multi-tier steel building to support a heavy, vertically suspended evaporator column vessel while resisting wind shears, floor vibrations, and accommodating expansion growth.',
     solution: 'Engineered a braced steel frame layout with circular platform cutouts at each elevation to house the column. Designed standard roof trusses and side wall runners to support the external sheet cladding, and lateral wind bracings under IS 800 standards.',
     slsAction: 'Generated complete 15-drawing steel fabrication detailing package including Columns schedule, Floor beams framing plans, Roof trusses assembly, side wall runners, and Safety ladders.'
   },

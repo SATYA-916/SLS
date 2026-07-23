@@ -22,7 +22,7 @@ const serviceIcons = {
 };
 
 const activities = [
-  'Process and Thermal Design Review (API 530)',
+  'Process Design Review',
   'Finite Element Method (FEM) & Fatigue Analysis',
   'STAAD.Pro 3D Structural Frame Analysis',
   'Refractory Insulation Anchor & Hook Layout Design',
@@ -62,7 +62,7 @@ export default function Expertise() {
 
   return (
     <div className="w-full">
-      <PageMeta title="Our Services" description="Explore SLS Consultants' engineering services: structural design, fired heater packages (API 560), RLA studies, FEM analysis, Tekla steel detailing, and project consultancy for refineries and petrochemical plants." />
+      <PageMeta title="Our Services" description="Explore SLS Structo-Mech Consultants' engineering services: structural design, fired heater packages, RLA studies, FEM analysis, Tekla steel detailing, and project consultancy for refineries and petrochemical plants." />
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
@@ -155,10 +155,6 @@ export default function Expertise() {
                       if (!specs) return null;
                       return (
                         <div className="mt-2 mb-6 border-t border-gray-100 pt-4 space-y-2 text-xs text-left">
-                          <div>
-                            <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block">Codes & Compliance</span>
-                            <span className="font-semibold text-gray-700">{specs.codes}</span>
-                          </div>
                           <div>
                             <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block">Design Environment</span>
                             <span className="font-semibold text-gray-700">{specs.software}</span>

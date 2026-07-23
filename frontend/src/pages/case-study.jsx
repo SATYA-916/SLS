@@ -48,7 +48,7 @@ export function getThreeModelIdForProject(project) {
     case 32: return 'steel-chimney';           // RLA of Steel Chimneys - Bhadrachalam
     case 33: return 'air-duct';                // SOFA Ducting & Air Heater Design
     case 34: return 'boiler-house-frame';      // 2X100 TPH Boiler House Structures
-    case 51: return 'air-duct';                // TANDA Thermal - Back End Duct
+    case 51: return 'air-duct';                // TANDA Power - Back End Duct
     case 35: return 'hds-heater';              // Box Heaters - HPCL Mumbai
     case 36: return 'dhdt-heater';             // Cylindrical Fired Heater - BORL Bina
     case 37: return 'dhdt-heater';             // Cylindrical Heaters - CPCL Chennai
@@ -202,7 +202,7 @@ const PROJECT_DRAWINGS = {
       file: "evaporator_purlin.png",
       title: "Roof Purlins & Connections",
       ref: "SLS-1011-16-PR-13",
-      desc: "Roof purlin girt spacings, cleats, eaves struts, and thermal expansion joints under cladding.",
+      desc: "Roof purlin girt spacings, cleats, eaves struts, and expansion joints under cladding.",
       modelId: "evaporator-structure"
     },
     {
@@ -283,7 +283,7 @@ const PROJECT_DRAWINGS = {
       file: "hds_parts_sheet1.png",
       title: "HDS Heater - Pressure Parts GA",
       ref: "6879-212-05-42-1202",
-      desc: "Thermal coil sizing layouts, crossover pipe configurations, design parameters (pressures/temps), and hydrotest specs.",
+      desc: "Process coil sizing layouts, crossover pipe configurations, design parameters (pressures/temps), and hydrotest specs.",
       modelId: "complete-heater"
     },
     {
@@ -575,25 +575,20 @@ function getProjectTechnicalSpecs(proj) {
   const desc = proj.description || '';
 
   const specs = {
-    codes: 'IS 800 (Structural Design), IS 456 (Concrete)',
     software: 'AutoCAD, STAAD.Pro',
     deliverables: 'Structural design calculations & construction fabrication details'
   };
 
   if (category === 'Fired Heaters' || title.toLowerCase().includes('heater') || desc.toLowerCase().includes('heater')) {
-    specs.codes = 'API 560 (Fired Heaters), API 530 (Tube Thickness Calc), ASME Section VIII (Pressure Parts)';
-    specs.software = 'AutoCAD, STAAD.Pro, ANSYS (FEA Thermal Modeling)';
-    specs.deliverables = 'Thermal & Structural Calculations, General Arrangement & Shell Detail Drawings, Nozzle Load Verification Reports';
+    specs.software = 'AutoCAD, STAAD.Pro, ANSYS (FEA Structural Modeling)';
+    specs.deliverables = 'Structural Calculations, General Arrangement & Shell Detail Drawings, Nozzle Load Verification Reports';
   } else if (category === 'Cryogenic Plants' || desc.toLowerCase().includes('cryogenic') || desc.toLowerCase().includes('cold box')) {
-    specs.codes = 'ASME Section VIII Div 1, AD 2000, IS 1893 (Seismic Design)';
     specs.software = 'STAAD.Pro, ANSYS (Dynamic foundation FEA)';
     specs.deliverables = 'Heavy Dynamic Foundation design reports, Anchor Bolt layout drawings, RCC Pile load capacity analysis';
   } else if (category === 'Boilers & Chimneys' || title.toLowerCase().includes('stack') || title.toLowerCase().includes('chimney') || desc.toLowerCase().includes('chimney')) {
-    specs.codes = 'IS 6533 (Steel Chimneys), IS 875 Part 3 (Wind Loads), ASME STS-1 (Steel Stacks)';
     specs.software = 'AutoCAD, STAAD.Pro (Finite element chimney shell model)';
     specs.deliverables = 'Vortex shedding dynamic analysis reports, Helical strake layout sheets, Foundation reaction reports';
   } else if (category === 'Special Structures' || desc.toLowerCase().includes('shield') || desc.toLowerCase().includes('fixture')) {
-    specs.codes = 'ASME Section VIII, AISC 360, IS 800 (Steel structures)';
     specs.software = 'AutoCAD, ANSYS (Lifting & structural integrity FEA)';
     specs.deliverables = 'Radiographic cordoning shielding design sheets, Heavy lifting rigging plans, FEA structural stress verification reports';
   }
@@ -630,7 +625,7 @@ export default function CaseStudy() {
     <div className="w-full bg-white">
       <PageMeta
         title={`${project.title} — Case Study`}
-        description={`Read the full structural engineering case study for "${project.title}" by SLS Consultants. Challenge description, design solutions, applicable codes, and engineering drawings.`}
+        description={`Read the full structural engineering case study for "${project.title}" by SLS Structo-Mech Consultants. Challenge description, design solutions, and engineering drawings.`}
       />
 
       <section className="bg-slate-50 border-b border-slate-200 py-12">
@@ -715,10 +710,6 @@ export default function CaseStudy() {
                 </h3>
 
                 <div className="space-y-6">
-                  <div>
-                    <span className="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-1">Applicable Codes</span>
-                    <span className="text-xs font-medium text-gray-700 leading-relaxed block">{specs.codes}</span>
-                  </div>
                   <div>
                     <span className="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-1">Design Software</span>
                     <span className="text-xs font-medium text-gray-700 leading-relaxed block">{specs.software}</span>

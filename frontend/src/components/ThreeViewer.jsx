@@ -8,7 +8,7 @@ const HOTSPOTS_DATA = {
     { id: 2, pos: { x: 0, y: -2, z: 1.5 }, title: 'Radiant Firebox', text: 'Refractory-lined lower chamber where process coils absorb high radiant heat fluxes.' },
     { id: 3, pos: { x: -1.5, y: 1.5, z: 1.5 }, title: 'Tube Header Boxes', text: 'Side return enclosures with quick-open hinges for decoking inspections.' },
     { id: 4, pos: { x: 1.5, y: 0.0, z: -1.5 }, title: 'Burner Plenum Assembly', text: 'Secondary combustion air chamber distribution system at bottom floor.' },
-    { id: 5, pos: { x: 0, y: 1.8, z: 1.5 }, title: 'Refractory Lining Deck', text: 'Thermal dividing deck lined with ceramic fiber modules for heat retention.' },
+    { id: 5, pos: { x: 0, y: 1.8, z: 1.5 }, title: 'Refractory Lining Deck', text: 'Insulating dividing deck lined with ceramic fiber modules for heat retention.' },
     { id: 6, pos: { x: 0, y: -4.5, z: 0 }, title: 'Fuel Gas Manifolds', text: 'Distribution piping supplying fuel gas to bottom-mounted burners.' }
   ],
   stack: [
@@ -20,14 +20,14 @@ const HOTSPOTS_DATA = {
     { id: 6, pos: { x: 0, y: 11.2, z: 0 }, title: 'Rain Hood & Screen', text: 'Top exhaust opening fitted with mesh screen to prevent weather ingress.' }
   ],
   offtake: [
-    { id: 1, pos: { x: 0, y: 1.5, z: 1.2 }, title: 'Expansion joints bellows', text: 'Absorbs vertical and lateral thermal movements between stack and convection section.' },
+    { id: 1, pos: { x: 0, y: 1.5, z: 1.2 }, title: 'Expansion joints bellows', text: 'Absorbs vertical and lateral structural movements between stack and convection section.' },
     { id: 2, pos: { x: 1.2, y: 0.5, z: 1.0 }, title: 'Breeching casing plates', text: 'Internal insulating castable lining designed to withstand hot flue gas flows.' },
     { id: 3, pos: { x: -1.0, y: -0.5, z: -1.0 }, title: 'Rigging lifting lugs', text: 'Heavy crane hook points calculated with 2.0x dynamic load safety factors.' },
     { id: 4, pos: { x: 0, y: 0.8, z: -1.2 }, title: 'Internal insulation liners', text: 'High-alloy anchor arrays securing monolithic ceramic blanket blocks.' }
   ],
   radiant: [
     { id: 1, pos: { x: 0, y: 1.5, z: 1.8 }, title: 'Vertical process coils', text: 'High-alloy tube bundle designed for high temperatures conforming to API 530.' },
-    { id: 2, pos: { x: 1.8, y: -1.0, z: 1.5 }, title: 'Coil Hanger Brackets', text: 'Heat-resistant casting support hangers detailed to handle tube thermal growth.' },
+    { id: 2, pos: { x: 1.8, y: -1.0, z: 1.5 }, title: 'Coil Hanger Brackets', text: 'Heat-resistant casting support hangers detailed to handle tube expansion growth.' },
     { id: 3, pos: { x: -1.5, y: 0.0, z: 1.5 }, title: 'Skin Thermocouples', text: 'Precision temperature sensor sockets welded to coil outer boundaries.' },
     { id: 4, pos: { x: 0, y: -2.5, z: -1.2 }, title: 'Refractory Floor blocks', text: 'Monolithic high-alumina block segments lined to insulate steel plates.' },
     { id: 5, pos: { x: 0, y: -3.2, z: 0 }, title: 'Burner Openings', text: 'Accurately detailed burner sleeves fitted with refractory throat rings.' },
@@ -37,12 +37,12 @@ const HOTSPOTS_DATA = {
     { id: 1, pos: { x: 0, y: 0, z: 1.2 }, title: 'Burner mounting sleeve', text: 'A36 floor casing plate cutout detailed to secure vertically-fired gas burners.' },
     { id: 2, pos: { x: 1.5, y: -0.8, z: 1.5 }, title: 'Air register plenum', text: 'Plenum chamber ensuring uniform distribution of secondary combustion air.' },
     { id: 3, pos: { x: -1.2, y: -0.5, z: -1.2 }, title: 'Air register levers', text: 'Secondary draft control arms regulating fresh combustion air intake.' },
-    { id: 4, pos: { x: 0.8, y: 0.2, z: -0.8 }, title: 'Refractory seal castable', text: 'Thermal seal barrier around burner neck joints to prevent heat leaks.' }
+    { id: 4, pos: { x: 0.8, y: 0.2, z: -0.8 }, title: 'Refractory seal castable', text: 'Refractory seal barrier around burner neck joints to prevent heat leaks.' }
   ],
   headerbox: [
     { id: 1, pos: { x: -1.8, y: 1.0, z: 1.2 }, title: 'Quick-open access doors', text: 'Allows routine tube decoking and mechanical cleaning inspections.' },
     { id: 2, pos: { x: 0, y: -1.0, z: 1.5 }, title: 'Tube return bends (U-bends)', text: 'Process return fittings enclosed to prevent hazardous flue gas leakage.' },
-    { id: 3, pos: { x: 1.8, y: 0.5, z: -1.2 }, title: 'Thermal seal packing', text: 'Insulating rope seals fitted to prevent flue gas escaping to casing sides.' },
+    { id: 3, pos: { x: 1.8, y: 0.5, z: -1.2 }, title: 'Refractory seal packing', text: 'Insulating rope seals fitted to prevent flue gas escaping to casing sides.' },
     { id: 4, pos: { x: -0.8, y: -0.5, z: 0.8 }, title: 'Heavy duty toggle clamps', text: 'Toggle latch anchors locking the door panels securely against draft pressure.' }
   ],
   archplate: [
@@ -142,7 +142,7 @@ const HOTSPOTS_DATA = {
   dhdt: [
     { id: 1, pos: { x: 0, y: -2, z: 1.5 }, title: 'DHDT Radiant Zone', text: 'Refractory-lined lower firebox chamber where alloy tube coils absorb intense radiant heat.' },
     { id: 2, pos: { x: 0, y: 5.5, z: 1.5 }, title: 'EIL Convection Module', text: 'Upper waste heat recovery bank using finned tube bundles, conforming to EIL specs.' },
-    { id: 3, pos: { x: 0, y: 1.5, z: 1.0 }, title: 'DHDT Process Coils', text: 'High-alloy TP347H process tube loops designed for thermal expansion under API 530.' },
+    { id: 3, pos: { x: 0, y: 1.5, z: 1.0 }, title: 'DHDT Process Coils', text: 'High-alloy TP347H process tube loops designed for operating expansion.' },
     { id: 4, pos: { x: 0, y: 11.5, z: 0 }, title: 'EIL Exhaust Stack', text: 'Self-supporting stack fitted with helical wind strakes to mitigate vortex shedding.' },
     { id: 5, pos: { x: -1.6, y: 5.5, z: 0 }, title: 'Header Access Box', text: 'Return bend enclosures featuring quick-open hinged doors for decoking sweeps.' },
     { id: 6, pos: { x: 1.8, y: -4.8, z: 1.8 }, title: 'Column Base Plates', text: 'Heavy anchor plates securing structural columns against cyclonic wind forces.' }
@@ -156,7 +156,7 @@ const HOTSPOTS_DATA = {
     { id: 6, pos: { x: 1.8, y: 0.8, z: -1.8 }, title: 'Moment Frame Connections', text: 'Heavy bolted structural beam-to-column joints providing high wind resistance.' }
   ],
   default: [
-    { id: 1, pos: { x: 0, y: 2.5, z: 1.8 }, title: 'Refinery Section Coils', text: 'High-alloy convection tubes complying with API 560 thermal expansion limits.' },
+    { id: 1, pos: { x: 0, y: 2.5, z: 1.8 }, title: 'Refinery Section Coils', text: 'High-alloy convection tubes complying with structural expansion limits.' },
     { id: 2, pos: { x: 1.5, y: -2, z: 1.5 }, title: 'Structural Support Bracket', text: 'Detailed base plates carrying full dead loads of structural modules.' },
     { id: 3, pos: { x: -1.5, y: 0.5, z: -1.5 }, title: 'Piping support anchor', text: 'Adjustable spring hanger anchors supporting hot process lines.' },
     { id: 4, pos: { x: 0.8, y: -1.0, z: 0.8 }, title: 'Wind girder brackets', text: 'Horizontal stiffener members protecting shell from vacuum buckling.' }

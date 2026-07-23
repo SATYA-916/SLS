@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense, Component } from 'react';
+import { useEffect, lazy, Suspense, Component } from 'react';
 import { Switch, Route, useLocation } from 'wouter';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
@@ -12,7 +12,6 @@ const About = lazy(() => import('@/pages/about'));
 const Expertise = lazy(() => import('@/pages/expertise'));
 const Projects = lazy(() => import('@/pages/projects'));
 const CaseStudy = lazy(() => import('@/pages/case-study'));
-const CodesDirectory = lazy(() => import('@/pages/codes-directory'));
 const Software = lazy(() => import('@/pages/software'));
 const Contact = lazy(() => import('@/pages/contact'));
 const Gallery = lazy(() => import('@/pages/gallery'));
@@ -100,9 +99,6 @@ function Router() {
             <Route path="/projects">
               <Layout><Projects /></Layout>
             </Route>
-            <Route path="/codes">
-              <Layout><CodesDirectory /></Layout>
-            </Route>
             <Route path="/gallery">
               <Layout><Gallery /></Layout>
             </Route>
@@ -138,78 +134,6 @@ function Router() {
 }
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return sessionStorage.getItem('temp_auth') === 'true';
-  });
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (username.trim() === 'sls' && password === 'pwd') {
-      sessionStorage.setItem('temp_auth', 'true');
-      setIsAuthenticated(true);
-      setError('');
-    } else {
-      setError('Invalid username or password');
-    }
-  };
-
-  if (!isAuthenticated) {
-    return (
-      <main className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-white border border-slate-100 shadow-2xl p-8 rounded-sm text-[#0a1628]">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-black tracking-wider uppercase mb-2">SLS Consultants</h1>
-            <p className="text-xs font-bold uppercase tracking-widest text-slate-700">Engineering Portal Access</p>
-          </div>
-          
-          <form onSubmit={handleLogin} className="space-y-6">
-            {error && (
-              <div className="bg-red-50 border-l-2 border-red-500 text-red-700 p-3 text-xs font-medium rounded-sm">
-                {error}
-              </div>
-            )}
-            
-            <div className="space-y-2">
-              <label htmlFor="temp-username" className="text-[10px] font-black uppercase tracking-wider text-slate-600 block">Username</label>
-              <input
-                id="temp-username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter username"
-                className="w-full px-4 py-3 text-sm border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0a1628] focus:outline-none focus:ring-1 focus:ring-[#0a1628]/20 transition-all rounded-sm"
-                required
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <label htmlFor="temp-password" className="text-[10px] font-black uppercase tracking-wider text-slate-600 block">Password</label>
-              <input
-                id="temp-password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                className="w-full px-4 py-3 text-sm border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0a1628] focus:outline-none focus:ring-1 focus:ring-[#0a1628]/20 transition-all rounded-sm"
-                required
-              />
-            </div>
-            
-            <button
-              type="submit"
-              className="w-full bg-[#0a1628] text-white py-3 text-xs font-bold uppercase tracking-widest hover:bg-[#12233c] transition-colors rounded-sm shadow-md"
-            >
-              Sign In
-            </button>
-          </form>
-        </div>
-      </main>
-    );
-  }
-
   return (
     <QueryClientProvider client={queryClient}>
       <Router />

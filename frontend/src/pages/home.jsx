@@ -83,21 +83,18 @@ const SPOTLIGHT_META = {
     threeId: 'evaporator-structure',
     blueprintRef: 'SLS-1011-16-GA-01',
     drawingFile: 'evaporator_ga.png',
-    codes: 'IS 800 (Structural Design), IS 1893 (Seismic Loads)',
     software: 'AutoCAD, STAAD.Pro, Tekla Structures'
   },
   49: {
     threeId: 'dhdt-heater',
     blueprintRef: 'EIL-6879-211-05-42-0102',
     drawingFile: 'eil_ga_sheet1.png',
-    codes: 'API 560 (Fired Heaters), API 530, ASME Sec VIII',
-    software: 'STAAD.Pro, AutoCAD, ANSYS (FEA Thermal)'
+    software: 'STAAD.Pro, AutoCAD, ANSYS (FEA Structural)'
   },
   50: {
     threeId: 'hds-heater',
     blueprintRef: 'EIL-6879-212-05-42-1202',
     drawingFile: 'hds_convection_sheet1.png',
-    codes: 'API 560 (Fired Heaters), ASME Sec VIII, EIL Specs',
     software: 'STAAD.Pro, AutoCAD, ANSYS (FEA Structural)'
   }
 };
@@ -187,8 +184,8 @@ export default function Home() {
   return (
     <div className="w-full bg-white">
       <PageMeta
-        title="SLS Nexus | Engineering &amp; Detailing Portal"
-        description="SLS Nexus (by SLS Consultants) — The central engineering portal for structural, mechanical, and industrial engineering since 2002. Fired heater design, RLA studies, FEM analysis, Tekla steel detailing. Based in Visakhapatnam."
+        title="SLS Solutions | Engineering & Detailing Portal"
+        description="SLS Structo-Mech Consultants (SLS Vizag / SLS India) — Engineering, Project Consulting, Special Products Design & Manufacturing, RLA Studies, and Laisoning. Established 2002, Visakhapatnam. Cost effective quality solutions for clients in India and abroad."
       />
 
       {/* 1. HERO & STATS COMBINED */}
@@ -220,11 +217,10 @@ export default function Home() {
             <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 mb-5">
               SLS Nexus | Engineering Excellence Since 2002
             </span>
-            <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-6">
-              Multidisciplinary Industrial Engineering &amp; Global Solutions
-            </h1>
+            <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-2">SLS Solutions</h1>
+            <p className="text-sm text-slate-500 mb-6">Core Engineering Services, AI Data, AI Products</p>
             <p className="text-slate-600 text-sm leading-relaxed mb-8 max-w-xl">
-              Led by ex-BHEL and ex-Doosan Babcock expert Mr. C. Subrahmanyam since 2002, SLS Nexus delivers high-fidelity engineering, project consulting, and RLA studies. Guided by our comprehensive corporate profile, our services range from API 560 fired heaters, boilers, heat exchangers, and storage vessels to dynamic foundations, chimneys, and piping stress analysis. We also pioneer custom Software &amp; AI Solutions, developing custom CAD/Tekla automation plugins and digital systems.
+              Led by principal expertise with 43 years of experience, SLS Structo-Mech Consultants provides specialized core engineering service solutions, AI data analytics, and custom AI products. From fired heaters, boilers, and storage vessels to dynamic foundations and steel detailing, our team delivers high-fidelity engineering drawings and project consultancy.
             </p>
 
             {/* Inline Animated Stats Counter inside Hero */}
@@ -289,7 +285,7 @@ export default function Home() {
             <div className="max-w-xl">
               <span className="text-[9px] font-bold uppercase tracking-widest text-[#43648e] block mb-2">Our Profile</span>
               <p className="text-[#0a1628] text-sm md:text-base leading-relaxed mb-4">
-                Established in 2002, SLS Consultants provides premium structural design, stress analysis, and steel detailing solutions for heavy industrial refineries, boilers, and petrochemical facilities across India and global markets.
+                Established in 2002, SLS Structo-Mech Consultants provides all engineering solutions to various clients in India and abroad.
               </p>
               <div className="flex flex-wrap gap-4 items-center">
                 <Link href="/about">
@@ -339,7 +335,7 @@ export default function Home() {
               <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Why Choose SLS</p>
               <h2 className="text-3xl font-bold text-[#0a1628] mb-4">The SLS Advantage</h2>
               <p className="text-sm text-slate-500 max-w-xl mx-auto leading-relaxed">
-                We aren't a generalist firm. Everything we do is centred around one domain: heavy industrial engineering — where standards are strict and margins for error are zero.
+                SLS is committed to deliver COST EFFECTIVE QUALITY SOLUTIONS. The products and services shall meet or exceed clients expectation.
               </p>
             </div>
           </AnimatedSection>
@@ -347,23 +343,23 @@ export default function Home() {
             {[
               {
                 icon: <ShieldCheck className="w-8 h-8" />,
-                title: 'Founder-Led Technical Depth',
-                desc: 'Every project is supervised by Mr. C. Subrahmanyam — 18 years at BHEL + Doosan Babcock. No junior hand-off, no diluted expertise.'
+                title: 'Expert-Led Engineering Team',
+                desc: 'Every project is executed by a highly experienced, multi-disciplinary engineering and detailing staff under the principal leadership of Mr. C. Subrahmanyam (43+ years of experience, ex-BHEL & ex-Doosan Babcock).'
               },
               {
                 icon: <Layers className="w-8 h-8" />,
                 title: 'Multi-Discipline Under One Roof',
-                desc: 'Structural, mechanical, thermal, and steel detailing in one coordinated team. No coordination delays between sub-vendors.'
+                desc: 'Structural, mechanical, piping, and steel detailing in one coordinated team. No coordination delays between sub-vendors.'
               },
               {
                 icon: <Briefcase className="w-8 h-8" />,
-                title: 'Code-Compliant Deliverables',
-                desc: 'All drawings and calculations produced under API 560, ASME Section VIII/I, IS 800, IS 6533, and EIL specifications.'
+                title: 'Advanced BIM & CAD Automation',
+                desc: 'We leverage state-of-the-art detailing software (Tekla, AutoCAD) and custom AI/software macros to ensure clash-free structural models and automated member detailing.'
               },
               {
                 icon: <CheckCircle2 className="w-8 h-8" />,
                 title: '500+ Projects Delivered',
-                desc: 'Consistent track record for HPCL, L&T, BHEL, Air Liquide, and Doosan Babcock with zero statutory approvals failures.'
+                desc: 'Our experienced engineering team has successfully delivered 500+ projects across heavy process industries with zero failure rates.'
               }
             ].map((item, idx) => (
               <motion.div
@@ -450,7 +446,7 @@ export default function Home() {
               <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-700 mb-3">Case Study Spotlight</p>
               <h2 className="text-3xl font-bold text-[#0a1628]">Project Case Study in Focus</h2>
               <p className="text-xs text-gray-500 max-w-xl mx-auto mt-2 leading-relaxed">
-                Highlighting our specialized mechanical detailing, structural design, and code compliance work. Reload the page to view a different case study focus.
+                Highlighting our specialized mechanical detailing and structural design work. Reload the page to view a different case study focus.
               </p>
             </div>
           </AnimatedSection>
@@ -504,13 +500,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 border-t border-gray-200 pt-4 mb-6">
-                    <div>
-                      <span className="text-[8px] font-black uppercase text-slate-400 tracking-wider block">Applicable Codes</span>
-                      <span className="text-[10px] font-semibold text-slate-700 mt-0.5 block leading-tight">
-                        {SPOTLIGHT_META[spotlightProject.id].codes}
-                      </span>
-                    </div>
+                  <div className="border-t border-gray-200 pt-4 mb-6">
                     <div>
                       <span className="text-[8px] font-black uppercase text-slate-400 tracking-wider block">Design Software</span>
                       <span className="text-[10px] font-semibold text-slate-700 mt-0.5 block leading-tight">
@@ -715,7 +705,7 @@ export default function Home() {
               <span className="text-[#43648e]">Let's Engineer It Together.</span>
             </h2>
             <p className="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-10 leading-relaxed">
-              Share your project scope, connection codes, or drawing layouts with us. Our engineers will review your requirements and coordinate a technical proposal.
+              Share your project scope or drawing layouts with us. Our engineers will review your requirements and coordinate a technical proposal.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link href="/contact">

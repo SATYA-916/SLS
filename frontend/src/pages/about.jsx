@@ -21,7 +21,7 @@ const milestones = [
 export default function About() {
   return (
     <div className="w-full">
-      <PageMeta title="About Us" description="Learn about SLS Consultants — founded in 2002 by Ex-BHEL Principal Engineer Mr. C. Subrahmanyam. 20+ years of structural, mechanical, and industrial engineering excellence." />
+      <PageMeta title="About Us" description="Learn about SLS Structo-Mech Consultants — led by principal expertise with 43 years of experience. We provide multidisciplinary engineering solutions in India and abroad." />
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
@@ -48,10 +48,10 @@ export default function About() {
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             <h2 className="text-3xl font-bold text-[#0a1628] mb-6">Our Story</h2>
             <p className="text-gray-500 mb-4 leading-relaxed">
-              SLS Consultants was established in 2002 by Mr. C. Subrahmanyam in Visakhapatnam, Andhra Pradesh, following 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
+              SLS Structo-Mech Consultants was established in 2002 in Visakhapatnam, Andhra Pradesh, led by principal expertise with 43 years of experience, including 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
             </p>
             <p className="text-gray-500 mb-4 leading-relaxed">
-              From its inception, SLS has been driven by a singular vision: to deliver cost-effective, quality engineering solutions that meet or exceed client expectations. The firm specialises in structural engineering, industrial project consultancy, FEM analysis, remaining life assessments (RLA), and comprehensive steel detailing.
+              From its inception, SLS has been driven by a singular vision: to deliver cost-effective, quality engineering solutions. Our firm operates with a highly experienced multi-disciplinary team of engineers, designers, and detailers specializing in structural engineering, industrial project consultancy, mechanical engineering, remaining life assessments (RLA), and comprehensive steel detailing.
             </p>
             <p className="text-gray-500 leading-relaxed">
               Over two decades, SLS has successfully delivered 500+ projects across India and internationally — for clients including L&T, BHEL, HPCL, Doosan Babcock, Air Liquide, and Petron Engineering.
@@ -84,7 +84,7 @@ export default function About() {
                 </div>
                 <div className="flex items-center gap-2 text-slate-600">
                   <Clock className="w-4 h-4 text-[#43648e] shrink-0" />
-                  <span>20+ Years heading SLS Consultants</span>
+                  <span>20+ Years heading SLS Structo-Mech Consultants</span>
                 </div>
               </div>
               <div className="border-t border-slate-200 pt-6">

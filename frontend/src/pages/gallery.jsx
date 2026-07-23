@@ -65,7 +65,7 @@ const drawings = [
   { 
     title: "Convection Intermediate Tube Support", 
     file: "convection_sheet3.png", 
-    desc: "Thermal analysis support plates and intermediate baffles to prevent tube sagging at high flue temperatures.", 
+    desc: "Intermediate support plates and intermediate baffles to prevent tube sagging at high flue temperatures.", 
     code: "ASME Sec VIII / EIL Spec",
     service: "Industrial Fired Heater Engineering"
   },
@@ -284,7 +284,7 @@ const drawings = [
   { 
     title: "HDS Radiant Coil Hanger Assemblies", 
     file: "hds_radiant_sheet2.png", 
-    desc: "High-alloy casting support hooks and coil guides designed to accommodate vertical thermal growth.", 
+    desc: "High-alloy casting support hooks and coil guides designed to accommodate vertical growth.", 
     code: "ASME Sec VIII / API 560",
     service: "Industrial Fired Heater Engineering"
   },
@@ -484,7 +484,7 @@ const illustrations = [
     purpose: "Provides primary process fluid heating for high-capacity crude distillation and hydrotreating refinery units.",
     function: "Combustion energy from bottom-mounted burners is transferred to process fluids circulating through radiant and convection tube coils.",
     materials: "A36 Structural Steel, Refractory Lining, High-Alloy Piping (HP40/Grade 9), Carbon Steel Casing",
-    discipline: "Multi-disciplinary (Structural, Mechanical, Thermal, Piping)",
+    discipline: "Multi-disciplinary (Structural, Mechanical, Piping)",
     application: "Refineries, Chemical Plants, Petrochemical Facilities",
     scope: "Full-scale mechanical calculations, structural design, Tekla detailing, and connection design.",
     deliverables: "General Arrangement drawings, structural loading sheets, anchor bolt details, fabrication packages.",
@@ -513,12 +513,12 @@ const illustrations = [
     title: "Off-Take Duct",
     subtitle: "Breeching & Flue Gas Transition",
     description: "The transition duct system connecting the heater convection module top section with the stack chimney inlet.",
-    purpose: "Channels hot flue gas from the convection chamber to the exhaust chimney without thermal expansion stress.",
+    purpose: "Channels hot flue gas from the convection chamber to the exhaust chimney without expansion stress.",
     function: "Transition guide plates smooth flue gas flows and direct gas through expansion bellows.",
     materials: "Carbon Steel Casing plate, internal insulating castable, stainless steel anchors",
     discipline: "Mechanical & Flow Engineering",
     application: "DHDT and HDS fired heaters",
-    scope: "Thermal casing stress analysis, expansion joint sizing, internal support detailing.",
+    scope: "Structural casing stress analysis, expansion joint sizing, internal support detailing.",
     deliverables: "Duct plate layouts, expansion joint details, guide brackets, load tables.",
     threeType: "offtake",
     service: "Industrial Fired Heater Engineering",
@@ -532,7 +532,7 @@ const illustrations = [
     purpose: "Transfers maximum radiant heat from combustion flue gases directly into process fluids.",
     function: "Burners generate high radiant heat fluxes absorbed by vertical tubes lining the refractory chamber walls.",
     materials: "ASTM A312 TP347H / HP40 Mod tubes, Refractory lining (grade 26/28), SS310 anchors",
-    discipline: "Thermal & Metallurgy Engineering",
+    discipline: "Mechanical & Metallurgy Engineering",
     application: "Crude heating, hydrotreating process heaters",
     scope: "Tube wall thickness calculations, hanger alloy design, refractory anchor layout.",
     deliverables: "Radiant casing details, coil hanger layouts, skin thermocouple piping details.",
@@ -548,7 +548,7 @@ const illustrations = [
     purpose: "Supports combustion burners and controls air plenum distribution underneath the radiant zone.",
     function: "Directs combustion air registers and secures the burner plenum box assembly to the lower portal beams.",
     materials: "A36 Steel plate, High-temp floor castable insulation, SS304 seal components",
-    discipline: "Thermal & Structural Detailing",
+    discipline: "Mechanical & Structural Detailing",
     application: "Refineries, bottom-fired cylindrical heaters",
     scope: "Air register cutout detailing, floor beam structural joints, burner bolt circle layouts.",
     deliverables: "Plenum fabrication drawings, burner floor layouts, support steel details.",
@@ -578,12 +578,12 @@ const illustrations = [
     subtitle: "Chamber Separation Deck",
     description: "A structural dividing ring backed with refractory lining separating the high-temperature radiant box from the convection module zone.",
     purpose: "Directs flue gases from the radiant combustion chamber into the narrow convection tube bank.",
-    function: "Forms a tight thermal seal around the radiant-to-convection throat, protecting structural steel columns from local hot spots.",
+    function: "Forms a tight seal around the radiant-to-convection throat, protecting structural steel columns from local hot spots.",
     materials: "A36 Heavy steel plates, Ceramic fiber module packing, Stainless steel studs",
     discipline: "Mechanical & Refractory Design",
     application: "Cylindrical fired heaters",
-    scope: "Thermal expansion gap calculations, structural joint details, lift lug detailing.",
-    deliverables: "Arch plate segments, thermal seal drawings.",
+    scope: "Expansion gap calculations, structural joint details, lift lug detailing.",
+    deliverables: "Arch plate segments, refractory seal drawings.",
     threeType: "archplate",
     service: "Industrial Fired Heater Engineering",
     icon: "archplate"
@@ -596,7 +596,7 @@ const illustrations = [
     purpose: "Recovers residual convective heat from flue gases to preheat crude feed or generate steam.",
     function: "Horizontal tubes absorb heat from convective hot gases flowing upward from the radiant chamber throat.",
     materials: "ASTM A106 Gr B / A335 P9 tubes, Carbon Steel / Solid helical fins, A36 module box",
-    discipline: "Thermal & Piping Engineering",
+    discipline: "Mechanical & Piping Engineering",
     application: "Heater convection sections, steam superheaters",
     scope: "Finned tube pitch design, intermediate support plate spacing, flue gas velocity analysis.",
     deliverables: "Convection bundle detail plans, finned tube schedules, support plate drawings.",
@@ -626,7 +626,7 @@ const illustrations = [
     subtitle: "Primary Columns & Portal Bracing",
     description: "The primary structural steel columns, portal beams, and diagonal bracing that transmit gravity and lateral loads to the foundations.",
     purpose: "Transmits all vertical loads (dead/live) and horizontal forces (wind/seismic) to the foundation anchors.",
-    function: "Heavy structural portal frame stabilizes the 60-meter assembly against thermal, seismic, and wind loads.",
+    function: "Heavy structural portal frame stabilizes the 60-meter assembly against seismic and wind loads.",
     materials: "IS 2062 Gr B / ASTM A572 Gr 50 beams, ASTM A325 high-strength bolts",
     discipline: "Structural Analysis (STAAD.Pro)",
     application: "Industrial plant towers, refinery heater support steel",
@@ -656,13 +656,13 @@ const illustrations = [
     id: "roof-structure",
     title: "Refinery Roof Structure",
     subtitle: "Conical Shell & Rafters",
-    description: "A heavy structural steel roof canopy framing that seals the upper chamber and supports the stack load, designed for high thermal resistance and weathering.",
+    description: "A heavy structural steel roof canopy framing that seals the upper chamber and supports the stack load, designed for weathering.",
     purpose: "Seals the top of the radiant section and supports the chimney stack column load.",
     function: "Conical rafter system transfers the stack load down to the main columns while enclosing hot flue gases.",
     materials: "IS 2062 Structural steel rafters, A36 roof cover plate, insulating refractory",
     discipline: "Structural Engineering",
     application: "Bottom-supported chimney stacks, refinery roofs",
-    scope: "Stack base moment transfer calculations, thermal expansion joint designs.",
+    scope: "Stack base moment transfer calculations, expansion joint designs.",
     deliverables: "Roof rafter layouts, rafter connection details, center ring weld details.",
     threeType: "roof",
     service: "Civil & Structural Engineering",
@@ -774,7 +774,7 @@ const illustrations = [
     materials: "ASTM A36 Casing, Ceramic refractory block lining, SS310 studs",
     discipline: "Mechanical & Refractory Design",
     application: "Convection ducts, flue gas plenums",
-    scope: "Refractory anchor layouts, door hinge stress calculations, thermal seal designs.",
+    scope: "Refractory anchor layouts, door hinge stress calculations, refractory seal designs.",
     deliverables: "Fabricated door assemblies, door lock details, insulation layer schedules.",
     threeType: "breechingdoor",
     service: "Industrial Fired Heater Engineering",
@@ -997,7 +997,7 @@ const illustrations = [
     function: "Transfers boiler dead weights and lateral cyclonic loads to deep foundations.",
     materials: "IS 2062 Grade B Steel, high-tensile moment bolts",
     discipline: "Heavy Structural Steel Detailing",
-    application: "Thermal power plants, utility boilers",
+    application: "Power plants, utility boilers",
     scope: "Portal moment frames calculation, platform safety check under IS 800.",
     deliverables: "Steel columns detail sheets, platform floor plans, connection detail bundle.",
     threeType: "boiler_house",
@@ -1058,11 +1058,11 @@ const illustrations = [
     subtitle: "Industrial Flue Ducting",
     description: "Large rectangular air ducting with external angle rib stiffeners and double-convolution expansion joints.",
     purpose: "Transports hot combustion air from preheaters to boiler burners.",
-    function: "Absorbs horizontal thermal expansion movements via flexible bellows joints.",
+    function: "Absorbs horizontal expansion movements via flexible bellows joints.",
     materials: "ASTM A36 Casing plate, stainless steel bellows",
     discipline: "Ducting Mechanical Detailing",
     application: "Boiler burner piping, flue gas stacks",
-    scope: "Rib stiffener spacing design, bellows thermal expansion calculations.",
+    scope: "Rib stiffener spacing design, bellows expansion calculations.",
     deliverables: "Duct panel layouts, bellows attachment drawings, support bracket details.",
     threeType: "air_duct",
     service: "Industrial Fired Heater Engineering",
@@ -1142,7 +1142,7 @@ const illustrations = [
     materials: "SS310 anchor pins, A36 backing casing plate",
     discipline: "Refractory Detail Engineering",
     application: "Fired heater casing walls, convection box roofs",
-    scope: "Anchor spacing grid design, thermal calculations.",
+    scope: "Anchor spacing grid design, structural calculations.",
     deliverables: "Anchor layout drawings, welding details sheets, insulation bill of materials.",
     threeType: "refractory_anchor",
     service: "Refractory & Insulation Engineering",
@@ -1170,11 +1170,11 @@ const illustrations = [
     subtitle: "High-Temp Crossover Loop",
     description: "Hydrocarbon piping loops with 180-degree expansion bends connecting convection and radiant heater zones.",
     purpose: "Channels preheated feedstocks from convection modules to radiant zones.",
-    function: "Expansion loops absorb high thermal pipe growth.",
+    function: "Expansion loops absorb high pipe growth.",
     materials: "TP347H stainless steel piping, alloy expansion elbow fittings",
     discipline: "Process Piping Stress Detailing",
     application: "Fired heater interconnecting piping",
-    scope: "Piping thermal stress analysis, spring hanger selections.",
+    scope: "Piping stress analysis, spring hanger selections.",
     deliverables: "Crossover piping isometric blueprints, hanger schedule, weld logs.",
     threeType: "crossover_piping",
     service: "Piping Support & Structural Support Design",
@@ -1302,7 +1302,7 @@ const illustrations = [
     materials: "Incoloy 800H tip shell, high-alloy burner assemblies",
     discipline: "Specialized Mechanical Design",
     application: "Emergency relief stacks, gas flare systems",
-    scope: "Tip thermal expansion checks, nozzle load analysis.",
+    scope: "Tip expansion checks, nozzle load analysis.",
     deliverables: "Flare tip mechanical assembly sheets, ignition line details.",
     threeType: "flare_tip",
     service: "Chimney & Stack Engineering",
@@ -1317,7 +1317,7 @@ const illustrations = [
     function: "Rotates slowly through flue and air ducts to transfer heat.",
     materials: "Corten steel rotor plates, alloy baskets cells",
     discipline: "Rotary Equipment Structural Design",
-    application: "Thermal boilers air recovery systems",
+    application: "Utility boilers air recovery systems",
     scope: "Rotor diaphragms stress checks, hub bearing alignment detailing.",
     deliverables: "Rotor sector detailing drawing, hub machining details.",
     threeType: "preheater_rotor",
@@ -1387,7 +1387,7 @@ const workflows = [
       },
       { 
         name: "Engineering", 
-        desc: "Execute thermal design calculations using API 530 guidelines to determine tube skin temperatures and wall thicknesses. Concurrently, build a full 3D frame model in STAAD.Pro to evaluate structural members under dead, live, wind, and seismic loads." 
+        desc: "Execute structural design calculations. Concurrently, build a full 3D frame model in STAAD.Pro to evaluate structural members under dead, live, wind, and seismic loads." 
       },
       { 
         name: "Approval", 
@@ -1412,7 +1412,7 @@ const workflows = [
     steps: [
       { 
         name: "Process Specs", 
-        desc: "Define the fired heater process requirements, including feed fluid chemistry, inlet/outlet pressures, operating temperatures, thermal duty, and flue gas draft conditions. This formulates the baseline mechanical sizing." 
+        desc: "Define the fired heater process requirements, including feed fluid chemistry, inlet/outlet pressures, operating temperatures, operating duty, and flue gas draft conditions. This formulates the baseline mechanical sizing." 
       },
       { 
         name: "Layout Review", 
@@ -1432,7 +1432,7 @@ const workflows = [
       },
       { 
         name: "Commissioning Support", 
-        desc: "Provide on-site support for burner firing tests, draft fan damper calibration, and refractory dry-out heating cycles. We review thermal expansion benchmarks and deliver as-built drawing documentation." 
+        desc: "Provide on-site support for burner firing tests, draft fan damper calibration, and refractory dry-out heating cycles. We review expansion benchmarks and deliver as-built drawing documentation." 
       }
     ]
   },
@@ -1441,11 +1441,11 @@ const workflows = [
     steps: [
       { 
         name: "Sizing Draft", 
-        desc: "Incorporate process thermal duties to draft the initial tube layout, radiant coil pitch, convective tube spacing, and initial structural column footprint, creating a raw mechanical arrangement envelope." 
+        desc: "Incorporate process duties to draft the initial tube layout, radiant coil pitch, convective tube spacing, and initial structural column footprint, creating a raw mechanical arrangement envelope." 
       },
       { 
         name: "Internal Audit", 
-        desc: "Conduct a multi-disciplinary peer check where lead structural and mechanical engineers audit load assumptions, thermal parameters, wind loading profiles, material grades, and calculation codes." 
+        desc: "Conduct a multi-disciplinary peer check where lead structural and mechanical engineers audit load assumptions, operating parameters, wind loading profiles, material grades, and calculation codes." 
       },
       { 
         name: "Client Workshop", 
@@ -1573,7 +1573,7 @@ const workflows = [
       },
       { 
         name: "Alignment Check", 
-        desc: "Inspect structural vertical alignment (plumb check) and thermal expansion gaps for headers and ducts, confirming all parts can expand freely under operation." 
+        desc: "Inspect structural vertical alignment (plumb check) and expansion gaps for headers and ducts, confirming all parts can expand freely under operation." 
       },
       { 
         name: "Final Inspection", 
@@ -1602,7 +1602,7 @@ const workflows = [
       },
       { 
         name: "Refractory Layouts", 
-        desc: "Deliver complete refractory details specifying brick linings, insulating castable layers, thermal ceramic boards, and anchor pin arrangements." 
+        desc: "Deliver complete refractory details specifying brick linings, insulating castable layers, insulating ceramic boards, and anchor pin arrangements." 
       },
       { 
         name: "As-Built Records", 
