@@ -21,7 +21,9 @@ const milestones = [
 export default function About() {
   return (
     <div className="w-full">
-      <PageMeta title="About Us" description="Learn about SLS Structo-Mech Consultants — led by principal expertise with 43 years of experience. We provide multidisciplinary engineering solutions in India and abroad." />
+      <PageMeta title="About Us" description="Learn about SLS Structo-Mech Consultants — led by 43+ years of engineering expertise. We provide multidisciplinary engineering solutions in India and abroad." />
+      
+      {/* 1. HERO SECTION */}
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
@@ -35,10 +37,13 @@ export default function About() {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">About SLS</p>
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight max-w-2xl text-[#0a1628]">
-              Engineering Excellence. Driven by Innovation.
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">About Us</p>
+            <h1 className="text-5xl md:text-6xl font-bold max-w-2xl leading-tight mb-4 text-[#0a1628]">
+              Engineering Excellence Since 2002
             </h1>
+            <p className="text-slate-600 text-sm md:text-base max-w-2xl leading-relaxed">
+              SLS Structo-Mech Consultants was established in 2002 in Visakhapatnam, Andhra Pradesh, led by 43+ years of engineering expertise, including 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
+            </p>
           </motion.div>
         </div>
       </section>
