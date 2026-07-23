@@ -335,7 +335,7 @@ export default function Home() {
               <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Why Choose SLS</p>
               <h2 className="text-3xl font-bold text-[#0a1628] mb-4">The SLS Advantage</h2>
               <p className="text-sm text-slate-500 max-w-xl mx-auto leading-relaxed">
-                SLS is committed to deliver COST EFFECTIVE QUALITY SOLUTIONS. The products and services shall meet or exceed clients expectation.
+                Delivering exceptional solutions that go beyond client expectations
               </p>
             </div>
           </AnimatedSection>
