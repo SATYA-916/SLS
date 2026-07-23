@@ -81,13 +81,9 @@ function getInitialMessageForService(serviceName) {
 export default function Contact() {
   const { openPopup } = useCalendly();
   const [submitted, setSubmitted] = useState(false);
-  const [file, setFile] = useState(null);
-  const fileInputRef = useRef(null);
   const serviceSelectRef = useRef(null);
   const formContainerRef = useRef(null);
   const [highlightForm, setHighlightForm] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [isUploading, setIsUploading] = useState(false);
 
   const handleScrollToForm = () => {
     const formEl = document.getElementById('contact-form');
@@ -198,18 +194,8 @@ export default function Contact() {
   const mutation = useMutation({
     mutationFn: submitContact,
     onSuccess: () => {
-      if (window.__uploadInterval) clearInterval(window.__uploadInterval);
-      setUploadProgress(100);
-      setTimeout(() => {
-        setIsUploading(false);
-        setSubmitted(true);
-      }, 400);
+      setSubmitted(true);
     },
-    onError: () => {
-      if (window.__uploadInterval) clearInterval(window.__uploadInterval);
-      setIsUploading(false);
-      setUploadProgress(0);
-    }
   });
 
   function handleChange(e) {
@@ -233,52 +219,6 @@ export default function Contact() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     if (errors[e.target.name]) setErrors((prev) => ({ ...prev, [e.target.name]: '' }));
   }
-
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const selectedFile = e.target.files[0];
-      if (selectedFile.size > 15 * 1024 * 1024) {
-        toast({
-          title: "File too large",
-          description: "Please upload a file smaller than 15MB.",
-          variant: "destructive",
-        });
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
-        return;
-      }
-      setFile(selectedFile);
-    }
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const selectedFile = e.dataTransfer.files[0];
-      if (selectedFile.size > 15 * 1024 * 1024) {
-        toast({
-          title: "File too large",
-          description: "Please upload a file smaller than 15MB.",
-          variant: "destructive",
-        });
-        return;
-      }
-      setFile(selectedFile);
-    }
-  };
-
-  const handleRemoveFile = (e) => {
-    e.stopPropagation();
-    setFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
 
   const validateStep1 = () => {
     const errs = {};
@@ -321,25 +261,6 @@ export default function Contact() {
     formData.append('company', form.company || '');
     formData.append('service', form.service || '');
     formData.append('message', messageWithCodes);
-    
-    if (file) {
-      formData.append('file', file);
-      
-      // Start upload progress simulation
-      setIsUploading(true);
-      setUploadProgress(0);
-      const interval = setInterval(() => {
-        setUploadProgress((prev) => {
-          if (prev >= 92) {
-            clearInterval(interval);
-            return 92;
-          }
-          return prev + Math.floor(Math.random() * 8) + 4;
-        });
-      }, 100);
-      
-      window.__uploadInterval = interval;
-    }
 
     mutation.mutate(formData);
   }
@@ -425,7 +346,7 @@ export default function Contact() {
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 my-4 pt-4 border-t border-slate-100 text-[9px] font-extrabold uppercase tracking-wider text-slate-400">
                   <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Select a Service</span>
                   <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Describe Project</span>
-                  <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Upload Drawings</span>
+                  <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Technical Scope</span>
                   <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Tech Response</span>
                 </div>
               </div>
@@ -530,7 +451,7 @@ export default function Contact() {
                   {[
                     { nr: 1, label: 'Company Info' },
                     { nr: 2, label: 'Engineering Scope' },
-                    { nr: 3, label: 'Message & Upload' }
+                    { nr: 3, label: 'Message' }
                   ].map((s) => (
                     <div key={s.nr} className="flex items-center gap-2">
                       <div
@@ -644,52 +565,9 @@ export default function Contact() {
                   </div>
                 )}
 
-                {/* Step 3: Message & Drawings Upload */}
+                {/* Step 3: Message */}
                 {wizardStep === 3 && (
                   <div className="space-y-5 animate-fade-in">
-                    <div>
-                      <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">
-                        Upload Specifications / Drawings Layouts
-                      </label>
-                      <input
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={handleFileChange}
-                        className="hidden"
-                        accept=".pdf,.dwg,.dxf,.png,.jpg,.jpeg,.zip,.rar"
-                      />
-                      <div
-                        onClick={() => fileInputRef.current?.click()}
-                        onDragOver={handleDragOver}
-                        onDrop={handleDrop}
-                        className="border border-dashed border-gray-300 p-5 text-center bg-gray-50 flex flex-col items-center justify-center rounded-sm hover:border-[#0a1628] transition-colors cursor-pointer"
-                      >
-                        {file ? (
-                          <div className="flex flex-col items-center">
-                            <CheckCircle2 className="w-6 h-6 text-green-600 mb-1.5" />
-                            <span className="text-xs font-semibold text-gray-700 block max-w-[280px] truncate">
-                              {file.name}
-                            </span>
-                            <span className="text-[10px] text-gray-400 mt-0.5">
-                              ({(file.size / (1024 * 1024)).toFixed(2)} MB)
-                            </span>
-                            <button
-                              type="button"
-                              onClick={handleRemoveFile}
-                              className="mt-2 text-[10px] text-red-500 hover:text-red-700 underline font-bold uppercase tracking-wider"
-                            >
-                              Remove File
-                            </button>
-                          </div>
-                        ) : (
-                          <>
-                            <ShieldCheck className="w-6 h-6 text-gray-400 mb-1.5" />
-                            <span className="text-xs font-semibold text-gray-600 block">Drag &amp; Drop specification files here, or browse</span>
-                            <span className="text-[10px] text-gray-400 mt-1">Confidential project layouts handled securely. Max size 15MB.</span>
-                          </>
-                        )}
-                      </div>
-                    </div>
                     <div>
                       <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">Inquiry Description *</label>
                       <textarea
@@ -701,21 +579,6 @@ export default function Contact() {
                         placeholder="Describe your design parameters or scope requirements..."
                       />
                       {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message}</p>}
-                    </div>
-                  </div>
-                )}
-
-                {isUploading && (
-                  <div className="space-y-1.5 pt-2">
-                    <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#43648e]">
-                      <span>Uploading Specifications...</span>
-                      <span>{uploadProgress}%</span>
-                    </div>
-                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden border border-slate-200">
-                      <div
-                        className="bg-blue-600 h-full transition-all duration-300 ease-out animate-pulse"
-                        style={{ width: `${uploadProgress}%` }}
-                      />
                     </div>
                   </div>
                 )}
@@ -750,7 +613,7 @@ export default function Contact() {
                     {mutation.isPending ? (
                       <>
                         <div className="w-3.5 h-3.5 border-2 border-t-transparent border-white rounded-full animate-spin" />
-                        {isUploading ? 'Uploading Drawings...' : 'Submitting Enquiry...'}
+                        Submitting Enquiry...
                       </>
                     ) : wizardStep < 3 ? (
                       'Next Step →'
