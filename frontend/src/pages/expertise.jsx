@@ -4,51 +4,18 @@ import { Link, useLocation } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
 import ServiceConfirmationPanel from '@/components/ServiceConfirmationPanel';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Building2, Factory, Grid3X3, Activity, ClipboardList, Layers, Monitor, Cpu, Workflow } from 'lucide-react';
+import { Building2, Briefcase, Cog, Activity, Map } from 'lucide-react';
 import { getServices } from '@/lib/api';
 import { fallbackServices } from '@/data/fallbackServices';
 import { PageMeta } from '@/components/PageMeta';
 
 const serviceIcons = {
-  building: <Building2 className="w-10 h-10" />,
-  factory: <Factory className="w-10 h-10" />,
-  grid: <Grid3X3 className="w-10 h-10" />,
+  gear: <Cog className="w-10 h-10" />,
+  briefcase: <Briefcase className="w-10 h-10" />,
+  cogs: <Cog className="w-10 h-10" />,
   activity: <Activity className="w-10 h-10" />,
-  clipboard: <ClipboardList className="w-10 h-10" />,
-  layers: <Layers className="w-10 h-10" />,
-  monitor: <Monitor className="w-10 h-10" />,
-  cpu: <Cpu className="w-10 h-10" />,
-  pipeline: <Workflow className="w-10 h-10" />,
+  map: <Map className="w-10 h-10" />,
 };
-
-const activities = [
-  'Process Design Review',
-  'Finite Element Method (FEM) & Fatigue Analysis',
-  'STAAD.Pro 3D Structural Frame Analysis',
-  'Refractory Insulation Anchor & Hook Layout Design',
-  'Tekla 3D Detailing & NC DSTV File Export',
-  'Piping stress analysis and nozzle loading checking',
-  'Preparation of Approved for Construction (AFC) Shop Drawings',
-  'Erection Staging & Rigging Crane Support Engineering',
-  'General Arrangement (GA) Drawings',
-  'Fabrication & Shop Drawings',
-  'Structural Steel Detailing',
-  'Industrial Heater Structural Design',
-];
-
-const specialisms = [
-  'Hydrotreater (DHDT) & Hydrodesulfurization (HDS) Fired Heaters',
-  'Vertical Cylindrical & Box Fired Heater Casing structures',
-  'Finned Convection Sections & Intermediate Tube Support Plates',
-  'Refinery Piping Isometric & Nozzle orientation layouts',
-  'Self-Supporting Stack Chimneys with Helical Wind Strakes',
-  'High-Temperature Header Boxes & Quick-Access swing doors',
-  'Refining Cold Box and Compressor Dynamic Concrete Foundations',
-  'Heavy Industrial Warehouse Sheds & Crane Runway Girders',
-  'Multi-tier Circular Platforms & Staircase Access support towers',
-  'Pipe Racks & Equipment Supporting Structures',
-  'Industrial Access Platforms & Stair Towers',
-];
 
 export default function Expertise() {
   const [activeServiceToBook, setActiveServiceToBook] = useState(null);
@@ -62,7 +29,7 @@ export default function Expertise() {
 
   return (
     <div className="w-full">
-      <PageMeta title="Our Services" description="Explore SLS Structo-Mech Consultants' engineering services: structural design, fired heater packages, RLA studies, FEM analysis, Tekla steel detailing, and project consultancy for refineries and petrochemical plants." />
+      <PageMeta title="Our Services" description="SLS Structo-Mech Consultants — Engineering, Project Consulting, Special Products Design & Manufacturing, RLA Studies, and Laisoning services for clients in India and abroad." />
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
@@ -78,10 +45,10 @@ export default function Expertise() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 mb-4">Our Services</p>
             <h1 className="text-5xl md:text-6xl font-bold max-w-2xl leading-tight mb-4 text-[#0a1628]">
-              Engineering &amp; Design Services
+              Core Engineering Services
             </h1>
             <p className="text-slate-600 text-sm md:text-base max-w-xl leading-relaxed">
-              Engineering solutions designed in accordance with project-specific international and regional standards, including ASME, API, IS, and client specifications.
+              SLS Structo-Mech Consultants provides all engineering solutions to various clients in India and abroad.
             </p>
           </motion.div>
         </div>
@@ -89,12 +56,9 @@ export default function Expertise() {
 
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-[#0a1628]">Core Engineering Services</h2>
-          </motion.div>
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[...Array(6)].map((_, i) => <Skeleton key={i} className="h-40" />)}
+              {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-40" />)}
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200">
@@ -113,55 +77,16 @@ export default function Expertise() {
                     </div>
                     <h3 className="text-xl font-bold text-[#0a1628] mb-4">{svc.title}</h3>
                     <p className="text-sm text-gray-500 leading-relaxed mb-6">{svc.description}</p>
-                    
-                    {/* Dynamic Technical Specifications block for service cards */}
-                    {(() => {
-                      let specs = null;
-                      const cleaned = svc.title ? svc.title.trim().toLowerCase() : '';
-                      if (cleaned.includes('fired heater')) {
-                        specs = { codes: 'API 560, API 530, ASME Sec VIII', software: 'STAAD.Pro, AutoCAD' };
-                      } else if (cleaned.includes('civil & structural') || cleaned.includes('civil & structural engineering')) {
-                        specs = { codes: 'IS 800, IS 875, IS 1893', software: 'STAAD.Pro, AutoCAD' };
-                      } else if (cleaned.includes('building structural')) {
-                        specs = { codes: 'IS 456, IS 1893, IS 875', software: 'STAAD.Pro, AutoCAD' };
-                      } else if (cleaned.includes('equipment engineering')) {
-                        specs = { codes: 'ASME Sec VIII Div 1 & 2, TEMA', software: 'STAAD.Pro, SolidWorks' };
-                      } else if (cleaned.includes('engineering drawings') || cleaned.includes('blueprint')) {
-                        specs = { codes: 'ASME, API, IS, OSHA', software: 'AutoCAD, MicroStation' };
-                      } else if (cleaned.includes('steel design') || cleaned.includes('steel detailing')) {
-                        specs = { codes: 'AISC 360, IS 800, BS EN', software: 'Tekla Structures, STAAD.Pro' };
-                      } else if (cleaned.includes('fabrication') || cleaned.includes('shop drawings & fabrication')) {
-                        specs = { codes: 'AISC, IS 800, ASME', software: 'Tekla Structures, AutoCAD' };
-                      } else if (cleaned.includes('platform') || cleaned.includes('staircase')) {
-                        specs = { codes: 'OSHA 1910.27, IS 800, BS EN', software: 'AutoCAD, Tekla Structures' };
-                      } else if (cleaned.includes('chimney') || cleaned.includes('stack')) {
-                        specs = { codes: 'ASME STS-1, IS 6533, IS 875', software: 'STAAD.Pro, AutoCAD' };
-                      } else if (cleaned.includes('foundation')) {
-                        specs = { codes: 'IS 456, IS 2911, IS 1893', software: 'STAAD.Pro, AutoCAD' };
-                      } else if (cleaned.includes('construction') || cleaned.includes('supervision')) {
-                        specs = { codes: 'AWS D1.1, ASME Sec IX, WPS/PQR', software: 'Quality Inspection' };
-                      } else if (cleaned.includes('municipality')) {
-                        specs = { codes: 'National Building Code (NBC), VMRDA', software: 'Regulatory Approvals' };
-                      } else if (cleaned.includes('remaining life') || cleaned.includes('rla')) {
-                        specs = { codes: 'API 579 (FFS), ASME FFS-1', software: 'STAAD.Pro, UT Gauging' };
-                      } else if (cleaned.includes('finite element') || cleaned.includes('fea')) {
-                        specs = { codes: 'ASME Sec VIII Div 2, API 579', software: 'ANSYS, STAAD.Pro (FEA)' };
-                      } else if (cleaned.includes('piping support') || cleaned.includes('piping design')) {
-                        specs = { codes: 'ASME B31.3, ASME B31.1', software: 'CAESAR II, AutoCAD' };
-                      } else if (cleaned.includes('software & ai') || cleaned.includes('software')) {
-                        specs = { codes: 'Tekla Open API, AutoCAD LISP', software: 'Python, C#, Tekla Structures' };
-                      }
-                      
-                      if (!specs) return null;
-                      return (
-                        <div className="mt-2 mb-6 border-t border-gray-100 pt-4 space-y-2 text-xs text-left">
-                          <div>
-                            <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block">Design Environment</span>
-                            <span className="font-semibold text-gray-700">{specs.software}</span>
-                          </div>
+
+                    {/* Design Environment for RLA */}
+                    {svc.title && svc.title.toLowerCase().includes('rla') && (
+                      <div className="mt-2 mb-6 border-t border-gray-100 pt-4 space-y-2 text-xs text-left">
+                        <div>
+                          <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block">Design Environment</span>
+                          <span className="font-semibold text-gray-700">STAAD.Pro, UT Gauging</span>
                         </div>
-                      );
-                    })()}
+                      </div>
+                    )}
                   </div>
 
                   <div>
@@ -176,58 +101,6 @@ export default function Expertise() {
               ))}
             </div>
           )}
-        </div>
-      </section>
-
-      <section className="py-20 bg-slate-50 text-[#0a1628] border-t border-b border-slate-200">
-        <div className="container mx-auto px-4 grid md:grid-cols-2 gap-16">
-          <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 mb-6">Engineering Activities</p>
-            <h2 className="text-3xl font-bold mb-8 text-[#0a1628]">What We Do</h2>
-            <div className="space-y-3">
-              {activities.map((act) => (
-                <div key={act} className="flex items-start gap-3 text-sm text-slate-600">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#43648e] mt-2 shrink-0" />
-                  <span>{act}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-slate-500 mb-6">Engineering Specialisms</p>
-            <h2 className="text-3xl font-bold mb-8 text-[#0a1628]">What We Design</h2>
-            <div className="space-y-3">
-              {specialisms.map((spec) => (
-                <div key={spec} className="flex items-start gap-3 text-sm text-slate-600">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#43648e] mt-2 shrink-0" />
-                  <span>{spec}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-center mb-12">
-            <p className="text-xs font-bold tracking-[0.2em] uppercase text-[#43648e] mb-3">Software Expertise</p>
-            <h2 className="text-3xl font-bold text-[#0a1628]">Industry-Leading Tools</h2>
-          </motion.div>
-          <div className="flex flex-wrap items-center justify-center gap-10">
-            {['AutoCAD', 'STAAD.Pro', 'Tekla Structures', 'ANSYS', 'CATIA'].map((tool, i) => (
-              <motion.div
-                key={tool}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: i * 0.07 }}
-                className="text-2xl font-bold text-[#0a1628]/70 cursor-default"
-              >
-                {tool}
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -247,7 +120,7 @@ export default function Expertise() {
           <p className="text-xs font-bold tracking-[0.2em] uppercase text-white/50 mb-4">Start Your Project Today</p>
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Need Professional Engineering Services?</h2>
           <p className="text-white/60 text-sm md:text-base leading-relaxed mb-8">
-            Whether you require industrial engineering, structural design, fabrication drawings, or engineering consultancy, our experienced engineering team is ready to deliver reliable, cost-effective, and standards-compliant solutions.
+            Whether you require industrial engineering, project consulting, special products design, or RLA studies, our experienced engineering team is ready to deliver cost effective quality solutions.
           </p>
           <Link href="/contact">
             <button className="bg-white text-[#0a1628] px-8 py-4 text-sm font-bold uppercase tracking-wider hover:bg-white/90 transition-colors shadow-lg">
