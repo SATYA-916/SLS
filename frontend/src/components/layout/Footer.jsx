@@ -68,13 +68,11 @@ export function Footer() {
         <div>
           <h4 className="text-xs font-bold tracking-[0.15em] uppercase text-slate-500 mb-5">Our Services</h4>
           <ul className="space-y-2.5 text-sm text-slate-600 font-medium">
-            <li>Project Consultancy</li>
+            <li>Engineering</li>
+            <li>Project Consulting</li>
             <li>Special Products Design &amp; Manufacturing</li>
-            <li>RLA Studies</li>
-            <li>Structural Engineering</li>
-            <li>FEM Analysis</li>
-            <li>Steel Detailing (Tekla)</li>
-            <li>Liaisoning</li>
+            <li>RLA (Remaining Life Assessment) Studies</li>
+            <li>Laisoning</li>
           </ul>
         </div>
 
