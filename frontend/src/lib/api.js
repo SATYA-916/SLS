@@ -56,6 +56,13 @@ export function adminLogout() {
   return apiFetch('/api/admin/logout', { method: 'POST' });
 }
 
+export function adminForgotPassword(email) {
+  return apiFetch('/api/admin/forgot-password', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}
+
 export function getAdminContacts() {
   return apiFetch('/api/admin/contacts');
 }
