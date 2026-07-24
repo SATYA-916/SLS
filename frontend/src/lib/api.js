@@ -32,6 +32,12 @@ export function getServices() {
   return apiFetch('/api/services');
 }
 
+export function deleteContact(id) {
+  return apiFetch(`/api/admin/contacts/${id}`, {
+    method: 'DELETE',
+  });
+}
+
 export function submitContact(data) {
   return apiFetch('/api/contact', {
     method: 'POST',
@@ -52,13 +58,6 @@ export function adminLogout() {
 
 export function getAdminContacts() {
   return apiFetch('/api/admin/contacts');
-}
-
-export function adminForgotPassword(email) {
-  return apiFetch('/api/admin/forgot-password', {
-    method: 'POST',
-    body: JSON.stringify({ email }),
-  });
 }
 
 export function updateContactStatus(id, status) {
@@ -84,4 +83,3 @@ export function deleteContactNote(id, noteId) {
 export function getCSVExportUrl() {
   return `${API_URL}/api/admin/contacts/export`;
 }
-

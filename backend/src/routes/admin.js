@@ -227,4 +227,21 @@ router.get('/contacts/export', requireAdmin, async (req, res) => {
   }
 });
 
+// DELETE /contacts/:id — permanently delete a contact inquiry
+router.delete('/contacts/:id', requireAdmin, async (req, res) => {
+  try {
+    await connectMongo();
+    const { id } = req.params;
+    const deleted = await Contact.findByIdAndDelete(id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Contact not found' });
+    }
+    req.log.info({ id, email: deleted.email }, 'Contact deleted');
+    res.json({ success: true });
+  } catch (err) {
+    req.log.error({ err }, 'Failed to delete contact');
+    res.status(500).json({ error: 'Failed to delete contact' });
+  }
+});
+
 export default router;

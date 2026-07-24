@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import {
   getAdminContacts, adminLogout, updateContactStatus,
-  addContactNote, deleteContactNote, getCSVExportUrl
+  addContactNote, deleteContactNote, getCSVExportUrl, deleteContact
 } from '@/lib/api';
 
 const STATUS_CONFIG = {
@@ -88,6 +88,17 @@ export default function AdminDashboard() {
       setSelected(updated);
     } catch (err) {
       alert('Failed to delete note.');
+    }
+  }
+
+  async function handleDeleteContact(id) {
+    if (!confirm('Permanently delete this inquiry? This cannot be undone.')) return;
+    try {
+      await deleteContact(id);
+      setContacts(prev => prev.filter(c => c._id !== id));
+      if (selected?._id === id) setSelected(contacts.find(c => c._id !== id) || null);
+    } catch (err) {
+      alert('Failed to delete contact.');
     }
   }
 
@@ -182,7 +193,7 @@ export default function AdminDashboard() {
               <input
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                placeholder="Search name, email, service…"
+                placeholder="Search name, email, service..."
                 className="w-full pl-8 pr-8 py-2 text-xs border border-gray-200 focus:outline-none focus:border-[#0a1628] rounded-sm"
               />
               {search && (
@@ -211,7 +222,7 @@ export default function AdminDashboard() {
           {/* List */}
           <div className="overflow-y-auto flex-1 text-left">
             {loading ? (
-              <div className="p-8 text-center text-gray-400 text-sm">Loading…</div>
+              <div className="p-8 text-center text-gray-400 text-sm">Loading...</div>
             ) : error ? (
               <div className="p-8 text-center">
                 <p className="text-red-500 text-sm mb-3">{error}</p>
@@ -271,7 +282,7 @@ export default function AdminDashboard() {
                     <h2 className="text-base font-bold text-[#0a1628]">{selected.name}</h2>
                     <p className="text-xs text-gray-400 font-medium mt-1 font-mono">{selected.email}</p>
                   </div>
-                  {/* Status change selector */}
+                  {/* Status change selector + Delete */}
                   <div className="flex items-center gap-2">
                     <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Mark Status:</span>
                     <select
@@ -283,6 +294,13 @@ export default function AdminDashboard() {
                       <option value="replied">Replied</option>
                       <option value="closed">Closed</option>
                     </select>
+                    <button
+                      onClick={() => handleDeleteContact(selected._id)}
+                      className="ml-2 flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 px-2 py-1.5 rounded-sm transition-colors"
+                      title="Delete this inquiry permanently"
+                    >
+                      <Trash2 className="w-3 h-3" /> Delete
+                    </button>
                   </div>
                 </div>
 
