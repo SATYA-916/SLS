@@ -394,12 +394,12 @@ export default function Home() {
           </AnimatedSection>
           {servicesLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[...Array(6)].map((_, i) => <Skeleton key={i} className="h-44" />)}
+              {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-44" />)}
             </div>
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-12">
-                {services?.slice(0, 6).map((svc, i) => (
+                {services?.slice(0, 3).map((svc, i) => (
                   <motion.div
                     key={svc.id}
                     initial={{ opacity: 0, y: 16 }}
