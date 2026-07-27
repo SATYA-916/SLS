@@ -1823,8 +1823,7 @@ export default function Gallery() {
     if (draw.file.startsWith('eil_ga')) return 'EIL';
     if (draw.file.startsWith('pressure_parts') || draw.file.startsWith('hds_')) return 'HDS';
     if (draw.file.startsWith('evaporator_')) return 'Evaporator';
-    if (draw.file.startsWith('santhipuram_')) return 'Santhipuram';
-    if (draw.file.startsWith('tarachand_')) return 'Tarachand';
+    if (draw.file.startsWith('santhipuram_') || draw.file.startsWith('tarachand_')) return 'Residential Building';
     return 'DHDT';
   };
 
@@ -1981,7 +1980,7 @@ export default function Gallery() {
               Design Drawings &amp; Technical Assets
             </h1>
             <p className="mt-4 text-slate-600 max-w-xl text-sm leading-relaxed">
-              Explore the structural and mechanical detailing engineering database compiled from our recent hydrotreater (DHDT) and hydrodesulfurization (HDS) fired heater projects, Visakhapatnam evaporator building, and Santhipuram/Tarachand structural complexes, executed under strict EIL, concrete, and steel design specifications.
+              Explore the engineering database compiled from major projects executed by SLS Consultants.
             </p>
           </motion.div>
         </div>
@@ -2025,15 +2024,12 @@ export default function Gallery() {
           <div style={{ display: activeTab === 'drawings' ? 'block' : 'none' }}>
               <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-gray-200 pb-6">
                 <div className="max-w-xl">
-                  <h2 className="text-2xl font-bold text-[#0a1628] mb-3">Cropped Structural Drawing Database</h2>
-                  <p className="text-xs text-gray-500 leading-relaxed">
-                    These layouts demonstrate the structural and mechanical detailing capacity of SLS. In compliance with confidentiality guidelines, all drawings are cropped to remove specific dimensions, drawing titles, sheets numbers, and approval signatures.
-                  </p>
+                  
                 </div>
                 
                 {/* Sub-tabs for DHDT, HDS, EIL, and structural projects categorization */}
                 <div className="flex flex-wrap gap-2 shrink-0">
-                  {['All', 'DHDT', 'HDS', 'EIL', 'Evaporator', 'Santhipuram', 'Tarachand'].map((subcat) => (
+                  {['All', 'DHDT', 'HDS', 'EIL', 'Evaporator', 'Residential Building'].map((subcat) => (
                     <button
                       key={subcat}
                       onClick={() => setDrawingSubTab(subcat)}
