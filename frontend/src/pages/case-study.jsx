@@ -569,6 +569,19 @@ function PipelineProfiler() {
   );
 }
 
+
+function formatProjectTitle(proj) {
+  if (!proj) return '';
+  const client = proj.client || '';
+  const equipment = proj.equipment || '';
+  const title = proj.title || '';
+  const consultation = proj.consultation || '';
+  if (client && equipment && consultation) {
+    return `${client} - ${equipment} (${title}) - ${consultation}`;
+  }
+  return title;
+}
+
 function getProjectTechnicalSpecs(proj) {
   const category = proj.category || '';
   const title = proj.title || '';
@@ -643,7 +656,7 @@ export default function CaseStudy() {
           </div>
           <div className="max-w-3xl">
             <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-700 block mb-2">{project.category}</span>
-            <h1 className="text-3xl md:text-5xl font-bold text-[#0a1628] leading-tight mb-4">{project.title}</h1>
+            <h1 className="text-3xl md:text-5xl font-bold text-[#0a1628] leading-tight mb-4">{formatProjectTitle(project)}</h1>
             <div className="flex flex-wrap items-center gap-y-3 gap-x-6 text-xs text-gray-500 font-medium">
               <span className="flex items-center gap-1.5"><User className="w-4 h-4 text-slate-400" /> Client: <strong>{project.client}</strong></span>
               <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4 text-slate-400" /> Year: <strong>{project.year}</strong></span>

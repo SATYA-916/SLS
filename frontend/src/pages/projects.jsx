@@ -21,6 +21,19 @@ const categories = [
   'Industrial Structures',
 ];
 
+
+function formatProjectTitle(proj) {
+  if (!proj) return '';
+  const client = proj.client || '';
+  const equipment = proj.equipment || '';
+  const title = proj.title || '';
+  const consultation = proj.consultation || '';
+  if (client && equipment && consultation) {
+    return `${client} - ${equipment} (${title}) - ${consultation}`;
+  }
+  return title;
+}
+
 function getProjectTechnicalSpecs(proj) {
   if (!proj) return { software: '', deliverables: '' };
   
@@ -323,7 +336,7 @@ export default function Projects() {
                   <span className="text-[10px] font-bold tracking-widest text-[#43648e] uppercase mb-2">
                     {proj.category}
                   </span>
-                  <h3 className="text-base font-bold text-[#0a1628] mb-2 leading-snug">{proj.title}</h3>
+                  <h3 className="text-base font-bold text-[#0a1628] mb-2 leading-snug">{formatProjectTitle(proj)}</h3>
                   <p className="text-xs text-gray-500 leading-relaxed flex-grow mb-4">
                     {proj.description.substring(0, 140)}...
                   </p>
@@ -432,7 +445,7 @@ export default function Projects() {
                   <div className="w-full h-64 md:h-80 bg-gray-100 overflow-hidden relative border border-slate-200 group">
                     <img
                       src={selectedProject.image}
-                      alt={selectedProject.title}
+                      alt={formatProjectTitle(selectedProject)}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-103"
                     />
                     <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-sm text-white px-3 py-1 text-[9px] font-bold uppercase tracking-wider rounded-sm">
