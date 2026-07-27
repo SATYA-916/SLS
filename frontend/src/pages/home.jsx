@@ -344,22 +344,17 @@ export default function Home() {
               {
                 icon: <ShieldCheck className="w-8 h-8" />,
                 title: 'Expert-Led Engineering Team',
-                desc: 'Every project is executed by a highly experienced, multi-disciplinary engineering and detailing staff under the principal leadership of Mr. C. Subrahmanyam (43+ years of experience, ex-BHEL & ex-Doosan Babcock).'
+                desc: 'Every project is executed by a highly experienced, multi-disciplinary engineering and detailing staff.'
               },
               {
                 icon: <Layers className="w-8 h-8" />,
                 title: 'Multi-Discipline Under One Roof',
-                desc: 'Structural, mechanical, piping, and steel detailing in one coordinated team. No coordination delays between sub-vendors.'
-              },
-              {
-                icon: <Briefcase className="w-8 h-8" />,
-                title: 'Advanced BIM & CAD Automation',
-                desc: 'We leverage state-of-the-art detailing software (Tekla, AutoCAD) and custom AI/software macros to ensure clash-free structural models and automated member detailing.'
+                desc: 'Civil, structural, mechanical engineering services related to industrial infrastructure real estate projects in one coordinated team. No coordination delays between sub-vendors.'
               },
               {
                 icon: <CheckCircle2 className="w-8 h-8" />,
                 title: '500+ Projects Delivered',
-                desc: 'Our experienced engineering team has successfully delivered 500+ projects across heavy process industries with zero failure rates.'
+                desc: 'Our experienced engineering team has successfully delivered 500+ projects.'
               }
             ].map((item, idx) => (
               <motion.div
