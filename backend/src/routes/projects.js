@@ -691,7 +691,8 @@ router.get('/', async (_req, res) => {
     await connectMongo();
     const mongoProjects = await Project.find().sort({ createdAt: -1 }).lean();
     if (mongoProjects.length > 0) {
-      return res.json(mongoProjects);
+      const normalized = mongoProjects.map(p => ({ ...p, id: p._id.toString(), _id: undefined }));
+      return res.json(normalized);
     }
   } catch (err) {
     // MongoDB unavailable, fall through to fallback

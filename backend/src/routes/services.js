@@ -16,7 +16,9 @@ router.get('/', async (_req, res) => {
     await connectMongo();
     const mongoServices = await Service.find().sort({ createdAt: 1 }).lean();
     if (mongoServices.length > 0) {
-      return res.json(mongoServices);
+      // Normalize _id to id for frontend compatibility
+      const normalized = mongoServices.map(s => ({ ...s, id: s._id.toString(), _id: undefined }));
+      return res.json(normalized);
     }
   } catch (err) {
     // MongoDB unavailable, fall through to fallback
