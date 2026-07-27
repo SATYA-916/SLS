@@ -339,7 +339,7 @@ export default function Home() {
               </p>
             </div>
           </AnimatedSection>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
             {[
               {
                 icon: <ShieldCheck className="w-8 h-8" />,
@@ -365,12 +365,12 @@ export default function Home() {
                 transition={{ duration: 0.4, delay: idx * 0.08 }}
                 className="bg-white border border-gray-200 p-6 shadow-sm flex flex-col justify-between"
               >
-                <div className="text-[#43648e] mb-4">
-                  {item.icon}
-                </div>
                 <div>
-                  <h3 className="font-bold text-[#0a1628] text-sm mb-2 leading-snug">{item.title}</h3>
-                  <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
+                  <div className="text-[#43648e] mb-4">
+                    {item.icon}
+                  </div>
+                  <h3 className="font-bold text-[#0a1628] text-sm mb-2">{item.title}</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed mb-4">{item.desc}</p>
                 </div>
               </motion.div>
             ))}
