@@ -1,4 +1,6 @@
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import cors from 'cors';
 import pinoHttp from 'pino-http';
 import session from 'express-session';
@@ -6,6 +8,8 @@ import router from './routes/index.js';
 import { logger } from './lib/logger.js';
 
 const app = express();
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const isProd = process.env.NODE_ENV === 'production';
 if (isProd) {
@@ -43,6 +47,9 @@ app.use(
     },
   })
 );
+
+// Serve uploaded files
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use('/api', router);
 

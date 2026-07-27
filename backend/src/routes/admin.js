@@ -1,10 +1,24 @@
 import { Router } from 'express';
 import fs from 'fs';
 import path from 'path';
-import { connectMongo, Contact } from '../lib/mongodb.js';
+import multer from 'multer';
+import { connectMongo, Contact, Service, Project } from '../lib/mongodb.js';
 import { sendBrevo } from '../lib/email.js';
 
 const router = Router();
+
+// ── Multer setup for image uploads ──
+const uploadDir = path.join(process.cwd(), 'uploads');
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `project_${Date.now()}${ext}`);
+  },
+});
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
 
 function requireAdmin(req, res, next) {
   if (req.session?.isAdmin) return next();
@@ -231,17 +245,128 @@ router.get('/contacts/export', requireAdmin, async (req, res) => {
 router.delete('/contacts/:id', requireAdmin, async (req, res) => {
   try {
     await connectMongo();
-    const { id } = req.params;
-    const deleted = await Contact.findByIdAndDelete(id);
+    const deleted = await Contact.findByIdAndDelete(req.params.id);
     if (!deleted) {
       return res.status(404).json({ error: 'Contact not found' });
     }
-    req.log.info({ id, email: deleted.email }, 'Contact deleted');
+    req.log.info({ id: req.params.id, email: deleted.email }, 'Contact deleted');
     res.json({ success: true });
   } catch (err) {
     req.log.error({ err }, 'Failed to delete contact');
     res.status(500).json({ error: 'Failed to delete contact' });
   }
+});
+
+// ══════════════════════════════════════════
+// CONTENT MANAGEMENT — SERVICES
+// ══════════════════════════════════════════
+
+router.get('/servicesdata', requireAdmin, async (req, res) => {
+  try {
+    await connectMongo();
+    const services = await Service.find().sort({ createdAt: 1 }).lean();
+    res.json(services);
+  } catch (err) {
+    req.log.error({ err }, 'Failed to fetch services');
+    res.status(500).json({ error: 'Failed to fetch services' });
+  }
+});
+
+router.post('/servicesdata', requireAdmin, async (req, res) => {
+  try {
+    await connectMongo();
+    const service = await Service.create(req.body);
+    res.status(201).json(service);
+  } catch (err) {
+    req.log.error({ err }, 'Failed to create service');
+    res.status(500).json({ error: 'Failed to create service' });
+  }
+});
+
+router.put('/servicesdata/:id', requireAdmin, async (req, res) => {
+  try {
+    await connectMongo();
+    const service = await Service.findByIdAndUpdate(req.params.id, req.body, { new: true }).lean();
+    if (!service) return res.status(404).json({ error: 'Service not found' });
+    res.json(service);
+  } catch (err) {
+    req.log.error({ err }, 'Failed to update service');
+    res.status(500).json({ error: 'Failed to update service' });
+  }
+});
+
+router.delete('/servicesdata/:id', requireAdmin, async (req, res) => {
+  try {
+    await connectMongo();
+    const deleted = await Service.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: 'Service not found' });
+    res.json({ success: true });
+  } catch (err) {
+    req.log.error({ err }, 'Failed to delete service');
+    res.status(500).json({ error: 'Failed to delete service' });
+  }
+});
+
+// ══════════════════════════════════════════
+// CONTENT MANAGEMENT — PROJECTS
+// ══════════════════════════════════════════
+
+router.get('/projectsdata', requireAdmin, async (req, res) => {
+  try {
+    await connectMongo();
+    const projects = await Project.find().sort({ createdAt: -1 }).lean();
+    res.json(projects);
+  } catch (err) {
+    req.log.error({ err }, 'Failed to fetch projects');
+    res.status(500).json({ error: 'Failed to fetch projects' });
+  }
+});
+
+router.post('/projectsdata', requireAdmin, async (req, res) => {
+  try {
+    await connectMongo();
+    const project = await Project.create(req.body);
+    res.status(201).json(project);
+  } catch (err) {
+    req.log.error({ err }, 'Failed to create project');
+    res.status(500).json({ error: 'Failed to create project' });
+  }
+});
+
+router.put('/projectsdata/:id', requireAdmin, async (req, res) => {
+  try {
+    await connectMongo();
+    const project = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true }).lean();
+    if (!project) return res.status(404).json({ error: 'Project not found' });
+    res.json(project);
+  } catch (err) {
+    req.log.error({ err }, 'Failed to update project');
+    res.status(500).json({ error: 'Failed to update project' });
+  }
+});
+
+router.delete('/projectsdata/:id', requireAdmin, async (req, res) => {
+  try {
+    await connectMongo();
+    const deleted = await Project.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: 'Project not found' });
+    res.json({ success: true });
+  } catch (err) {
+    req.log.error({ err }, 'Failed to delete project');
+    res.status(500).json({ error: 'Failed to delete project' });
+  }
+});
+
+// ══════════════════════════════════════════
+// IMAGE UPLOAD
+// ══════════════════════════════════════════
+
+router.post('/upload', requireAdmin, upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+  const url = `/uploads/${req.file.filename}`;
+  res.json({ url, filename: req.file.filename });
 });
 
 export default router;
