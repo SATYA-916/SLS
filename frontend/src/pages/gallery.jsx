@@ -1673,6 +1673,7 @@ const workflows = [
 export default function Gallery() {
   const [activeTab, setActiveTab] = useState('drawings');
   const [drawingSubTab, setDrawingSubTab] = useState('All');
+  const [drawingSearchQuery, setDrawingSearchQuery] = useState('');
   const [selectedImg, setSelectedImg] = useState(null);
   const [selectedIll, setSelectedIll] = useState(illustrations[0]);
   const [activeWf, setActiveWf] = useState(workflows[0]);
@@ -1828,8 +1829,14 @@ export default function Gallery() {
   };
 
   const filteredDrawings = drawings.filter(draw => {
-    if (drawingSubTab === 'All') return true;
-    return getDrawingCategory(draw) === drawingSubTab;
+    const matchSubTab = drawingSubTab === 'All' || getDrawingCategory(draw) === drawingSubTab;
+    const q = drawingSearchQuery.toLowerCase().trim();
+    const matchSearch = !q ||
+      draw.title.toLowerCase().includes(q) ||
+      draw.desc.toLowerCase().includes(q) ||
+      draw.code.toLowerCase().includes(q) ||
+      draw.service.toLowerCase().includes(q);
+    return matchSubTab && matchSearch;
   });
 
   const getComponentIcon = (iconName) => {
@@ -2022,12 +2029,29 @@ export default function Gallery() {
           
           {/* TAB 1: TECHNICAL DRAWINGS */}
           <div style={{ display: activeTab === 'drawings' ? 'block' : 'none' }}>
-              <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-gray-200 pb-6">
-                <div className="max-w-xl">
-                  
+              <div className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 pb-6">
+                {/* Search - left side */}
+                <div className="relative w-full md:max-w-xs">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={drawingSearchQuery}
+                    onChange={(e) => setDrawingSearchQuery(e.target.value)}
+                    placeholder="Search drawings..."
+                    className="w-full pl-10 pr-10 py-2.5 text-sm border border-gray-200 bg-white focus:bg-white focus:border-[#0a1628] focus:outline-none focus:ring-1 focus:ring-[#0a1628]/20 transition-colors rounded-sm"
+                  />
+                  {drawingSearchQuery && (
+                    <button
+                      onClick={() => setDrawingSearchQuery('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      aria-label="Clear search"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
                 
-                {/* Sub-tabs for DHDT, HDS, EIL, and structural projects categorization */}
+                {/* Category filter pills - right side */}
                 <div className="flex flex-wrap gap-2 shrink-0">
                   {['All', 'DHDT', 'HDS', 'EIL', 'Evaporator', 'Residential Building'].map((subcat) => (
                     <button

@@ -339,7 +339,7 @@ export default function Home() {
               </p>
             </div>
           </AnimatedSection>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {[
               {
                 icon: <ShieldCheck className="w-8 h-8" />,
@@ -363,9 +363,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.08 }}
-                className="bg-gray-50 border border-gray-200 p-6 flex flex-col gap-4"
+                className="bg-white border border-gray-200 p-6 shadow-sm flex flex-col justify-between"
               >
-                <div className="w-14 h-14 bg-[#0a1628] text-white flex items-center justify-center shrink-0">
+                <div className="text-[#43648e] mb-4">
                   {item.icon}
                 </div>
                 <div>
