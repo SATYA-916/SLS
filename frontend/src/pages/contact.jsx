@@ -102,7 +102,7 @@ export default function Contact() {
   };
   
   // Parse URL query parameter for service pre-selection
-  const queryParams = new URLSearchParams(window.location.search);
+  const queryParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
   const initialService = queryParams.get('service') || '';
   const initialMessage = initialService ? getInitialMessageForService(initialService) : '';
 
