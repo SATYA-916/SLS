@@ -1860,7 +1860,7 @@ export default function Gallery() {
   };
 
   const handleBookRedirect = (serviceName) => {
-    setActiveServiceToBook(serviceName);
+    setLocation(`/contact?service=${encodeURIComponent(serviceName)}`);
   };
 
   const tabsRef = useRef(null);
