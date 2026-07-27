@@ -601,14 +601,14 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
               {
-                quote: "SLS Consultants has been a key detailing partner for our critical refinery packages. Their adherence to EIL standards and prompt engineering revisions under Mr. Subrahmanyam's guidance kept our projects on schedule.",
-                author: "Senior Engineering Manager",
-                company: "Larsen & Toubro"
+                quote: "The work SLS had provided for the project 'Radiography Solutions For Vizag Vessel Project - L&T' is commendable. They supported us in each and every step from conceptual stage till the project was executed.",
+                author: "HN Somani",
+                company: "Sr DGM - L&T"
               },
               {
-                quote: "Their remaining life assessment and FEA reporting for our heater casing was thorough, well-documented, and crucial for our statutory approvals. Exceptional technical detailing capability.",
-                author: "Mechanical Detailing Lead",
-                company: "HPCL Vizag Refinery"
+                quote: "We used SLS services for one of our Multistoried Residential Building Project at Visakhapatnam. The scope of their services include Architectural Planning, Structural Design, Rain Water Harvesting and Solar Water Heating Installation. We recommend their services.",
+                author: "P Vishnu Kumar Raju",
+                company: "MD - SVC Projects PVT LTD"
               }
             ].map((t, idx) => (
               <div key={idx} className="bg-white border border-gray-200 p-6 md:p-8 flex flex-col justify-between shadow-sm">
