@@ -1835,7 +1835,7 @@ export default function Gallery() {
       draw.title.toLowerCase().includes(q) ||
       draw.desc.toLowerCase().includes(q) ||
       draw.code.toLowerCase().includes(q) ||
-      draw.service.toLowerCase().includes(q);
+      (draw.service || '').toLowerCase().includes(q);
     return matchSubTab && matchSearch;
   });
 

@@ -1,75 +1,38 @@
 import mongoose from 'mongoose';
+import { logger } from './logger.js';
 
-const connection = {};
+let connected = false;
 
 export async function connectMongo() {
-  if (connection.isConnected) return;
-  try {
-    const db = await mongoose.connect(process.env.MONGODB_URL, {
-      serverSelectionTimeoutMS: 5000,
-    });
-    connection.isConnected = db.connections[0].readyState;
-    console.log('MongoDB connected');
-  } catch (err) {
-    console.error('MongoDB connection error:', err.message);
-  }
+  if (connected) return;
+  const uri = process.env.MONGODB_URL;
+  if (!uri) throw new Error('MONGODB_URL environment variable is not set');
+  await mongoose.connect(uri);
+  connected = true;
+  logger.info('MongoDB connected');
 }
-
-// ── Contact Schema ──
-const noteSchema = new mongoose.Schema(
-  { text: String },
-  { timestamps: true }
-);
 
 const contactSchema = new mongoose.Schema(
   {
-    name: String,
-    email: String,
-    phone: String,
-    company: String,
-    service: String,
-    message: String,
-    fileData: Buffer,
-    fileName: String,
-    filePath: String,
-    status: { type: String, default: 'new' },
-    notes: [noteSchema],
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, default: null },
+    company: { type: String, default: null },
+    service: { type: String, default: null },
+    message: { type: String, required: true },
+    fileName: { type: String, default: null },
+    filePath: { type: String, default: null },
+    fileData: { type: Buffer, default: null },
+    status: { type: String, enum: ['new', 'replied', 'closed'], default: 'new' },
+    notes: [
+      {
+        text: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );
 
 export const Contact =
-  mongoose.models.Contact || mongoose.model('Contact', contactSchema);
-
-// ── Service Schema ──
-const serviceSchema = new mongoose.Schema(
-  {
-    title: { type: String, required: true },
-    description: { type: String, default: '' },
-    icon: { type: String, default: 'gear' },
-  },
-  { timestamps: true }
-);
-export const Service =
-  mongoose.models.Service || mongoose.model('Service', serviceSchema);
-
-// ── Project Schema ──
-const projectSchema = new mongoose.Schema(
-  {
-    title: { type: String, required: true },
-    description: { type: String, default: '' },
-    category: { type: String, default: 'Structures' },
-    client: { type: String, default: '' },
-    year: { type: Number, default: new Date().getFullYear() },
-    image: { type: String, default: '' },
-    challenge: { type: String, default: '' },
-    solution: { type: String, default: '' },
-    slsAction: { type: String, default: '' },
-    equipment: { type: String, default: '' },
-    consultation: { type: String, default: '' },
-  },
-  { timestamps: true }
-);
-
-export const Project =
-  mongoose.models.Project || mongoose.model('Project', projectSchema);
+  mongoose.models['Contact'] ?? mongoose.model('Contact', contactSchema);

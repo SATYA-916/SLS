@@ -1,10 +1,8 @@
 import { Router } from 'express';
-import { connectMongo, Project } from '../lib/mongodb.js';
 
 const router = Router();
 
-// Fallback hardcoded projects (used when MongoDB is empty/unavailable)
-const fallbackProjects = [
+const projects = [
   // SPECIAL STRUCTURES
   {
     id: 1,
@@ -683,21 +681,8 @@ const fallbackProjects = [
   }
 ];
 
-  }
-];
-
-router.get('/', async (_req, res) => {
-  try {
-    await connectMongo();
-    const mongoProjects = await Project.find().sort({ createdAt: -1 }).lean();
-    if (mongoProjects.length > 0) {
-      const normalized = mongoProjects.map(p => ({ ...p, id: p._id.toString(), _id: undefined }));
-      return res.json(normalized);
-    }
-  } catch (err) {
-    // MongoDB unavailable, fall through to fallback
-  }
-  res.json(fallbackProjects);
+router.get('/', (_req, res) => {
+  res.json(projects);
 });
 
 export default router;

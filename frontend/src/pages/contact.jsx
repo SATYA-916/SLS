@@ -52,7 +52,7 @@ function useCalendly() {
   return { openPopup };
 }
 
-const fallbackServices = [
+const fallbackServiceNames = [
   'ASME Boiler & Pressure Vessel Design',
   'STAAD.Pro Structural Steel Analysis',
   'Tekla Fabrication & Steel Detailing',
