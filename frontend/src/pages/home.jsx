@@ -328,10 +328,10 @@ export default function Home() {
       </section>
 
       {/* WHY SLS — DIFFERENTIATOR SECTION */}
-      <section className="py-20 bg-white border-b border-gray-100">
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <AnimatedSection>
-            <div className="text-center mb-14">
+            <div className="text-center mb-12">
               <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Why Choose SLS</p>
               <h2 className="text-3xl font-bold text-[#0a1628] mb-4">The SLS Advantage</h2>
               <p className="text-sm text-slate-500 max-w-xl mx-auto leading-relaxed">
@@ -339,7 +339,7 @@ export default function Home() {
               </p>
             </div>
           </AnimatedSection>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {[
               {
                 icon: <ShieldCheck className="w-8 h-8" />,
@@ -359,11 +359,11 @@ export default function Home() {
             ].map((item, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.08 }}
-                className="bg-white border border-gray-200 p-6 shadow-sm flex flex-col justify-between"
+                transition={{ duration: 0.35, delay: idx * 0.06 }}
+                className="bg-white border border-gray-200 p-6 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow duration-300"
               >
                 <div>
                   <div className="text-[#43648e] mb-4">
