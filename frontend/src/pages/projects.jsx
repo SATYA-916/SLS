@@ -338,7 +338,7 @@ export default function Projects() {
                   </span>
                   <h3 className="text-base font-bold text-[#0a1628] mb-2 leading-snug">{formatProjectTitle(proj)}</h3>
                   <p className="text-xs text-gray-500 leading-relaxed flex-grow mb-4">
-                    {proj.description.substring(0, 140)}...
+                    {(proj.description || '').substring(0, 140)}...
                   </p>
                   <div className="flex items-center justify-between text-xs">
                     {proj.client && <span className="text-[#43648e] font-medium">{proj.client}</span>}

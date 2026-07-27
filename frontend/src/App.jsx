@@ -1,6 +1,7 @@
 import { useEffect, lazy, Suspense, Component } from 'react';
 import { Switch, Route, useLocation } from 'wouter';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ShieldAlert } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { Layout } from '@/components/layout/Layout';
 import Home from '@/pages/home';
@@ -30,33 +31,62 @@ function PageLoader() {
   );
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 8000),
+      staleTime: 30000,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, error: null };
   }
-  static getDerivedStateFromError() {
-    return { hasError: true };
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
   }
   componentDidCatch(error, info) {
     console.error('[SLS ErrorBoundary]', error, info);
   }
+  handleRetry = () => {
+    this.setState({ hasError: false, error: null });
+  };
   render() {
     if (this.state.hasError) {
       return (
-        <Layout>
-          <div className="w-full min-h-[60vh] flex flex-col items-center justify-center gap-4 px-4">
-            <p className="text-xs font-bold uppercase tracking-widest text-slate-400">Something went wrong loading this page</p>
-            <button
-              onClick={() => this.setState({ hasError: false })}
-              className="px-4 py-2 bg-[#0a1628] text-white text-xs font-bold uppercase tracking-wider rounded-sm"
-            >
-              Try Again
-            </button>
+        <div className="w-full min-h-screen bg-white flex flex-col items-center justify-center px-4">
+          <div className="max-w-md text-center">
+            <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
+              <ShieldAlert className="w-6 h-6 text-red-500" />
+            </div>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-gray-700 mb-2">Page could not be loaded</h2>
+            <p className="text-xs text-gray-400 mb-6 max-w-xs mx-auto leading-relaxed">
+              SLS Consultants encountered an error while rendering this page. Please try again or return to the homepage.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={this.handleRetry}
+                className="px-5 py-2.5 bg-[#0a1628] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#1a2f4c] transition-colors rounded-sm"
+              >
+                Try Again
+              </button>
+              <a
+                href="/"
+                className="px-5 py-2.5 border border-gray-200 text-gray-600 text-xs font-bold uppercase tracking-wider hover:bg-gray-50 transition-colors rounded-sm"
+              >
+                Home
+              </a>
+            </div>
+            <p className="text-[9px] text-gray-300 mt-6 font-mono">
+              {this.state.error?.message || ''}
+            </p>
           </div>
-        </Layout>
+        </div>
       );
     }
     return this.props.children;
