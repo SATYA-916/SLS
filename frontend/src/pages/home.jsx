@@ -220,7 +220,7 @@ export default function Home() {
             <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-2">SLS Solutions</h1>
             <p className="text-sm text-slate-500 mb-6">Core Engineering Services, AI Data, AI Products</p>
             <p className="text-slate-600 text-sm leading-relaxed mb-8 max-w-xl">
-              Led by 43+ years of engineering expertise, SLS Structo-Mech Consultants provides specialized core engineering service solutions, AI data analytics, and custom AI products. From fired heaters, boilers, and storage vessels to dynamic foundations and steel detailing, our team delivers high-fidelity engineering drawings and project consultancy.
+              Led by 43+ years of engineering expertise, SLS Structo-Mech Consultants provides specialized core engineering service solutions, AI data analytics, and custom AI products to clients in India and abroad.
             </p>
 
             {/* Inline Animated Stats Counter inside Hero */}
