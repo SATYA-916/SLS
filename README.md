@@ -4,6 +4,17 @@ A world-class engineering portal developed for **SLS Consultants** to showcase a
 
 ---
 
+## 👤 Developed By
+
+**K. Satya Sampath Kumar** — Full Stack Web Developer Intern, SLS Structo-Mech Consultants (Jul 2026 – Present)
+
+Designed and built end-to-end: frontend (React + Three.js WebGL viewer), backend (Node/Express + MongoDB Atlas), admin dashboard, email integration, and deployment/DNS setup.
+
+- GitHub: [github.com/SATYA-916](https://github.com/SATYA-916)
+- LinkedIn: [linkedin.com/in/satya-sampath-93449a28b](https://linkedin.com/in/satya-sampath-93449a28b)
+
+---
+
 ## 🚀 Key Features
 
 * **Interactive WebGL 3D Model Engine**: Custom-built Three.js viewer with support for structural explode/assemble animations, real-time lighting, camera settings, and FEA stress heatmap colors mapped recursively using world coordinates.
