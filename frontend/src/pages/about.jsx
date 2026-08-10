@@ -21,7 +21,7 @@ const milestones = [
 export default function About() {
   return (
     <div className="w-full">
-      <PageMeta title="About Us" description="Learn about SLS Structomech Consultants — led by 43+ years of engineering expertise. We provide multidisciplinary engineering solutions in India and abroad." />
+      <PageMeta title="About Us | Engineering Consultants Visakhapatnam | GVMC Registered Consultant" description="Learn about SLS Structomech Consultants — GVMC registered engineering consultants in Visakhapatnam for building plan approval consultation, structural stability certificates, and multidisciplinary engineering solutions in India and abroad." />
       
       {/* 1. HERO SECTION */}
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">

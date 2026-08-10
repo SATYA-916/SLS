@@ -29,8 +29,8 @@ const services = [
   },
   {
     id: 5,
-    title: 'General Client Needs',
-    description: 'General client need related to residential and industrial building. Plan approvals, structural stability certificate, architectural structural design, suggestion to buy old and new buildings.',
+    title: 'Building Plan Approval & General Client Needs',
+    description: 'GVMC registered consultant for building plan approval consultation, structural stability certificates, and general client needs related to residential and industrial buildings. Architectural structural design, plan approvals, and suggestions for buying old and new buildings.',
     icon: 'map',
   },
 ];

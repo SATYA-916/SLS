@@ -256,7 +256,7 @@ export default function Contact() {
 
   return (
     <div className="w-full">
-      <PageMeta title="Contact Us" description="Get in touch with SLS Consultants for structural engineering, fired heater design, RLA studies, and FEM analysis. Based in Visakhapatnam, India. Call +91 98495 98424 or email slsind@gmail.com." />
+      <PageMeta title="Contact Us | Engineering Consultants Visakhapatnam | GVMC Registered Consultant" description="Contact SLS Consultants — GVMC registered engineering consultants in Visakhapatnam for building plan approval consultation, structural stability certificates, structural engineering, fired heater design, and RLA studies. Call +91 98495 98424 or email slsind@gmail.com." />
       {/* Hero Section */}
       <section className="bg-slate-50 text-[#0a1628] pt-20 pb-12 relative overflow-hidden border-b border-slate-100">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none">

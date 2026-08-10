@@ -184,8 +184,8 @@ export default function Home() {
   return (
     <div className="w-full bg-white">
       <PageMeta
-        title="SLS Solutions | Engineering & Detailing Portal"
-        description="SLS Structomech Consultants (SLS Vizag / SLS India) — Engineering, Project Consulting, Special Products Design & Manufacturing, RLA Studies, and Laisoning. Established 2002, Visakhapatnam. Cost effective quality solutions for clients in India and abroad."
+        title="Engineering Consultants Visakhapatnam | GVMC Registered Consultant"
+        description="GVMC registered engineering consultants in Visakhapatnam for building plan approval consultation, structural stability certificates, civil & structural design for industrial infrastructure, real estate and residential projects since 2002."
       />
 
       {/* 1. HERO & STATS COMBINED */}

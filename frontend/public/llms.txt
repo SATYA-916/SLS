@@ -2,9 +2,11 @@
 
 > The official digital database and technical portal of SLS Consultants.
 
-SLS Consultants is a structural, mechanical, and industrial engineering consultancy established in 2002. They provide high-fidelity engineering design, structural steel detailing, and industrial fired heater packages (API 560) for global refineries and petrochemical facilities.
+SLS Consultants is a GVMC registered structural, mechanical, and industrial engineering consultancy established in 2002 in Visakhapatnam. They provide high-fidelity engineering design, structural steel detailing, building plan approval consultation, structural stability certificates, and industrial fired heater packages (API 560) for global refineries and petrochemical facilities.
 
 ## Services
+- **Building Plan Approval Consultation**: GVMC registered consultant helping clients obtain building plan approvals, plan sanctions, and structural stability certificates for residential and commercial buildings in Visakhapatnam.
+- **Structural Stability Certificate**: Issuance of structural stability certificates for old and new buildings as required by GVMC and lending institutions.
 - **Industrial Fired Heater Engineering**: Thermal and structural casing designs under API 560/530.
 - **Civil & Structural Engineering**: Heavy structural framing, pipe racks, and warehouses.
 - **Building Structural Design**: RCC residential, commercial, and college complexes (IS 456).
