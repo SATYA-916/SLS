@@ -21,7 +21,7 @@ const milestones = [
 export default function About() {
   return (
     <div className="w-full">
-      <PageMeta title="About Us" description="Learn about SLS Structo-Mech Consultants — led by 43+ years of engineering expertise. We provide multidisciplinary engineering solutions in India and abroad." />
+      <PageMeta title="About Us" description="Learn about SLS Structomech Consultants — led by 43+ years of engineering expertise. We provide multidisciplinary engineering solutions in India and abroad." />
       
       {/* 1. HERO SECTION */}
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
@@ -42,7 +42,7 @@ export default function About() {
               Engineering Excellence Since 2002
             </h1>
             <p className="text-slate-600 text-sm md:text-base max-w-2xl leading-relaxed">
-              SLS Structo-Mech Consultants was established in 2002 in Visakhapatnam, Andhra Pradesh, led by 43+ years of engineering expertise, including 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
+              SLS Structomech Consultants was established in 2002 in Visakhapatnam, Andhra Pradesh, led by 43+ years of engineering expertise, including 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
             </p>
           </motion.div>
         </div>
@@ -53,7 +53,7 @@ export default function About() {
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             <h2 className="text-3xl font-bold text-[#0a1628] mb-6">Our Story</h2>
             <p className="text-gray-500 mb-4 leading-relaxed">
-              SLS Structo-Mech Consultants was established in 2002 in Visakhapatnam, Andhra Pradesh, led by principal expertise with 43 years of experience, including 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
+              SLS Structomech Consultants was established in 2002 in Visakhapatnam, Andhra Pradesh, led by principal expertise with 43 years of experience, including 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
             </p>
             <p className="text-gray-500 mb-4 leading-relaxed">
               From its inception, SLS has been driven by a singular vision: to deliver cost-effective, quality engineering solutions. Our firm operates with a highly experienced multi-disciplinary team of engineers, designers, and detailers specializing in structural engineering, industrial project consultancy, mechanical engineering, remaining life assessments (RLA), and comprehensive steel detailing.
@@ -89,7 +89,7 @@ export default function About() {
                 </div>
                 <div className="flex items-center gap-2 text-slate-600">
                   <Clock className="w-4 h-4 text-[#43648e] shrink-0" />
-                  <span>20+ Years heading SLS Structo-Mech Consultants</span>
+                  <span>20+ Years heading SLS Structomech Consultants</span>
                 </div>
               </div>
               <div className="border-t border-slate-200 pt-6">

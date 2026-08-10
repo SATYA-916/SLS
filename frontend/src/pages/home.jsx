@@ -185,7 +185,7 @@ export default function Home() {
     <div className="w-full bg-white">
       <PageMeta
         title="SLS Solutions | Engineering & Detailing Portal"
-        description="SLS Structo-Mech Consultants (SLS Vizag / SLS India) — Engineering, Project Consulting, Special Products Design & Manufacturing, RLA Studies, and Laisoning. Established 2002, Visakhapatnam. Cost effective quality solutions for clients in India and abroad."
+        description="SLS Structomech Consultants (SLS Vizag / SLS India) — Engineering, Project Consulting, Special Products Design & Manufacturing, RLA Studies, and Laisoning. Established 2002, Visakhapatnam. Cost effective quality solutions for clients in India and abroad."
       />
 
       {/* 1. HERO & STATS COMBINED */}
@@ -220,7 +220,7 @@ export default function Home() {
             <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-2">SLS Solutions</h1>
             <p className="text-sm text-slate-500 mb-6">Core Engineering Services, AI Data, AI Products</p>
             <p className="text-slate-600 text-sm leading-relaxed mb-8 max-w-xl">
-              Led by 43+ years of engineering expertise, SLS Structo-Mech Consultants provides specialized core engineering service solutions, AI data analytics, and custom AI products to clients in India and abroad.
+              Led by 43+ years of engineering expertise, SLS Structomech Consultants provides specialized core engineering service solutions, AI data analytics, and custom AI products to clients in India and abroad.
             </p>
 
             {/* Inline Animated Stats Counter inside Hero */}
@@ -285,7 +285,7 @@ export default function Home() {
             <div className="max-w-xl">
               <span className="text-[9px] font-bold uppercase tracking-widest text-[#43648e] block mb-2">Our Profile</span>
               <p className="text-[#0a1628] text-sm md:text-base leading-relaxed mb-4">
-                Established in 2002, SLS Structo-Mech Consultants provides all engineering solutions to various clients in India and abroad.
+                Established in 2002, SLS Structomech Consultants provides all engineering solutions to various clients in India and abroad.
               </p>
               <div className="flex flex-wrap gap-4 items-center">
                 <Link href="/about">

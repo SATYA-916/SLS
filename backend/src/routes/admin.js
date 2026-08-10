@@ -98,12 +98,12 @@ router.post('/forgot-password', async (req, res) => {
       await sendBrevo({
         to: ownerEmail,
         toName: 'SLS Admin',
-        subject: 'Admin Password Recovery — SLS Consultants',
+        subject: 'Admin Password Recovery — SLS Structomech',
         html: `
           <div style="font-family:sans-serif;max-width:500px;margin:0 auto;color:#333">
             <div style="background:#0a1628;padding:20px 24px">
               <h2 style="color:white;margin:0;font-size:18px">Admin Password Recovery</h2>
-              <p style="color:rgba(255,255,255,0.6);margin:4px 0 0;font-size:12px">SLS Consultants Website</p>
+              <p style="color:rgba(255,255,255,0.6);margin:4px 0 0;font-size:12px">SLS Structomech Website</p>
             </div>
             <div style="padding:24px;border:1px solid #ddd;border-top:none;background:white">
               <p style="font-size:14px;margin-top:0">Hello Admin,</p>

@@ -29,7 +29,7 @@ export default function Expertise() {
 
   return (
     <div className="w-full">
-      <PageMeta title="Our Services" description="SLS Structo-Mech Consultants — Engineering, Project Consulting, Special Products Design & Manufacturing, RLA Studies, and General Client Needs services for clients in India and abroad." />
+      <PageMeta title="Our Services" description="SLS Structomech Consultants — Engineering, Project Consulting, Special Products Design & Manufacturing, RLA Studies, and General Client Needs services for clients in India and abroad." />
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
@@ -48,7 +48,7 @@ export default function Expertise() {
               Core Engineering Services
             </h1>
             <p className="text-slate-600 text-sm md:text-base max-w-xl leading-relaxed">
-              SLS Structo-Mech Consultants provides all engineering solutions to various clients in India and abroad.
+              SLS Structomech Consultants provides all engineering solutions to various clients in India and abroad.
             </p>
           </motion.div>
         </div>

@@ -638,7 +638,7 @@ export default function CaseStudy() {
     <div className="w-full bg-white">
       <PageMeta
         title={`${project.title} — Case Study`}
-        description={`Read the full structural engineering case study for "${project.title}" by SLS Structo-Mech Consultants. Challenge description, design solutions, and engineering drawings.`}
+        description={`Read the full structural engineering case study for "${project.title}" by SLS Structomech Consultants. Challenge description, design solutions, and engineering drawings.`}
       />
 
       <section className="bg-slate-50 border-b border-slate-200 py-12">

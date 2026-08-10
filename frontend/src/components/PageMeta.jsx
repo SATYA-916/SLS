@@ -6,7 +6,7 @@ import { useEffect } from 'react';
  */
 export function PageMeta({ title, description }) {
   useEffect(() => {
-    const BASE = 'SLS Structo-Mech Consultants | SLS Vizag | SLS India | SLS World';
+    const BASE = 'SLS Structomech Consultants | SLS Vizag | SLS India | SLS World';
     document.title = title ? `${title} | ${BASE}` : `${BASE} | Engineering Solutions Since 2002`;
 
     if (description) {

@@ -6,7 +6,7 @@ A world-class engineering portal developed for **SLS Consultants** to showcase a
 
 ## 👤 Developed By
 
-**K. Satya Sampath Kumar** — Full Stack Web Developer Intern, SLS Structo-Mech Consultants (Jul 2026 – Present)
+**K. Satya Sampath Kumar** — Full Stack Web Developer Intern, SLS Structomech Consultants (Jul 2026 – Present)
 
 Designed and built end-to-end: frontend (React + Three.js WebGL viewer), backend (Node/Express + MongoDB Atlas), admin dashboard, email integration, and deployment/DNS setup.
 

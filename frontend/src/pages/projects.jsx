@@ -195,7 +195,7 @@ export default function Projects() {
 
   return (
     <div className="w-full">
-      <PageMeta title="Projects" description="Explore 500+ structural and industrial engineering projects delivered by SLS Structo-Mech Consultants since 2002 — fired heaters, cryogenic foundations, chimneys, and more." />
+      <PageMeta title="Projects" description="Explore 500+ structural and industrial engineering projects delivered by SLS Structomech Consultants since 2002 — fired heaters, cryogenic foundations, chimneys, and more." />
       <section className="bg-slate-50 text-[#0a1628] py-20 relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
           <svg width="100%" height="100%">
