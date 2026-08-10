@@ -121,8 +121,9 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     const OWNER_EMAIL = process.env.OWNER_EMAIL;
     const DEV_COPY_EMAIL = process.env.DEV_COPY_EMAIL || 'zywu801@gmail.com';
+    const ALT_COPY_EMAIL = process.env.ALT_COPY_EMAIL || 'slsind@gmail.com';
 
-    // Owner notification via Brevo (sent to owner + developer copy)
+    // Owner notification via Brevo (sent to owner + developer copy + alt copy)
     if (OWNER_EMAIL) {
       sendBrevo({
         to: OWNER_EMAIL,
@@ -144,6 +145,17 @@ router.post('/', upload.single('file'), async (req, res) => {
       })
         .then(() => req.log.info({ email }, 'Developer copy sent via Brevo'))
         .catch((err) => req.log.error({ err }, 'Developer copy failed'));
+
+      // Secondary copy of the enquiry
+      sendBrevo({
+        to: ALT_COPY_EMAIL,
+        toName: 'SLS India',
+        subject: `[COPY] New Enquiry from ${name} (${email})`,
+        html: ownerEmailHtml({ name, email, phone, company, service, message }),
+        replyTo: email,
+      })
+        .then(() => req.log.info({ email }, 'Secondary copy sent via Brevo'))
+        .catch((err) => req.log.error({ err }, 'Secondary copy failed'));
     }
 
     // Customer auto-reply via Brevo
