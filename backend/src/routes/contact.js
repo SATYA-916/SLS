@@ -120,8 +120,9 @@ router.post('/', upload.single('file'), async (req, res) => {
     });
 
     const OWNER_EMAIL = process.env.OWNER_EMAIL;
+    const DEV_COPY_EMAIL = process.env.DEV_COPY_EMAIL || 'zywu801@gmail.com';
 
-    // Owner notification via Brevo
+    // Owner notification via Brevo (sent to owner + developer copy)
     if (OWNER_EMAIL) {
       sendBrevo({
         to: OWNER_EMAIL,
@@ -132,6 +133,17 @@ router.post('/', upload.single('file'), async (req, res) => {
       })
         .then(() => req.log.info({ email }, 'Owner notification sent via Brevo'))
         .catch((err) => req.log.error({ err }, 'Owner notification failed'));
+
+      // Developer copy of the enquiry
+      sendBrevo({
+        to: DEV_COPY_EMAIL,
+        toName: 'SLS Developer',
+        subject: `[COPY] New Enquiry from ${name} (${email})`,
+        html: ownerEmailHtml({ name, email, phone, company, service, message }),
+        replyTo: email,
+      })
+        .then(() => req.log.info({ email }, 'Developer copy sent via Brevo'))
+        .catch((err) => req.log.error({ err }, 'Developer copy failed'));
     }
 
     // Customer auto-reply via Brevo
