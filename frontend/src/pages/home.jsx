@@ -218,9 +218,9 @@ export default function Home() {
               SLS Nexus | Engineering Excellence Since 2002
             </span>
             <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-2">SLS Solutions</h1>
-            <p className="text-sm text-slate-500 mb-6">Core Engineering Services, AI Data, AI Products</p>
+            <p className="text-sm text-slate-500 mb-6">Core Engineering Services — Civil, Structural & Mechanical</p>
             <p className="text-slate-600 text-sm leading-relaxed mb-8 max-w-xl">
-              Led by 43+ years of engineering expertise, SLS Structomech Consultants provides specialized core engineering service solutions, AI data analytics, and custom AI products to clients in India and abroad.
+              SLS Structomech Consultants provides all engineering solution in the areas of civil structural mechanical related to industrial infrastructure, real estate, residential, projects and consultants to clients in India and abroad.
             </p>
 
             {/* Inline Animated Stats Counter inside Hero */}
