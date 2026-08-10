@@ -23,14 +23,14 @@ const services = [
   },
   {
     id: 4,
-    title: 'Remaining Life Assessment (RLA) Studies',
-    description: 'RLA studies to assess remaining service life of existing structures and buildings existing industrial equipment.',
+    title: 'Remaining Life Assessment (RLA) Study',
+    description: 'RLA study to assess remaining service life of existing structures, buildings and industrial equipment.',
     icon: 'activity',
   },
   {
     id: 5,
-    title: 'Building Plan Approval & General Client Needs',
-    description: 'GVMC registered consultant for building plan approval consultation, structural stability certificates, and general client needs related to residential and industrial buildings. Architectural structural design, plan approvals, and suggestions for buying old and new buildings.',
+    title: 'Building Plan Approval (GVMC/VMRDA)',
+    description: 'GVMC registered consultant for building plan approval consultation, structural stability certificates and building plan approval services for residential and industrial buildings. Architectural and structural design, plan approvals (GVMC/VMRDA), and suggestions for buying old and new buildings.',
     icon: 'map',
   },
 ];

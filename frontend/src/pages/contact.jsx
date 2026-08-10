@@ -1,67 +1,10 @@
-import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef, useEffect, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Phone, Mail, Globe, MapPin, CheckCircle2, Clock, ShieldCheck, Zap, CalendarDays, X, Video, FileText } from 'lucide-react';
+import { Phone, Mail, Globe, MapPin, CheckCircle2, CalendarDays, FileText } from 'lucide-react';
 import { submitContact, getServices } from '@/lib/api';
-import { toast } from '@/components/ui/toaster';
 import { PageMeta } from '@/components/PageMeta';
-
-// ── Calendly Configuration ──────────────────────────────────────────────────
-// Replace this URL with your actual Calendly link once you create a free account
-// at https://calendly.com  →  copy your personal scheduling link here
-const CALENDLY_URL = 'https://calendly.com/slsvizag/30min';
-
-// Hook: dynamically loads Calendly widget script + CSS once
-function useCalendly() {
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    // Load Calendly CSS
-    if (!document.getElementById('calendly-css')) {
-      const link = document.createElement('link');
-      link.id   = 'calendly-css';
-      link.rel  = 'stylesheet';
-      link.href = 'https://assets.calendly.com/assets/external/widget.css';
-      document.head.appendChild(link);
-    }
-    // Load Calendly JS
-    if (!document.getElementById('calendly-js')) {
-      const script  = document.createElement('script');
-      script.id     = 'calendly-js';
-      script.src    = 'https://assets.calendly.com/assets/external/widget.js';
-      script.async  = true;
-      script.onload = () => setReady(true);
-      document.body.appendChild(script);
-    } else if (window.Calendly) {
-      setReady(true);
-    }
-  }, []);
-
-  const openPopup = useCallback(() => {
-    try {
-      if (window.Calendly) {
-        window.Calendly.initPopupWidget({ url: CALENDLY_URL });
-      } else {
-        window.open(CALENDLY_URL, '_blank');
-      }
-    } catch (e) {
-      window.open(CALENDLY_URL, '_blank');
-    }
-  }, []);
-
-  return { openPopup };
-}
-
-const fallbackServiceNames = [
-  'ASME Boiler & Pressure Vessel Design',
-  'STAAD.Pro Structural Steel Analysis',
-  'Tekla Fabrication & Steel Detailing',
-  'API 560 Fired Heater General Arrangement',
-  'EIL Compliance Drawing Scoping',
-  'FEM/FEA Stress Verification',
-  'Remaining Life Assessment (RLA) Study',
-  'Other Services & Scoping Inquiry'
-];
+import { useCalendly } from '@/hooks/use-calendly';
 
 function validate(data) {
   const errors = {};
@@ -75,7 +18,7 @@ function validate(data) {
 
 function getInitialMessageForService(serviceName) {
   if (!serviceName) return '';
-  return `I would like to inquire about your "${serviceName}" engineering services. Please coordinate a technical discussion or share drawing layouts so we can align on standard compliance (ASME/API/IS) and scoping timelines.`;
+  return `I would like to inquire about your "${serviceName}" engineering services. Please coordinate a technical discussion and scoping timelines for my project.`;
 }
 
 export default function Contact() {
@@ -106,7 +49,7 @@ export default function Contact() {
   const initialService = queryParams.get('service') || '';
   const initialMessage = initialService ? getInitialMessageForService(initialService) : '';
 
-  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', service: initialService, message: initialMessage, targetCodes: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', service: initialService, message: initialMessage, technicalScope: '' });
   const [errors, setErrors] = useState({});
   const [wizardStep, setWizardStep] = useState(1);
 
@@ -149,26 +92,23 @@ export default function Contact() {
       });
     }
     
-    // 2. Add fallback services from fallbackServices data file (the core ones)
+    // 2. Add core service areas
     const coreServices = [
+      'Civil Engineering Services',
+      'Structural Engineering',
+      'Mechanical Engineering',
+      'Architecture',
       'Engineering',
       'Project Consulting',
-      'Special Products Design & Manufacturing',
-      'Remaining Life Assessment (RLA) Studies',
-      'Laisoning'
+      'Special Products Design & Manufacturing'
     ];
     coreServices.forEach(s => list.add(s));
 
-    // 3. Add the old detailed contact-form specific options
+    // 3. Add detailed engineering options (non-compliance)
     const detailServices = [
-      'ASME Boiler & Pressure Vessel Design',
       'STAAD.Pro Structural Steel Analysis',
-      'Tekla Fabrication & Steel Detailing',
-      'API 560 Fired Heater General Arrangement',
-      'EIL Compliance Drawing Scoping',
       'FEM/FEA Stress Verification',
-      'Remaining Life Assessment (RLA) Study',
-      'Other Services & Scoping Inquiry'
+      'Remaining Life Assessment (RLA) Study'
     ];
     detailServices.forEach(s => list.add(s));
 
@@ -184,6 +124,8 @@ export default function Contact() {
     mutationFn: submitContact,
     onSuccess: () => {
       setSubmitted(true);
+      // Auto-open Calendly popup so the user can immediately schedule a call
+      openPopup();
     },
   });
 
@@ -239,17 +181,14 @@ export default function Contact() {
     const errs = validate(form);
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
 
-    const messageWithCodes = form.targetCodes?.trim()
-      ? `${form.message}\n\n[Design Codes: ${form.targetCodes.trim()}]`
-      : form.message;
-
     const formData = new FormData();
     formData.append('name', form.name);
     formData.append('email', form.email);
     formData.append('phone', form.phone || '');
     formData.append('company', form.company || '');
     formData.append('service', form.service || '');
-    formData.append('message', messageWithCodes);
+    formData.append('message', form.message);
+    formData.append('technicalScope', form.technicalScope || '');
 
     mutation.mutate(formData);
   }
@@ -331,12 +270,11 @@ export default function Contact() {
                   Share your project scope, drawings, specifications, and engineering requirements. Our team will review your submission and respond with the appropriate technical guidance.
                 </p>
                 
-                {/* 4 Process Preview Steps */}
-                <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 my-4 pt-4 border-t border-slate-100 text-[9px] font-extrabold uppercase tracking-wider text-slate-400">
+                {/* 3 Process Preview Steps */}
+                <div className="grid grid-cols-3 gap-x-4 gap-y-2.5 my-4 pt-4 border-t border-slate-100 text-[9px] font-extrabold uppercase tracking-wider text-slate-400">
                   <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Select a Service</span>
                   <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Describe Project</span>
                   <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Technical Scope</span>
-                  <span className="flex items-center gap-1.5 text-[#43648e]/80"><CheckCircle2 className="w-3.5 h-3.5 text-[#43648e]" /> Tech Response</span>
                 </div>
               </div>
               <button
@@ -540,16 +478,16 @@ export default function Contact() {
 
                     <div>
                       <label className="text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5 block">
-                        Target Codes &amp; Standards (e.g. ASME VIII, API 560, IS 800)
+                        Technical Scope <span className="text-gray-400 font-medium normal-case">(optional)</span>
                       </label>
                       <input
-                        name="targetCodes"
-                        value={form.targetCodes}
+                        name="technicalScope"
+                        value={form.technicalScope}
                         onChange={handleChange}
                         className="w-full border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#0a1628] transition-colors"
-                        placeholder="ASME Sec VIII, API 560, IS 800, EIL specs..."
+                        placeholder="e.g. Design loads, material specs, site constraints..."
                       />
-                      <span className="text-[10px] text-gray-400 block mt-1">Conforming design criteria ensures project safety compliance.</span>
+                      <span className="text-[10px] text-gray-400 block mt-1">Help us scope your project better with preliminary technical details.</span>
                     </div>
                   </div>
                 )}

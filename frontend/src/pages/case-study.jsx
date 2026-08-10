@@ -6,8 +6,9 @@ import { getProjects } from '@/lib/api';
 import { fallbackProjects } from '@/data/fallbackProjects';
 import { 
   ArrowLeft, Building2, Calendar, User, MapPin, 
-  Tag, ShieldCheck, ClipboardList, CheckCircle2, ChevronRight 
+  Tag, ShieldCheck, ClipboardList, CheckCircle2, ChevronRight, CalendarDays 
 } from 'lucide-react';
+import { useCalendly } from '@/hooks/use-calendly';
 
 export function getThreeModelIdForProject(project) {
   if (!project) return 'complete-heater';
@@ -613,6 +614,7 @@ export default function CaseStudy() {
   const params = useParams();
   const projectId = parseInt(params.id);
   const [activeLightboxImg, setActiveLightboxImg] = useState(null);
+  const { openPopup } = useCalendly();
 
   const { data: projects } = useQuery({
     queryKey: ['projects'],
@@ -748,11 +750,19 @@ export default function CaseStudy() {
                       <p className="text-[11px] text-gray-500 leading-relaxed mb-3">
                         We offer full feasibility reviews and sizing calculations for similar projects.
                       </p>
-                      <Link href={`/contact?service=${encodeURIComponent(project.category)}`}>
-                        <button className="w-full bg-[#0a1628] hover:bg-[#1a2f4c] text-white py-2 text-[10px] font-bold uppercase tracking-wider transition-colors rounded-sm flex items-center justify-center gap-1 cursor-pointer">
-                          Inquire Specs <ChevronRight className="w-3 h-3" />
+                      <div className="flex flex-col gap-2">
+                        <Link href={`/contact?service=${encodeURIComponent(project.category)}`}>
+                          <button className="w-full bg-[#0a1628] hover:bg-[#1a2f4c] text-white py-2 text-[10px] font-bold uppercase tracking-wider transition-colors rounded-sm flex items-center justify-center gap-1 cursor-pointer">
+                            Inquire Specs <ChevronRight className="w-3 h-3" />
+                          </button>
+                        </Link>
+                        <button
+                          onClick={openPopup}
+                          className="w-full border border-[#0a1628] bg-white hover:bg-[#0a1628] hover:text-white text-[#0a1628] py-2 text-[10px] font-bold uppercase tracking-wider transition-colors rounded-sm flex items-center justify-center gap-1 cursor-pointer"
+                        >
+                          <CalendarDays className="w-3 h-3" /> Book a Call
                         </button>
-                      </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -814,6 +824,42 @@ export default function CaseStudy() {
               </div>
             </div>
           )}
+
+          {/* Full-width Bottom CTA — Book a Call */}
+          <section className="mt-16 bg-gradient-to-br from-[#0a1628] to-[#12233c] text-white rounded-sm overflow-hidden relative">
+            <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
+              <svg width="100%" height="100%">
+                <defs>
+                  <pattern id="cta_grid_cs" width="48" height="48" patternUnits="userSpaceOnUse">
+                    <path d="M 48 0 L 0 0 0 48" fill="none" stroke="white" strokeWidth="1" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#cta_grid_cs)" />
+              </svg>
+            </div>
+            <div className="relative z-10 px-6 py-12 md:px-12 md:py-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+              <div className="max-w-xl">
+                <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/50 mb-3">Engineering Consultation</p>
+                <h2 className="text-2xl md:text-3xl font-bold mb-3">Need a similar engineering solution?</h2>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  Discuss your project requirements directly with our senior engineering team. Book a 30-minute call and get expert guidance on design, compliance and delivery timelines.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+                <button
+                  onClick={openPopup}
+                  className="bg-white text-[#0a1628] hover:bg-white/90 px-8 py-3.5 text-xs font-bold uppercase tracking-widest transition-colors shadow-lg flex items-center justify-center gap-2 rounded-sm cursor-pointer"
+                >
+                  <CalendarDays className="w-4 h-4" /> Book a Call
+                </button>
+                <Link href={`/contact?service=${encodeURIComponent(project.category)}`}>
+                  <button className="border border-white/30 text-white hover:bg-white/10 px-8 py-3.5 text-xs font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2 rounded-sm cursor-pointer">
+                    Submit an Inquiry
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </section>
         </div>
       </section>
 

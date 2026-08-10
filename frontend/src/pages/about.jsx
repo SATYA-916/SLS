@@ -81,7 +81,7 @@ export default function About() {
               <div className="space-y-3 mb-6 text-sm">
                 <div className="flex items-center gap-2 text-slate-600">
                   <Award className="w-4 h-4 text-[#43648e] shrink-0" />
-                  <span>Ex-BHEL (Bharat Heavy Plate Vessels Limited) — 18 Years</span>
+                  <span>Ex-BHEL (Bharat Heavy Electricals Limited) — 18 Years</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-600">
                   <Award className="w-4 h-4 text-[#43648e] shrink-0" />

@@ -23,9 +23,10 @@ const SubmitContactBody = z.object({
   company: z.string().nullable().optional(),
   service: z.string().nullable().optional(),
   message: z.string().min(10),
+  technicalScope: z.string().nullable().optional(),
 });
 
-function ownerEmailHtml({ name, email, phone, company, service, message }) {
+function ownerEmailHtml({ name, email, phone, company, service, message, technicalScope }) {
   return `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
       <div style="background:#0a1628;padding:20px 24px;margin-bottom:24px">
@@ -38,6 +39,7 @@ function ownerEmailHtml({ name, email, phone, company, service, message }) {
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Phone</td><td style="padding:10px 12px;border:1px solid #ddd">${phone ?? '—'}</td></tr>
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Company</td><td style="padding:10px 12px;border:1px solid #ddd">${company ?? '—'}</td></tr>
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Service</td><td style="padding:10px 12px;border:1px solid #ddd">${service ?? '—'}</td></tr>
+        <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Technical Scope</td><td style="padding:10px 12px;border:1px solid #ddd">${technicalScope ?? '—'}</td></tr>
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Message</td><td style="padding:10px 12px;border:1px solid #ddd">${message}</td></tr>
       </table>
     </div>
@@ -88,6 +90,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     company: req.body.company === '' || req.body.company === 'null' || req.body.company === 'undefined' ? null : req.body.company,
     service: req.body.service === '' || req.body.service === 'null' || req.body.service === 'undefined' ? null : req.body.service,
     message: req.body.message,
+    technicalScope: req.body.technicalScope === '' || req.body.technicalScope === 'null' || req.body.technicalScope === 'undefined' ? null : req.body.technicalScope,
   };
 
   const parsed = SubmitContactBody.safeParse(bodyData);
@@ -96,7 +99,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     return;
   }
 
-  const { name, email, phone, company, service, message } = parsed.data;
+  const { name, email, phone, company, service, message, technicalScope } = parsed.data;
   const fileName = req.file ? req.file.originalname : null;
   const fileData = req.file ? req.file.buffer : null;
 
@@ -109,6 +112,7 @@ router.post('/', upload.single('file'), async (req, res) => {
       company, 
       service, 
       message, 
+      technicalScope, 
       fileName, 
       fileData 
     });
@@ -129,7 +133,7 @@ router.post('/', upload.single('file'), async (req, res) => {
         to: OWNER_EMAIL,
         toName: 'SLS Admin',
         subject: `New Enquiry from ${name} (${email})`,
-        html: ownerEmailHtml({ name, email, phone, company, service, message }),
+        html: ownerEmailHtml({ name, email, phone, company, service, message, technicalScope }),
         replyTo: email,
       })
         .then(() => req.log.info({ email }, 'Owner notification sent via Brevo'))
@@ -140,7 +144,7 @@ router.post('/', upload.single('file'), async (req, res) => {
         to: DEV_COPY_EMAIL,
         toName: 'SLS Developer',
         subject: `[COPY] New Enquiry from ${name} (${email})`,
-        html: ownerEmailHtml({ name, email, phone, company, service, message }),
+        html: ownerEmailHtml({ name, email, phone, company, service, message, technicalScope }),
         replyTo: email,
       })
         .then(() => req.log.info({ email }, 'Developer copy sent via Brevo'))
@@ -151,7 +155,7 @@ router.post('/', upload.single('file'), async (req, res) => {
         to: ALT_COPY_EMAIL,
         toName: 'SLS India',
         subject: `[COPY] New Enquiry from ${name} (${email})`,
-        html: ownerEmailHtml({ name, email, phone, company, service, message }),
+        html: ownerEmailHtml({ name, email, phone, company, service, message, technicalScope }),
         replyTo: email,
       })
         .then(() => req.log.info({ email }, 'Secondary copy sent via Brevo'))

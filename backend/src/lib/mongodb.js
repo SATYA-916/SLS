@@ -19,6 +19,7 @@ const contactSchema = new mongoose.Schema(
     phone: { type: String, default: null },
     company: { type: String, default: null },
     service: { type: String, default: null },
+    technicalScope: { type: String, default: null },
     message: { type: String, required: true },
     fileName: { type: String, default: null },
     filePath: { type: String, default: null },
