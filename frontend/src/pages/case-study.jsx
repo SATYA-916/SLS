@@ -10,109 +10,6 @@ import {
 } from 'lucide-react';
 import { useCalendly } from '@/hooks/use-calendly';
 
-export function getThreeModelIdForProject(project) {
-  if (!project) return 'complete-heater';
-  
-  const id = project.id;
-
-  // Exact Project-to-Model ID Mappings (Aligned with fallbackProjects.js)
-  switch (id) {
-    case 1:  return 'canopy-millennium';       // Millennium Retail Canopy
-    case 2:  return 'ac-shelter';              // Environmental Control - AC Shelter
-    case 3:  return 'mt-pool-structure';       // MT Pool Support Frame
-    case 4:  return 'concrete-shield-wall';    // Concrete Shield Wall
-    case 5:  return 'sgp-lead-shield';         // SGP Shield Radiography
-    case 6:  return 'cseam-lead-shield';       // C-Seam RT Shield
-    case 7:  return 'marking-fixture';         // CAMBER & Cutting Fixtures
-    case 8:  return 'cseam-lead-shield';       // Container Coaming RT Shield (Mobile Shield)
-    case 9:  return 'complete-frame';          // Surya Residency apartments (residential RCC column structure)
-    case 11: return 'complete-frame';          // TAF Handling Structures
-    case 12: return 'marking-fixture';         // Main Shaft Handling Fixtures
-    case 13: return 'complete-frame';          // Visakha Govt College for Women (academic buildings)
-    case 14: return 'complete-frame';          // Residential School Complex for ITDA
-    case 15: return 'complete-frame';          // Bhaskar Residency Apartments
-    case 16: return 'complete-frame';          // Commercial Complex
-    case 17: return 'complete-frame';          // Apartment Complex at Yendada
-    case 18: return 'roof-structure';          // Bungalow at Yendada (residential roof trusses)
-    case 19: return 'stair-tower';             // College Buildings for PG Courses (structural staircase layout)
-    case 20: return 'piling-grid';             // Residential Complex at Visakhapatnam (pile cap foundations grid)
-    case 21: return 'piling-grid';             // Cryogenic Plant Foundations (Iran)
-    case 22: return 'compressor-foundation';   // Machine Foundations (Hyderabad)
-    case 23: return 'piling-grid';             // Cryogenic Plant Foundation (India)
-    case 24: return 'boiler-house-frame';      // Compressor House & Pipe Rack structural frame
-    case 25: return 'cold-box-foundation';     // Cold Box Foundation (Roorkee)
-    case 27: return 'cold-box-foundation';     // Foundations for Cryogenic Equipment (Bina)
-    case 28: return 'cold-box-foundation';     // Foundations for Cryogenic Equipment (Bhatinda)
-    case 29: return 'cold-box-foundation';     // Foundations for Cryogenic Equipment (Kochi)
-    case 30: return 'boiler-house-frame';      // 1X80 T/Hr Boiler Structures
-    case 31: return 'vfd-room';                // VFD Control Room & Retaining Wall
-    case 32: return 'steel-chimney';           // RLA of Steel Chimneys - Bhadrachalam
-    case 33: return 'air-duct';                // SOFA Ducting & Air Heater Design
-    case 34: return 'boiler-house-frame';      // 2X100 TPH Boiler House Structures
-    case 51: return 'air-duct';                // TANDA Power - Back End Duct
-    case 35: return 'hds-heater';              // Box Heaters - HPCL Mumbai
-    case 36: return 'dhdt-heater';             // Cylindrical Fired Heater - BORL Bina
-    case 37: return 'dhdt-heater';             // Cylindrical Heaters - CPCL Chennai
-    case 38: return 'complete-heater';         // Ketene Furnace - Jubilant Organics
-    case 39: return 'complete-heater';         // Ketene Furnace - IOL Chemicals
-    case 40: return 'complete-heater';         // Refinery Heater Packages - Nagarjuna
-    case 41: return 'complete-heater';         // CDU Heater Package - BPCL Kochi
-    case 42: return 'complete-heater';         // DCU Heater Package - BPCL Cochin
-    case 43: return 'mt-pool-structure';       // Maintenance Sheds - Kalpakkam
-    case 44: return 'vessel-skid';             // Steam Generator Receiving Structures (Skid)
-    case 45: return 'breeching-door';          // Vessel Cover Structures (Hinged Doors)
-    case 46: return 'complete-frame';          // TERN Distilleries Expansion Project
-    case 47: return 'piping-manifold';         // ASU Pipelines
-    case 48: return 'evaporator-structure';    // Evaporator Building Structure
-    case 49: return 'dhdt-heater';             // DHDT Fired Heater
-    case 50: return 'hds-heater';              // HDS Fired Heater
-    case 53: return 'santhipuram';             // Santhipuram Residential Complex
-    case 54: return 'tarachand';               // Tara Chand Logistics Hub
-    default: break;
-  }
-  
-  // Fallbacks based on category/keywords
-  const cat = project.category || '';
-  const title = (project.title || '').toLowerCase();
-
-  if (title.includes('canopy')) return 'canopy-millennium';
-  if (title.includes('shelter')) return 'ac-shelter';
-  if (title.includes('pool')) return 'mt-pool-structure';
-  if (title.includes('concrete') || title.includes('wall')) return 'concrete-shield-wall';
-  if (title.includes('sgp') || title.includes('generator')) return 'sgp-lead-shield';
-  if (title.includes('c-seam') || title.includes('seam')) return 'cseam-lead-shield';
-  if (title.includes('fixture') || title.includes('marking')) return 'marking-fixture';
-  if (title.includes('cold box') || title.includes('foundation')) return 'cold-box-foundation';
-  if (title.includes('compressor')) return 'compressor-foundation';
-  if (title.includes('boiler') || title.includes('power')) return 'boiler-house-frame';
-  if (title.includes('chimney') || title.includes('stack')) return 'steel-chimney';
-  if (title.includes('room') || title.includes('vfd')) return 'vfd-room';
-  if (title.includes('retaining')) return 'retaining-wall';
-  if (title.includes('duct') || title.includes('combustion')) return 'air-duct';
-  if (title.includes('hoist') || title.includes('monorail')) return 'monorail-hoist';
-  if (title.includes('skid') || title.includes('vessel')) return 'vessel-skid';
-  if (title.includes('damper')) return 'damper-assembly';
-  if (title.includes('manifold') || title.includes('header')) return 'piping-manifold';
-  if (title.includes('anchor')) return 'refractory-anchor';
-  if (title.includes('sheet') || title.includes('tubesheet')) return 'tube-sheet';
-  if (title.includes('crossover')) return 'crossover-piping';
-  if (title.includes('sag') || title.includes('purlin')) return 'sag-rod';
-  if (title.includes('bellows') || title.includes('expansion')) return 'expansion-bellows';
-  if (title.includes('breeching') || title.includes('casing')) return 'breeching-casing';
-  if (title.includes('stair') || title.includes('tower')) return 'stair-tower';
-  if (title.includes('ladder') || title.includes('cage')) return 'cage-ladder';
-  if (title.includes('pile') || title.includes('grid')) return 'piling-grid';
-  if (title.includes('flare') || title.includes('tip')) return 'flare-tip';
-  if (title.includes('rotor') || title.includes('preheater')) return 'preheater-rotor';
-
-  // Fired Heaters
-  if (cat === 'Fired Heaters') return 'complete-heater';
-
-  // General fallbacks
-  return 'complete-frame';
-}
-
-
 const PROJECT_DRAWINGS = {
   48: [
     {
@@ -120,105 +17,90 @@ const PROJECT_DRAWINGS = {
       title: "General Arrangement of Structure",
       ref: "SLS-1011-16-GA-01",
       desc: "General arrangement elevations showing building column spacings, platform heights (-4m, 0m, 4m, 8m), and vertical bracing schemes.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_columns.png",
       title: "Column Detailing & Splicing",
       ref: "SLS-1011-16-COL-02",
       desc: "Structural detailing of vertical column members, heavy base plates, anchor bolt positions, and splice plate connections.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_beams.png",
       title: "Floor Beams Framing Plans",
       ref: "SLS-1011-16-BM-03",
       desc: "Floor framing layout showing primary beam sections, secondary floor beam joists, and connections.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_bracing.png",
       title: "Column Vertical Bracing Details",
       ref: "SLS-1011-16-BR-04",
       desc: "Diagonal cross bracing systems designed to resist lateral forces from cyclonic wind loads.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_platforms.png",
       title: "Operating Platforms Layout",
       ref: "SLS-1011-16-PL-05",
       desc: "Detailed operating platform framing surrounding the central evaporator vessel, complete with toe-guards.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_grating.png",
       title: "Platform Floor Gratings Schedule",
       ref: "SLS-1011-16-GR-06",
       desc: "Layout of anti-slip floor grating panels, detailing panel dimensions, circular nozzle penetrations, and fixing clips.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_staircase.png",
       title: "Access Staircase Detailing",
       ref: "SLS-1011-16-ST-07",
       desc: "Structural detailing of double-flight access stairs, including stringers, landing supports, and tread steps.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_truss_ga.png",
       title: "Roof Canopy Truss GA",
       ref: "SLS-1011-16-TR-08",
       desc: "General assembly of the roof canopy W-type trusses, specifying rafter angles and vertical post lines.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_truss_detail.png",
       title: "Roof Truss Connections",
       ref: "SLS-1011-16-TR-09",
       desc: "High-fidelity joint detailing of trusses using thick steel gusset plates, specifying weld sizes.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_truss_bracing.png",
       title: "Roof Truss Diagonal Plan Bracing",
       ref: "SLS-1011-16-TR-10",
       desc: "Plan diagram of roof cross bracing lines designed to distribute wind forces down to structural columns.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_false_rafter.png",
       title: "False Rafter Eaves Detailing",
       ref: "SLS-1011-16-FR-11",
       desc: "Details for overhang false rafters providing building eaves projection and cladding support.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_side_runners.png",
       title: "Wall Cladding Side Girts",
       ref: "SLS-1011-16-SR-12",
       desc: "Elevation showing side wall cladding runner girts (cold-formed channels) and sag rod holes.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_purlin.png",
       title: "Roof Purlins & Connections",
       ref: "SLS-1011-16-PR-13",
       desc: "Roof purlin girt spacings, cleats, eaves struts, and expansion joints under cladding.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_sag_rods.png",
       title: "Purlin Sag Rod Detailing",
       ref: "SLS-1011-16-SG-14",
       desc: "Vertical tie rods spanning between purlins/girts to prevent sag deflection under gravity loads.",
-      modelId: "evaporator-structure"
     },
     {
       file: "evaporator_ladder.png",
       title: "Safety Cage Ladder detail",
       ref: "SLS-1011-16-LD-15",
       desc: "Structural detailing of vertical ladder, safety cage hoops, and back vertical flat bar safety straps.",
-      modelId: "evaporator-structure"
     }
   ],
   49: [
@@ -227,56 +109,48 @@ const PROJECT_DRAWINGS = {
       title: "DHDT Fired Heater - GA Elevation",
       ref: "6879-211-05-42-0102",
       desc: "General arrangement elevations detailing dimensions of burner floor, radiant chamber, convection module, stack, and catwalks.",
-      modelId: "complete-heater"
     },
     {
       file: "eil_ga_sheet2.png",
       title: "Radiant Section Casing Details",
       ref: "6879-211-05-42-0103",
       desc: "Plate development and stiffener layout for the cylindrical radiant zone, showing viewport frames and burner openings.",
-      modelId: "radiant-section"
     },
     {
       file: "eil_ga_sheet3.png",
       title: "Convection Section Module GA",
       ref: "6879-211-05-42-0104",
       desc: "Internal detail of tube supports, intermediate tubesheets, dynamic corbel plates, and refractory lining anchorage.",
-      modelId: "convection-section"
     },
     {
       file: "eil_ga_sheet4.png",
       title: "Exhaust Stack Casing & Strakes",
       ref: "6879-211-05-42-1105",
       desc: "Detailed drawings for the exhaust stack casing plates, helical strakes profile development, and base ring details.",
-      modelId: "complete-stack"
     },
     {
       file: "eil_ga_sheet5.png",
       title: "Radiant Coil Piping Layout",
       ref: "6879-000-05-42-1301",
       desc: "High-alloy process coil layouts, tube guides, dynamic hanger systems, and return bend nozzle connections.",
-      modelId: "radiant-section"
     },
     {
       file: "eil_ga_sheet6.png",
       title: "Convection Header Box Assembly",
       ref: "BR-40053-02-A-101-SHT1",
       desc: "Convection header box structure detailing, return bend spaces, access door hinges, and high-temp gaskets.",
-      modelId: "header-box"
     },
     {
       file: "eil_ga_sheet7.png",
       title: "Radiant Floor & Burner Plates",
       ref: "BR-40053-02-A-101-SHT2",
       desc: "Mechanical layout of bottom floor plate stiffeners, burner nozzle penetration flanges, and plenum supports.",
-      modelId: "complete-heater"
     },
     {
       file: "eil_ga_sheet8.png",
       title: "Access Platforms & Handrails",
       ref: "BR-40053-02-A-101-SHT3",
       desc: "Details for circular operating platform brackets, walkways, kick-plates, and OSHA-compliant safety railings.",
-      modelId: "heater-platforms"
     }
   ],
   50: [
@@ -285,151 +159,130 @@ const PROJECT_DRAWINGS = {
       title: "HDS Heater - Pressure Parts GA",
       ref: "6879-212-05-42-1202",
       desc: "Process coil sizing layouts, crossover pipe configurations, design parameters (pressures/temps), and hydrotest specs.",
-      modelId: "complete-heater"
     },
     {
       file: "hds_radiant_sheet1.png",
       title: "Radiant Zone Casing Details",
       ref: "6879-212-05-42-1203",
       desc: "Cylindrical casing panels layout, stiffening channel rings, observation port sleeves, and explosive relief doors.",
-      modelId: "radiant-section"
     },
     {
       file: "hds_radiant_sheet2.png",
       title: "Radiant Section Casing Assembly",
       ref: "6879-212-05-42-1204",
       desc: "Details showing vertical structural columns, circular ring girders, base anchor plates, and lifting lug welds.",
-      modelId: "radiant-section"
     },
     {
       file: "hds_convection_sheet1.png",
       title: "Convection Tube Supports & Sheets",
       ref: "BR-40053-03-A-101-SHT1",
       desc: "Intermediate cast alloy support plates, end tubesheets, tube guides, and baffle configurations for high velocity flue gas.",
-      modelId: "convection-section"
     },
     {
       file: "hds_convection_sheet2.png",
       title: "Convection Box Casing & Transitions",
       ref: "BR-40053-03-A-101-SHT2",
       desc: "Convection casing wall detailing, end plate flanges, off-take breeching transition flange, and external stiffening angles.",
-      modelId: "convection-section"
     },
     {
       file: "hds_sss_sheet1.png",
       title: "Steel Support Structure Layout",
       ref: "BR-40053-03-A-101-SHT3",
       desc: "Structural detailing of primary columns, diagonal bracing frames, base plates, and beam-to-column moment connections.",
-      modelId: "complete-heater"
     },
     {
       file: "hds_stack_sheet1.png",
       title: "Exhaust Stack Flange & Anchor Details",
       ref: "BR-40053-03-A-101-SHT4",
       desc: "Lower stack base ring plate, anchor chairs, stiffener plates, and dynamic foundation reaction loading tables.",
-      modelId: "complete-stack"
     },
     {
       file: "hds_header_sheet1.png",
       title: "Header Box Shell Plates & Hinged Doors",
       ref: "BR-40053-03-A-101-SHT5",
       desc: "Casing details for return bend header boxes, hinged access door frames, locking bolts, and ceramic fiber gaskets.",
-      modelId: "header-box"
     }
   ],
   53: [
     {
       file: "santhipuram_layout.png",
-      title: "Ground Floor Architectural Plan",
+      title: "Stilt Floor Plan",
       ref: "SLS-2122-19-DW-1901",
-      desc: "Architectural floor arrangement, partitioning walls, column coordinate offsets, and entrance detailing.",
-      modelId: "santhipuram"
+      desc: "Stilt floor plan showing parking area (1080 Sq.ft), road extension, column grid arrangement, and entrance detailing.",
     },
     {
       file: "santhipuram_beams.png",
-      title: "RCC Floor Beams Layout & Framing",
+      title: "Ground Floor Plan",
       ref: "SLS-2122-19-DW-1902",
-      desc: "First floor framing layout specifying primary girders, concrete beam sections, and reinforcement profiles.",
-      modelId: "santhipuram"
+      desc: "Ground floor plan layout showing commercial area (1850 Sq.ft), partition walls, slab area and column coordinates.",
     },
     {
       file: "santhipuram_columns.png",
-      title: "Columns Coordinates & Reinforcement",
+      title: "First Floor Plan",
       ref: "SLS-2122-19-DW-1903",
-      desc: "Column spacing coordinates, cross section rebars sizing, and stirrups pitch intervals conforming to IS 456.",
-      modelId: "santhipuram"
+      desc: "First floor plan layout with balcony, slab area and room partition wall arrangement conforming to IS 456.",
     },
     {
       file: "santhipuram_foundation.png",
-      title: "Isolated Concrete Footings Details",
+      title: "Second Floor Plan",
       ref: "SLS-2122-19-DW-1904",
-      desc: "Sub-grade concrete footing mats geometry, thickness steps, excavations details, and steel mesh spacing.",
-      modelId: "santhipuram"
+      desc: "Second floor plan layout showing corridor, slab area, and floor level details for the residential complex.",
     },
     {
       file: "santhipuram_details.png",
-      title: "RCC Floor Slabs Reinforcement Schedules",
+      title: "Column Center Line Layout",
       ref: "SLS-2122-19-DW-1905",
-      desc: "Structural detailing of concrete slabs including bottom/top reinforcement meshes and cranked bars.",
-      modelId: "santhipuram"
+      desc: "Column center line layout drawing specifying grid coordinates and center-to-center distances between column lines.",
     },
     {
       file: "santhipuram_drainage.png",
-      title: "Roof Slope & Drainage Scheme",
+      title: "Typical C/S of Beam - Water Tank Details",
       ref: "SLS-2122-19-DW-1926",
-      desc: "Roof slopes, rainwater collection gutter coordinates, and downtake pipe location drawings.",
-      modelId: "santhipuram"
+      desc: "Typical cross-section of beams with reinforcement details for overhead water tank columns (C12 & C16, C8/C11/C15 & ST1).",
     },
     {
       file: "santhipuram_liftwell.png",
-      title: "Shear Wall lift-well Reinforcement",
+      title: "North-East Column Layout",
       ref: "SLS-2122-19-SK-1901",
-      desc: "Sketch detailing the concrete lift shaft shear wall thickness, vertical rebars, and lintel beams.",
-      modelId: "santhipuram"
+      desc: "North-east column layout sketch detailing column grid positions and dimensions for the lift-well area.",
     }
   ],
   54: [
     {
       file: "tarachand_ga.png",
-      title: "General Arrangement of Steel Structure",
+      title: "Floor Plan",
       ref: "SLS-2324-01-DW-101",
-      desc: "General elevations and plan drawings specifying bays spacing, column heights, and gantry crane paths.",
-      modelId: "tarachand"
+      desc: "Floor plan layout of the logistics warehouse showing the 4 ft wide corridor, 30 ft wide road frontage, and slab area.",
     },
     {
       file: "tarachand_columns.png",
-      title: "Main Columns Steel Framing",
+      title: "Column Center Line Layout",
       ref: "SLS-2324-01-DW-102",
-      desc: "Built-up H-beams column schedules, base anchor plate designs, gusset stiffeners, and splices.",
-      modelId: "tarachand"
+      desc: "Column center line layout specifying grid positions of columns C12, C14, C16 along the 30 ft wide road frontage.",
     },
     {
       file: "tarachand_trusses.png",
-      title: "Roof Truss Structural Assembly",
+      title: "Foundation Center Line Layout",
       ref: "SLS-2324-01-DW-103",
-      desc: "General configuration of roof trusses with detail drawings for welded joint gusset connections.",
-      modelId: "tarachand"
+      desc: "Foundation center line layout specifying column grid positions and footing locations for the warehouse structure.",
     },
     {
       file: "tarachand_purlins.png",
-      title: "Purlins & Side Girts Layout",
+      title: "Foundation Sections & Pedestal Details",
       ref: "SLS-2324-01-DW-104",
-      desc: "Cold-formed Z-purlin spacings, eave strut dimensions, and sag rods hole alignments.",
-      modelId: "tarachand"
+      desc: "Section 1-1 (TYPE-1 and TYPE-2) and Section 2-2 foundation details with pedestal (C x D) dimensions and reinforcement.",
     },
     {
       file: "tarachand_gantry.png",
-      title: "Gantry Runway Girder Details",
+      title: "Column Details - Plan Typ C/S for Given Works",
       ref: "SLS-2324-01-DW-105",
-      desc: "Structural detailing of crane runways, splice joints, and runway beam bracket moment connections.",
-      modelId: "tarachand"
+      desc: "Typical column cross-section details from plinth level to first, second and third level slabs with reinforcement schedules.",
     },
     {
       file: "tarachand_foundations.png",
-      title: "Heavy Piling Foundations Template",
+      title: "Section 1-1 - Typical C/S of Water Tank",
       ref: "SLS-2324-01-DW-120",
-      desc: "Foundation concrete layout showing locations of concrete piles, piling caps, and heavy anchor bolts.",
-      modelId: "tarachand"
+      desc: "Section 1-1 typical cross-section of water tank showing column reinforcement, extra bars at support, and concrete grade M20.",
     }
   ]
 };
@@ -576,9 +429,8 @@ function formatProjectTitle(proj) {
   const client = proj.client || '';
   const equipment = proj.equipment || '';
   const title = proj.title || '';
-  const consultation = proj.consultation || '';
-  if (client && equipment && consultation) {
-    return `${client} - ${equipment} (${title}) - ${consultation}`;
+  if (client && equipment) {
+    return `${client} - ${equipment} (${title})`;
   }
   return title;
 }
@@ -733,15 +585,6 @@ export default function CaseStudy() {
                     <span className="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-1">Deliverables Log</span>
                     <span className="text-xs font-medium text-gray-700 leading-relaxed block">{specs.deliverables}</span>
                   </div>
-                  {getThreeModelIdForProject(project) && (
-                    <div className="pt-4 border-t border-slate-200">
-                      <Link href={`/gallery?tab=models&model=${getThreeModelIdForProject(project)}`}>
-                        <button className="w-full bg-[#43648e] hover:bg-[#0a1628] text-white py-2.5 text-[11px] font-bold uppercase tracking-wider transition-colors rounded-sm flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
-                          Open Interactive 3D Model &rarr;
-                        </button>
-                      </Link>
-                    </div>
-                  )}
                   <div className="pt-4 border-t border-slate-200">
                     <div className="bg-[#0a1628]/5 p-4 border border-[#0a1628]/10 rounded-sm">
                       <h4 className="text-xs font-bold text-[#0a1628] mb-1 flex items-center gap-1">
@@ -811,13 +654,6 @@ export default function CaseStudy() {
                       >
                         Zoom Drawing Sheet
                       </button>
-                      {draw.modelId && (
-                        <Link href={`/gallery?tab=models&model=${draw.modelId}`}>
-                          <button className="w-full bg-[#0a1628] hover:bg-[#1a2f4c] text-white py-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors rounded-sm flex items-center justify-center gap-1 cursor-pointer">
-                            View in 3D Model
-                          </button>
-                        </Link>
-                      )}
                     </div>
                   </div>
                 ))}
@@ -887,21 +723,7 @@ export default function CaseStudy() {
                   <h3 className="text-sm font-bold text-[#0a1628] mt-0.5">{activeLightboxImg.title}</h3>
                   <p className="text-xs text-gray-500 mt-1">{activeLightboxImg.desc}</p>
                 </div>
-                {activeLightboxImg.modelId && (
-                  <Link href={`/gallery?tab=models&model=${activeLightboxImg.modelId}`}>
-                    <button 
-                      onClick={() => {
-                        setActiveLightboxImg(null);
-                        // Make sure scroll starts at top of gallery
-                        window.scrollTo(0, 0);
-                      }}
-                      className="bg-[#0a1628] hover:bg-[#1a2f4c] text-white px-4 py-2 text-[10px] font-bold uppercase tracking-wider transition-colors rounded-sm cursor-pointer whitespace-nowrap"
-                    >
-                      Open in 3D Model Viewer
-                    </button>
-                  </Link>
-                )}
-              </div>
+                </div>
             </div>
           </div>
         </div>

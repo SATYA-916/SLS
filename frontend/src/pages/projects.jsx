@@ -27,9 +27,8 @@ function formatProjectTitle(proj) {
   const client = proj.client || '';
   const equipment = proj.equipment || '';
   const title = proj.title || '';
-  const consultation = proj.consultation || '';
-  if (client && equipment && consultation) {
-    return `${client} - ${equipment} (${title}) - ${consultation}`;
+  if (client && equipment) {
+    return `${client} - ${equipment} (${title})`;
   }
   return title;
 }

@@ -75,7 +75,7 @@ const legalContent = {
     sections: [
       {
         title: '1. Professional Engineering Advice',
-        content: 'The information, diagrams, and programmatically rendered 3D models presented on this website are for general marketing and demonstration purposes only. They do not constitute specific structural or mechanical engineering advice.'
+        content: 'The information and diagrams presented on this website are for general marketing and demonstration purposes only. They do not constitute specific structural or mechanical engineering advice.'
       },
       {
         title: '2. Drawing Limitations',

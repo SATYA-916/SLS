@@ -80,19 +80,16 @@ const industries = [
 
 const SPOTLIGHT_META = {
   48: {
-    threeId: 'evaporator-structure',
     blueprintRef: 'SLS-1011-16-GA-01',
     drawingFile: 'evaporator_ga.png',
     software: 'AutoCAD, STAAD.Pro, Tekla Structures'
   },
   49: {
-    threeId: 'dhdt-heater',
     blueprintRef: 'EIL-6879-211-05-42-0102',
     drawingFile: 'eil_ga_sheet1.png',
     software: 'STAAD.Pro, AutoCAD, ANSYS (FEA Structural)'
   },
   50: {
-    threeId: 'hds-heater',
     blueprintRef: 'EIL-6879-212-05-42-1202',
     drawingFile: 'hds_convection_sheet1.png',
     software: 'STAAD.Pro, AutoCAD, ANSYS (FEA Structural)'
@@ -394,7 +391,7 @@ export default function Home() {
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-12">
-                {services?.slice(0, 3).map((svc, i) => (
+                {services?.map((svc, i) => (
                   <motion.div
                     key={svc.id}
                     initial={{ opacity: 0, y: 16 }}
@@ -509,11 +506,6 @@ export default function Home() {
                   <Link href={`/case-study/${spotlightProject.id}`} className="flex-1">
                     <button className="w-full bg-[#0a1628] hover:bg-[#1a2f4c] text-white py-3 text-xs font-bold uppercase tracking-wider transition-colors rounded-sm flex items-center justify-center gap-1 cursor-pointer">
                       Read Technical Case Study &rarr;
-                    </button>
-                  </Link>
-                  <Link href={`/gallery?tab=models&model=${SPOTLIGHT_META[spotlightProject.id].threeId}`} className="flex-1">
-                    <button className="w-full bg-white hover:bg-slate-100 border border-gray-300 text-slate-700 py-3 text-xs font-bold uppercase tracking-wider transition-colors rounded-sm flex items-center justify-center gap-1 cursor-pointer">
-                      Open Interactive 3D Model
                     </button>
                   </Link>
                 </div>
