@@ -349,7 +349,7 @@ export default function Home() {
               {
                 icon: <Layers className="w-8 h-8" />,
                 title: 'Multi-Discipline Under One Roof',
-                desc: 'Civil, structural, mechanical engineering services related to industrial infrastructure real estate projects in one coordinated team. No coordination delays between sub-vendors.'
+                desc: 'Civil, structural, mechanical engineering services related to industrial infrastructure real estate projects in one coordinated team.'
               },
               {
                 icon: <CheckCircle2 className="w-8 h-8" />,
