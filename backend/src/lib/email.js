@@ -1,4 +1,4 @@
-export async function sendBrevo({ to, toName, subject, html }) {
+export async function sendBrevo({ to, toName, subject, html, replyTo }) {
   const apiKey = process.env.BREVO_API_KEY;
   if (!apiKey) throw new Error('BREVO_API_KEY is not set');
 
@@ -15,6 +15,7 @@ export async function sendBrevo({ to, toName, subject, html }) {
     body: JSON.stringify({
       sender: { name: 'SLS Consultants', email: senderEmail },
       to: [{ email: to, name: toName }],
+      ...(replyTo ? { replyTo: { email: replyTo } } : {}),
       subject,
       htmlContent: html,
     }),

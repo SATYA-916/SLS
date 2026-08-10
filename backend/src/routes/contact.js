@@ -25,7 +25,7 @@ const SubmitContactBody = z.object({
   message: z.string().min(10),
 });
 
-function ownerEmailHtml({ name, email, phone, company, service, message, fileName }) {
+function ownerEmailHtml({ name, email, phone, company, service, message }) {
   return `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
       <div style="background:#0a1628;padding:20px 24px;margin-bottom:24px">
@@ -38,7 +38,6 @@ function ownerEmailHtml({ name, email, phone, company, service, message, fileNam
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Phone</td><td style="padding:10px 12px;border:1px solid #ddd">${phone ?? '—'}</td></tr>
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Company</td><td style="padding:10px 12px;border:1px solid #ddd">${company ?? '—'}</td></tr>
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Service</td><td style="padding:10px 12px;border:1px solid #ddd">${service ?? '—'}</td></tr>
-        <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Uploaded File</td><td style="padding:10px 12px;border:1px solid #ddd">${fileName ?? 'None'}</td></tr>
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa">Message</td><td style="padding:10px 12px;border:1px solid #ddd">${message}</td></tr>
       </table>
     </div>
@@ -64,7 +63,7 @@ function customerEmailHtml({ name, service }) {
         <div style="background:#f8f9fa;border-left:3px solid #43648e;padding:16px 20px;margin-bottom:24px">
           <p style="margin:0 0 8px;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:0.08em;color:#888">Contact Us Directly</p>
           <p style="margin:0 0 4px;font-size:13px;color:#333">📞 +91 98495 98424</p>
-          <p style="margin:0 0 4px;font-size:13px;color:#333">✉️ slsind@gmail.com</p>
+          <p style="margin:0 0 4px;font-size:13px;color:#333">✉️ slsvizag@gmail.com</p>
           <p style="margin:0;font-size:13px;color:#333">🌐 www.slsnexus.com</p>
         </div>
         <p style="font-size:13px;color:#888;margin:0">
@@ -128,7 +127,8 @@ router.post('/', upload.single('file'), async (req, res) => {
         to: OWNER_EMAIL,
         toName: 'SLS Admin',
         subject: `New Enquiry from ${name} (${email})`,
-        html: ownerEmailHtml({ name, email, phone, company, service, message, fileName }),
+        html: ownerEmailHtml({ name, email, phone, company, service, message }),
+        replyTo: email,
       })
         .then(() => req.log.info({ email }, 'Owner notification sent via Brevo'))
         .catch((err) => req.log.error({ err }, 'Owner notification failed'));
