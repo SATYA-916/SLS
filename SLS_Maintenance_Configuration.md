@@ -59,7 +59,7 @@ The SLS website is the official digital presence of **SLS Structomech Consultant
 | Frontend (Vercel default) | Vercel | https://sls-frontend.vercel.app (auto-generated) |
 | Backend (API) | Render | **https://sls-ddub.onrender.com** |
 | Backend health check | Render | https://sls-ddub.onrender.com/api/healthz → `{"status":"ok"}` |
-| Git repository | GitHub | https://github.com/SATYA-916/SLS |
+| Git repository | Source repo | <repository_url> |
 
 **Verified live on 2026-08-11:** backend health endpoint returns `{"status":"ok"}` and the frontend serves `https://www.slsnexus.com`.
 
@@ -216,7 +216,7 @@ SLS/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/SATYA-916/SLS.git
+git clone <repository_url>
 cd SLS
 
 # 2. Backend
@@ -245,11 +245,11 @@ Then open **http://localhost:5173**. The Vite dev server proxies `/api` → `htt
 ## 6. Deployment Information
 
 ### Frontend — Vercel
-- **Platform:** Vercel (git-connected to the GitHub repo)
-- **Deployment:** Every push to `origin/main` triggers an automatic build + deploy (auto-deploy on the default branch).
-- **Build settings:** Vercel auto-detects Vite. Build command `npm run build` (outputs to `dist/`). Framework preset: Vite.
-- **Environment variables on Vercel:** none required (leave `VITE_API_URL` empty).
-- **`vercel.json`** is committed and drives the `/api/*` rewrite to Render + SPA fallback.
+- **Platform:** Vercel
+- **Deployment:** Automatic build and deploy on push to main
+- **Build settings:** Vite auto-detects; `npm run build`
+- **Environment variables on Vercel:** none required (leave `VITE_API_URL` empty)
+- **`vercel.json`** handles API rewrites to Render and SPA fallback
 
 ### Backend — Render
 - **Platform:** Render (Web Service)
@@ -438,7 +438,7 @@ The website uses **Calendly's popup widget** to let visitors book a free 30-minu
 | **Cloudflare** | DNS hosting for `slsnexus.com` + proxy/CDN/SSL in front of the site | Domain/DNS owner | Nameservers `sureena`/`grant.ns.cloudflare.com` |
 | **Calendly** | Consultation booking widget (30-min meeting, `https://calendly.com/slsvizag/30min`) | SLS Vizag Calendly owner | Calendar connection (Google Calendar) set inside Calendly account |
 | **Brevo** | Transactional email (contact notifications, auto-reply, admin password recovery) | Email account owner | Free tier ~300 emails/day; sender must be verified |
-| **GitHub** | Source repository (`SATYA-916/SLS`) | Repo owner | Push to `main` triggers frontend deploy |
+
 | **Google Search Console** | Site indexing verification (`google-site-verification` TXT record exists) | Site owner | Sitemap: `https://www.slsnexus.com/sitemap.xml` |
 | **Google/Gemini** | **Not currently used in the codebase** — no Gemini API key or AI integration exists in the deployed code. (Any earlier AI references were removed from the live site.) | — | Do not add unless explicitly requested |
 
@@ -463,7 +463,7 @@ The website uses **Calendly's popup widget** to let visitors book a free 30-minu
 
 4. **Render auto-deploy caveat:** Backend changes pushed to GitHub may not appear on the live API unless auto-deploy is enabled or a manual deploy is triggered on Render. **Always verify** via `https://sls-ddub.onrender.com/api/healthz` after backend changes.
 
-5. **"3D CAD Models" were removed** from the site in a prior maintenance pass. The README.md still describes the old Three.js 3D viewer and related flows — treat those README sections as **outdated**. The live site has no 3D viewer.
+
 
 6. **Services and Projects are code-defined, not DB-driven:** to add/change a service or project, edit `backend/src/routes/services.js` / `projects.js` and redeploy the backend (frontend fetches them at runtime with static-data fallbacks in `frontend/src/data/`).
 
