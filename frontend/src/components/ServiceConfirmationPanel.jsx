@@ -337,7 +337,7 @@ export default function ServiceConfirmationPanel({ serviceName, onClose, onConfi
                 Technical Review Authority
               </span>
               <p className="text-[11px] leading-relaxed text-slate-600 font-medium">
-                Reviewed under the guidance of Mr. C. Subrahmanyam — Ex-BHEL, Ex-Doosan Babcock (18 yrs)
+                Reviewed under the guidance of Mr. C. Subrahmanyam — Ex-BHPV now BHEL, Ex-Doosan Babcock (18 yrs)
               </p>
             </div>
           </div>

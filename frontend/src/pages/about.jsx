@@ -42,7 +42,7 @@ export default function About() {
               Engineering Excellence Since 2002
             </h1>
             <p className="text-slate-600 text-sm md:text-base max-w-2xl leading-relaxed">
-              SLS Structomech Consultants was established in 2002 in Visakhapatnam, Andhra Pradesh, led by 43+ years of engineering expertise, including 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
+              SLS Structomech Consultants was established in 2002 in Visakhapatnam, Andhra Pradesh, led by 43+ years of engineering expertise, including 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHPV now BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
             </p>
           </motion.div>
         </div>
@@ -53,7 +53,7 @@ export default function About() {
           <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             <h2 className="text-3xl font-bold text-[#0a1628] mb-6">Our Story</h2>
             <p className="text-gray-500 mb-4 leading-relaxed">
-              SLS Structomech Consultants was established in 2002 in Visakhapatnam, Andhra Pradesh, led by principal expertise with 43 years of experience, including 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
+              SLS Structomech Consultants was established in 2002 in Visakhapatnam, Andhra Pradesh, led by principal expertise with 43 years of experience, including 18 distinguished years of engineering experience with BHARAT HEAVY PLATE VESSELS LIMITED (BHPV now BHEL) and MITSUI BABCOCK ENERGY (I) PVT LIMITED (now Doosan Babcock).
             </p>
             <p className="text-gray-500 mb-4 leading-relaxed">
               From its inception, SLS has been driven by a singular vision: to deliver cost-effective, quality engineering solutions. Our firm operates with a highly experienced multi-disciplinary team of engineers, designers, and detailers specializing in structural engineering, industrial project consultancy, mechanical engineering, remaining life assessments (RLA), and comprehensive steel detailing.
@@ -81,7 +81,7 @@ export default function About() {
               <div className="space-y-3 mb-6 text-sm">
                 <div className="flex items-center gap-2 text-slate-600">
                   <Award className="w-4 h-4 text-[#43648e] shrink-0" />
-                  <span>Ex-BHEL (Bharat Heavy Electricals Limited) — 18 Years</span>
+                  <span>Ex-BHPV now BHEL (Bharat Heavy Plate &amp; Vessels / BHEL) — 18 Years</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-600">
                   <Award className="w-4 h-4 text-[#43648e] shrink-0" />

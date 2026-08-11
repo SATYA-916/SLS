@@ -317,7 +317,7 @@ export default function Home() {
                 <h4 className="text-sm font-bold text-[#0a1628] leading-tight">Mr. C. Subrahmanyam</h4>
                 <p className="text-[11px] text-gray-500 font-medium mt-0.5">Founder &amp; Principal Engineer</p>
                 {/* Descriptive metadata — not a link */}
-                <p className="text-[10px] text-gray-400 font-medium mt-1">Ex-BHEL (18 Yrs)&nbsp;&nbsp;|&nbsp;&nbsp;Ex-Doosan Babcock (4 yrs)</p>
+                <p className="text-[10px] text-gray-400 font-medium mt-1">Ex-BHPV now BHEL (18 Yrs)&nbsp;&nbsp;|&nbsp;&nbsp;Ex-Doosan Babcock (4 yrs)</p>
               </div>
             </div>
           </div>
