@@ -216,9 +216,10 @@ export default function Home() {
             </span>
             <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-2">SLS STRUCTO MECH CONSULTANTS</h1>
             <p className="text-sm text-slate-500 mb-6">Engineering Excellence. Practical Solutions. Reliable Results.</p>
-            <p className="text-slate-600 text-sm leading-relaxed mb-8 max-w-xl">
-              SLS STRUCTO MECH CONSULTANTS is a multidisciplinary engineering consultancy providing comprehensive Civil, Structural, and Mechanical Engineering solutions for industrial infrastructure, real estate, residential, and commercial projects. With a commitment to technical excellence, innovation, safety, and cost-effective design, we provide practical engineering solutions tailored to the specific requirements of every project. Our team works closely with clients, architects, contractors, and project stakeholders to deliver reliable solutions from concept and planning through design, engineering, and project execution.
-            </p>
+            <div className="text-slate-600 text-sm leading-relaxed mb-8 max-w-xl space-y-4">
+              <p>SLS STRUCTO MECH CONSULTANTS is a multidisciplinary engineering consultancy providing comprehensive Civil, Structural, and Mechanical Engineering solutions for industrial infrastructure, real estate, residential, and commercial projects.</p>
+              <p>With a commitment to technical excellence, innovation, safety, and cost-effective design, we provide practical engineering solutions tailored to the specific requirements of every project. Our team works closely with clients, architects, contractors, and project stakeholders to deliver reliable solutions from concept and planning through design, engineering, and project execution.</p>
+            </div>
 
             {/* Inline Animated Stats Counter inside Hero */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-4 mb-8 border-t border-slate-200 pt-6 max-w-lg">

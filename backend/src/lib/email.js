@@ -13,7 +13,7 @@ export async function sendBrevo({ to, toName, subject, html, replyTo }) {
       'content-type': 'application/json',
     },
     body: JSON.stringify({
-      sender: { name: 'SLS Structomech', email: senderEmail },
+      sender: { name: 'SLS STRUCTO MECH CONSULTANTS', email: senderEmail },
       to: [{ email: to, name: toName }],
       ...(replyTo ? { replyTo: { email: replyTo } } : {}),
       subject,

@@ -8,10 +8,7 @@ export function Footer() {
     <footer className="bg-slate-50 border-t border-slate-200 text-slate-800">
       <div className="container mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-4 gap-10">
         <div className="md:col-span-1">
-          <h3 className="text-lg font-bold mb-2 text-[#0a1628]">SLS Nexus</h3>
-          <p className="text-xs text-slate-500 uppercase tracking-widest mb-6">
-            Engineering. Structures. Industrial Solutions. Since 2002.
-          </p>
+          <h3 className="text-lg font-bold mb-6 text-[#0a1628]">SLS Nexus</h3>
           <div className="flex gap-3">
             <a
               href="mailto:slsind@gmail.com"

@@ -31,7 +31,7 @@ function ownerEmailHtml({ name, email, phone, company, service, message, technic
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
       <div style="background:#0a1628;padding:20px 24px;margin-bottom:24px">
         <h2 style="color:white;margin:0;font-size:18px">New Contact Form Submission</h2>
-        <p style="color:rgba(255,255,255,0.6);margin:4px 0 0;font-size:13px">SLS Structomech Website</p>
+        <p style="color:rgba(255,255,255,0.6);margin:4px 0 0;font-size:13px">SLS STRUCTO MECH CONSULTANTS</p>
       </div>
       <table style="border-collapse:collapse;width:100%;font-size:14px">
         <tr><td style="padding:10px 12px;border:1px solid #ddd;font-weight:bold;background:#f8f9fa;width:120px">Name</td><td style="padding:10px 12px;border:1px solid #ddd">${name}</td></tr>
@@ -51,8 +51,8 @@ function customerEmailHtml({ name, service }) {
   return `
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#333">
       <div style="background:#0a1628;padding:24px 28px">
-        <h2 style="color:white;margin:0;font-size:20px">SLS Structomech</h2>
-        <p style="color:rgba(255,255,255,0.5);margin:4px 0 0;font-size:12px;letter-spacing:0.1em;text-transform:uppercase">Engineering. Structures. Industrial Solutions.</p>
+        <h2 style="color:white;margin:0;font-size:20px">SLS STRUCTO MECH CONSULTANTS</h2>
+        <p style="color:rgba(255,255,255,0.5);margin:4px 0 0;font-size:12px;letter-spacing:0.1em;text-transform:uppercase">Engineering Excellence. Practical Solutions. Reliable Results.</p>
       </div>
       <div style="padding:32px 28px;background:#ffffff;border:1px solid #e5e7eb;border-top:none">
         <p style="font-size:15px;margin:0 0 16px">Dear <strong>${name}</strong>,</p>
@@ -70,7 +70,7 @@ function customerEmailHtml({ name, service }) {
         </div>
         <p style="font-size:13px;color:#888;margin:0">
           Warm regards,<br />
-          <strong style="color:#0a1628">SLS Structomech</strong><br />
+          <strong style="color:#0a1628">SLS STRUCTO MECH CONSULTANTS</strong><br />
           Visakhapatnam, Andhra Pradesh, India
         </p>
       </div>
@@ -166,7 +166,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     sendBrevo({
       to: email,
       toName: name,
-      subject: 'We have received your enquiry — SLS Structomech',
+      subject: 'We have received your enquiry — SLS STRUCTO MECH CONSULTANTS',
       html: customerEmailHtml({ name, service }),
     })
       .then(() => req.log.info({ email }, 'Customer auto-reply sent via Brevo'))

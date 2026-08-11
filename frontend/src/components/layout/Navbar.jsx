@@ -60,11 +60,8 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="flex flex-col cursor-pointer shrink-0" onClick={() => setMenuOpen(false)}>
+        <Link href="/" className="flex items-center cursor-pointer shrink-0" onClick={() => setMenuOpen(false)}>
           <span className="text-base font-bold text-[#0a1628] leading-tight">SLS Nexus</span>
-          <span className="text-[9px] text-gray-500 uppercase tracking-[0.12em] hidden sm:block">
-            Engineering. Structures. Industrial Solutions. Since 2002.
-          </span>
         </Link>
 
         {/* Desktop nav */}
