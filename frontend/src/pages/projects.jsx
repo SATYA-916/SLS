@@ -79,29 +79,40 @@ export default function Projects() {
   const [, setLocation] = useLocation();
 
   const filtered = projects?.filter((p) => {
+    const cat = p.category || p.equipment || '';
+    
     // 1. Category tab filter
-    const matchCat = selectedCategory === 'All' || p.category === selectedCategory;
+    let matchCat = selectedCategory === 'All';
+    if (!matchCat) {
+      if (selectedCategory === 'Special Structures') matchCat = cat === 'Special Structure';
+      else if (selectedCategory === 'Cryogenic Plants') matchCat = cat === 'Cryogenic Equipment';
+      else if (selectedCategory === 'Boilers & Chimneys') matchCat = cat === 'Boiler/Chimney';
+      else if (selectedCategory === 'Fired Heaters') matchCat = cat === 'Fired Heater';
+      else if (selectedCategory === 'Structures') matchCat = cat === 'Steel Structure' || cat === 'Building/Structure';
+      else if (selectedCategory === 'Industrial Structures') matchCat = cat === 'Industrial Structure';
+      else matchCat = cat === selectedCategory;
+    }
 
     // 2. Search query filter
     const q = searchQuery.toLowerCase().trim();
     const matchSearch = !q ||
       (p.title || '').toLowerCase().includes(q) ||
       (p.description || '').toLowerCase().includes(q) ||
-      (p.category || '').toLowerCase().includes(q) ||
+      cat.toLowerCase().includes(q) ||
       (p.client || '').toLowerCase().includes(q);
 
     // 3. Discipline filter
     let matchDiscipline = true;
     if (selectedDiscipline !== 'All') {
-      const pText = ((p.title || '') + ' ' + (p.description || '') + ' ' + (p.category || '')).toLowerCase();
+      const pText = ((p.title || '') + ' ' + (p.description || '') + ' ' + cat).toLowerCase();
       if (selectedDiscipline === 'Civil & Structural') {
-        matchDiscipline = p.category === 'Civil & Structural' || pText.includes('civil') || pText.includes('structural') || pText.includes('foundation') || pText.includes('concrete') || pText.includes('pile') || pText.includes('building') || pText.includes('apartments') || pText.includes('residency');
+        matchDiscipline = cat === 'Civil & Structural' || pText.includes('civil') || pText.includes('structural') || pText.includes('foundation') || pText.includes('concrete') || pText.includes('pile') || pText.includes('building') || pText.includes('apartments') || pText.includes('residency');
       } else if (selectedDiscipline === 'Mechanical & Piping') {
-        matchDiscipline = p.category === 'Mechanical & Piping' || pText.includes('mechanical') || pText.includes('piping') || pText.includes('process') || pText.includes('manifold') || pText.includes('pipeline') || pText.includes('duct') || pText.includes('heater') || pText.includes('furnace') || pText.includes('bellows') || pText.includes('cover');
+        matchDiscipline = cat === 'Mechanical & Piping' || pText.includes('mechanical') || pText.includes('piping') || pText.includes('process') || pText.includes('manifold') || pText.includes('pipeline') || pText.includes('duct') || pText.includes('heater') || pText.includes('furnace') || pText.includes('bellows') || pText.includes('cover');
       } else if (selectedDiscipline === 'Detailing') {
         matchDiscipline = pText.includes('detailing') || pText.includes('drawing') || pText.includes('drafting') || pText.includes('tekla') || pText.includes('fabrication');
       } else if (selectedDiscipline === 'RLA Studies') {
-        matchDiscipline = p.category === 'RLA Studies' || pText.includes('rla') || pText.includes('remaining life') || pText.includes('chimneys') || pText.includes('stack') || pText.includes('integrity') || pText.includes('assessment');
+        matchDiscipline = cat === 'RLA Studies' || pText.includes('rla') || pText.includes('remaining life') || pText.includes('chimneys') || pText.includes('stack') || pText.includes('integrity') || pText.includes('assessment');
       }
     }
 
@@ -359,7 +370,7 @@ export default function Projects() {
         </div>
         <div className="container mx-auto px-4 relative z-10 max-w-xl">
           <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/50 mb-3 block">Engineering Drawing Office</span>
-          <h3 className="text-2xl font-bold mb-4">Explore Our Fired Heater Drawings Gallery</h3>
+          <h3 className="text-2xl font-bold mb-4">Explore Our Engineering Fabrication Drawings Gallery</h3>
           <p className="text-white/60 text-xs leading-relaxed mb-6">
             Review detailed drawings of convection section assemblies, radiant sections, stack vortex strakes, platform layout details, and structural support frames.
           </p>

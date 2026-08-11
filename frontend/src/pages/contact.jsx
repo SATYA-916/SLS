@@ -18,7 +18,7 @@ function validate(data) {
 
 function getInitialMessageForService(serviceName) {
   if (!serviceName) return '';
-  return `I would like to inquire about your "${serviceName}" engineering services. Please coordinate a technical discussion and scoping timelines for my project.`;
+  return `I would like to inquire about your "${serviceName}" services. Please coordinate a technical discussion for my project.`;
 }
 
 export default function Contact() {
@@ -95,9 +95,9 @@ export default function Contact() {
     // 2. Add core service areas
     const coreServices = [
       'Civil Engineering Services',
-      'Structural Engineering',
-      'Mechanical Engineering',
-      'Architecture',
+      'Structural Engineering Services',
+      'Mechanical Engineering Services',
+      'Architecture Services',
       'Engineering',
       'Project Consulting',
       'Special Products Design & Manufacturing'
@@ -106,8 +106,7 @@ export default function Contact() {
 
     // 3. Add detailed engineering options (non-compliance)
     const detailServices = [
-      'STAAD.Pro Structural Steel Analysis',
-      'FEM/FEA Stress Verification',
+      'FEM/FEA Stress Analysis and Report Generation',
       'Remaining Life Assessment (RLA) Study'
     ];
     detailServices.forEach(s => list.add(s));
@@ -328,12 +327,12 @@ export default function Contact() {
             </div>
             
             <div className="bg-[#0a1628]/5 p-8 border-l-2 border-[#0a1628] rounded-sm">
-              <h3 className="font-bold text-base text-[#0a1628] mb-5">Our Consultation Process</h3>
+              <h3 className="font-bold text-base text-[#0a1628] mb-5">Consultation Process</h3>
               <div className="space-y-5">
                 {[
-                  { step: "01", title: "Submit Specifications & Details", desc: "Share your scoping data and layout requirements. Confidential project information is handled securely." },
-                  { step: "02", title: "Technical Scoping Call", desc: "Schedule a video scoping call with Mr. Subrahmanyam to align on connection codes and design standards." },
-                  { step: "03", title: "Proposal Dispatch", desc: "Receive a detailed commercial proposal and drawing delivery schedule within 48 hours." }
+                  { step: "01", title: "Introduction", desc: "Fix up a time slot. Have discussion online video call or across the table. Alternatively Post your enquiry online along with details." },
+                  { step: "02", title: "Technical discussions", desc: "Reach you at an agreed method to freeze the scope and the requirement." },
+                  { step: "03", title: "Proposal", desc: "Send you the proposal with all commercial and delivery schedules." }
                 ].map((item) => (
                   <div key={item.step} className="flex items-start gap-4">
                     <div className="w-6 h-6 rounded-full bg-[#0a1628] text-white text-[10px] font-bold flex items-center justify-center shrink-0">

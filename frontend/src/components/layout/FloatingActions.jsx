@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronUp, Phone } from 'lucide-react';
+import { ChevronUp, Phone, ArrowRight } from 'lucide-react';
+import { Link } from 'wouter';
 
 // WhatsApp SVG
 function WhatsAppIcon({ className }) {
@@ -44,8 +45,16 @@ export function FloatingActions() {
         )}
       </AnimatePresence>
 
-      {/* Expandable action hub */}
-      <div className="flex flex-col items-end gap-2">
+      {/* Bottom Row: Request Consultation + Action Hub */}
+      <div className="flex items-end gap-3">
+        <Link href="/contact" className="mb-1.5 hidden sm:block">
+          <button className="flex items-center gap-2 bg-blue-600 text-white px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-[#25D366] hover:shadow-lg transition-all duration-200 rounded-full shadow-md">
+            Request a Consultation <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </Link>
+
+        {/* Expandable action hub */}
+        <div className="flex flex-col items-end gap-2">
         <AnimatePresence>
           {expanded && (
             <>
@@ -109,6 +118,7 @@ export function FloatingActions() {
             )}
           </motion.div>
         </motion.button>
+        </div>
       </div>
     </div>
   );

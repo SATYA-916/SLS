@@ -214,10 +214,10 @@ export default function Home() {
             <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase text-slate-500 mb-5">
               SLS Nexus | Engineering Excellence Since 2002
             </span>
-            <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-2">SLS Solutions</h1>
-            <p className="text-sm text-slate-500 mb-6">Core Engineering Services — Civil, Structural & Mechanical</p>
+            <h1 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-2">SLS STRUCTO MECH CONSULTANTS</h1>
+            <p className="text-sm text-slate-500 mb-6">Engineering Excellence. Practical Solutions. Reliable Results.</p>
             <p className="text-slate-600 text-sm leading-relaxed mb-8 max-w-xl">
-              SLS Structomech Consultants provides all engineering solution in the areas of civil structural mechanical related to industrial infrastructure, real estate, residential, projects and consultants to clients in India and abroad.
+              SLS STRUCTO MECH CONSULTANTS is a multidisciplinary engineering consultancy providing comprehensive Civil, Structural, and Mechanical Engineering solutions for industrial infrastructure, real estate, residential, and commercial projects. With a commitment to technical excellence, innovation, safety, and cost-effective design, we provide practical engineering solutions tailored to the specific requirements of every project. Our team works closely with clients, architects, contractors, and project stakeholders to deliver reliable solutions from concept and planning through design, engineering, and project execution.
             </p>
 
             {/* Inline Animated Stats Counter inside Hero */}
@@ -240,7 +240,7 @@ export default function Home() {
 
             <div className="flex flex-wrap gap-3">
               <Link href="/contact">
-                <button className="flex items-center gap-2 bg-[#0a1628] text-white px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-[#1a2f4c] transition-colors rounded-sm shadow-sm">
+                <button className="flex items-center gap-2 bg-blue-600 text-white px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-[#25D366] hover:shadow-lg transition-all duration-200 rounded-sm shadow-sm">
                   Request a Consultation <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </Link>
@@ -248,7 +248,7 @@ export default function Home() {
                 href="/SLSPROFILE.pdf"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 border border-slate-300 text-[#0a1628] px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-slate-100 transition-colors rounded-sm shadow-sm"
+                className="flex items-center gap-2 border border-slate-300 text-[#0a1628] px-5 py-3 text-xs font-bold uppercase tracking-wider hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-colors rounded-sm shadow-sm"
               >
                 Download Profile (PDF)
               </a>
@@ -282,11 +282,11 @@ export default function Home() {
             <div className="max-w-xl">
               <span className="text-[9px] font-bold uppercase tracking-widest text-[#43648e] block mb-2">Our Profile</span>
               <p className="text-[#0a1628] text-sm md:text-base leading-relaxed mb-4">
-                Established in 2002, SLS Structomech Consultants provides all engineering solutions to various clients in India and abroad.
+                Established in 2002, SLS Structo mech Consultants provides all engineering solutions to various clients in India and abroad.
               </p>
               <div className="flex flex-wrap gap-4 items-center">
                 <Link href="/about">
-                  <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-[#43648e] cursor-pointer hover:text-[#0a1628] transition-colors">
+                  <span className="inline-flex items-center gap-1 text-sm font-extrabold uppercase tracking-wider text-[#43648e] cursor-pointer hover:text-[#0a1628] transition-colors">
                     Learn More About SLS &rarr;
                   </span>
                 </Link>
@@ -295,7 +295,7 @@ export default function Home() {
                   href="/SLSPROFILE.pdf"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 hover:text-blue-800 transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-600 hover:text-white hover:bg-blue-600 hover:rounded-sm px-2 py-1 -mx-2 -my-1 transition-colors"
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
@@ -317,7 +317,7 @@ export default function Home() {
                 <h4 className="text-sm font-bold text-[#0a1628] leading-tight">Mr. C. Subrahmanyam</h4>
                 <p className="text-[11px] text-gray-500 font-medium mt-0.5">Founder &amp; Principal Engineer</p>
                 {/* Descriptive metadata — not a link */}
-                <p className="text-[10px] text-gray-400 font-medium mt-1">Ex-BHPV now BHEL (18 Yrs)&nbsp;&nbsp;|&nbsp;&nbsp;Ex-Doosan Babcock (4 yrs)</p>
+                <p className="text-[10px] text-gray-400 font-medium mt-1 leading-relaxed">Ex BHPV (BHARAT HEAVY PLATE &amp; VESSEL LTD – Now BHEL)<br />Ex-MBEIPL (Mitsui Babcock Energy India Pvt. Ltd – Now Doosan Babcock)</p>
               </div>
             </div>
           </div>
@@ -331,9 +331,14 @@ export default function Home() {
             <div className="text-center mb-12">
               <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400 mb-3">Why Choose SLS</p>
               <h2 className="text-3xl font-bold text-[#0a1628] mb-4">The SLS Advantage</h2>
-              <p className="text-sm text-slate-500 max-w-xl mx-auto leading-relaxed">
-                Delivering exceptional solutions that go beyond client expectations
-              </p>
+              <div className="text-sm text-slate-500 max-w-3xl mx-auto leading-relaxed space-y-4">
+                <p>
+                  At SLS STRUCTO MECH CONSULTANTS, we combine engineering expertise with practical project experience to develop solutions that are safe, efficient, economical, and sustainable.
+                </p>
+                <p>
+                  We understand that every project has unique technical, commercial, and operational requirements. Our approach is focused on understanding our clients' objectives and delivering fit-for-purpose engineering solutions that add value throughout the project lifecycle.
+                </p>
+              </div>
             </div>
           </AnimatedSection>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
