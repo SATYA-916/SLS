@@ -31,10 +31,10 @@ const drawings = [
     service: "Industrial Fired Heater Engineering"
   },
   { 
-    title: "Radiant Tube Hangers Detailing", 
+    title: "Typical Welding Details of Fabricated Sections", 
     file: "radiant_sheet2.png", 
-    desc: "Mechanical detail drawings of high-alloy heat resistant radiant tube sheets and hanger assemblies.", 
-    code: "ASME Sec VIII / API 530",
+    desc: "Typical welding details of fabricated structural sections with item-wise fabrication references.", 
+    code: "ASME Sec VIII / API 530", 
     service: "Industrial Fired Heater Engineering"
   },
   { 
@@ -45,10 +45,10 @@ const drawings = [
     service: "Industrial Fired Heater Engineering"
   },
   { 
-    title: "Convection Module Section - Sheet 1", 
+    title: "Elevation of Convection Side Wall - Arch Plate Connection", 
     file: "convection_sheet1.png", 
-    desc: "Arrangement of tube bundles, structural tube sheets, and intermediate support plates within the convection bank.", 
-    code: "ASME Sec II & VIII",
+    desc: "Elevation of the convection side wall showing the arch plate connection, splice joint details, and section 1-1 view.", 
+    code: "ASME Sec II & VIII", 
     service: "Industrial Fired Heater Engineering"
   },
   { 
@@ -59,10 +59,10 @@ const drawings = [
     service: "Industrial Fired Heater Engineering"
   },
   { 
-    title: "Convection Intermediate Tube Support", 
+    title: "Convection Component Fabrication Details", 
     file: "convection_sheet3.png", 
-    desc: "Intermediate support plates and intermediate baffles to prevent tube sagging at high flue temperatures.", 
-    code: "ASME Sec VIII / EIL Spec",
+    desc: "Fabrication details of convection section components identified by item numbers 45, 46 and 49.", 
+    code: "ASME Sec VIII / EIL Spec", 
     service: "Industrial Fired Heater Engineering"
   },
   { 
@@ -94,10 +94,10 @@ const drawings = [
     service: "Civil & Structural Engineering"
   },
   { 
-    title: "Self-Supporting Stack Layout - Sheet 1", 
+    title: "Stack Base & Anchor Bolt Details", 
     file: "stack_sheet1.png", 
-    desc: "Exhaust stack detailing including helical strakes for wind vortex shedding, damper controls, and platform hangers.", 
-    code: "IS 6533 (Steel Chimneys)",
+    desc: "Detail of stack shell plate item no. 56 with M46 anchor bolts and base plate development.", 
+    code: "IS 6533 (Steel Chimneys)", 
     service: "Chimney & Stack Engineering"
   },
   { 
@@ -108,10 +108,10 @@ const drawings = [
     service: "Chimney & Stack Engineering"
   },
   { 
-    title: "Tube Header Box Enclosure - Sheet 1", 
+    title: "Header Box Tube Sealing & Clamp Details", 
     file: "header_box_sheet1.png", 
-    desc: "Detailed structural enclosure for pipe return bends, including quick-acting access doors and heat seal plates.", 
-    code: "ASME Sec VIII / Refinery Standard",
+    desc: "Sections 2-2 and 3-3 of the header box showing typical tube sealing details, clamp details, and bottom panel detail D6.", 
+    code: "ASME Sec VIII / Refinery Standard", 
     service: "Industrial Fired Heater Engineering"
   },
   { 
@@ -185,10 +185,10 @@ const drawings = [
     service: "Industrial Fired Heater Engineering"
   },
   { 
-    title: "Burner Floor Plate Arrangement", 
+    title: "Self-Closing Floor Peep Hole & Spigot Sleeve Details", 
     file: "floor_plate_sheet1.png", 
-    desc: "Floor segment plates, burner openings, air register cutouts, and bottom structural floor beam systems.", 
-    code: "IS 800 / API 560",
+    desc: "Details of the 4 NB self-closing floor peep hole with views E-E and F-F and detail of spigot sleeve.", 
+    code: "IS 800 / API 560", 
     service: "Industrial Equipment Engineering"
   },
   { 
@@ -221,45 +221,45 @@ const drawings = [
   },
   // 6 additional EIL drawings
   { 
-    title: "Refinery Heater Structural Layout - GA", 
+    title: "Breeching Boundary Lining Details (211-F1 Heater)", 
     file: "eil_ga_sheet3.png", 
-    desc: "Detailed structural arrangement drawing of the heater frame, columns, and bracing system.", 
-    code: "EIL Specs / IS 800",
+    desc: "Breeching boundary lining details of the 211-F1 heater showing castable (Type-V) insulation, ceramic fibre board and arch plate lining.", 
+    code: "EIL Specs / IS 800", 
     service: "Industrial Fired Heater Engineering"
   },
   { 
-    title: "Convection Section Detail - Section View", 
+    title: "Stack Plan & Platform / Ladder Locations", 
     file: "eil_ga_sheet4.png", 
-    desc: "Cross-sectional engineering view of convection tube sheets, tube supports, and baffle plate settings.", 
-    code: "EIL Specs / ASME Sec VIII",
+    desc: "Stack plan view showing U/S platform arrangement and ladder locations at the heater stack.", 
+    code: "EIL Specs / ASME Sec VIII", 
     service: "Industrial Fired Heater Engineering"
   },
   { 
-    title: "Self-Supporting Stack Flange Details", 
+    title: "Convection Wall Tube Hanger Details (I.T.S.)", 
     file: "eil_ga_sheet5.png", 
-    desc: "Base plate and structural anchor details for the 45-meter self-supporting chimney.", 
-    code: "EIL Specs / IS 6533",
+    desc: "Wall tube hanger (pattern 6879/1625/110) details for the convection I.T.S. with sections B-B and H-H and bill of materials.", 
+    code: "EIL Specs / IS 6533", 
     service: "Industrial Fired Heater Engineering"
   },
   { 
-    title: "HDS Heater Structural Frame Layout", 
+    title: "Header Box, Breeching & Burner Stool Details (212-F-1 Heater)", 
     file: "eil_ga_sheet6.png", 
-    desc: "Structural portal frames, columns, and wind-girder detailing for the HDS unit heater tower.", 
-    code: "EIL Specs / AISC Standards",
+    desc: "6 THK header box plate, 14 THK end tube sheet, U/S breeching plate, observation door and burner stool details of the 212-F-1 heater.", 
+    code: "EIL Specs / AISC Standards", 
     service: "Industrial Fired Heater Engineering"
   },
   { 
-    title: "HDS Heater Convection Module GA", 
+    title: "Heater & Convection Tube Pulling Platform Details", 
     file: "eil_ga_sheet7.png", 
-    desc: "General arrangement section layout of the HDS heater convection tube bank module.", 
-    code: "EIL Specs / ASME Sec VIII",
+    desc: "Pulling door (typ.) with grating for tube, steam lancing access, and piping loads on platform edge of the heater & convection sections.", 
+    code: "EIL Specs / ASME Sec VIII", 
     service: "Industrial Fired Heater Engineering"
   },
   { 
-    title: "HDS Heater Piping Assembly Details", 
+    title: "Access Platform, Ladder & Door Details", 
     file: "eil_ga_sheet8.png", 
-    desc: "Piping layouts, header connections, and high-pressure manifold joints detailing.", 
-    code: "EIL Specs / ASME B31.3",
+    desc: "U/S platform at EL.+15550 with access door and ladder down to EL.+23400 details.", 
+    code: "EIL Specs / ASME B31.3", 
     service: "Industrial Fired Heater Engineering"
   },
   // 8 additional HDS drawings
@@ -271,10 +271,10 @@ const drawings = [
     service: "Industrial Equipment Engineering"
   },
   { 
-    title: "HDS Radiant Section Plate Detailing - Sheet 1", 
+    title: "Radiant Section Plans at EL+6200 & EL+8021", 
     file: "hds_radiant_sheet1.png", 
-    desc: "Casing plate segments, structural stiffeners, and burner register sleeve weld details.", 
-    code: "ASME Sec VIII / IS 800",
+    desc: "Radiant section platform plans at elevations EL+6200 and EL+8021.", 
+    code: "ASME Sec VIII / IS 800", 
     service: "Industrial Fired Heater Engineering"
   },
   { 
@@ -285,17 +285,17 @@ const drawings = [
     service: "Industrial Fired Heater Engineering"
   },
   { 
-    title: "HDS Convection Casing Layout", 
+    title: "Convection Platform Plan at EL+12850", 
     file: "hds_convection_sheet1.png", 
-    desc: "Casing modules framing details, refractory anchor layouts, and lifting lug locations.", 
-    code: "IS 800 / ASME Sec VIII",
+    desc: "Plan at EL+12850 of the convection section platform showing secondary members and section 16.", 
+    code: "IS 800 / ASME Sec VIII", 
     service: "Industrial Fired Heater Engineering"
   },
   { 
-    title: "HDS Convection Tube Sheet Details", 
+    title: "Convection Column & Box Girder Details", 
     file: "hds_convection_sheet2.png", 
-    desc: "Tube sheet hole pitches, tube guide plates, and baffle plate spacing layout.", 
-    code: "ASME Sec VIII / EIL Specs",
+    desc: "Typical detail of box girder and details of connection to convection column (2 nos. required).", 
+    code: "ASME Sec VIII / EIL Specs", 
     service: "Industrial Fired Heater Engineering"
   },
   { 
@@ -306,10 +306,10 @@ const drawings = [
     service: "Civil & Structural Engineering"
   },
   { 
-    title: "HDS Exhaust Stack Layout & GA", 
+    title: "Stack Shell Plate Welding Details", 
     file: "hds_stack_sheet1.png", 
-    desc: "Exhaust stack section drawing including rain hood, sampling ports, and structural platform mounts.", 
-    code: "IS 6533 / ASME Steel Chimneys",
+    desc: "Typical welding detail of stack shell plate with details D3, D4 and section 5-5.", 
+    code: "IS 6533 / ASME Steel Chimneys", 
     service: "Chimney & Stack Engineering"
   },
   { 
@@ -334,10 +334,10 @@ const drawings = [
     service: "Civil & Structural Engineering"
   },
   { 
-    title: "Evaporator - Beam Detailing & Framing", 
+    title: "Evaporator - Beam Fabrication Drawing", 
     file: "evaporator_beams.png", 
-    desc: "Floor framing layout showing beam member section sizes and typical platform framing joints.", 
-    code: "IS 800 (Structural Steel)",
+    desc: "Fabrication drawing of the seven-effect evaporator structure showing beam details D2 to D7 (client: M/s Turn Distilleries).", 
+    code: "IS 800 (Structural Steel)", 
     service: "Civil & Structural Engineering"
   },
   { 
@@ -369,10 +369,10 @@ const drawings = [
     service: "Platform, Staircase, Ladder & Access Structure Design"
   },
   { 
-    title: "Evaporator - Roof Truss & Purlins G.A.", 
+    title: "Evaporator - Purlin Plan", 
     file: "evaporator_truss_ga.png", 
-    desc: "Roof truss layout showing member frames, gables, and purlin pitches for sheet roofing.", 
-    code: "IS 800 (Structural Steel)",
+    desc: "Purlin plan layout of the seven-effect evaporator building roof showing purlin runs.", 
+    code: "IS 800 (Structural Steel)", 
     service: "Civil & Structural Engineering"
   },
   { 
@@ -390,10 +390,10 @@ const drawings = [
     service: "Civil & Structural Engineering"
   },
   { 
-    title: "Evaporator - False Rafter Details", 
+    title: "Evaporator - Louver Details (MKD L1 & L2)", 
     file: "evaporator_false_rafter.png", 
-    desc: "False rafter overhang templates and structural joints at roof eaves.", 
-    code: "IS 800 (Structural Steel)",
+    desc: "Detail of louver marked L1 and L2 with sections 6-6 and 7-7 of the evaporator building.", 
+    code: "IS 800 (Structural Steel)", 
     service: "Civil & Structural Engineering"
   },
   { 

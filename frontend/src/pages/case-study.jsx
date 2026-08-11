@@ -26,9 +26,9 @@ const PROJECT_DRAWINGS = {
     },
     {
       file: "evaporator_beams.png",
-      title: "Floor Beams Framing Plans",
+      title: "Beam Fabrication Drawing",
       ref: "SLS-1011-16-BM-03",
-      desc: "Floor framing layout showing primary beam sections, secondary floor beam joists, and connections.",
+      desc: "Fabrication drawing of the seven-effect evaporator structure showing beam details D2 to D7 (client: M/s Turn Distilleries).",
     },
     {
       file: "evaporator_bracing.png",
@@ -56,9 +56,9 @@ const PROJECT_DRAWINGS = {
     },
     {
       file: "evaporator_truss_ga.png",
-      title: "Roof Canopy Truss GA",
+      title: "Purlin Plan",
       ref: "SLS-1011-16-TR-08",
-      desc: "General assembly of the roof canopy W-type trusses, specifying rafter angles and vertical post lines.",
+      desc: "Purlin plan layout of the seven-effect evaporator building roof showing purlin runs.",
     },
     {
       file: "evaporator_truss_detail.png",
@@ -74,9 +74,9 @@ const PROJECT_DRAWINGS = {
     },
     {
       file: "evaporator_false_rafter.png",
-      title: "False Rafter Eaves Detailing",
+      title: "Louver Details (MKD L1 & L2)",
       ref: "SLS-1011-16-FR-11",
-      desc: "Details for overhang false rafters providing building eaves projection and cladding support.",
+      desc: "Detail of louver marked L1 and L2 with sections 6-6 and 7-7 of the evaporator building.",
     },
     {
       file: "evaporator_side_runners.png",
@@ -118,39 +118,39 @@ const PROJECT_DRAWINGS = {
     },
     {
       file: "eil_ga_sheet3.png",
-      title: "Convection Section Module GA",
+      title: "Breeching Boundary Lining Details (211-F1 Heater)",
       ref: "6879-211-05-42-0104",
-      desc: "Internal detail of tube supports, intermediate tubesheets, dynamic corbel plates, and refractory lining anchorage.",
+      desc: "Breeching boundary lining details of the 211-F1 heater showing castable (Type-V) insulation, ceramic fibre board and arch plate lining.",
     },
     {
       file: "eil_ga_sheet4.png",
-      title: "Exhaust Stack Casing & Strakes",
+      title: "Stack Plan & Platform / Ladder Locations",
       ref: "6879-211-05-42-1105",
-      desc: "Detailed drawings for the exhaust stack casing plates, helical strakes profile development, and base ring details.",
+      desc: "Stack plan view showing U/S platform arrangement and ladder locations at the heater stack.",
     },
     {
       file: "eil_ga_sheet5.png",
-      title: "Radiant Coil Piping Layout",
+      title: "Convection Wall Tube Hanger Details (I.T.S.)",
       ref: "6879-000-05-42-1301",
-      desc: "High-alloy process coil layouts, tube guides, dynamic hanger systems, and return bend nozzle connections.",
+      desc: "Wall tube hanger (pattern 6879/1625/110) details for the convection I.T.S. with sections B-B and H-H and bill of materials.",
     },
     {
       file: "eil_ga_sheet6.png",
-      title: "Convection Header Box Assembly",
+      title: "Header Box, Breeching & Burner Stool Details (212-F-1 Heater)",
       ref: "BR-40053-02-A-101-SHT1",
-      desc: "Convection header box structure detailing, return bend spaces, access door hinges, and high-temp gaskets.",
+      desc: "6 THK header box plate, 14 THK end tube sheet, U/S breeching plate, observation door and burner stool details of the 212-F-1 heater.",
     },
     {
       file: "eil_ga_sheet7.png",
-      title: "Radiant Floor & Burner Plates",
+      title: "Heater & Convection Tube Pulling Platform Details",
       ref: "BR-40053-02-A-101-SHT2",
-      desc: "Mechanical layout of bottom floor plate stiffeners, burner nozzle penetration flanges, and plenum supports.",
+      desc: "Pulling door (typ.) with grating for tube, steam lancing access, and piping loads on platform edge of the heater & convection sections.",
     },
     {
       file: "eil_ga_sheet8.png",
-      title: "Access Platforms & Handrails",
+      title: "Access Platform, Ladder & Door Details",
       ref: "BR-40053-02-A-101-SHT3",
-      desc: "Details for circular operating platform brackets, walkways, kick-plates, and OSHA-compliant safety railings.",
+      desc: "U/S platform at EL.+15550 with access door and ladder down to EL.+23400 details.",
     }
   ],
   50: [
@@ -162,9 +162,9 @@ const PROJECT_DRAWINGS = {
     },
     {
       file: "hds_radiant_sheet1.png",
-      title: "Radiant Zone Casing Details",
+      title: "Radiant Section Plans at EL+6200 & EL+8021",
       ref: "6879-212-05-42-1203",
-      desc: "Cylindrical casing panels layout, stiffening channel rings, observation port sleeves, and explosive relief doors.",
+      desc: "Radiant section platform plans at elevations EL+6200 and EL+8021.",
     },
     {
       file: "hds_radiant_sheet2.png",
@@ -174,15 +174,15 @@ const PROJECT_DRAWINGS = {
     },
     {
       file: "hds_convection_sheet1.png",
-      title: "Convection Tube Supports & Sheets",
+      title: "Convection Platform Plan at EL+12850",
       ref: "BR-40053-03-A-101-SHT1",
-      desc: "Intermediate cast alloy support plates, end tubesheets, tube guides, and baffle configurations for high velocity flue gas.",
+      desc: "Plan at EL+12850 of the convection section platform showing secondary members and section 16.",
     },
     {
       file: "hds_convection_sheet2.png",
-      title: "Convection Box Casing & Transitions",
+      title: "Convection Column & Box Girder Details",
       ref: "BR-40053-03-A-101-SHT2",
-      desc: "Convection casing wall detailing, end plate flanges, off-take breeching transition flange, and external stiffening angles.",
+      desc: "Typical detail of box girder and details of connection to convection column (2 nos. required).",
     },
     {
       file: "hds_sss_sheet1.png",
@@ -192,9 +192,9 @@ const PROJECT_DRAWINGS = {
     },
     {
       file: "hds_stack_sheet1.png",
-      title: "Exhaust Stack Flange & Anchor Details",
+      title: "Stack Shell Plate Welding Details",
       ref: "BR-40053-03-A-101-SHT4",
-      desc: "Lower stack base ring plate, anchor chairs, stiffener plates, and dynamic foundation reaction loading tables.",
+      desc: "Typical welding detail of stack shell plate with details D3, D4 and section 5-5.",
     },
     {
       file: "hds_header_sheet1.png",
